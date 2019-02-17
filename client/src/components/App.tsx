@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { State, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
@@ -9,12 +9,12 @@ const init: State = { t: "nameChoosing" };
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
-  const sendRef = useRef<Send | null>(null);
-  const { current: send } = sendRef;
+  const [send, setSend] = useState<Send | null>(null);
   useEffect(() => {
     const ws = new WebSocket("wss://echo.websocket.org");
     ws.onopen = () => {
-      sendRef.current = msg => ws.send(JSON.stringify(msg));
+      const newSend: Send = msg => ws.send(JSON.stringify(msg));
+      setSend(newSend);
     };
     ws.onmessage = e => d(JSON.parse(e.data));
     ws.onclose = () => d({ t: "closed" });
