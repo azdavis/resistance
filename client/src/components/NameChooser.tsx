@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Send } from "../send";
+import { Send } from "../logic/send";
 import useUncontrolledInput from "../hooks/useUncontrolledInput";
 
 type Props = {
