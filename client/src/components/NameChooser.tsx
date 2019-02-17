@@ -14,7 +14,7 @@ const NameChooser = ({ send }: Props): JSX.Element => {
       <form
         onSubmit={e => {
           e.preventDefault();
-          send!(nameRef.current!.value);
+          send!({ t: "nameChoose", name: nameRef.current!.value });
         }}
       >
         <label htmlFor="name">player name</label>

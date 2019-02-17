@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
 
-type Msg = {};
+type Msg = { t: "nameChoose"; name: string };
 
 export type Send = Dispatch<Msg>;
