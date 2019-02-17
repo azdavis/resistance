@@ -3,6 +3,7 @@ import { reducer, init } from "../logic/state";
 import { Send } from "../logic/send";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
+import RoomChooser from "./RoomChooser";
 
 const App = (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
@@ -22,6 +23,8 @@ const App = (): JSX.Element => {
       return <Closed />;
     case "nameChoosing":
       return <NameChooser send={send} />;
+    case "roomChoosing":
+      return <RoomChooser send={send!} />;
   }
 };
 

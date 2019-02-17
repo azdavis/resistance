@@ -1,4 +1,7 @@
-type State = { t: "closed" } | { t: "nameChoosing" };
+type State =
+  | { t: "closed" }
+  | { t: "nameChoosing" }
+  | { t: "roomChoosing"; name: string; rooms: Array<string> };
 
 const init: State = { t: "nameChoosing" };
 
