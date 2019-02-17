@@ -5,7 +5,7 @@ type Props = {
   send: Send | null;
 };
 
-const NameChooser = ({ send }: Props): JSX.Element => {
+export default ({ send }: Props): JSX.Element => {
   const nameRef = useRef<HTMLInputElement>(null);
   useEffect(() => nameRef.current!.focus(), []);
   return (
@@ -24,5 +24,3 @@ const NameChooser = ({ send }: Props): JSX.Element => {
     </>
   );
 };
-
-export default NameChooser;

@@ -6,7 +6,7 @@ import RoomChooser from "./RoomChooser";
 
 const reducer = (a: State, b: State): State => ({ ...a, ...b });
 
-const App = (): JSX.Element => {
+export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, { t: "nameChoosing" });
   const sendRef = useRef<Send | null>(null);
   const { current: send } = sendRef;
@@ -28,5 +28,3 @@ const App = (): JSX.Element => {
       return <RoomChooser send={send!} />;
   }
 };
-
-export default App;

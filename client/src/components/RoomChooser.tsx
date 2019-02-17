@@ -5,7 +5,7 @@ type Props = {
   send: Send;
 };
 
-const RoomChooser = ({ send }: Props): JSX.Element => {
+export default ({ send }: Props): JSX.Element => {
   return (
     <>
       <h1>WIP</h1>
@@ -13,5 +13,3 @@ const RoomChooser = ({ send }: Props): JSX.Element => {
     </>
   );
 };
-
-export default RoomChooser;
