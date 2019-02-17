@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect } from "react";
 import useWebSocket from "../hooks/useWebSocket";
 import { reducer, init } from "../state";
+import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 
 const App = (): JSX.Element => {
@@ -21,7 +22,7 @@ const App = (): JSX.Element => {
   }, [ws]);
   switch (s.t) {
     case "closed":
-      return <h1>connection closed</h1>;
+      return <Closed />;
     case "nameChoosing":
       return <NameChooser ws={ws} />;
   }
