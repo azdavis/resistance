@@ -4,7 +4,7 @@ import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import RoomChooser from "./RoomChooser";
 
-const reducer = (a: State, b: State): State => ({ ...a, ...b });
+const reducer = (oldS: State, newS: State): State => ({ ...oldS, ...newS });
 const init: State = { t: "nameChoosing" };
 
 export default (): JSX.Element => {
