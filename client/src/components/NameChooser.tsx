@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Send } from "../logic/send";
+import { Send } from "../types";
 
 type Props = {
   send: Send | null;

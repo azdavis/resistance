@@ -1,6 +1,5 @@
 import React, { useReducer, useEffect, useRef } from "react";
-import { State } from "../logic/state";
-import { Send } from "../logic/send";
+import { State, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import RoomChooser from "./RoomChooser";
