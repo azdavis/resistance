@@ -1,14 +1,7 @@
 type State = { t: "closed" } | { t: "nameChoosing" };
 
-type Action = { t: "close" };
-
 const init: State = { t: "nameChoosing" };
 
-const reducer = (s: State, a: Action): State => {
-  switch (a.t) {
-    case "close":
-      return { t: "closed" };
-  }
-};
+const reducer = (oldS: State, newS: State): State => ({ ...oldS, ...newS });
 
 export { init, reducer };

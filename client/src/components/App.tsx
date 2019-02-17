@@ -14,7 +14,7 @@ const App = (): JSX.Element => {
       sendRef.current = msg => ws.send(JSON.stringify(msg));
     };
     ws.onmessage = e => d(JSON.parse(e.data));
-    ws.onclose = () => d({ t: "close" });
+    ws.onclose = () => d({ t: "closed" });
     return ws.close.bind(ws);
   }, []);
   switch (s.t) {
