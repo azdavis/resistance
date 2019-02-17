@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+import { Send } from "../send";
 import useUncontrolledInput from "../hooks/useUncontrolledInput";
 
 type Props = {
-  ws: WebSocket | null;
+  send: Send | null;
 };
 
-const NameChooser = ({ ws }: Props): JSX.Element => {
+const NameChooser = ({ send }: Props): JSX.Element => {
   const name = useUncontrolledInput();
   useEffect(() => name.ref.current!.focus(), []);
   return (
@@ -14,12 +15,12 @@ const NameChooser = ({ ws }: Props): JSX.Element => {
       <form
         onSubmit={e => {
           e.preventDefault();
-          ws && ws.send(name.get());
+          send && send(name.get());
         }}
       >
         <label htmlFor="name">player name</label>
         <input type="text" id="name" ref={name.ref} />
-        <input type="submit" value="submit" disabled={ws === null} />
+        <input type="submit" value="submit" disabled={send === null} />
       </form>
     </>
   );
