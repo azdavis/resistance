@@ -5,9 +5,10 @@ import NameChooser from "./NameChooser";
 import RoomChooser from "./RoomChooser";
 
 const reducer = (a: State, b: State): State => ({ ...a, ...b });
+const init: State = { t: "nameChoosing" };
 
 export default (): JSX.Element => {
-  const [s, d] = useReducer(reducer, { t: "nameChoosing" });
+  const [s, d] = useReducer(reducer, init);
   const sendRef = useRef<Send | null>(null);
   const { current: send } = sendRef;
   useEffect(() => {
