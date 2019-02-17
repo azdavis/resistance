@@ -13,13 +13,7 @@ const App = (): JSX.Element => {
     ws.onopen = () => {
       sendRef.current = msg => ws.send(JSON.stringify(msg));
     };
-    ws.onmessage = e => {
-      try {
-        d(JSON.parse(e.data));
-      } catch (err) {
-        ws.close();
-      }
-    };
+    ws.onmessage = e => d(JSON.parse(e.data));
     ws.onclose = () => d({ t: "close" });
     return ws.close.bind(ws);
   }, []);
