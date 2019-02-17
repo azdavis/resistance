@@ -9,7 +9,7 @@ const NameChooser = ({ ws }: Props): JSX.Element => {
   const name = useUncontrolledInput();
   useEffect(() => name.ref.current!.focus(), []);
   return (
-    <div className="NameChooser">
+    <>
       <h1>resistance™</h1>
       <form
         onSubmit={e => {
@@ -21,7 +21,7 @@ const NameChooser = ({ ws }: Props): JSX.Element => {
         <input type="text" id="name" ref={name.ref} />
         <input type="submit" value="submit" disabled={ws === null} />
       </form>
-    </div>
+    </>
   );
 };
 
