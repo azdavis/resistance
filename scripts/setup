@@ -2,8 +2,7 @@
 
 set -eu
 
-root="$(git rev-parse --show-toplevel)"
-cd "$root"
+cd "$(git rev-parse --show-toplevel)"
 
 mkdir -p .git/hooks
 rm -f .git/hooks/pre-push
