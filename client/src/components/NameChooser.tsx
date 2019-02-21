@@ -14,7 +14,7 @@ export default ({ send }: Props): JSX.Element => {
       <form
         onSubmit={e => {
           e.preventDefault();
-          send!({ t: "nameChoose", name: nameRef.current!.value });
+          send!({ T: "nameChoose", P: { Name: nameRef.current!.value } });
         }}
       >
         <label htmlFor="name">player name</label>
