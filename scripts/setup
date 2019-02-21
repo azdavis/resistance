@@ -10,3 +10,6 @@ ln -s ../../bin/check .git/hooks/pre-push
 
 cd client
 npm install
+
+cd ../server
+go build
