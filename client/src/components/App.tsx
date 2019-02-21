@@ -11,7 +11,7 @@ export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<Send | null>(null);
   useEffect(() => {
-    const ws = new WebSocket("wss://echo.websocket.org");
+    const ws = new WebSocket("ws://localhost:8080");
     ws.onopen = () => setSend(() => (m: Msg) => ws.send(JSON.stringify(m)));
     ws.onmessage = e => d(JSON.parse(e.data));
     ws.onclose = () => d({ T: "closed" });
