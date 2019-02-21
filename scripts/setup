@@ -8,7 +8,5 @@ mkdir -p .git/hooks
 rm -f .git/hooks/pre-push
 ln -s ../../bin/check .git/hooks/pre-push
 
-cargo check
-
 cd client
 npm install
