@@ -1,10 +1,10 @@
 import { Dispatch } from "react";
 
 export type State =
-  | { T: "closed" }
-  | { T: "nameChoosing" }
-  | { T: "roomChoosing"; Name: string; Rooms: Array<string> };
+  | { T: "Closed" }
+  | { T: "NameChoosing" }
+  | { T: "RoomChoosing"; Name: string; Rooms: Array<string> };
 
-export type Msg = { T: "nameChoose"; P: { Name: string } };
+export type Msg = { T: "NameChoose"; P: { Name: string } };
 
 export type Send = Dispatch<Msg>;

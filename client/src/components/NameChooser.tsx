@@ -17,7 +17,7 @@ export default ({ send }: Props): JSX.Element => {
           if (send === null) {
             return;
           }
-          send({ T: "nameChoose", P: { Name: nameRef.current!.value } });
+          send({ T: "NameChoose", P: { Name: nameRef.current!.value } });
         }}
       >
         <label htmlFor="name">player name</label>
