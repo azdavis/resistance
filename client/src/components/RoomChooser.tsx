@@ -9,7 +9,7 @@ export default ({ send }: Props): JSX.Element => {
   return (
     <>
       <h1>WIP</h1>
-      <p>this is a work in progress</p>
+      <p>This is a work in progress</p>
     </>
   );
 };

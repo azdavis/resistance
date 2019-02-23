@@ -2,7 +2,7 @@ import React from "react";
 
 export default (): JSX.Element => (
   <>
-    <h1>fatal error</h1>
-    <p>could not connect to the server</p>
+    <h1>Fatal error</h1>
+    <p>Could not connect to the server</p>
   </>
 );

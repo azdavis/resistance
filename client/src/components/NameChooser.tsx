@@ -10,7 +10,7 @@ export default ({ send }: Props): JSX.Element => {
   useEffect(() => nameRef.current!.focus(), []);
   return (
     <>
-      <h1>resistance™</h1>
+      <h1>Resistance™</h1>
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -20,7 +20,7 @@ export default ({ send }: Props): JSX.Element => {
           send({ T: "NameChoose", P: { Name: nameRef.current!.value } });
         }}
       >
-        <label htmlFor="name">player name</label>
+        <label htmlFor="name">Player name</label>
         <input type="text" id="name" ref={nameRef} />
         <input type="submit" value="submit" disabled={send === null} />
       </form>
