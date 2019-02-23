@@ -4,6 +4,8 @@ import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import RoomChooser from "./RoomChooser";
 
+// a might actually be a "partial state", which is why we merge it with s, but a
+// takes precedence. a: Partial<State> didn't quite seem to work.
 const reducer = (s: State, a: State): State => ({ ...s, ...a });
 const init: State = { T: "nameChoosing" };
 
