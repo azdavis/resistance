@@ -14,35 +14,78 @@ func unsafeAllowAny(r *http.Request) bool {
 var up = websocket.Upgrader{CheckOrigin: unsafeAllowAny}
 
 type hub struct {
+	actionCh chan Action
+	closeCh  chan ID
+	connCh   chan *websocket.Conn
 }
 
 func newHub() *hub {
-	h := &hub{}
+	h := &hub{
+		actionCh: make(chan Action),
+		closeCh:  make(chan ID),
+		connCh:   make(chan *websocket.Conn),
+	}
 	go h.run()
 	return h
 }
 
 func (h *hub) run() {
+	conns := make(map[ID]chan State)
+	nextID := ID(1)
+	for {
+		select {
+		case msg := <-h.actionCh:
+			log.Println(msg)
+		case id := <-h.closeCh:
+			ms, ok := conns[id]
+			if ok {
+				close(ms)
+				delete(conns, id)
+			}
+		case conn := <-h.connCh:
+			ms := make(chan State)
+			conns[nextID] = ms
+			go h.recvFrom(conn, nextID)
+			go h.sendTo(conn, nextID, ms)
+			nextID++
+		}
+	}
+}
+
+func (h *hub) recvFrom(conn *websocket.Conn, id ID) {
+	for {
+		mt, bs, err := conn.ReadMessage()
+		if err != nil {
+			log.Println("recvFrom", id, err)
+			h.closeCh <- id
+			conn.Close()
+			return
+		}
+		if mt != websocket.TextMessage {
+			continue
+		}
+		ac, err := JSONToAction(bs)
+		if err != nil {
+			continue
+		}
+		h.actionCh <- ac
+	}
+}
+
+func (h *hub) sendTo(conn *websocket.Conn, id ID, ms chan State) {
+	for m := range ms {
+		err := conn.WriteJSON(m)
+		if err != nil {
+			log.Println("sendTo", id, err)
+		}
+	}
 }
 
 func (h *hub) serveWs(w http.ResponseWriter, r *http.Request) {
-	c, err := up.Upgrade(w, r, nil)
+	conn, err := up.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println(err)
+		log.Println("serveWs", err)
 		return
 	}
-	defer c.Close()
-	for {
-		mt, m, err := c.ReadMessage()
-		if err != nil {
-			log.Println("read:", err)
-			break
-		}
-		log.Printf("recv: %s", m)
-		err = c.WriteMessage(mt, m)
-		if err != nil {
-			log.Println("write:", err)
-			break
-		}
-	}
+	h.connCh <- conn
 }
