@@ -17,7 +17,9 @@ type hub struct {
 }
 
 func newHub() *hub {
-	return &hub{}
+	h := &hub{}
+	go h.run()
+	return h
 }
 
 func (h *hub) run() {
