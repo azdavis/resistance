@@ -8,7 +8,7 @@
     "files.exclude": {
       "**/build": true,
       "**/node_modules": true,
-      "**/target": true
+      "**/server/resistance": true
     }
   }
 }
