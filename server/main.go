@@ -13,7 +13,16 @@ func unsafeAllowAny(r *http.Request) bool {
 
 var up = websocket.Upgrader{CheckOrigin: unsafeAllowAny}
 
-func serveWs(w http.ResponseWriter, r *http.Request) {
+type hub struct{}
+
+func newHub() *hub {
+	return &hub{}
+}
+
+func (h *hub) run() {
+}
+
+func (h *hub) serveWs(w http.ResponseWriter, r *http.Request) {
 	c, err := up.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
@@ -37,6 +46,8 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	log.Println("start")
-	http.HandleFunc("/", serveWs)
+	h := newHub()
+	go h.run()
+	http.HandleFunc("/", h.serveWs)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
