@@ -38,5 +38,5 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 func main() {
 	log.Println("start")
 	http.HandleFunc("/", serveWs)
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
