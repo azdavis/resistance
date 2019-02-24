@@ -82,6 +82,9 @@ func (h *hub) sendTo(conn *ws.Conn, id ID, ms chan State) {
 }
 
 func (h *hub) serveWs(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		return
+	}
 	conn, err := up.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("serveWs", err)
