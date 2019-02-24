@@ -13,7 +13,8 @@ func unsafeAllowAny(r *http.Request) bool {
 
 var up = websocket.Upgrader{CheckOrigin: unsafeAllowAny}
 
-type hub struct{}
+type hub struct {
+}
 
 func newHub() *hub {
 	return &hub{}
