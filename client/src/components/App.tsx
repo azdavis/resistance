@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { State, Msg, Send } from "../types";
+import { State, Action, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import PartyChooser from "./PartyChooser";
@@ -14,7 +14,7 @@ export default (): JSX.Element => {
   const [send, setSend] = useState<Send | null>(null);
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    const send = ({ T, ...P }: Msg) => {
+    const send = ({ T, ...P }: Action) => {
       ws.send(JSON.stringify({ T, P }));
     };
     ws.onopen = () => setSend(() => send);

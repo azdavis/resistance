@@ -5,6 +5,6 @@ export type State =
   | { T: "NameChoosing" }
   | { T: "PartyChoosing"; Name: string; Parties: Array<string> };
 
-export type Msg = { T: "NameChoose"; Name: string };
+export type Action = { T: "NameChoose"; Name: string };
 
-export type Send = Dispatch<Msg>;
+export type Send = Dispatch<Action>;
