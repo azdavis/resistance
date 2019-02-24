@@ -14,8 +14,14 @@ export default (): JSX.Element => {
   const [send, setSend] = useState<Send | null>(null);
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    ws.onopen = () => setSend(() => (m: Msg) => ws.send(JSON.stringify(m)));
-    ws.onmessage = e => d(JSON.parse(e.data));
+    const send = ({ T, ...P }: Msg) => {
+      ws.send(JSON.stringify({ T, P }));
+    };
+    ws.onopen = () => setSend(() => send);
+    ws.onmessage = e => {
+      const { T, P } = JSON.parse(e.data);
+      d({ T, ...P });
+    };
     ws.onclose = () => d({ T: "Closed" });
     return ws.close.bind(ws);
   }, []);
