@@ -4,26 +4,26 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/websocket"
+	ws "github.com/gorilla/websocket"
 )
 
 func unsafeAllowAny(r *http.Request) bool {
 	return true
 }
 
-var up = websocket.Upgrader{CheckOrigin: unsafeAllowAny}
+var up = ws.Upgrader{CheckOrigin: unsafeAllowAny}
 
 type hub struct {
 	actionCh chan Action
 	closeCh  chan ID
-	connCh   chan *websocket.Conn
+	connCh   chan *ws.Conn
 }
 
 func newHub() *hub {
 	h := &hub{
 		actionCh: make(chan Action),
 		closeCh:  make(chan ID),
-		connCh:   make(chan *websocket.Conn),
+		connCh:   make(chan *ws.Conn),
 	}
 	go h.run()
 	return h
@@ -52,7 +52,7 @@ func (h *hub) run() {
 	}
 }
 
-func (h *hub) recvFrom(conn *websocket.Conn, id ID) {
+func (h *hub) recvFrom(conn *ws.Conn, id ID) {
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
@@ -61,7 +61,7 @@ func (h *hub) recvFrom(conn *websocket.Conn, id ID) {
 			conn.Close()
 			return
 		}
-		if mt != websocket.TextMessage {
+		if mt != ws.TextMessage {
 			continue
 		}
 		ac, err := JSONToAction(bs)
@@ -72,7 +72,7 @@ func (h *hub) recvFrom(conn *websocket.Conn, id ID) {
 	}
 }
 
-func (h *hub) sendTo(conn *websocket.Conn, id ID, ms chan State) {
+func (h *hub) sendTo(conn *ws.Conn, id ID, ms chan State) {
 	for m := range ms {
 		err := conn.WriteJSON(m)
 		if err != nil {
