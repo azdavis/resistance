@@ -14,14 +14,14 @@ func unsafeAllowAny(r *http.Request) bool {
 var up = ws.Upgrader{CheckOrigin: unsafeAllowAny}
 
 type hub struct {
-	actionCh chan Action
+	actionCh chan IDAction
 	closeCh  chan ID
 	connCh   chan *ws.Conn
 }
 
 func newHub() *hub {
 	h := &hub{
-		actionCh: make(chan Action),
+		actionCh: make(chan IDAction),
 		closeCh:  make(chan ID),
 		connCh:   make(chan *ws.Conn),
 	}
@@ -68,7 +68,7 @@ func (h *hub) recvFrom(conn *ws.Conn, id ID) {
 		if err != nil {
 			continue
 		}
-		h.actionCh <- ac
+		h.actionCh <- IDAction{id, ac}
 	}
 }
 

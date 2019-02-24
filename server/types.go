@@ -57,7 +57,6 @@ func (NameChoose) isAction() {}
 
 // NameChoose is a request from a client to choose their name.
 type NameChoose struct {
-	ID
 	Name string
 }
 
@@ -79,4 +78,10 @@ func JSONToAction(bs []byte) (Action, error) {
 	default:
 		return nil, ErrBadT
 	}
+}
+
+// IDAction is an Action from a particular client with a given ID.
+type IDAction struct {
+	ID
+	Action
 }
