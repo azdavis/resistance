@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 import { State, Msg, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
-import RoomChooser from "./RoomChooser";
+import PartyChooser from "./PartyChooser";
 
 // a might actually be a "partial state", which is why we merge it with s, but a
 // takes precedence. a: Partial<State> didn't quite seem to work.
@@ -24,7 +24,7 @@ export default (): JSX.Element => {
       return <Closed />;
     case "NameChoosing":
       return <NameChooser send={send} />;
-    case "RoomChoosing":
-      return <RoomChooser send={send!} />;
+    case "PartyChoosing":
+      return <PartyChooser send={send!} />;
   }
 };
