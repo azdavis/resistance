@@ -14,10 +14,10 @@ export default (): JSX.Element => {
   const [send, setSend] = useState<Send | null>(null);
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    const send = ({ T, ...P }: Action) => {
+    const newSend = ({ T, ...P }: Action) => {
       ws.send(JSON.stringify({ T, P }));
     };
-    ws.onopen = () => setSend(() => send);
+    ws.onopen = () => setSend(() => newSend);
     ws.onmessage = e => {
       const { T, P } = JSON.parse(e.data);
       d({ T, ...P });
