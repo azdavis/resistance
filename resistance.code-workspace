@@ -6,9 +6,9 @@
   ],
   "settings": {
     "files.exclude": {
-      "**/build": true,
-      "**/node_modules": true,
-      "**/server/resistance": true
+      "client/build": true,
+      "client/node_modules": true,
+      "server/resistance": true
     }
   }
 }
