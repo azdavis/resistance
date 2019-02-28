@@ -13,7 +13,7 @@ type CID uint64
 // the way to communicate with the actual person represented by this Client.
 // Close should be called after a Close{} is received on recv.
 type Client struct {
-	id    CID         // unique
+	id    CID         // unique, never 0
 	pid   PID         // if 0, no party
 	name  string      // if "", no name
 	isSpy bool        // if false, is resistance
