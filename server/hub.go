@@ -10,13 +10,13 @@ import (
 
 // Hub creates Clients from HTTP connections.
 type Hub struct {
-	mux      *sync.Mutex  // protect nextID
-	nextID   CID          // next Client ID
-	clientCh chan *Client // outgoing clients
+	mux      *sync.Mutex    // protect nextID
+	nextID   CID            // next Client ID
+	clientCh chan<- *Client // outgoing clients
 }
 
 // NewHub returns a new Hub.
-func NewHub(clientCh chan *Client) *Hub {
+func NewHub(clientCh chan<- *Client) *Hub {
 	h := &Hub{
 		mux:      &sync.Mutex{},
 		nextID:   1,
