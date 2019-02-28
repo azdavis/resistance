@@ -2,6 +2,7 @@ package main
 
 type bigChan struct {
 	c     chan IDAction
+	m     map[ID]*client
 	quits map[ID]chan struct{}
 }
 
@@ -19,6 +20,7 @@ func (bc *bigChan) add(cl *client) {
 		panic("already present")
 	}
 	quit := make(chan struct{})
+	bc.m[cl.id] = cl
 	bc.quits[cl.id] = quit
 	go bc.pipe(cl.id, cl.recv, quit)
 }
@@ -29,6 +31,7 @@ func (bc *bigChan) rm(id ID) {
 		panic("not present")
 	}
 	close(bc.quits[id])
+	delete(bc.m, id)
 	delete(bc.quits, id)
 }
 
