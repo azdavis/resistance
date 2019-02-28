@@ -13,7 +13,7 @@ type Lobby struct {
 func NewLobby() *Lobby {
 	const chLen = 5
 	lb := &Lobby{
-		recv: make(chan *Client, 5),
+		recv: make(chan *Client, chLen),
 	}
 	go lb.run()
 	return lb
