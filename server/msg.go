@@ -5,10 +5,9 @@ import (
 	"errors"
 )
 
-// tagMsg is a JSON-encoded message. T denotes which type of thing to try to
-// parse into, and P is the JSON encoding of that thing.
+// tagMsg is a JSON-encoded message.
 type tagMsg struct {
-	T string          // type of thing
+	T string          // type of thing to try to parse
 	P json.RawMessage // json encoding of thing
 }
 
