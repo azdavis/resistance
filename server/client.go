@@ -36,9 +36,10 @@ func (c *client) recvFromConn() {
 		mt, bs, err := c.conn.ReadMessage()
 		if err != nil {
 			log.Println("recvFromConn", c.id, err)
-			c.recv <- Close{}
 			// no further actions will be sent on recv. however, do not close recv,
-			// since we may send garbage actions to listeners.
+			// since we may send garbage actions to listeners. only send the Close
+			// Action.
+			c.recv <- Close{}
 			c.conn.Close()
 			return
 		}
