@@ -64,10 +64,10 @@ func (cm *ClientMap) Rm(id CID) *Client {
 // pipe pipes messages from the chan Action into this ClientMap's C, tagging
 // each action with the id. pipe quits when the given quit channel is closed.
 func (cm *ClientMap) pipe(id CID, ch chan Action, quit chan struct{}) {
-	defer log.Println("exit pipe", id)
 	for {
 		select {
 		case <-quit:
+			log.Println("exit pipe", id)
 			return
 		case ac := <-ch:
 			cm.C <- CIDAction{id, ac}

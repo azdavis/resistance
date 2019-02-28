@@ -46,7 +46,6 @@ func (cl *Client) Close() {
 // recvFrom reads from the conn, tries to parse the message, and if successful,
 // sends the Action over recv.
 func (cl *Client) recvFrom(conn *ws.Conn) {
-	defer log.Println("exit recvFrom", cl.id)
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
@@ -56,6 +55,7 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 			// Action.
 			cl.recv <- Close{}
 			conn.Close()
+			log.Println("exit recvFrom", cl.id)
 			return
 		}
 		if mt != ws.TextMessage {
@@ -71,11 +71,11 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 
 // sendTo sends every message from send over the websocket. See NewClient.
 func (cl *Client) sendTo(conn *ws.Conn) {
-	defer log.Println("exit sendTo", cl.id)
 	for m := range cl.send {
 		err := conn.WriteJSON(m)
 		if err != nil {
 			log.Println("sendTo", cl.id, err)
 		}
 	}
+	log.Println("exit sendTo", cl.id)
 }
