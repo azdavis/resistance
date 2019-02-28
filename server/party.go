@@ -1,5 +1,8 @@
 package main
 
+// TODO this provides no way for a client to leave the party before the game
+// starts.
+
 // PID is a unique identifier for a Party.
 type PID uint64
 
