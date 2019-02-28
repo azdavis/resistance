@@ -10,7 +10,7 @@ func main() {
 	log.Println("start")
 	lb := NewLobby()
 	s := &http.Server{
-		Handler:      NewHub(lb.clientCh),
+		Handler:      NewHub(lb.recv),
 		Addr:         ":8080",
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,

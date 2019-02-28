@@ -6,14 +6,14 @@ import (
 
 // Lobby contains the Clients who are not part of a Party.
 type Lobby struct {
-	clientCh chan *Client // incoming clients
+	recv chan *Client // incoming clients
 }
 
 // NewLobby returns a new Lobby. It starts a goroutine which never exits.
 func NewLobby() *Lobby {
 	const chLen = 5
 	lb := &Lobby{
-		clientCh: make(chan *Client, 5),
+		recv: make(chan *Client, 5),
 	}
 	go lb.run()
 	return lb
@@ -24,7 +24,7 @@ func (lb *Lobby) run() {
 	clients := NewClientMap()
 	for {
 		select {
-		case cl := <-lb.clientCh:
+		case cl := <-lb.recv:
 			clients.Add(cl)
 		case cidAc := <-clients.C:
 			id := cidAc.CID
