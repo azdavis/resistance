@@ -1,32 +1,35 @@
 package main
 
-type addMsg struct {
-	id ID
-	ch chan Action
-}
-
 type bigChan struct {
-	c    chan IDAction
-	adds chan addMsg
-	rms  chan ID
+	c     chan IDAction
+	quits map[ID]chan struct{}
 }
 
 func newBigChan() *bigChan {
 	bc := &bigChan{
-		c:    make(chan IDAction),
-		adds: make(chan addMsg),
-		rms:  make(chan ID),
+		c:     make(chan IDAction),
+		quits: make(map[ID]chan struct{}),
 	}
-	go bc.run()
 	return bc
 }
 
 func (bc *bigChan) add(id ID, ch chan Action) {
-	bc.adds <- addMsg{id, ch}
+	_, ok := bc.quits[id]
+	if ok {
+		panic("already present")
+	}
+	quit := make(chan struct{})
+	bc.quits[id] = quit
+	go bc.pipe(id, ch, quit)
 }
 
 func (bc *bigChan) rm(id ID) {
-	bc.rms <- id
+	_, ok := bc.quits[id]
+	if !ok {
+		panic("not present")
+	}
+	close(bc.quits[id])
+	delete(bc.quits, id)
 }
 
 func (bc *bigChan) pipe(id ID, ch chan Action, quit chan struct{}) {
@@ -36,29 +39,6 @@ func (bc *bigChan) pipe(id ID, ch chan Action, quit chan struct{}) {
 			return
 		case ac := <-ch:
 			bc.c <- IDAction{id, ac}
-		}
-	}
-}
-
-func (bc *bigChan) run() {
-	quits := make(map[ID]chan struct{})
-	for {
-		select {
-		case a := <-bc.adds:
-			_, ok := quits[a.id]
-			if ok {
-				panic("already present")
-			}
-			quit := make(chan struct{})
-			quits[a.id] = quit
-			go bc.pipe(a.id, a.ch, quit)
-		case id := <-bc.rms:
-			_, ok := quits[id]
-			if !ok {
-				panic("not present")
-			}
-			close(quits[id])
-			delete(quits, id)
 		}
 	}
 }
