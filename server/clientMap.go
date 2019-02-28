@@ -1,5 +1,6 @@
 package main
 
+// Only one goroutine may invoke add/rm at a time.
 type clientMap struct {
 	c     chan IDAction
 	m     map[ID]*client
