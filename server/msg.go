@@ -32,7 +32,7 @@ type State interface {
 
 func (PartyChoosing) isState() {}
 
-// PartyInfo contains a party name (may not be unique) and ID (unique).
+// PartyInfo contains a party name (may not be unique) and PID (unique).
 type PartyInfo struct {
 	PID
 	Name string
@@ -73,7 +73,7 @@ type NameChoose struct {
 
 // PartyChoose is a request to choose one's party.
 type PartyChoose struct {
-	PID // desired party ID
+	PID // desired PID
 }
 
 // PartyCreate is a request to create a new party, with oneself as the leader.

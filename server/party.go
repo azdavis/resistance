@@ -16,17 +16,17 @@ type PID uint64
 // the Lobby which contains a pointer to this Party will receive along done and
 // will start cleaning up the party.
 type Party struct {
-	id      PID          // unique
+	PID                  // unique
 	name    string       // set by leader
 	leader  CID          // controls when game starts, can unilaterally disband
-	done    chan PID     // send own id when party disbands
+	done    chan PID     // send own PID when party disbands
 	recv    chan *Client // incoming clients
 	clients *ClientMap   // clients in the party (includes leader)
 }
 
 // NewParty returns a new Party.
 func NewParty(
-	id PID,
+	pid PID,
 	name string,
 	leader *Client,
 	done chan PID,
@@ -34,9 +34,9 @@ func NewParty(
 	clients := NewClientMap()
 	clients.Add(leader)
 	p := &Party{
-		id:      id,
+		PID:     pid,
 		name:    name,
-		leader:  leader.id,
+		leader:  leader.CID,
 		done:    done,
 		recv:    make(chan *Client),
 		clients: clients,
@@ -51,12 +51,12 @@ func (p *Party) run() {
 		case cl := <-p.recv:
 			p.clients.Add(cl)
 		case cidAc := <-p.clients.C:
-			id := cidAc.CID
+			cid := cidAc.CID
 			switch cidAc.Action.(type) {
 			case Close:
-				p.clients.Rm(id).Close()
-				if id == p.leader {
-					p.done <- p.id
+				p.clients.Rm(cid).Close()
+				if cid == p.leader {
+					p.done <- p.PID
 					return
 				}
 			}

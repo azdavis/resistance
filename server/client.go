@@ -13,7 +13,7 @@ type CID uint64
 // the way to communicate with the actual person represented by this Client.
 // Close should be called after a Close{} is received on recv.
 type Client struct {
-	id    CID         // unique, never 0
+	CID               // unique, never 0
 	name  string      // if "", no name
 	isSpy bool        // if false, is resistance
 	send  chan State  // send the current State over the websocket
@@ -21,12 +21,12 @@ type Client struct {
 }
 
 // NewClient returns a new client. It starts goroutines to read from and write
-// to the given websocket connection. The id should not be in use by any other
+// to the given websocket connection. The CID should not be in use by any other
 // client. send should be closed when this Client will no longer be used.
-func NewClient(conn *ws.Conn, id CID) *Client {
+func NewClient(conn *ws.Conn, cid CID) *Client {
 	const chLen = 3
 	cl := &Client{
-		id:    id,
+		CID:   cid,
 		name:  "",
 		isSpy: false,
 		send:  make(chan State, chLen),
@@ -48,13 +48,13 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
-			log.Println("recvFrom", cl.id, err)
+			log.Println("recvFrom", cl.CID, err)
 			// no further actions will be sent on recv. however, do not close recv,
 			// since we may send garbage actions to listeners. only send the Close
 			// Action.
 			cl.recv <- Close{}
 			conn.Close()
-			log.Println("exit recvFrom", cl.id)
+			log.Println("exit recvFrom", cl.CID)
 			return
 		}
 		if mt != ws.TextMessage {
@@ -73,8 +73,8 @@ func (cl *Client) sendTo(conn *ws.Conn) {
 	for m := range cl.send {
 		err := conn.WriteJSON(m)
 		if err != nil {
-			log.Println("sendTo", cl.id, err)
+			log.Println("sendTo", cl.CID, err)
 		}
 	}
-	log.Println("exit sendTo", cl.id)
+	log.Println("exit sendTo", cl.CID)
 }

@@ -11,7 +11,7 @@ import (
 // Hub creates Clients from HTTP connections.
 type Hub struct {
 	mux     *sync.Mutex    // protect nextCID
-	nextCID CID            // next Client ID
+	nextCID CID            // the next Client will have this CID
 	send    chan<- *Client // outgoing clients
 }
 
@@ -46,8 +46,8 @@ func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.mux.Lock()
-	id := h.nextCID
+	cid := h.nextCID
 	h.nextCID++
 	h.mux.Unlock()
-	h.send <- NewClient(conn, id)
+	h.send <- NewClient(conn, cid)
 }
