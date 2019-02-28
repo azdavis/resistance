@@ -3,12 +3,17 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
 	log.Println("start")
 	lb := NewLobby()
-	h := NewHub(lb.clientCh)
-	http.HandleFunc("/", h.ServeWs)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	s := &http.Server{
+		Handler:      NewHub(lb.clientCh),
+		Addr:         ":8080",
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
+	}
+	log.Fatal(s.ListenAndServe())
 }

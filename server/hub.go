@@ -32,17 +32,17 @@ func NewHub(clientCh chan *Client) *Hub {
 	return h
 }
 
-// ServeWs tries to upgrade the (w, r) pair into a websocket connection. If it
+// ServeHTTP tries to upgrade the (w, r) pair into a websocket connection. If it
 // is successful, it makes a new Client with a fresh CID and sends it along
 // clientCh.
-func (h *Hub) ServeWs(w http.ResponseWriter, r *http.Request) {
+func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// TODO give HTTP statuses on error
 	if r.URL.Path != "/" {
 		return
 	}
 	conn, err := up.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println("ServeWs", err)
+		log.Println("ServeHTTP", err)
 		return
 	}
 	h.mux.Lock()
