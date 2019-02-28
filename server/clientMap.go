@@ -1,5 +1,9 @@
 package main
 
+import (
+	"log"
+)
+
 // Only one goroutine may invoke add/rm at a time.
 type clientMap struct {
 	c     chan IDAction
@@ -21,6 +25,7 @@ func (cm *clientMap) add(cl *client) {
 	if ok {
 		panic("already present")
 	}
+	log.Println("add", cl.id)
 	quit := make(chan struct{})
 	cm.m[cl.id] = cl
 	cm.quits[cl.id] = quit
@@ -32,6 +37,7 @@ func (cm *clientMap) rm(id ID) {
 	if !ok {
 		panic("not present")
 	}
+	log.Println("rm", id)
 	close(cm.quits[id])
 	delete(cm.m, id)
 	delete(cm.quits, id)
