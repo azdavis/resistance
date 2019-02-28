@@ -7,8 +7,8 @@ import (
 
 func main() {
 	log.Println("start")
-	lb := newLobby()
-	h := newHub(lb.clientCh)
-	http.HandleFunc("/", h.serveWs)
+	lb := NewLobby()
+	h := NewHub(lb.clientCh)
+	http.HandleFunc("/", h.ServeWs)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

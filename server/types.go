@@ -8,20 +8,20 @@ import (
 // ID is the type of IDs (client IDs, room IDs).
 type ID uint64
 
-// TagMsg is a JSON-encoded message. T denotes which type of thing to try to
+// tagMsg is a JSON-encoded message. T denotes which type of thing to try to
 // parse into, and P is the JSON encoding of that thing.
-type TagMsg struct {
+type tagMsg struct {
 	T string
 	P json.RawMessage
 }
 
-// FromTagMsg creates a JSON-encoded TagMsg.
-func FromTagMsg(t string, p interface{}) ([]byte, error) {
+// fromTagMsg creates a JSON-encoded tagMsg.
+func fromTagMsg(t string, p interface{}) ([]byte, error) {
 	bs, err := json.Marshal(p)
 	if err != nil {
 		return nil, err
 	}
-	return json.Marshal(TagMsg{T: t, P: json.RawMessage(bs)})
+	return json.Marshal(tagMsg{T: t, P: json.RawMessage(bs)})
 }
 
 // State is a state that a client could be in. It is sent to the client to
@@ -44,12 +44,12 @@ type PartyChoosing struct {
 // MarshalJSON makes JSON.
 func (pc PartyChoosing) MarshalJSON() ([]byte, error) {
 	type alias PartyChoosing
-	return FromTagMsg("PartyChoosing", alias(pc))
+	return fromTagMsg("PartyChoosing", alias(pc))
 }
 
-// Action is a usually parsed TagMsg.P sent from a client. It is a request from
+// Action is a usually parsed tagMsg.P sent from a client. It is a request from
 // the client to change state. The only Action that does not originate from a
-// TagMsg is Close. The client "sends" a Close Action by closing itself.
+// tagMsg is Close. The client "sends" a Close Action by closing itself.
 type Action interface {
 	isAction()
 }
@@ -66,12 +66,12 @@ type NameChoose struct {
 	Name string
 }
 
-// ErrBadT means the T of a TagMsg did not match any known T.
+// ErrBadT means the T of a tagMsg did not match any known T.
 var ErrBadT = errors.New("bad T")
 
-// JSONToAction tries to turn a JSON encoding of a TagMsg into a Action.
+// JSONToAction tries to turn a JSON encoding of a tagMsg into a Action.
 func JSONToAction(bs []byte) (Action, error) {
-	var tm TagMsg
+	var tm tagMsg
 	err := json.Unmarshal(bs, &tm)
 	if err != nil {
 		return nil, err

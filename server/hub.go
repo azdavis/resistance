@@ -13,13 +13,13 @@ func unsafeAllowAny(r *http.Request) bool {
 
 var up = ws.Upgrader{CheckOrigin: unsafeAllowAny}
 
-type hub struct {
+type Hub struct {
 	connCh   chan *ws.Conn
-	clientCh chan *client
+	clientCh chan *Client
 }
 
-func newHub(clientCh chan *client) *hub {
-	h := &hub{
+func NewHub(clientCh chan *Client) *Hub {
+	h := &Hub{
 		connCh:   make(chan *ws.Conn),
 		clientCh: clientCh,
 	}
@@ -27,22 +27,22 @@ func newHub(clientCh chan *client) *hub {
 	return h
 }
 
-func (h *hub) run() {
+func (h *Hub) run() {
 	nextID := ID(1)
 	for conn := range h.connCh {
-		h.clientCh <- newClient(conn, nextID)
+		h.clientCh <- NewClient(conn, nextID)
 		nextID++
 	}
 }
 
-func (h *hub) serveWs(w http.ResponseWriter, r *http.Request) {
+func (h *Hub) ServeWs(w http.ResponseWriter, r *http.Request) {
 	// TODO give HTTP statuses on error
 	if r.URL.Path != "/" {
 		return
 	}
 	conn, err := up.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println("serveWs", err)
+		log.Println("ServeWs", err)
 		return
 	}
 	h.connCh <- conn

@@ -6,7 +6,7 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-type client struct {
+type Client struct {
 	id    ID
 	room  ID     // if 0, no room
 	name  string // if "", no name
@@ -16,8 +16,8 @@ type client struct {
 	conn  *ws.Conn
 }
 
-func newClient(conn *ws.Conn, id ID) *client {
-	cl := &client{
+func NewClient(conn *ws.Conn, id ID) *Client {
+	cl := &Client{
 		id:    id,
 		room:  0,
 		name:  "",
@@ -31,7 +31,7 @@ func newClient(conn *ws.Conn, id ID) *client {
 	return cl
 }
 
-func (cl *client) recvFromConn() {
+func (cl *Client) recvFromConn() {
 	defer log.Println("exit recvFromConn", cl.id)
 	for {
 		mt, bs, err := cl.conn.ReadMessage()
@@ -55,8 +55,8 @@ func (cl *client) recvFromConn() {
 	}
 }
 
-// cl.send will be closed by the managing room when this client has been closed.
-func (cl *client) sendToConn() {
+// cl.send will be closed by the managing room when this Client has been closed.
+func (cl *Client) sendToConn() {
 	defer log.Println("exit sendToConn", cl.id)
 	for m := range cl.send {
 		err := cl.conn.WriteJSON(m)

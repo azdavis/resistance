@@ -4,29 +4,29 @@ import (
 	"log"
 )
 
-type lobby struct {
-	clientCh chan *client
+type Lobby struct {
+	clientCh chan *Client
 }
 
-func newLobby() *lobby {
-	lb := &lobby{
-		clientCh: make(chan *client),
+func NewLobby() *Lobby {
+	lb := &Lobby{
+		clientCh: make(chan *Client),
 	}
 	go lb.run()
 	return lb
 }
 
-func (lb *lobby) run() {
-	cm := newClientMap()
+func (lb *Lobby) run() {
+	cm := NewClientMap()
 	for {
 		select {
 		case cl := <-lb.clientCh:
-			cm.add(cl)
+			cm.Add(cl)
 		case idAc := <-cm.C:
 			id := idAc.ID
 			switch ac := idAc.Action.(type) {
 			case Close:
-				cm.rm(id)
+				cm.Rm(id)
 			case NameChoose:
 				log.Println("NameChoose", id, ac.Name)
 				cm.M[id].name = ac.Name
