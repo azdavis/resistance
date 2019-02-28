@@ -15,7 +15,6 @@ type Client struct {
 	isSpy bool
 	send  chan State
 	recv  chan Action
-	conn  *ws.Conn
 }
 
 func NewClient(conn *ws.Conn, id ID) *Client {
@@ -26,24 +25,23 @@ func NewClient(conn *ws.Conn, id ID) *Client {
 		isSpy: false,
 		send:  make(chan State),
 		recv:  make(chan Action),
-		conn:  conn,
 	}
-	go cl.recvFromConn()
-	go cl.sendToConn()
+	go cl.recvFromConn(conn)
+	go cl.sendToConn(conn)
 	return cl
 }
 
-func (cl *Client) recvFromConn() {
+func (cl *Client) recvFromConn(conn *ws.Conn) {
 	defer log.Println("exit recvFromConn", cl.id)
 	for {
-		mt, bs, err := cl.conn.ReadMessage()
+		mt, bs, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("recvFromConn", cl.id, err)
 			// no further actions will be sent on recv. however, do not close recv,
 			// since we may send garbage actions to listeners. only send the Close
 			// Action.
 			cl.recv <- Close{}
-			cl.conn.Close()
+			conn.Close()
 			return
 		}
 		if mt != ws.TextMessage {
@@ -58,10 +56,10 @@ func (cl *Client) recvFromConn() {
 }
 
 // cl.send will be closed by the managing room when this Client has been closed.
-func (cl *Client) sendToConn() {
+func (cl *Client) sendToConn(conn *ws.Conn) {
 	defer log.Println("exit sendToConn", cl.id)
 	for m := range cl.send {
-		err := cl.conn.WriteJSON(m)
+		err := conn.WriteJSON(m)
 		if err != nil {
 			log.Println("sendToConn", cl.id, err)
 		}
