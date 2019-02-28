@@ -8,13 +8,6 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// unsafeAllowAny permits any *http.Request to be upgraded by a ws.Upgrader.
-func unsafeAllowAny(r *http.Request) bool {
-	return true
-}
-
-var up = ws.Upgrader{CheckOrigin: unsafeAllowAny}
-
 // Hub creates Clients from HTTP connections.
 type Hub struct {
 	mux      *sync.Mutex  // protect nextID
@@ -31,6 +24,13 @@ func NewHub(clientCh chan *Client) *Hub {
 	}
 	return h
 }
+
+// unsafeAllowAny permits any *http.Request to be upgraded by a ws.Upgrader.
+func unsafeAllowAny(r *http.Request) bool {
+	return true
+}
+
+var up = ws.Upgrader{CheckOrigin: unsafeAllowAny}
 
 // ServeHTTP tries to upgrade the (w, r) pair into a websocket connection. If it
 // is successful, it makes a new Client with a fresh CID and sends it along
