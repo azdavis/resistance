@@ -36,8 +36,8 @@ func NewHub(clientCh chan *Client) *Hub {
 // is successful, it makes a new Client with a fresh CID and sends it along
 // clientCh.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// TODO give HTTP statuses on error
 	if r.URL.Path != "/" {
+		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
 	conn, err := up.Upgrade(w, r, nil)
