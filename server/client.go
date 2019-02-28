@@ -26,17 +26,17 @@ func NewClient(conn *ws.Conn, id ID) *Client {
 		send:  make(chan State),
 		recv:  make(chan Action),
 	}
-	go cl.recvFromConn(conn)
-	go cl.sendToConn(conn)
+	go cl.recvFrom(conn)
+	go cl.sendTo(conn)
 	return cl
 }
 
-func (cl *Client) recvFromConn(conn *ws.Conn) {
-	defer log.Println("exit recvFromConn", cl.id)
+func (cl *Client) recvFrom(conn *ws.Conn) {
+	defer log.Println("exit recvFrom", cl.id)
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
-			log.Println("recvFromConn", cl.id, err)
+			log.Println("recvFrom", cl.id, err)
 			// no further actions will be sent on recv. however, do not close recv,
 			// since we may send garbage actions to listeners. only send the Close
 			// Action.
@@ -56,12 +56,12 @@ func (cl *Client) recvFromConn(conn *ws.Conn) {
 }
 
 // cl.send will be closed by the managing room when this Client has been closed.
-func (cl *Client) sendToConn(conn *ws.Conn) {
-	defer log.Println("exit sendToConn", cl.id)
+func (cl *Client) sendTo(conn *ws.Conn) {
+	defer log.Println("exit sendTo", cl.id)
 	for m := range cl.send {
 		err := conn.WriteJSON(m)
 		if err != nil {
-			log.Println("sendToConn", cl.id, err)
+			log.Println("sendTo", cl.id, err)
 		}
 	}
 }
