@@ -36,7 +36,7 @@ func (lb *Lobby) run() {
 				clients.M[id].name = ac.Name
 				clients.M[id].send <- PartyChoosing{
 					Name:    ac.Name,
-					Parties: []string{},
+					Parties: []PartyInfo{},
 				}
 			}
 		}

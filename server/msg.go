@@ -32,10 +32,16 @@ type State interface {
 
 func (PartyChoosing) isState() {}
 
+// PartyInfo contains a party name (may not be unique) and ID (unique).
+type PartyInfo struct {
+	PID
+	Name string
+}
+
 // PartyChoosing is the state of a client choosing their party.
 type PartyChoosing struct {
-	Name    string   // name of client
-	Parties []string // available parties to join
+	Name    string      // name of client
+	Parties []PartyInfo // available parties to join
 }
 
 // MarshalJSON makes JSON.
