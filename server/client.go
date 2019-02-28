@@ -12,7 +12,7 @@ type client struct {
 	name  string // if "", no name
 	isSpy bool
 	send  chan State
-	recv  chan IDAction
+	recv  chan Action
 	conn  *ws.Conn
 }
 
@@ -23,7 +23,7 @@ func newClient(conn *ws.Conn, id ID) *client {
 		name:  "",
 		isSpy: false,
 		send:  make(chan State),
-		recv:  make(chan IDAction),
+		recv:  make(chan Action),
 		conn:  conn,
 	}
 	go c.recvFromConn()
@@ -36,7 +36,7 @@ func (c *client) recvFromConn() {
 		mt, bs, err := c.conn.ReadMessage()
 		if err != nil {
 			log.Println("recvFromConn", c.id, err)
-			c.recv <- IDAction{c.id, Close{}}
+			c.recv <- Close{}
 			// no further actions will be sent on recv.
 			close(c.recv)
 			c.conn.Close()
@@ -49,7 +49,7 @@ func (c *client) recvFromConn() {
 		if err != nil {
 			continue
 		}
-		c.recv <- IDAction{c.id, ac}
+		c.recv <- ac
 	}
 }
 
