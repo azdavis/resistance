@@ -6,7 +6,7 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// CID is a unique identifier for a client.
+// CID is a unique identifier for a Client.
 type CID uint64
 
 // Client is a player of the game. It contains the CID, game information, and
