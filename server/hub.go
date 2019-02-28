@@ -22,7 +22,7 @@ type Hub struct {
 	clientCh chan *Client // outgoing clients
 }
 
-// NewHub returns a new Hub. It starts a goroutine which never exits.
+// NewHub returns a new Hub.
 func NewHub(clientCh chan *Client) *Hub {
 	h := &Hub{
 		nextID:   1,
