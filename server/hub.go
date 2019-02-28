@@ -29,22 +29,27 @@ func (h *hub) run() {
 	nextID := ID(1)
 	clients := make(map[ID]*client)
 	bc := newBigChan()
+	addClient := func(cl *client) {
+		clients[cl.id] = cl
+		bc.add(cl.id, cl.recv)
+	}
+	rmClient := func(id ID) {
+		delete(clients, id)
+		bc.rm(id)
+	}
 	for {
 		select {
 		case conn := <-h.conns:
 			id := nextID
 			nextID++
 			log.Println("newClient", id)
-			client := newClient(conn, id)
-			clients[id] = client
-			bc.add(id, client.recv)
+			addClient(newClient(conn, id))
 		case idAc := <-bc.c:
 			id := idAc.ID
 			switch ac := idAc.Action.(type) {
 			case Close:
 				log.Println("Close", id)
-				delete(clients, id)
-				bc.rm(id)
+				rmClient(id)
 			case NameChoose:
 				log.Println("NameChoose", id, ac.Name)
 				clients[id].name = ac.Name
