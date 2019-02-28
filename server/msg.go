@@ -63,8 +63,8 @@ type NameChoose struct {
 	Name string
 }
 
-// ErrBadT means the T of a tagMsg did not match any known T.
-var ErrBadT = errors.New("bad T")
+// ErrUnknownActionType means the T of a tagMsg did not match any known T.
+var ErrUnknownActionType = errors.New("unknown action type")
 
 // JSONToAction tries to turn a JSON encoding of a tagMsg into a Action.
 func JSONToAction(bs []byte) (Action, error) {
@@ -79,6 +79,6 @@ func JSONToAction(bs []byte) (Action, error) {
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	default:
-		return nil, ErrBadT
+		return nil, ErrUnknownActionType
 	}
 }
