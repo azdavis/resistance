@@ -9,8 +9,9 @@ import (
 // CID is a unique identifier for a client.
 type CID uint64
 
-// Client is a player of the game. It contains the CID, game information, and the
-// way to communicate with the actual person represented by this Client.
+// Client is a player of the game. It contains the CID, game information, and
+// the way to communicate with the actual person represented by this Client.
+// send should be closed after a Close{} is received on recv.
 type Client struct {
 	id    CID         // unique
 	room  CID         // if 0, no room
