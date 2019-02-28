@@ -35,7 +35,7 @@ func NewClientMap() *ClientMap {
 // from the given Client to this ClientMap's C. Another Client with the same CID
 // must not exist in this ClientMap.
 func (cm *ClientMap) Add(cl *Client) {
-	_, ok := cm.quits[cl.id]
+	_, ok := cm.M[cl.id]
 	if ok {
 		panic("already present")
 	}
@@ -49,7 +49,7 @@ func (cm *ClientMap) Add(cl *Client) {
 // Rm removes the Client with the given CID. It stops the piping goroutine (see
 // Add). A Client with the given CID must exist in the ClientMap.
 func (cm *ClientMap) Rm(id CID) {
-	_, ok := cm.quits[id]
+	_, ok := cm.M[id]
 	if !ok {
 		panic("not present")
 	}
