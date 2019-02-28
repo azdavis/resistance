@@ -47,13 +47,19 @@ func (pc PartyChoosing) MarshalJSON() ([]byte, error) {
 	return FromTagMsg("PartyChoosing", alias(pc))
 }
 
-// Action is a parsed TagMsg.P sent from a client. It is a request from the
-// client to change state.
+// Action is a usually parsed TagMsg.P sent from a client. It is a request from
+// the client to change state. The only Action that does not originate from a
+// TagMsg is Close. The client "sends" a Close Action by closing itself.
 type Action interface {
 	isAction()
 }
 
+func (Close) isAction()      {}
 func (NameChoose) isAction() {}
+
+// Close means the client closed itself. No further Actions will follow from
+// this client.
+type Close struct{}
 
 // NameChoose is a request from a client to choose their name.
 type NameChoose struct {
