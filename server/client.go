@@ -14,7 +14,7 @@ type CID uint64
 // Close should be called after a Close{} is received on recv.
 type Client struct {
 	id    CID         // unique
-	room  CID         // if 0, no room
+	pid   PID         // if 0, no party
 	name  string      // if "", no name
 	isSpy bool        // if false, is resistance
 	send  chan State  // send the current State over the websocket
@@ -27,7 +27,7 @@ type Client struct {
 func NewClient(conn *ws.Conn, id CID) *Client {
 	cl := &Client{
 		id:    id,
-		room:  0,
+		pid:   0,
 		name:  "",
 		isSpy: false,
 		send:  make(chan State),
