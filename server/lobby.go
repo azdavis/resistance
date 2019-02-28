@@ -25,9 +25,9 @@ func (lb *Lobby) run() {
 		select {
 		case cl := <-lb.clientCh:
 			clients.Add(cl)
-		case idAc := <-clients.C:
-			id := idAc.CID
-			switch ac := idAc.Action.(type) {
+		case cidAc := <-clients.C:
+			id := cidAc.CID
+			switch ac := cidAc.Action.(type) {
 			case Close:
 				clients.Rm(id).Close()
 			case NameChoose:
