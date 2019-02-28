@@ -21,7 +21,7 @@ type hub struct {
 func newHub(clientCh chan *client) *hub {
 	h := &hub{
 		connCh:   make(chan *ws.Conn),
-		clientCh: make(chan *client),
+		clientCh: clientCh,
 	}
 	go h.run()
 	return h
