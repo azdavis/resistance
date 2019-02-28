@@ -25,13 +25,14 @@ type Client struct {
 // to the given websocket connection. The id should not be in use by any other
 // client. send should be closed when this Client will no longer be used.
 func NewClient(conn *ws.Conn, id CID) *Client {
+	const chLen = 3
 	cl := &Client{
 		id:    id,
 		pid:   0,
 		name:  "",
 		isSpy: false,
-		send:  make(chan State),
-		recv:  make(chan Action),
+		send:  make(chan State, chLen),
+		recv:  make(chan Action, chLen),
 	}
 	go cl.recvFrom(conn)
 	go cl.sendTo(conn)

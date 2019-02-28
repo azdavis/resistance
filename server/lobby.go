@@ -11,8 +11,9 @@ type Lobby struct {
 
 // NewLobby returns a new Lobby. It starts a goroutine which never exits.
 func NewLobby() *Lobby {
+	const chLen = 5
 	lb := &Lobby{
-		clientCh: make(chan *Client),
+		clientCh: make(chan *Client, 5),
 	}
 	go lb.run()
 	return lb
