@@ -32,10 +32,11 @@ func (h *hub) run() {
 	for {
 		select {
 		case conn := <-h.conns:
-			client := newClient(conn, nextID)
+			id := nextID
 			nextID++
-			clients[client.id] = client
-			bc.add(client.id, client.recv)
+			client := newClient(conn, id)
+			clients[id] = client
+			bc.add(id, client.recv)
 		case idAc := <-bc.c:
 			id := idAc.ID
 			switch ac := idAc.Action.(type) {
