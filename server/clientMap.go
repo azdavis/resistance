@@ -38,6 +38,7 @@ func (cm *clientMap) rm(id ID) {
 		panic("not present")
 	}
 	log.Println("rm", id)
+	close(cm.M[id].send)
 	close(cm.quits[id])
 	delete(cm.M, id)
 	delete(cm.quits, id)
