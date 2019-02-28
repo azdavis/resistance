@@ -36,7 +36,7 @@ func NewHub(clientCh chan *Client) *Hub {
 // is successful, it makes a new Client with a fresh CID and sends it along
 // clientCh.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
+	if r.URL.Path != "/ws" {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}

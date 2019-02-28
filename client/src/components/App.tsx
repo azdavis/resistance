@@ -13,7 +13,7 @@ export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<Send | null>(null);
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080");
+    const ws = new WebSocket("ws://localhost:8080/ws");
     const newSend: Send = ({ T, ...P }) => {
       ws.send(JSON.stringify({ T, P }));
     };
