@@ -45,10 +45,18 @@ func (bc *bigChan) run() {
 	for {
 		select {
 		case a := <-bc.adds:
+			_, ok := quits[a.id]
+			if ok {
+				panic("already present")
+			}
 			quit := make(chan struct{})
 			quits[a.id] = quit
 			go bc.pipe(a.id, a.ch, quit)
 		case id := <-bc.rms:
+			_, ok := quits[id]
+			if !ok {
+				panic("not present")
+			}
 			close(quits[id])
 			delete(quits, id)
 		}
