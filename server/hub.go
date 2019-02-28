@@ -25,6 +25,7 @@ type Hub struct {
 // NewHub returns a new Hub.
 func NewHub(clientCh chan *Client) *Hub {
 	h := &Hub{
+		mux:      &sync.Mutex{},
 		nextID:   1,
 		clientCh: clientCh,
 	}
