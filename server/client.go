@@ -6,14 +6,14 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// ID is a unique identifier for a client.
-type ID uint64
+// CID is a unique identifier for a client.
+type CID uint64
 
-// Client is a player of the game. It contains the ID, game information, and the
+// Client is a player of the game. It contains the CID, game information, and the
 // way to communicate with the actual person represented by this Client.
 type Client struct {
-	id    ID          // unique
-	room  ID          // if 0, no room
+	id    CID         // unique
+	room  CID         // if 0, no room
 	name  string      // if "", no name
 	isSpy bool        // if false, is resistance
 	send  chan State  // send the current State over the websocket
@@ -23,7 +23,7 @@ type Client struct {
 // NewClient returns a new client. It starts goroutines to read from and write
 // to the given websocket connection. The id should not be in use by any other
 // client. send should be closed when this Client will no longer be used.
-func NewClient(conn *ws.Conn, id ID) *Client {
+func NewClient(conn *ws.Conn, id CID) *Client {
 	cl := &Client{
 		id:    id,
 		room:  0,

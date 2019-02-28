@@ -26,7 +26,7 @@ func (lb *Lobby) run() {
 		case cl := <-lb.clientCh:
 			cm.Add(cl)
 		case idAc := <-cm.C:
-			id := idAc.ID
+			id := idAc.CID
 			switch ac := idAc.Action.(type) {
 			case Close:
 				cm.Rm(id)

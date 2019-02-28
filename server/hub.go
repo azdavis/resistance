@@ -33,7 +33,7 @@ func NewHub(clientCh chan *Client) *Hub {
 // run runs the Hub. Whenever a conn arrives on connCh, it makes a new Client
 // with a fresh ID and sends it along clientCh.
 func (h *Hub) run() {
-	nextID := ID(1)
+	nextID := CID(1)
 	for conn := range h.connCh {
 		h.clientCh <- NewClient(conn, nextID)
 		nextID++
