@@ -44,6 +44,7 @@ func (cm *clientMap) rm(id ID) {
 }
 
 func (cm *clientMap) pipe(id ID, ch chan Action, quit chan struct{}) {
+	defer log.Println("exit pipe", id)
 	for {
 		select {
 		case <-quit:

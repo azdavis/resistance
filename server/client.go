@@ -32,6 +32,7 @@ func newClient(conn *ws.Conn, id ID) *client {
 }
 
 func (cl *client) recvFromConn() {
+	defer log.Println("exit recvFromConn", cl.id)
 	for {
 		mt, bs, err := cl.conn.ReadMessage()
 		if err != nil {
@@ -56,6 +57,7 @@ func (cl *client) recvFromConn() {
 
 // cl.send will be closed by the managing room when this client has been closed.
 func (cl *client) sendToConn() {
+	defer log.Println("exit sendToConn", cl.id)
 	for m := range cl.send {
 		err := cl.conn.WriteJSON(m)
 		if err != nil {
