@@ -1,47 +1,47 @@
 package main
 
-type bigChan struct {
+type clientMap struct {
 	c     chan IDAction
 	m     map[ID]*client
 	quits map[ID]chan struct{}
 }
 
-func newBigChan() *bigChan {
-	bc := &bigChan{
+func newClientMap() *clientMap {
+	cm := &clientMap{
 		c:     make(chan IDAction),
 		quits: make(map[ID]chan struct{}),
 	}
-	return bc
+	return cm
 }
 
-func (bc *bigChan) add(cl *client) {
-	_, ok := bc.quits[cl.id]
+func (cm *clientMap) add(cl *client) {
+	_, ok := cm.quits[cl.id]
 	if ok {
 		panic("already present")
 	}
 	quit := make(chan struct{})
-	bc.m[cl.id] = cl
-	bc.quits[cl.id] = quit
-	go bc.pipe(cl.id, cl.recv, quit)
+	cm.m[cl.id] = cl
+	cm.quits[cl.id] = quit
+	go cm.pipe(cl.id, cl.recv, quit)
 }
 
-func (bc *bigChan) rm(id ID) {
-	_, ok := bc.quits[id]
+func (cm *clientMap) rm(id ID) {
+	_, ok := cm.quits[id]
 	if !ok {
 		panic("not present")
 	}
-	close(bc.quits[id])
-	delete(bc.m, id)
-	delete(bc.quits, id)
+	close(cm.quits[id])
+	delete(cm.m, id)
+	delete(cm.quits, id)
 }
 
-func (bc *bigChan) pipe(id ID, ch chan Action, quit chan struct{}) {
+func (cm *clientMap) pipe(id ID, ch chan Action, quit chan struct{}) {
 	for {
 		select {
 		case <-quit:
 			return
 		case ac := <-ch:
-			bc.c <- IDAction{id, ac}
+			cm.c <- IDAction{id, ac}
 		}
 	}
 }

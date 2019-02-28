@@ -18,22 +18,22 @@ func newLobby() *lobby {
 
 func (h *lobby) run() {
 	clients := make(map[ID]*client)
-	bc := newBigChan()
+	cm := newClientMap()
 	addClient := func(cl *client) {
 		log.Println("addClient", cl.id)
 		clients[cl.id] = cl
-		bc.add(cl)
+		cm.add(cl)
 	}
 	rmClient := func(id ID) {
 		log.Println("rmClient", id)
 		delete(clients, id)
-		bc.rm(id)
+		cm.rm(id)
 	}
 	for {
 		select {
 		case cl := <-h.clientCh:
 			addClient(cl)
-		case idAc := <-bc.c:
+		case idAc := <-cm.c:
 			id := idAc.ID
 			switch ac := idAc.Action.(type) {
 			case Close:
