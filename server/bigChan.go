@@ -9,6 +9,7 @@ type clientMap struct {
 func newClientMap() *clientMap {
 	cm := &clientMap{
 		c:     make(chan IDAction),
+		m:     make(map[ID]*client),
 		quits: make(map[ID]chan struct{}),
 	}
 	return cm
