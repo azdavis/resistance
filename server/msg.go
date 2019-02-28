@@ -51,16 +51,28 @@ type Action interface {
 	isAction()
 }
 
-func (Close) isAction()      {}
-func (NameChoose) isAction() {}
+func (Close) isAction()       {}
+func (NameChoose) isAction()  {}
+func (PartyChoose) isAction() {}
+func (PartyCreate) isAction() {}
 
 // Close means the client closed itself. No further Actions will follow from
 // this client.
 type Close struct{}
 
-// NameChoose is a request from a client to choose their name.
+// NameChoose is a request to choose one's name.
 type NameChoose struct {
 	Name string // desired name
+}
+
+// PartyChoose is a request to choose one's party.
+type PartyChoose struct {
+	PID // desired party ID
+}
+
+// PartyCreate is a request to create a new party, with oneself as the leader.
+type PartyCreate struct {
+	Name string // desired party name
 }
 
 // ErrUnknownActionType means the T of a tagMsg did not match any known T.
@@ -76,6 +88,14 @@ func JSONToAction(bs []byte) (Action, error) {
 	switch tm.T {
 	case "NameChoose":
 		var msg NameChoose
+		err = json.Unmarshal(tm.P, &msg)
+		return msg, err
+	case "PartyChoose":
+		var msg PartyChoose
+		err = json.Unmarshal(tm.P, &msg)
+		return msg, err
+	case "PartyCreate":
+		var msg PartyCreate
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	default:
