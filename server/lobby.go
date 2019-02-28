@@ -44,23 +44,23 @@ func (lb *Lobby) run() {
 			}
 			delete(parties, pid)
 		case cidAc := <-clients.C:
-			id := cidAc.CID
+			cid := cidAc.CID
 			switch ac := cidAc.Action.(type) {
 			case Close:
-				clients.Rm(id).Close()
+				clients.Rm(cid).Close()
 			case NameChoose:
-				log.Println("NameChoose", id, ac.Name)
-				clients.M[id].name = ac.Name
-				clients.M[id].send <- PartyChoosing{
+				log.Println("NameChoose", cid, ac.Name)
+				clients.M[cid].name = ac.Name
+				clients.M[cid].send <- PartyChoosing{
 					Name:    ac.Name,
 					Parties: getPartyInfo(),
 				}
 			case PartyChoose:
-				log.Println("PartyChoose", id, ac.PID)
-				parties[ac.PID].recv <- clients.Rm(id)
+				log.Println("PartyChoose", cid, ac.PID)
+				parties[ac.PID].recv <- clients.Rm(cid)
 			case PartyCreate:
-				log.Println("PartyCreate", id, ac.Name)
-				parties[nextPID] = NewParty(nextPID, ac.Name, clients.Rm(id), lb.done)
+				log.Println("PartyCreate", cid, ac.Name)
+				parties[nextPID] = NewParty(nextPID, ac.Name, clients.Rm(cid), lb.done)
 				nextPID++
 			}
 		}
