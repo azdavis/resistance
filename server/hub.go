@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"sync"
 
 	ws "github.com/gorilla/websocket"
 )
@@ -16,32 +17,23 @@ var up = ws.Upgrader{CheckOrigin: unsafeAllowAny}
 
 // Hub creates Clients from HTTP connections.
 type Hub struct {
-	connCh   chan *ws.Conn // incoming websocket connections
-	clientCh chan *Client  // outgoing clients
+	mux      *sync.Mutex  // protect nextID
+	nextID   CID          // next Client ID
+	clientCh chan *Client // outgoing clients
 }
 
 // NewHub returns a new Hub. It starts a goroutine which never exits.
 func NewHub(clientCh chan *Client) *Hub {
 	h := &Hub{
-		connCh:   make(chan *ws.Conn),
+		nextID:   1,
 		clientCh: clientCh,
 	}
-	go h.run()
 	return h
 }
 
-// run runs the Hub. Whenever a conn arrives on connCh, it makes a new Client
-// with a fresh ID and sends it along clientCh.
-func (h *Hub) run() {
-	nextID := CID(1)
-	for conn := range h.connCh {
-		h.clientCh <- NewClient(conn, nextID)
-		nextID++
-	}
-}
-
 // ServeWs tries to upgrade the (w, r) pair into a websocket connection. If it
-// does, it sends the connection to run.
+// is successful, it makes a new Client with a fresh CID and sends it along
+// clientCh.
 func (h *Hub) ServeWs(w http.ResponseWriter, r *http.Request) {
 	// TODO give HTTP statuses on error
 	if r.URL.Path != "/" {
@@ -52,5 +44,9 @@ func (h *Hub) ServeWs(w http.ResponseWriter, r *http.Request) {
 		log.Println("ServeWs", err)
 		return
 	}
-	h.connCh <- conn
+	h.mux.Lock()
+	id := h.nextID
+	h.nextID++
+	h.mux.Unlock()
+	h.clientCh <- NewClient(conn, id)
 }
