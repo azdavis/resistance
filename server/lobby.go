@@ -16,11 +16,11 @@ func newLobby() *lobby {
 	return lb
 }
 
-func (h *lobby) run() {
+func (lb *lobby) run() {
 	cm := newClientMap()
 	for {
 		select {
-		case cl := <-h.clientCh:
+		case cl := <-lb.clientCh:
 			cm.add(cl)
 		case idAc := <-cm.c:
 			id := idAc.ID

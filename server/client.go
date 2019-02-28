@@ -61,7 +61,7 @@ func (cl *client) sendToConn() {
 	for m := range cl.send {
 		err := cl.conn.WriteJSON(m)
 		if err != nil {
-			log.Println("sendTo", cl.id, err)
+			log.Println("sendToConn", cl.id, err)
 		}
 	}
 }
