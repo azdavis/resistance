@@ -43,6 +43,7 @@ func (h *hub) run() {
 			switch ac := idAc.Action.(type) {
 			case Close:
 				log.Println("Close", id)
+				delete(clients, id)
 				bc.rm(id)
 			case NameChoose:
 				log.Println("NameChoose", id, ac.Name)
