@@ -8,8 +8,8 @@ import (
 // tagMsg is a JSON-encoded message. T denotes which type of thing to try to
 // parse into, and P is the JSON encoding of that thing.
 type tagMsg struct {
-	T string
-	P json.RawMessage
+	T string          // type of thing
+	P json.RawMessage // json encoding of thing
 }
 
 // fromTagMsg creates a JSON-encoded tagMsg.
@@ -34,8 +34,8 @@ func (PartyChoosing) isState() {}
 
 // PartyChoosing is the state of a client choosing their party.
 type PartyChoosing struct {
-	Name    string
-	Parties []string
+	Name    string   // name of client
+	Parties []string // available parties to join
 }
 
 // MarshalJSON makes JSON.
@@ -60,7 +60,7 @@ type Close struct{}
 
 // NameChoose is a request from a client to choose their name.
 type NameChoose struct {
-	Name string
+	Name string // desired name
 }
 
 // ErrUnknownActionType means the T of a tagMsg did not match any known T.

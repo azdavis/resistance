@@ -6,17 +6,23 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
+// ID is a unique identifier for a client.
 type ID uint64
 
+// Client is a player of the game. It contains the ID, game information, and the
+// way to communicate with the actual person represented by this Client.
 type Client struct {
-	id    ID
-	room  ID     // if 0, no room
-	name  string // if "", no name
-	isSpy bool
-	send  chan State
-	recv  chan Action
+	id    ID          // unique
+	room  ID          // if 0, no room
+	name  string      // if "", no name
+	isSpy bool        // if false, is resistance
+	send  chan State  // send the current State over the websocket
+	recv  chan Action // receive an Action over the websocket
 }
 
+// NewClient returns a new client. It starts goroutines to read from and write
+// to the given websocket connection. The id should not be in use by any other
+// client. send should be closed when this Client will no longer be used.
 func NewClient(conn *ws.Conn, id ID) *Client {
 	cl := &Client{
 		id:    id,
@@ -31,6 +37,8 @@ func NewClient(conn *ws.Conn, id ID) *Client {
 	return cl
 }
 
+// recvFrom reads from the conn, tries to parse the message, and if successful,
+// sends the Action over recv.
 func (cl *Client) recvFrom(conn *ws.Conn) {
 	defer log.Println("exit recvFrom", cl.id)
 	for {
@@ -55,7 +63,7 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 	}
 }
 
-// cl.send will be closed by the managing room when this Client has been closed.
+// sendTo sends every message from send over the websocket. See NewClient.
 func (cl *Client) sendTo(conn *ws.Conn) {
 	defer log.Println("exit sendTo", cl.id)
 	for m := range cl.send {
