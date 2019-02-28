@@ -22,7 +22,7 @@ func (h *lobby) run() {
 	addClient := func(cl *client) {
 		log.Println("addClient", cl.id)
 		clients[cl.id] = cl
-		bc.add(cl.id, cl.recv)
+		bc.add(cl)
 	}
 	rmClient := func(id ID) {
 		log.Println("rmClient", id)

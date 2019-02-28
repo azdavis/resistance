@@ -13,14 +13,14 @@ func newBigChan() *bigChan {
 	return bc
 }
 
-func (bc *bigChan) add(id ID, ch chan Action) {
-	_, ok := bc.quits[id]
+func (bc *bigChan) add(cl *client) {
+	_, ok := bc.quits[cl.id]
 	if ok {
 		panic("already present")
 	}
 	quit := make(chan struct{})
-	bc.quits[id] = quit
-	go bc.pipe(id, ch, quit)
+	bc.quits[cl.id] = quit
+	go bc.pipe(cl.id, cl.recv, quit)
 }
 
 func (bc *bigChan) rm(id ID) {
