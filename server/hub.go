@@ -27,12 +27,27 @@ func newHub() *hub {
 
 func (h *hub) run() {
 	nextID := ID(1)
+	clients := make(map[ID]*client)
+	bc := newBigChan()
 	for {
 		select {
 		case conn := <-h.conns:
 			client := newClient(conn, nextID)
-			log.Println(client)
 			nextID++
+			clients[client.id] = client
+			bc.add(client.id, client.recv)
+		case idAc := <-bc.c:
+			id := idAc.ID
+			switch ac := idAc.Action.(type) {
+			case Close:
+				bc.rm(id)
+			case NameChoose:
+				clients[id].name = ac.Name
+				clients[id].send <- PartyChoosing{
+					Name:    ac.Name,
+					Parties: []string{},
+				}
+			}
 		}
 	}
 }
