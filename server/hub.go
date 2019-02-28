@@ -34,6 +34,7 @@ func (h *hub) run() {
 		case conn := <-h.conns:
 			id := nextID
 			nextID++
+			log.Println("newClient", id)
 			client := newClient(conn, id)
 			clients[id] = client
 			bc.add(id, client.recv)
@@ -41,8 +42,10 @@ func (h *hub) run() {
 			id := idAc.ID
 			switch ac := idAc.Action.(type) {
 			case Close:
+				log.Println("Close", id)
 				bc.rm(id)
 			case NameChoose:
+				log.Println("NameChoose", id, ac.Name)
 				clients[id].name = ac.Name
 				clients[id].send <- PartyChoosing{
 					Name:    ac.Name,
