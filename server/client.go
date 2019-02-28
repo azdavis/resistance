@@ -37,8 +37,8 @@ func (c *client) recvFromConn() {
 		if err != nil {
 			log.Println("recvFromConn", c.id, err)
 			c.recv <- Close{}
-			// no further actions will be sent on recv.
-			close(c.recv)
+			// no further actions will be sent on recv. however, do not close recv,
+			// since we may send garbage actions to listeners.
 			c.conn.Close()
 			return
 		}
