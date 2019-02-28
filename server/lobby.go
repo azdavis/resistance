@@ -22,15 +22,15 @@ func (lb *lobby) run() {
 		select {
 		case cl := <-lb.clientCh:
 			cm.add(cl)
-		case idAc := <-cm.c:
+		case idAc := <-cm.C:
 			id := idAc.ID
 			switch ac := idAc.Action.(type) {
 			case Close:
 				cm.rm(id)
 			case NameChoose:
 				log.Println("NameChoose", id, ac.Name)
-				cm.m[id].name = ac.Name
-				cm.m[id].send <- PartyChoosing{
+				cm.M[id].name = ac.Name
+				cm.M[id].send <- PartyChoosing{
 					Name:    ac.Name,
 					Parties: []string{},
 				}
