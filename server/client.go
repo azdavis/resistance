@@ -11,7 +11,7 @@ type CID uint64
 
 // Client is a player of the game. It contains the CID, game information, and
 // the way to communicate with the actual person represented by this Client.
-// send should be closed after a Close{} is received on recv.
+// Close should be called after a Close{} is received on recv.
 type Client struct {
 	id    CID         // unique
 	room  CID         // if 0, no room
@@ -36,6 +36,11 @@ func NewClient(conn *ws.Conn, id CID) *Client {
 	go cl.recvFrom(conn)
 	go cl.sendTo(conn)
 	return cl
+}
+
+// Close quits the write goroutine. It should be called only once.
+func (cl *Client) Close() {
+	close(cl.send)
 }
 
 // recvFrom reads from the conn, tries to parse the message, and if successful,

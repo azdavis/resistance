@@ -54,7 +54,7 @@ func (cm *ClientMap) Rm(id CID) {
 		panic("not present")
 	}
 	log.Println("Rm", id)
-	close(cm.M[id].send)
+	cm.M[id].Close()
 	delete(cm.M, id)
 	close(cm.quits[id])
 	delete(cm.quits, id)
