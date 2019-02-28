@@ -47,17 +47,18 @@ func (cm *ClientMap) Add(cl *Client) {
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see
-// Add). A Client with the given CID must exist in the ClientMap.
-func (cm *ClientMap) Rm(id CID) {
-	_, ok := cm.M[id]
+// Add). It does not close the client itself. In fact, it returns the client
+// that was removed. A Client with the given CID must exist in the ClientMap.
+func (cm *ClientMap) Rm(id CID) *Client {
+	cl, ok := cm.M[id]
 	if !ok {
 		panic("not present")
 	}
 	log.Println("Rm", id)
-	cm.M[id].Close()
 	delete(cm.M, id)
 	close(cm.quits[id])
 	delete(cm.quits, id)
+	return cl
 }
 
 // pipe pipes messages from the chan Action into this ClientMap's C, tagging

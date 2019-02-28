@@ -29,7 +29,7 @@ func (lb *Lobby) run() {
 			id := idAc.CID
 			switch ac := idAc.Action.(type) {
 			case Close:
-				clients.Rm(id)
+				clients.Rm(id).Close()
 			case NameChoose:
 				log.Println("NameChoose", id, ac.Name)
 				clients.M[id].name = ac.Name
