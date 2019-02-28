@@ -55,8 +55,8 @@ func (cm *ClientMap) Rm(id CID) {
 	}
 	log.Println("Rm", id)
 	close(cm.M[id].send)
-	close(cm.quits[id])
 	delete(cm.M, id)
+	close(cm.quits[id])
 	delete(cm.quits, id)
 }
 
