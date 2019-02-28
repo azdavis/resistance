@@ -4,6 +4,12 @@ import (
 	"log"
 )
 
+// IDAction is an Action from a particular client with a given ID.
+type IDAction struct {
+	ID
+	Action
+}
+
 // Only one goroutine may call Add or Rm or access M at a time.
 type ClientMap struct {
 	C     chan IDAction

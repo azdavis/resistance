@@ -5,9 +5,6 @@ import (
 	"errors"
 )
 
-// ID is the type of IDs (client IDs, room IDs).
-type ID uint64
-
 // tagMsg is a JSON-encoded message. T denotes which type of thing to try to
 // parse into, and P is the JSON encoding of that thing.
 type tagMsg struct {
@@ -84,10 +81,4 @@ func JSONToAction(bs []byte) (Action, error) {
 	default:
 		return nil, ErrBadT
 	}
-}
-
-// IDAction is an Action from a particular client with a given ID.
-type IDAction struct {
-	ID
-	Action
 }

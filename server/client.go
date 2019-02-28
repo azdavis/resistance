@@ -6,6 +6,8 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
+type ID uint64
+
 type Client struct {
 	id    ID
 	room  ID     // if 0, no room
