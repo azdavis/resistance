@@ -20,20 +20,20 @@ func NewLobby() *Lobby {
 
 // run runs the Lobby.
 func (lb *Lobby) run() {
-	cm := NewClientMap()
+	clients := NewClientMap()
 	for {
 		select {
 		case cl := <-lb.clientCh:
-			cm.Add(cl)
-		case idAc := <-cm.C:
+			clients.Add(cl)
+		case idAc := <-clients.C:
 			id := idAc.CID
 			switch ac := idAc.Action.(type) {
 			case Close:
-				cm.Rm(id)
+				clients.Rm(id)
 			case NameChoose:
 				log.Println("NameChoose", id, ac.Name)
-				cm.M[id].name = ac.Name
-				cm.M[id].send <- PartyChoosing{
+				clients.M[id].name = ac.Name
+				clients.M[id].send <- PartyChoosing{
 					Name:    ac.Name,
 					Parties: []string{},
 				}
