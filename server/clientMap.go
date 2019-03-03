@@ -71,7 +71,8 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	return cl
 }
 
-// Info gets the current info.
+// Info gets the current info. TODO have this sorted by CID, and use that fact
+// to make setInfo more efficient
 func (cm *ClientMap) Info() []ClientInfo {
 	return cm.info
 }
