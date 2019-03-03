@@ -28,7 +28,6 @@ type PartyInfo struct {
 
 // PartyChoosing is the state of a client choosing their party.
 type PartyChoosing struct {
-	Name    string      // name of client
 	Parties []PartyInfo // available parties to join
 }
 

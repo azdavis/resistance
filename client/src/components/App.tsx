@@ -6,8 +6,8 @@ import PartyChooser from "./PartyChooser";
 import PartyDisbanded from "./PartyDisbanded";
 import PartyWaiter from "./PartyWaiter";
 
-const reducer = (s: State, tc: ToClient): State => ({ ...s, ...tc });
-const init: State = { T: "NameChoosing", Name: "", Parties: [] };
+const reducer = (s: State, tc: ToClient): State => tc;
+const init: State = { T: "NameChoosing" };
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);

@@ -56,7 +56,6 @@ func (lb *Lobby) run() {
 				log.Println("NameChoose", cid, ac.Name)
 				clients.M[cid].name = ac.Name
 				clients.M[cid].send <- PartyChoosing{
-					Name:    ac.Name,
 					Parties: partyInfo,
 				}
 			case PartyChoose:
@@ -75,7 +74,6 @@ func (lb *Lobby) run() {
 				partyInfo = getPartyInfo()
 				for _, cl := range clients.M {
 					cl.send <- PartyChoosing{
-						Name:    cl.name,
 						Parties: partyInfo,
 					}
 				}

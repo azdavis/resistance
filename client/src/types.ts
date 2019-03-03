@@ -1,23 +1,25 @@
 import { Dispatch } from "react";
 
 export type PID = number;
+export type CID = number;
 
 export type PartyInfo = {
   PID: PID;
   Name: string;
 };
 
-export type State = {
-  T:
-    | "Closed"
-    | "NameChoosing"
-    | "PartyChoosing"
-    | "PartyDisbanded"
-    | "PartyWaiting";
-  Parties: Array<PartyInfo>;
+export type ClientInfo = {
+  CID: CID;
+  Name: string;
 };
 
-export type ToClient = Partial<State>;
+export type State = { T: "NameChoosing" } | ToClient;
+
+export type ToClient =
+  | { T: "Closed" }
+  | { T: "PartyChoosing"; Parties: Array<PartyInfo> }
+  | { T: "PartyDisbanded"; Parties: Array<PartyInfo> }
+  | { T: "PartyWaiting"; Clients: Array<ClientInfo> };
 
 export type ToServer =
   | { T: "NameChoose"; Name: string }
