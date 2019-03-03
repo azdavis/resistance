@@ -8,7 +8,7 @@ type Props = {
 
 export default ({ d, parties }: Props): JSX.Element => {
   return (
-    <>
+    <div className="PartyDisbanded">
       <h1>Party disbanded</h1>
       <p>The party has been disbanded</p>
       <input
@@ -16,6 +16,6 @@ export default ({ d, parties }: Props): JSX.Element => {
         value="OK"
         onClick={() => d({ T: "PartyChoosing", Parties: parties })}
       />
-    </>
+    </div>
   );
 };

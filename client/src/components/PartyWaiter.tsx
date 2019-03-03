@@ -7,9 +7,9 @@ type Props = {
 
 export default ({ send }: Props): JSX.Element => {
   return (
-    <>
+    <div className="PartyWaiter">
       <h1>WIP</h1>
       <p>This is a work in progress</p>
-    </>
+    </div>
   );
 };
