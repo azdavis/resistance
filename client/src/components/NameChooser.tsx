@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Send } from "../types";
+import Button from "./Button";
 
 type Props = {
   send: Send | null;
@@ -22,7 +23,7 @@ export default ({ send }: Props): JSX.Element => {
       >
         <label htmlFor="name">Player name</label>
         <input type="text" id="name" autoCorrect="off" ref={nameRef} />
-        <input type="submit" value="submit" disabled={send === null} />
+        <Button value="submit" submit disabled={send === null} />
       </form>
     </div>
   );
