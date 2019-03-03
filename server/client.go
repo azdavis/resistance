@@ -6,6 +6,8 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
+const clientChLen = 3
+
 // CID is a unique identifier for a Client.
 type CID uint64
 
@@ -19,8 +21,6 @@ type Client struct {
 	send  chan ToClient // over the websocket
 	recv  chan ToServer // over the websocket
 }
-
-const clientChLen = 3
 
 // NewClient returns a new client. It starts goroutines to read from and write
 // to the given websocket connection. The CID should not be in use by any other
