@@ -13,10 +13,9 @@ export type ClientInfo = {
   Name: string;
 };
 
-export type State = { T: "NameChoosing" } | ToClient;
+export type State = { T: "NameChoosing" } | { T: "Closed" } | ToClient;
 
 export type ToClient =
-  | { T: "Closed" }
   | { T: "PartyChoosing"; Parties: Array<PartyInfo> }
   | { T: "PartyDisbanded"; Parties: Array<PartyInfo> }
   | { T: "PartyWaiting"; Clients: Array<ClientInfo> };
