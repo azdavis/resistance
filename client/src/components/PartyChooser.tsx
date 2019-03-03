@@ -15,6 +15,7 @@ export default ({ send, parties }: Props): JSX.Element => {
         value="Create new party"
         onClick={() => send({ T: "PartyCreate" })}
       />
+      <h2>Existing parties ({parties.length})</h2>
       {parties.map(({ PID, Leader }) => (
         <Button
           key={PID}
