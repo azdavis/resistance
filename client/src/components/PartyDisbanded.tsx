@@ -1,11 +1,12 @@
 import React, { Dispatch } from "react";
-import { ToClient } from "../types";
+import { ToClient, PartyInfo } from "../types";
 
 type Props = {
+  parties: Array<PartyInfo>;
   d: Dispatch<ToClient>;
 };
 
-export default ({ d }: Props): JSX.Element => {
+export default ({ d, parties }: Props): JSX.Element => {
   return (
     <>
       <h1>Party disbanded</h1>
@@ -13,7 +14,7 @@ export default ({ d }: Props): JSX.Element => {
       <input
         type="button"
         value="OK"
-        onClick={() => d({ T: "PartyChoosing" })}
+        onClick={() => d({ T: "PartyChoosing", Parties: parties })}
       />
     </>
   );
