@@ -20,17 +20,18 @@ type Client struct {
 	recv  chan ToServer // over the websocket
 }
 
+const clientChLen = 3
+
 // NewClient returns a new client. It starts goroutines to read from and write
 // to the given websocket connection. The CID should not be in use by any other
 // client. send should be closed when this Client will no longer be used.
 func NewClient(conn *ws.Conn, cid CID) *Client {
-	const chLen = 3
 	cl := &Client{
 		CID:   cid,
 		name:  "",
 		isSpy: false,
-		send:  make(chan ToClient, chLen),
-		recv:  make(chan ToServer, chLen),
+		send:  make(chan ToClient, clientChLen),
+		recv:  make(chan ToServer, clientChLen),
 	}
 	go cl.recvFrom(conn)
 	go cl.sendTo(conn)

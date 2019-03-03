@@ -4,18 +4,17 @@ import (
 	"log"
 )
 
+const lobbyChLen = 5
+
 // Lobby contains the Clients who are not part of a Party.
 type Lobby struct {
 	recv chan *Client // incoming clients
-	done chan PID     // incoming done parties
 }
 
 // NewLobby returns a new Lobby. It starts a goroutine which never exits.
 func NewLobby() *Lobby {
-	const chLen = 5
 	lb := &Lobby{
-		recv: make(chan *Client, chLen),
-		done: make(chan PID, chLen),
+		recv: make(chan *Client, lobbyChLen),
 	}
 	go lb.run()
 	return lb
@@ -25,11 +24,12 @@ func NewLobby() *Lobby {
 func (lb *Lobby) run() {
 	clients := NewClientMap()
 	parties := NewPartyMap()
+	done := make(chan PID, lobbyChLen)
 	for {
 		select {
 		case cl := <-lb.recv:
 			clients.Add(cl)
-		case pid := <-lb.done:
+		case pid := <-done:
 			deletedPartyClients := parties.Rm(pid).clients
 			for cid := range deletedPartyClients.M {
 				cl := deletedPartyClients.Rm(cid)
@@ -62,7 +62,7 @@ func (lb *Lobby) run() {
 				if !ok {
 					continue
 				}
-				parties.Add(clients.Rm(cid), lb.recv, lb.done)
+				parties.Add(clients.Rm(cid), lb.recv, done)
 				for _, cl := range clients.M {
 					cl.send <- PartyChoosing{Parties: parties.Info()}
 				}
