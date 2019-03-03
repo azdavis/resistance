@@ -43,7 +43,6 @@ func (lb *Lobby) run() {
 			partyInfo := getPartyInfo()
 			for cid := range cm.M {
 				cl := cm.Rm(cid)
-				// TODO
 				cl.send <- PartyDisbanded{Parties: partyInfo}
 				clients.Add(cl)
 			}
