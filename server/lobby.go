@@ -64,7 +64,13 @@ func (lb *Lobby) run() {
 				parties[ac.PID].recv <- clients.Rm(cid)
 			case PartyCreate:
 				log.Println("PartyCreate", cid, ac.Name)
-				parties[nextPID] = NewParty(nextPID, ac.Name, clients.Rm(cid), lb.done)
+				parties[nextPID] = NewParty(
+					nextPID,
+					ac.Name,
+					clients.Rm(cid),
+					lb.recv,
+					lb.done,
+				)
 				nextPID++
 			}
 		}

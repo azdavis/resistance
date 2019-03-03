@@ -14,6 +14,10 @@ type PID uint64
 // the party will only accept these new clients if the game has not yet started.
 // The leader decides when to start the game.
 //
+// If a single client wants to leave the party, send them back to the lobby on
+// send. The send and recv channels are only to be used before the game has
+// started.
+//
 // A Party can disband itself by sending its own PID along done. Once it does
 // this, it should stop modifying itself (i.e., it should exit from run), since
 // the Lobby which contains a pointer to this Party will receive along done and
@@ -23,6 +27,7 @@ type Party struct {
 	name    string       // set by leader
 	leader  CID          // controls when game starts, can unilaterally disband
 	done    chan PID     // send own PID when party disbands
+	send    chan *Client // outgoing clients
 	recv    chan *Client // incoming clients
 	clients *ClientMap   // clients in the party (includes leader)
 }
@@ -32,6 +37,7 @@ func NewParty(
 	pid PID,
 	name string,
 	leader *Client,
+	send chan *Client,
 	done chan PID,
 ) *Party {
 	clients := NewClientMap()
@@ -41,6 +47,7 @@ func NewParty(
 		name:    name,
 		leader:  leader.CID,
 		done:    done,
+		send:    send,
 		recv:    make(chan *Client),
 		clients: clients,
 	}
@@ -61,6 +68,12 @@ func (p *Party) run() {
 				if cid == p.leader {
 					p.done <- p.PID
 					return
+				}
+			case PartyLeave:
+				if cid == p.leader {
+					p.done <- p.PID
+				} else {
+					p.send <- p.clients.Rm(cid)
 				}
 			}
 		}
