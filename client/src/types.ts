@@ -14,7 +14,6 @@ export type State = {
     | "PartyChoosing"
     | "PartyDisbanded"
     | "PartyWaiting";
-  Name: string; // if "", no name
   Parties: Array<PartyInfo>;
 };
 
