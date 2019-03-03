@@ -31,7 +31,7 @@ export default (): JSX.Element => {
     case "NameChoosing":
       return <NameChooser send={send} />;
     case "PartyChoosing":
-      return <PartyChooser send={send!} />;
+      return <PartyChooser send={send!} parties={s.Parties} />;
     case "PartyDisbanded":
       return <PartyDisbanded d={d} parties={s.Parties} />;
     case "PartyWaiting":

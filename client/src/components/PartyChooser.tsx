@@ -1,15 +1,27 @@
 import React from "react";
-import { Send } from "../types";
+import { Send, PartyInfo } from "../types";
+import Button from "./Button";
 
 type Props = {
   send: Send;
+  parties: Array<PartyInfo>;
 };
 
-export default ({ send }: Props): JSX.Element => {
+export default ({ send, parties }: Props): JSX.Element => {
   return (
     <div className="PartyChooser">
-      <h1>WIP</h1>
-      <p>This is a work in progress</p>
+      <h1>Parties</h1>
+      <Button
+        value="Create new party"
+        onClick={() => send({ T: "PartyCreate" })}
+      />
+      {parties.map(({ PID, Leader }) => (
+        <Button
+          key={PID}
+          value={Leader}
+          onClick={() => send({ T: "PartyChoose", PID })}
+        />
+      ))}
     </div>
   );
 };
