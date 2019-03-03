@@ -5,15 +5,15 @@ import (
 	"errors"
 )
 
-// State ///////////////////////////////////////////////////////////////////////
+// ToClient //////////////////////////////////////////////////////////////////
 
-// State is a state that a client could be in. It is sent to the client to
+// ToClient is a state that a client could be in. It is sent to the client to
 // change the client's state. It may be sent in direct reply to a client's
-// Action, or it may be sent because the client was transitively affected by
-// another client's Action.
-type State interface {
+// ToServer, or it may be sent because the client was transitively affected by
+// another client's ToServer.
+type ToClient interface {
 	json.Marshaler
-	isState()
+	isToClient()
 }
 
 // PartyInfo contains a party name (may not be unique) and PID (unique).
@@ -34,13 +34,14 @@ type PartyDisbanded struct {
 	Parties []PartyInfo // available parties to join
 }
 
-// Action //////////////////////////////////////////////////////////////////////
+// ToServer ////////////////////////////////////////////////////////////////////
 
-// Action is a usually parsed tagMsg.P sent from a client. It is a request from
-// the client to change state. The only Action that does not originate from a
-// tagMsg is Close. The client "sends" a Close Action by closing itself.
-type Action interface {
-	isAction()
+// ToServer is a usually parsed tagMsg.P sent from a client. It is a request
+// from the client to change state. The only ToServer that does not originate
+// from a tagMsg is Close. The client "sends" a Close ToServer by closing
+// itself.
+type ToServer interface {
+	isToServer()
 }
 
 // Close means the client closed itself. No further Actions will follow from
@@ -67,14 +68,14 @@ type PartyCreate struct {
 
 // helpers /////////////////////////////////////////////////////////////////////
 
-func (PartyChoosing) isState()  {}
-func (PartyDisbanded) isState() {}
+func (PartyChoosing) isToClient()  {}
+func (PartyDisbanded) isToClient() {}
 
-func (Close) isAction()       {}
-func (NameChoose) isAction()  {}
-func (PartyChoose) isAction() {}
-func (PartyLeave) isAction()  {}
-func (PartyCreate) isAction() {}
+func (Close) isToServer()       {}
+func (NameChoose) isToServer()  {}
+func (PartyChoose) isToServer() {}
+func (PartyLeave) isToServer()  {}
+func (PartyCreate) isToServer() {}
 
 // tagMsg is a JSON-encoded message.
 type tagMsg struct {
@@ -94,8 +95,8 @@ func fromTagMsg(t string, p interface{}) ([]byte, error) {
 // ErrUnknownActionType means the T of a tagMsg did not match any known T.
 var ErrUnknownActionType = errors.New("unknown action type")
 
-// JSONToAction tries to turn a JSON encoding of a tagMsg into a Action.
-func JSONToAction(bs []byte) (Action, error) {
+// JSONToAction tries to turn a JSON encoding of a tagMsg into a ToServer.
+func JSONToAction(bs []byte) (ToServer, error) {
 	var tm tagMsg
 	err := json.Unmarshal(bs, &tm)
 	if err != nil {

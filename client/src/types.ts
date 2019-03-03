@@ -12,9 +12,9 @@ export type State =
   | { T: "NameChoosing" }
   | { T: "PartyChoosing"; Name: string; Parties: Array<PartyInfo> };
 
-export type Action =
+export type ToServer =
   | { T: "NameChoose"; Name: string }
   | { T: "PartyChoose"; PID: PID }
   | { T: "PartyCreate"; Name: string };
 
-export type Send = Dispatch<Action>;
+export type Send = Dispatch<ToServer>;

@@ -4,19 +4,19 @@ import (
 	"log"
 )
 
-// CIDAction is an Action from a particular client with a given CID.
-type CIDAction struct {
+// Action is a CID + ToServer.
+type Action struct {
 	CID
-	Action
+	ToServer
 }
 
 // ClientMap represents a group of related clients. It contains two public
 // fields: M, a mapping from Client IDs to Clients, and C, a channel on which
 // messages from all the clients stored in M are sent, with associated CID
-// information attached to each Action (see CIDAction). Only one goroutine may
+// information attached to each ToServer (see Action). Only one goroutine may
 // call Add or Rm or access M at a time.
 type ClientMap struct {
-	C     chan CIDAction        // messages from the Clients in M, tagged with CID
+	C     chan Action           // messages from the Clients in M, tagged with CID
 	M     map[CID]*Client       // if M[x] = c, c.CID = x
 	quits map[CID]chan struct{} // iff M[x] = c, close(quits[x]) will stop piping
 }
@@ -24,7 +24,7 @@ type ClientMap struct {
 // NewClientMap returns a new ClientMap.
 func NewClientMap() *ClientMap {
 	cm := &ClientMap{
-		C:     make(chan CIDAction),
+		C:     make(chan Action),
 		M:     make(map[CID]*Client),
 		quits: make(map[CID]chan struct{}),
 	}
@@ -61,16 +61,16 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	return cl
 }
 
-// pipe pipes messages from the chan Action into this ClientMap's C, tagging
+// pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
 // each action with the CID. pipe quits when the given quit channel is closed.
-func (cm *ClientMap) pipe(CID CID, ch chan Action, quit chan struct{}) {
+func (cm *ClientMap) pipe(CID CID, ch chan ToServer, quit chan struct{}) {
 	for {
 		select {
 		case <-quit:
 			log.Println("exit pipe", CID)
 			return
 		case ac := <-ch:
-			cm.C <- CIDAction{CID, ac}
+			cm.C <- Action{CID, ac}
 		}
 	}
 }

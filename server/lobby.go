@@ -47,9 +47,9 @@ func (lb *Lobby) run() {
 				clients.Add(cl)
 			}
 			delete(parties, pid)
-		case cidAc := <-clients.C:
-			cid := cidAc.CID
-			switch ac := cidAc.Action.(type) {
+		case ac := <-clients.C:
+			cid := ac.CID
+			switch ac := ac.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
 			case NameChoose:

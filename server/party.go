@@ -62,9 +62,9 @@ func (p *Party) run() {
 		select {
 		case cl := <-p.recv:
 			p.clients.Add(cl)
-		case cidAc := <-p.clients.C:
-			cid := cidAc.CID
-			switch cidAc.Action.(type) {
+		case ac := <-p.clients.C:
+			cid := ac.CID
+			switch ac.ToServer.(type) {
 			case Close:
 				p.clients.Rm(cid).Close()
 				if cid == p.leader || p.started {

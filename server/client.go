@@ -13,11 +13,11 @@ type CID uint64
 // the way to communicate with the actual person represented by this Client.
 // Close should be called after a Close{} is received on recv.
 type Client struct {
-	CID               // unique, never 0
-	name  string      // if "", no name
-	isSpy bool        // if false, is resistance
-	send  chan State  // send the current State over the websocket
-	recv  chan Action // receive an Action over the websocket
+	CID                 // unique, never 0
+	name  string        // if "", no name
+	isSpy bool          // if false, is resistance
+	send  chan ToClient // over the websocket
+	recv  chan ToServer // over the websocket
 }
 
 // NewClient returns a new client. It starts goroutines to read from and write
@@ -29,8 +29,8 @@ func NewClient(conn *ws.Conn, cid CID) *Client {
 		CID:   cid,
 		name:  "",
 		isSpy: false,
-		send:  make(chan State, chLen),
-		recv:  make(chan Action, chLen),
+		send:  make(chan ToClient, chLen),
+		recv:  make(chan ToServer, chLen),
 	}
 	go cl.recvFrom(conn)
 	go cl.sendTo(conn)
@@ -38,21 +38,20 @@ func NewClient(conn *ws.Conn, cid CID) *Client {
 }
 
 // Close quits the write goroutine. It should be called exactly once, when a
-// Close{} Action is received from this client.
+// Close{} ToServer is received from this client.
 func (cl *Client) Close() {
 	close(cl.send)
 }
 
 // recvFrom reads from the conn, tries to parse the message, and if successful,
-// sends the Action over recv.
+// sends the ToServer over recv.
 func (cl *Client) recvFrom(conn *ws.Conn) {
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("recvFrom", cl.CID, err)
-			// no further actions will be sent on recv. however, do not close recv,
-			// since we may send garbage actions to listeners. only send the Close
-			// Action.
+			// no further ToServers will be sent on recv. however, do not close recv,
+			// since we may send garbage ToServers to listeners.
 			cl.recv <- Close{}
 			conn.Close()
 			log.Println("exit recvFrom", cl.CID)
@@ -69,7 +68,7 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 	}
 }
 
-// sendTo sends every message from send over the websocket. See NewClient.
+// sendTo sends every ToClient from send over the websocket. See NewClient.
 func (cl *Client) sendTo(conn *ws.Conn) {
 	for m := range cl.send {
 		err := conn.WriteJSON(m)
