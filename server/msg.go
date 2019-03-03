@@ -17,17 +17,10 @@ type ToClient interface {
 }
 
 func (PartyChoosing) isToClient()  {}
-func (PartyDisbanded) isToClient() {}
 func (PartyWaiting) isToClient()   {}
 
 // PartyChoosing is the state of a client choosing their party.
 type PartyChoosing struct {
-	Parties []PartyInfo // available parties to join
-}
-
-// PartyDisbanded is the state of a client who was in a party, but it was
-// disbanded.
-type PartyDisbanded struct {
 	Parties []PartyInfo // available parties to join
 }
 
@@ -127,12 +120,6 @@ func JSONToAction(bs []byte) (ToServer, error) {
 func (pc PartyChoosing) MarshalJSON() ([]byte, error) {
 	type alias PartyChoosing
 	return fromTagMsg("PartyChoosing", alias(pc))
-}
-
-// MarshalJSON makes JSON.
-func (pc PartyDisbanded) MarshalJSON() ([]byte, error) {
-	type alias PartyDisbanded
-	return fromTagMsg("PartyDisbanded", alias(pc))
 }
 
 // MarshalJSON makes JSON.

@@ -17,7 +17,6 @@ export type State = { T: "NameChoosing" } | { T: "Closed" } | ToClient;
 
 export type ToClient =
   | { T: "PartyChoosing"; Parties: Array<PartyInfo> }
-  | { T: "PartyDisbanded"; Parties: Array<PartyInfo> }
   | { T: "PartyWaiting"; Leader: CID; Clients: Array<ClientInfo> };
 
 export type ToServer =

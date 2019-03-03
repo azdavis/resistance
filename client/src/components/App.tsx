@@ -3,7 +3,6 @@ import { State, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import PartyChooser from "./PartyChooser";
-import PartyDisbanded from "./PartyDisbanded";
 import PartyWaiter from "./PartyWaiter";
 
 const reducer = (s: State, a: State): State => a;
@@ -32,8 +31,6 @@ export default (): JSX.Element => {
       return <NameChooser send={send} />;
     case "PartyChoosing":
       return <PartyChooser send={send!} parties={s.Parties} />;
-    case "PartyDisbanded":
-      return <PartyDisbanded d={d} parties={s.Parties} />;
     case "PartyWaiting":
       return <PartyWaiter send={send!} leader={s.Leader} clients={s.Clients} />;
   }

@@ -41,12 +41,10 @@ func (lb *Lobby) run() {
 			}
 		case pid := <-done:
 			rmPartyClients := parties.Rm(pid).clients
-			broadcastParties()
 			for cid := range rmPartyClients.M {
-				cl := rmPartyClients.Rm(cid)
-				cl.send <- PartyDisbanded{Parties: parties.Info()}
-				clients.Add(cl)
+				clients.Add(rmPartyClients.Rm(cid))
 			}
+			broadcastParties()
 		case ac := <-clients.C:
 			cid := ac.CID
 			switch ac := ac.ToServer.(type) {
