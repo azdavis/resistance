@@ -83,10 +83,10 @@ func (p *Party) run() {
 				}
 				p.broadcastInfo()
 			case PartyLeave:
+				p.send <- p.clients.Rm(cid)
 				if cid == p.leader {
 					p.done <- p.PID
 				} else {
-					p.send <- p.clients.Rm(cid)
 					p.broadcastInfo()
 				}
 			}
