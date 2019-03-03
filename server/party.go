@@ -90,6 +90,7 @@ func (p *Party) run() {
 				p.send <- p.clients.Rm(cid)
 				if cid == p.leader {
 					p.done <- p.PID
+					return
 				} else {
 					p.broadcastInfo()
 				}
