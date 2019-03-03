@@ -33,6 +33,7 @@ func (lb *Lobby) run() {
 		}
 		return ret
 	}
+	partyInfo := getPartyInfo()
 	for {
 		select {
 		case cl := <-lb.recv:
@@ -40,7 +41,7 @@ func (lb *Lobby) run() {
 		case pid := <-lb.done:
 			cm := parties[pid].clients
 			delete(parties, pid)
-			partyInfo := getPartyInfo()
+			partyInfo = getPartyInfo()
 			for cid := range cm.M {
 				cl := cm.Rm(cid)
 				cl.send <- PartyDisbanded{Parties: partyInfo}
@@ -56,7 +57,7 @@ func (lb *Lobby) run() {
 				clients.M[cid].name = ac.Name
 				clients.M[cid].send <- PartyChoosing{
 					Name:    ac.Name,
-					Parties: getPartyInfo(),
+					Parties: partyInfo,
 				}
 			case PartyChoose:
 				log.Println("PartyChoose", cid, ac.PID)
@@ -71,6 +72,7 @@ func (lb *Lobby) run() {
 					lb.done,
 				)
 				nextPID++
+				partyInfo = getPartyInfo()
 			}
 		}
 	}
