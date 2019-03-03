@@ -1,15 +1,21 @@
 import React from "react";
-import { Send } from "../types";
+import { Send, CID, ClientInfo } from "../types";
+import Button from "./Button";
 
 type Props = {
   send: Send;
+  leader: CID;
+  clients: Array<ClientInfo>;
 };
 
-export default ({ send }: Props): JSX.Element => {
+export default ({ send, leader, clients }: Props): JSX.Element => {
   return (
     <div className="PartyWaiter">
-      <h1>WIP</h1>
-      <p>This is a work in progress</p>
+      <h1>Party</h1>
+      {clients.map(({ CID, Name }) => (
+        <div key={CID}>{Name}</div>
+      ))}
+      <Button value="Leave" onClick={() => send({ T: "PartyLeave" })} />
     </div>
   );
 };

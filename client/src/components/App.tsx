@@ -35,6 +35,6 @@ export default (): JSX.Element => {
     case "PartyDisbanded":
       return <PartyDisbanded d={d} parties={s.Parties} />;
     case "PartyWaiting":
-      return <PartyWaiter send={send!} />;
+      return <PartyWaiter send={send!} leader={s.Leader} clients={s.Clients} />;
   }
 };
