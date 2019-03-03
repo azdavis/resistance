@@ -24,7 +24,7 @@ export default ({ send }: Props): JSX.Element => {
       >
         <label htmlFor="name">Player name</label>
         <input type="text" id="name" autoCorrect="off" ref={nameRef} />
-        <Button value="submit" submit disabled={send === null} />
+        <Button value="Submit" submit disabled={send === null} />
       </form>
     </div>
   );
