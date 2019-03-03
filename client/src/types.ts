@@ -7,10 +7,13 @@ export type PartyInfo = {
   Name: string;
 };
 
-export type State =
-  | { T: "Closed" }
-  | { T: "NameChoosing" }
-  | { T: "PartyChoosing"; Name: string; Parties: Array<PartyInfo> };
+export type State = {
+  T: "Closed" | "NameChoosing" | "PartyChoosing" | "PartyDisbanded";
+  Name: string; // if "", no name
+  Parties: Array<PartyInfo>;
+};
+
+export type ToClient = Partial<State>;
 
 export type ToServer =
   | { T: "NameChoose"; Name: string }

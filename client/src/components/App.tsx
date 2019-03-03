@@ -1,13 +1,12 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { State, Send } from "../types";
+import { State, ToClient, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import PartyChooser from "./PartyChooser";
+import PartyDisbanded from "./PartyDisbanded";
 
-// a might actually be a "partial state", which is why we merge it with s, but a
-// takes precedence. a: Partial<State> didn't quite seem to work.
-const reducer = (s: State, a: State): State => ({ ...s, ...a });
-const init: State = { T: "NameChoosing" };
+const reducer = (s: State, tc: ToClient): State => ({ ...s, ...tc });
+const init: State = { T: "NameChoosing", Name: "", Parties: [] };
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
@@ -32,5 +31,7 @@ export default (): JSX.Element => {
       return <NameChooser send={send} />;
     case "PartyChoosing":
       return <PartyChooser send={send!} />;
+    case "PartyDisbanded":
+      return <PartyDisbanded d={d} />;
   }
 };
