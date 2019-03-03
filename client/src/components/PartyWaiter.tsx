@@ -22,12 +22,14 @@ export default ({ send, self, leader, clients }: Props): JSX.Element => {
   return (
     <div className="PartyWaiter">
       <h1>Party</h1>
+      <h2>Members</h2>
       {clients.map(({ CID, Name }) => (
         <div key={CID}>
           {Name}
           {modifiers(CID, self, leader)}
         </div>
       ))}
+      <h2>Actions</h2>
       <Button value="Leave" onClick={() => send({ T: "PartyLeave" })} />
     </div>
   );
