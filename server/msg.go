@@ -59,6 +59,7 @@ type Action interface {
 func (Close) isAction()       {}
 func (NameChoose) isAction()  {}
 func (PartyChoose) isAction() {}
+func (PartyLeave) isAction()  {}
 func (PartyCreate) isAction() {}
 
 // Close means the client closed itself. No further Actions will follow from
@@ -74,6 +75,9 @@ type NameChoose struct {
 type PartyChoose struct {
 	PID // desired PID
 }
+
+// PartyLeave is a request to leave the client's current party.
+type PartyLeave struct{}
 
 // PartyCreate is a request to create a new party, with oneself as the leader.
 type PartyCreate struct {
@@ -97,6 +101,10 @@ func JSONToAction(bs []byte) (Action, error) {
 		return msg, err
 	case "PartyChoose":
 		var msg PartyChoose
+		err = json.Unmarshal(tm.P, &msg)
+		return msg, err
+	case "PartyLeave":
+		var msg PartyLeave
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	case "PartyCreate":
