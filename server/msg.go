@@ -5,32 +5,6 @@ import (
 	"errors"
 )
 
-// ToClient //////////////////////////////////////////////////////////////////
-
-// ToClient is a state that a client could be in. It is sent to the client to
-// change the client's state. It may be sent in direct reply to a client's
-// ToServer, or it may be sent because the client was transitively affected by
-// another client's ToServer.
-type ToClient interface {
-	json.Marshaler
-	isToClient()
-}
-
-func (PartyChoosing) isToClient()  {}
-func (PartyWaiting) isToClient()   {}
-
-// PartyChoosing is the state of a client choosing their party.
-type PartyChoosing struct {
-	Parties []PartyInfo // available parties to join
-}
-
-// PartyWaiting is the state of a client who is in a party, but the game has not
-// yet started.
-type PartyWaiting struct {
-	Leader  CID          // info about this party
-	Clients []ClientInfo // info about other clients in this party
-}
-
 // ToServer ////////////////////////////////////////////////////////////////////
 
 // ToServer is a usually parsed tagMsg.P sent from a client. It is a request
@@ -66,6 +40,32 @@ type PartyLeave struct{}
 
 // PartyCreate is a request to create a new party, with oneself as the leader.
 type PartyCreate struct{}
+
+// ToClient //////////////////////////////////////////////////////////////////
+
+// ToClient is a state that a client could be in. It is sent to the client to
+// change the client's state. It may be sent in direct reply to a client's
+// ToServer, or it may be sent because the client was transitively affected by
+// another client's ToServer.
+type ToClient interface {
+	json.Marshaler
+	isToClient()
+}
+
+func (PartyChoosing) isToClient() {}
+func (PartyWaiting) isToClient()  {}
+
+// PartyChoosing is the state of a client choosing their party.
+type PartyChoosing struct {
+	Parties []PartyInfo // available parties to join
+}
+
+// PartyWaiting is the state of a client who is in a party, but the game has not
+// yet started.
+type PartyWaiting struct {
+	Leader  CID          // info about this party
+	Clients []ClientInfo // info about other clients in this party
+}
 
 // helpers /////////////////////////////////////////////////////////////////////
 
