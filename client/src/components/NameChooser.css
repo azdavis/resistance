@@ -1,0 +1,20 @@
+.NameChooser label {
+  display: block;
+}
+
+.NameChooser input[type="text"] {
+  display: block;
+  appearance: none;
+  width: 100%;
+  margin: 2px 0;
+  padding: 2px;
+  border: 1px solid;
+  border-radius: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.NameChooser input[type="text"]:focus {
+  outline: 0;
+  border-color: var(--blue);
+}
