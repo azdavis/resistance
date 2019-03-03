@@ -5,20 +5,7 @@ import (
 	"errors"
 )
 
-// tagMsg is a JSON-encoded message.
-type tagMsg struct {
-	T string          // type of thing to try to parse
-	P json.RawMessage // json encoding of thing
-}
-
-// fromTagMsg creates a JSON-encoded tagMsg.
-func fromTagMsg(t string, p interface{}) ([]byte, error) {
-	bs, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(tagMsg{T: t, P: json.RawMessage(bs)})
-}
+// State ///////////////////////////////////////////////////////////////////////
 
 // State is a state that a client could be in. It is sent to the client to
 // change the client's state. It may be sent in direct reply to a client's
@@ -28,9 +15,6 @@ type State interface {
 	json.Marshaler
 	isState()
 }
-
-func (PartyChoosing) isState()  {}
-func (PartyDisbanded) isState() {}
 
 // PartyInfo contains a party name (may not be unique) and PID (unique).
 type PartyInfo struct {
@@ -50,17 +34,7 @@ type PartyDisbanded struct {
 	Parties []PartyInfo // available parties to join
 }
 
-// MarshalJSON makes JSON.
-func (pc PartyChoosing) MarshalJSON() ([]byte, error) {
-	type alias PartyChoosing
-	return fromTagMsg("PartyChoosing", alias(pc))
-}
-
-// MarshalJSON makes JSON.
-func (pc PartyDisbanded) MarshalJSON() ([]byte, error) {
-	type alias PartyDisbanded
-	return fromTagMsg("PartyDisbanded", alias(pc))
-}
+// Action //////////////////////////////////////////////////////////////////////
 
 // Action is a usually parsed tagMsg.P sent from a client. It is a request from
 // the client to change state. The only Action that does not originate from a
@@ -68,12 +42,6 @@ func (pc PartyDisbanded) MarshalJSON() ([]byte, error) {
 type Action interface {
 	isAction()
 }
-
-func (Close) isAction()       {}
-func (NameChoose) isAction()  {}
-func (PartyChoose) isAction() {}
-func (PartyLeave) isAction()  {}
-func (PartyCreate) isAction() {}
 
 // Close means the client closed itself. No further Actions will follow from
 // this client.
@@ -95,6 +63,32 @@ type PartyLeave struct{}
 // PartyCreate is a request to create a new party, with oneself as the leader.
 type PartyCreate struct {
 	Name string // desired party name
+}
+
+// helpers /////////////////////////////////////////////////////////////////////
+
+func (PartyChoosing) isState()  {}
+func (PartyDisbanded) isState() {}
+
+func (Close) isAction()       {}
+func (NameChoose) isAction()  {}
+func (PartyChoose) isAction() {}
+func (PartyLeave) isAction()  {}
+func (PartyCreate) isAction() {}
+
+// tagMsg is a JSON-encoded message.
+type tagMsg struct {
+	T string          // type of thing to try to parse
+	P json.RawMessage // json encoding of thing
+}
+
+// fromTagMsg creates a JSON-encoded tagMsg.
+func fromTagMsg(t string, p interface{}) ([]byte, error) {
+	bs, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(tagMsg{T: t, P: json.RawMessage(bs)})
 }
 
 // ErrUnknownActionType means the T of a tagMsg did not match any known T.
@@ -127,4 +121,16 @@ func JSONToAction(bs []byte) (Action, error) {
 	default:
 		return nil, ErrUnknownActionType
 	}
+}
+
+// MarshalJSON makes JSON.
+func (pc PartyChoosing) MarshalJSON() ([]byte, error) {
+	type alias PartyChoosing
+	return fromTagMsg("PartyChoosing", alias(pc))
+}
+
+// MarshalJSON makes JSON.
+func (pc PartyDisbanded) MarshalJSON() ([]byte, error) {
+	type alias PartyDisbanded
+	return fromTagMsg("PartyDisbanded", alias(pc))
 }
