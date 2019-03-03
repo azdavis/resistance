@@ -30,6 +30,7 @@ type Party struct {
 	send    chan *Client // outgoing clients
 	recv    chan *Client // incoming clients
 	clients *ClientMap   // clients in the party (includes leader)
+	started bool         // whether the game has started
 }
 
 // NewParty returns a new Party.
@@ -50,6 +51,7 @@ func NewParty(
 		send:    send,
 		recv:    make(chan *Client),
 		clients: clients,
+		started: false,
 	}
 	go p.run()
 	return p
@@ -65,7 +67,7 @@ func (p *Party) run() {
 			switch cidAc.Action.(type) {
 			case Close:
 				p.clients.Rm(cid).Close()
-				if cid == p.leader {
+				if cid == p.leader || p.started {
 					p.done <- p.PID
 					return
 				}
