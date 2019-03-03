@@ -100,9 +100,8 @@ func (p *Party) run() {
 				p.send <- p.clients.Rm(cid)
 				if cid == p.leader {
 					return
-				} else {
-					p.broadcastInfo()
 				}
+				p.broadcastInfo()
 			}
 		}
 	}
