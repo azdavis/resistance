@@ -8,7 +8,12 @@ export type PartyInfo = {
 };
 
 export type State = {
-  T: "Closed" | "NameChoosing" | "PartyChoosing" | "PartyDisbanded";
+  T:
+    | "Closed"
+    | "NameChoosing"
+    | "PartyChoosing"
+    | "PartyDisbanded"
+    | "PartyWaiting";
   Name: string; // if "", no name
   Parties: Array<PartyInfo>;
 };

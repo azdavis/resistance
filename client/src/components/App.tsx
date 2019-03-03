@@ -4,6 +4,7 @@ import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import PartyChooser from "./PartyChooser";
 import PartyDisbanded from "./PartyDisbanded";
+import PartyWaiter from "./PartyWaiter";
 
 const reducer = (s: State, tc: ToClient): State => ({ ...s, ...tc });
 const init: State = { T: "NameChoosing", Name: "", Parties: [] };
@@ -33,5 +34,7 @@ export default (): JSX.Element => {
       return <PartyChooser send={send!} />;
     case "PartyDisbanded":
       return <PartyDisbanded d={d} />;
+    case "PartyWaiting":
+      return <PartyWaiter send={send!} />;
   }
 };
