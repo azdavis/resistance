@@ -37,7 +37,8 @@ func NewClient(conn *ws.Conn, cid CID) *Client {
 	return cl
 }
 
-// Close quits the write goroutine. It should be called only once.
+// Close quits the write goroutine. It should be called exactly once, when a
+// Close{} Action is received from this client.
 func (cl *Client) Close() {
 	close(cl.send)
 }
