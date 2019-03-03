@@ -20,7 +20,7 @@ func (PartyChoosing) isToClient()  {}
 func (PartyDisbanded) isToClient() {}
 func (PartyWaiting) isToClient()   {}
 
-// PartyInfo contains a party name (may not be unique) and PID (unique).
+// PartyInfo contains info about a Party.
 type PartyInfo struct {
 	PID
 	Leader string

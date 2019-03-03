@@ -10,7 +10,7 @@ type Action struct {
 	ToServer
 }
 
-// ClientInfo contains a client name (may not be unique) and CID (unique).
+// ClientInfo contains info about a Client.
 type ClientInfo struct {
 	CID
 	Name string
@@ -24,7 +24,7 @@ type ClientInfo struct {
 type ClientMap struct {
 	C     chan Action           // messages from the Clients in M, tagged with CID
 	M     map[CID]*Client       // if M[x] = c, c.CID = x
-	info  []ClientInfo          // if M[x] = c, info has {CID: x, Name: c.name}
+	info  []ClientInfo          // if M[x] = c, info contains an entry for c
 	quits map[CID]chan struct{} // iff M[x] = c, close(quits[x]) will stop piping
 }
 
