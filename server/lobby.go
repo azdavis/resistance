@@ -29,6 +29,9 @@ func (lb *Lobby) run() {
 		select {
 		case cl := <-lb.recv:
 			clients.Add(cl)
+			if cl.name != "" {
+				cl.send <- PartyChoosing{Parties: parties.Info()}
+			}
 		case pid := <-done:
 			rmPartyClients := parties.Rm(pid).clients
 			for cid := range rmPartyClients.M {
@@ -64,7 +67,9 @@ func (lb *Lobby) run() {
 				}
 				parties.Add(clients.Rm(cid), lb.recv, done)
 				for _, cl := range clients.M {
-					cl.send <- PartyChoosing{Parties: parties.Info()}
+					if cl.name != "" {
+						cl.send <- PartyChoosing{Parties: parties.Info()}
+					}
 				}
 			}
 		}
