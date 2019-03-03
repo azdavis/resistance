@@ -20,12 +20,6 @@ func (PartyChoosing) isToClient()  {}
 func (PartyDisbanded) isToClient() {}
 func (PartyWaiting) isToClient()   {}
 
-// PartyInfo contains info about a Party.
-type PartyInfo struct {
-	PID
-	Leader string
-}
-
 // PartyChoosing is the state of a client choosing their party.
 type PartyChoosing struct {
 	Parties []PartyInfo // available parties to join

@@ -24,27 +24,16 @@ func NewLobby() *Lobby {
 // run runs the Lobby.
 func (lb *Lobby) run() {
 	clients := NewClientMap()
-	nextPID := PID(1)
-	parties := make(map[PID]*Party)
-	getPartyInfo := func() []PartyInfo {
-		ret := make([]PartyInfo, 0, len(parties))
-		for pid, party := range parties {
-			ret = append(ret, PartyInfo{PID: pid, Leader: party.LeaderName()})
-		}
-		return ret
-	}
-	partyInfo := getPartyInfo()
+	parties := NewPartyMap()
 	for {
 		select {
 		case cl := <-lb.recv:
 			clients.Add(cl)
 		case pid := <-lb.done:
-			deletedPartyClients := parties[pid].clients
-			delete(parties, pid)
-			partyInfo = getPartyInfo()
+			deletedPartyClients := parties.Rm(pid).clients
 			for cid := range deletedPartyClients.M {
 				cl := deletedPartyClients.Rm(cid)
-				cl.send <- PartyDisbanded{Parties: partyInfo}
+				cl.send <- PartyDisbanded{Parties: parties.Info()}
 				clients.Add(cl)
 			}
 		case ac := <-clients.C:
@@ -59,10 +48,10 @@ func (lb *Lobby) run() {
 					continue
 				}
 				client.name = ac.Name
-				client.send <- PartyChoosing{Parties: partyInfo}
+				client.send <- PartyChoosing{Parties: parties.Info()}
 			case PartyChoose:
 				log.Println("PartyChoose", cid, ac.PID)
-				party, ok := parties[ac.PID]
+				party, ok := parties.M[ac.PID]
 				if !ok {
 					continue
 				}
@@ -73,16 +62,9 @@ func (lb *Lobby) run() {
 				if !ok {
 					continue
 				}
-				parties[nextPID] = NewParty(
-					nextPID,
-					clients.Rm(cid),
-					lb.recv,
-					lb.done,
-				)
-				nextPID++
-				partyInfo = getPartyInfo()
+				parties.Add(clients.Rm(cid), lb.recv, lb.done)
 				for _, cl := range clients.M {
-					cl.send <- PartyChoosing{Parties: partyInfo}
+					cl.send <- PartyChoosing{Parties: parties.Info()}
 				}
 			}
 		}
