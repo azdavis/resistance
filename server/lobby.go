@@ -73,6 +73,12 @@ func (lb *Lobby) run() {
 				)
 				nextPID++
 				partyInfo = getPartyInfo()
+				for _, cl := range clients.M {
+					cl.send <- PartyChoosing{
+						Name:    cl.name,
+						Parties: partyInfo,
+					}
+				}
 			}
 		}
 	}
