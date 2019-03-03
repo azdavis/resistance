@@ -70,7 +70,12 @@ func (p *Party) broadcastInfo() {
 	}
 }
 
+func (p *Party) close() {
+	p.done <- p.PID
+}
+
 func (p *Party) run() {
+	defer p.close()
 	for {
 		select {
 		case cl := <-p.recv:
@@ -82,14 +87,12 @@ func (p *Party) run() {
 			case Close:
 				p.clients.Rm(cid).Close()
 				if cid == p.leader || p.started {
-					p.done <- p.PID
 					return
 				}
 				p.broadcastInfo()
 			case PartyLeave:
 				p.send <- p.clients.Rm(cid)
 				if cid == p.leader {
-					p.done <- p.PID
 					return
 				} else {
 					p.broadcastInfo()
