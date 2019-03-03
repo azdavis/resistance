@@ -29,7 +29,8 @@ type State interface {
 	isState()
 }
 
-func (PartyChoosing) isState() {}
+func (PartyChoosing) isState()  {}
+func (PartyDisbanded) isState() {}
 
 // PartyInfo contains a party name (may not be unique) and PID (unique).
 type PartyInfo struct {
@@ -43,10 +44,22 @@ type PartyChoosing struct {
 	Parties []PartyInfo // available parties to join
 }
 
+// PartyDisbanded is the state of a client who was in a party, but it was
+// disbanded.
+type PartyDisbanded struct {
+	Parties []PartyInfo // available parties to join
+}
+
 // MarshalJSON makes JSON.
 func (pc PartyChoosing) MarshalJSON() ([]byte, error) {
 	type alias PartyChoosing
 	return fromTagMsg("PartyChoosing", alias(pc))
+}
+
+// MarshalJSON makes JSON.
+func (pc PartyDisbanded) MarshalJSON() ([]byte, error) {
+	type alias PartyDisbanded
+	return fromTagMsg("PartyDisbanded", alias(pc))
 }
 
 // Action is a usually parsed tagMsg.P sent from a client. It is a request from
