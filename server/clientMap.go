@@ -47,7 +47,7 @@ func (cm *ClientMap) Add(cl *Client) {
 	if ok {
 		panic("already present")
 	}
-	log.Println("Add", cl.CID)
+	log.Println("ClientMap Add", cl.CID)
 	quit := make(chan struct{})
 	cm.M[cl.CID] = cl
 	cm.quits[cl.CID] = quit
@@ -63,7 +63,7 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	if !ok {
 		panic("not present")
 	}
-	log.Println("Rm", cid)
+	log.Println("ClientMap Rm", cid)
 	delete(cm.M, cid)
 	close(cm.quits[cid])
 	delete(cm.quits, cid)
@@ -89,6 +89,7 @@ func (cm *ClientMap) setInfo() {
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
 // each action with the CID. pipe quits when the given quit channel is closed.
 func (cm *ClientMap) pipe(CID CID, ch chan ToServer, quit chan struct{}) {
+	log.Println("enter pipe", CID)
 	for {
 		select {
 		case <-quit:

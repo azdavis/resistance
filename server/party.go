@@ -1,5 +1,9 @@
 package main
 
+import (
+	"log"
+)
+
 // TODO this provides no way for a client to leave the party before the game
 // starts.
 
@@ -71,10 +75,12 @@ func (p *Party) broadcastInfo() {
 }
 
 func (p *Party) close() {
+	log.Println("exit run", p.PID)
 	p.done <- p.PID
 }
 
 func (p *Party) run() {
+	log.Println("enter run", p.PID)
 	defer p.close()
 	for {
 		select {

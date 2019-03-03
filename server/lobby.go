@@ -22,6 +22,7 @@ func NewLobby() *Lobby {
 
 // run runs the Lobby.
 func (lb *Lobby) run() {
+	log.Println("enter Lobby run")
 	clients := NewClientMap()
 	parties := NewPartyMap()
 	done := make(chan PID, lobbyChLen)

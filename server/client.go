@@ -47,10 +47,11 @@ func (cl *Client) Close() {
 // recvFrom reads from the conn, tries to parse the message, and if successful,
 // sends the ToServer over recv.
 func (cl *Client) recvFrom(conn *ws.Conn) {
+	log.Println("enter recvFrom", cl.CID)
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
-			log.Println("recvFrom", cl.CID, err)
+			log.Println("err recvFrom", cl.CID, err)
 			// no further ToServers will be sent on recv. however, do not close recv,
 			// since we may send garbage ToServers to listeners.
 			cl.recv <- Close{}
@@ -71,10 +72,11 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 
 // sendTo sends every ToClient from send over the websocket. See NewClient.
 func (cl *Client) sendTo(conn *ws.Conn) {
+	log.Println("enter sendTo", cl.CID)
 	for m := range cl.send {
 		err := conn.WriteJSON(m)
 		if err != nil {
-			log.Println("sendTo", cl.CID, err)
+			log.Println("err sendTo", cl.CID, err)
 		}
 	}
 	log.Println("exit sendTo", cl.CID)

@@ -37,7 +37,7 @@ func (pm *PartyMap) Add(
 ) *Party {
 	pid := pm.nextPID
 	pm.nextPID++
-	log.Println("Add", pid)
+	log.Println("PartyMap Add", pid)
 	p := NewParty(pid, leader, send, done)
 	pm.M[pid] = p
 	pm.setInfo()
@@ -51,7 +51,7 @@ func (pm *PartyMap) Rm(cid PID) *Party {
 	if !ok {
 		panic("not present")
 	}
-	log.Println("Rm", cid)
+	log.Println("PartyMap Rm", cid)
 	delete(pm.M, cid)
 	pm.setInfo()
 	return p
