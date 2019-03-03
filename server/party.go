@@ -24,7 +24,6 @@ type PID uint64
 // will start cleaning up the party.
 type Party struct {
 	PID                  // unique
-	name    string       // set by leader
 	leader  CID          // controls when game starts, can unilaterally disband
 	done    chan PID     // send own PID when party disbands
 	send    chan *Client // outgoing clients
@@ -36,7 +35,6 @@ type Party struct {
 // NewParty returns a new Party.
 func NewParty(
 	pid PID,
-	name string,
 	leader *Client,
 	send chan *Client,
 	done chan PID,
@@ -45,7 +43,6 @@ func NewParty(
 	clients.Add(leader)
 	p := &Party{
 		PID:     pid,
-		name:    name,
 		leader:  leader.CID,
 		done:    done,
 		send:    send,
@@ -58,9 +55,14 @@ func NewParty(
 	return p
 }
 
+// LeaderName returns the name of the leader of this party.
+func (p *Party) LeaderName() string {
+	return p.clients.M[p.leader].name
+}
+
 func (p *Party) broadcastInfo() {
 	for _, cl := range p.clients.M {
-		cl.send <- PartyWaiting{Clients: p.clients.Info()}
+		cl.send <- PartyWaiting{Leader: p.leader, Clients: p.clients.Info()}
 	}
 }
 

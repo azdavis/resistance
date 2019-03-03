@@ -29,7 +29,7 @@ func (lb *Lobby) run() {
 	getPartyInfo := func() []PartyInfo {
 		ret := make([]PartyInfo, 0, len(parties))
 		for pid, party := range parties {
-			ret = append(ret, PartyInfo{PID: pid, Name: party.name})
+			ret = append(ret, PartyInfo{PID: pid, Leader: party.LeaderName()})
 		}
 		return ret
 	}
@@ -62,10 +62,9 @@ func (lb *Lobby) run() {
 				log.Println("PartyChoose", cid, ac.PID)
 				parties[ac.PID].recv <- clients.Rm(cid)
 			case PartyCreate:
-				log.Println("PartyCreate", cid, ac.Name)
+				log.Println("PartyCreate", cid)
 				parties[nextPID] = NewParty(
 					nextPID,
-					ac.Name,
 					clients.Rm(cid),
 					lb.recv,
 					lb.done,

@@ -5,7 +5,7 @@ export type CID = number;
 
 export type PartyInfo = {
   PID: PID;
-  Name: string;
+  Leader: string;
 };
 
 export type ClientInfo = {
@@ -18,11 +18,12 @@ export type State = { T: "NameChoosing" } | { T: "Closed" } | ToClient;
 export type ToClient =
   | { T: "PartyChoosing"; Parties: Array<PartyInfo> }
   | { T: "PartyDisbanded"; Parties: Array<PartyInfo> }
-  | { T: "PartyWaiting"; Clients: Array<ClientInfo> };
+  | { T: "PartyWaiting"; Leader: CID; Clients: Array<ClientInfo> };
 
 export type ToServer =
   | { T: "NameChoose"; Name: string }
   | { T: "PartyChoose"; PID: PID }
-  | { T: "PartyCreate"; Name: string };
+  | { T: "PartyLeave" }
+  | { T: "PartyCreate" };
 
 export type Send = Dispatch<ToServer>;

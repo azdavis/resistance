@@ -23,7 +23,7 @@ func (PartyWaiting) isToClient()   {}
 // PartyInfo contains a party name (may not be unique) and PID (unique).
 type PartyInfo struct {
 	PID
-	Name string
+	Leader string
 }
 
 // PartyChoosing is the state of a client choosing their party.
@@ -40,6 +40,7 @@ type PartyDisbanded struct {
 // PartyWaiting is the state of a client who is in a party, but the game has not
 // yet started.
 type PartyWaiting struct {
+	Leader  CID          // info about this party
 	Clients []ClientInfo // info about other clients in this party
 }
 
@@ -77,9 +78,7 @@ type PartyChoose struct {
 type PartyLeave struct{}
 
 // PartyCreate is a request to create a new party, with oneself as the leader.
-type PartyCreate struct {
-	Name string // desired party name
-}
+type PartyCreate struct{}
 
 // helpers /////////////////////////////////////////////////////////////////////
 

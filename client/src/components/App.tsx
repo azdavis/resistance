@@ -1,12 +1,12 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { State, ToClient, Send } from "../types";
+import { State, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import PartyChooser from "./PartyChooser";
 import PartyDisbanded from "./PartyDisbanded";
 import PartyWaiter from "./PartyWaiter";
 
-const reducer = (s: State, tc: ToClient): State => tc;
+const reducer = (s: State, a: State): State => a;
 const init: State = { T: "NameChoosing" };
 
 export default (): JSX.Element => {
