@@ -39,8 +39,12 @@ func (lb *Lobby) run() {
 			clients.Add(cl)
 		case pid := <-lb.done:
 			cm := parties[pid].clients
+			partyInfo := getPartyInfo()
 			for cid := range cm.M {
-				clients.Add(cm.Rm(cid))
+				cl := cm.Rm(cid)
+				// TODO
+				cl.send <- PartyDisbanded{Parties: partyInfo}
+				clients.Add(cl)
 			}
 			delete(parties, pid)
 		case cidAc := <-clients.C:
