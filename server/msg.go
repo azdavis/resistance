@@ -63,6 +63,7 @@ type PartyChoosing struct {
 // PartyWaiting is the state of a client who is in a party, but the game has not
 // yet started.
 type PartyWaiting struct {
+	Self    CID          // the client's own CID
 	Leader  CID          // info about this party
 	Clients []ClientInfo // info about other clients in this party
 }

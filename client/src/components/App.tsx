@@ -32,6 +32,13 @@ export default (): JSX.Element => {
     case "PartyChoosing":
       return <PartyChooser send={send!} parties={s.Parties} />;
     case "PartyWaiting":
-      return <PartyWaiter send={send!} leader={s.Leader} clients={s.Clients} />;
+      return (
+        <PartyWaiter
+          send={send!}
+          self={s.Self}
+          leader={s.Leader}
+          clients={s.Clients}
+        />
+      );
   }
 };

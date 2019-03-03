@@ -4,16 +4,29 @@ import Button from "./Button";
 
 type Props = {
   send: Send;
+  self: CID;
   leader: CID;
   clients: Array<ClientInfo>;
 };
 
-export default ({ send, leader, clients }: Props): JSX.Element => {
+const modifiers = (cid: CID, self: CID, leader: CID): string =>
+  cid === self && cid === leader
+    ? " (you, leader)"
+    : cid === self
+    ? " (you)"
+    : cid === leader
+    ? " (leader)"
+    : "";
+
+export default ({ send, self, leader, clients }: Props): JSX.Element => {
   return (
     <div className="PartyWaiter">
       <h1>Party</h1>
       {clients.map(({ CID, Name }) => (
-        <div key={CID}>{Name}</div>
+        <div key={CID}>
+          {Name}
+          {modifiers(CID, self, leader)}
+        </div>
       ))}
       <Button value="Leave" onClick={() => send({ T: "PartyLeave" })} />
     </div>
