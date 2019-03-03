@@ -56,7 +56,7 @@ func (cm *ClientMap) Add(cl *Client) {
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see
-// Add). It does not close the client itself. In fact, it returns the client
+// Add). It does not close the client itself. In fact, it returns the Client
 // that was removed. A Client with the given CID must exist in the ClientMap.
 func (cm *ClientMap) Rm(cid CID) *Client {
 	cl, ok := cm.M[cid]
