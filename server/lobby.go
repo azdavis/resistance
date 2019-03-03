@@ -25,6 +25,13 @@ func (lb *Lobby) run() {
 	clients := NewClientMap()
 	parties := NewPartyMap()
 	done := make(chan PID, lobbyChLen)
+	broadcastParties := func() {
+		for _, cl := range clients.M {
+			if cl.name != "" {
+				cl.send <- PartyChoosing{Parties: parties.Info()}
+			}
+		}
+	}
 	for {
 		select {
 		case cl := <-lb.recv:
@@ -34,6 +41,7 @@ func (lb *Lobby) run() {
 			}
 		case pid := <-done:
 			rmPartyClients := parties.Rm(pid).clients
+			broadcastParties()
 			for cid := range rmPartyClients.M {
 				cl := rmPartyClients.Rm(cid)
 				cl.send <- PartyDisbanded{Parties: parties.Info()}
@@ -66,11 +74,7 @@ func (lb *Lobby) run() {
 					continue
 				}
 				parties.Add(clients.Rm(cid), lb.recv, done)
-				for _, cl := range clients.M {
-					if cl.name != "" {
-						cl.send <- PartyChoosing{Parties: parties.Info()}
-					}
-				}
+				broadcastParties()
 			}
 		}
 	}
