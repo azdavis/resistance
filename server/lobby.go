@@ -59,9 +59,7 @@ func (lb *Lobby) run() {
 					continue
 				}
 				client.name = ac.Name
-				client.send <- PartyChoosing{
-					Parties: partyInfo,
-				}
+				client.send <- PartyChoosing{Parties: partyInfo}
 			case PartyChoose:
 				log.Println("PartyChoose", cid, ac.PID)
 				party, ok := parties[ac.PID]
@@ -84,9 +82,7 @@ func (lb *Lobby) run() {
 				nextPID++
 				partyInfo = getPartyInfo()
 				for _, cl := range clients.M {
-					cl.send <- PartyChoosing{
-						Parties: partyInfo,
-					}
+					cl.send <- PartyChoosing{Parties: partyInfo}
 				}
 			}
 		}
