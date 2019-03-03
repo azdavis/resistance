@@ -54,15 +54,27 @@ func (lb *Lobby) run() {
 				clients.Rm(cid).Close()
 			case NameChoose:
 				log.Println("NameChoose", cid, ac.Name)
-				clients.M[cid].name = ac.Name
-				clients.M[cid].send <- PartyChoosing{
+				client, ok := clients.M[cid]
+				if !ok {
+					continue
+				}
+				client.name = ac.Name
+				client.send <- PartyChoosing{
 					Parties: partyInfo,
 				}
 			case PartyChoose:
 				log.Println("PartyChoose", cid, ac.PID)
-				parties[ac.PID].recv <- clients.Rm(cid)
+				party, ok := parties[ac.PID]
+				if !ok {
+					continue
+				}
+				party.recv <- clients.Rm(cid)
 			case PartyCreate:
 				log.Println("PartyCreate", cid)
+				_, ok := clients.M[cid]
+				if !ok {
+					continue
+				}
 				parties[nextPID] = NewParty(
 					nextPID,
 					clients.Rm(cid),
