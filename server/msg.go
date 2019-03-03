@@ -16,6 +16,9 @@ type ToClient interface {
 	isToClient()
 }
 
+func (PartyChoosing) isToClient()  {}
+func (PartyDisbanded) isToClient() {}
+
 // PartyInfo contains a party name (may not be unique) and PID (unique).
 type PartyInfo struct {
 	PID
@@ -44,6 +47,12 @@ type ToServer interface {
 	isToServer()
 }
 
+func (Close) isToServer()       {}
+func (NameChoose) isToServer()  {}
+func (PartyChoose) isToServer() {}
+func (PartyLeave) isToServer()  {}
+func (PartyCreate) isToServer() {}
+
 // Close means the client closed itself. No further Actions will follow from
 // this client.
 type Close struct{}
@@ -67,15 +76,6 @@ type PartyCreate struct {
 }
 
 // helpers /////////////////////////////////////////////////////////////////////
-
-func (PartyChoosing) isToClient()  {}
-func (PartyDisbanded) isToClient() {}
-
-func (Close) isToServer()       {}
-func (NameChoose) isToServer()  {}
-func (PartyChoose) isToServer() {}
-func (PartyLeave) isToServer()  {}
-func (PartyCreate) isToServer() {}
 
 // tagMsg is a JSON-encoded message.
 type tagMsg struct {
