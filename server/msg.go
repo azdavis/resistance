@@ -18,6 +18,7 @@ type ToClient interface {
 
 func (PartyChoosing) isToClient()  {}
 func (PartyDisbanded) isToClient() {}
+func (PartyWaiting) isToClient()   {}
 
 // PartyInfo contains a party name (may not be unique) and PID (unique).
 type PartyInfo struct {
@@ -35,6 +36,12 @@ type PartyChoosing struct {
 // disbanded.
 type PartyDisbanded struct {
 	Parties []PartyInfo // available parties to join
+}
+
+// PartyWaiting is the state of a client who is in a party, but the game has not
+// yet started.
+type PartyWaiting struct {
+	Clients []ClientInfo // info about other clients in this party
 }
 
 // ToServer ////////////////////////////////////////////////////////////////////
@@ -134,4 +141,10 @@ func (pc PartyChoosing) MarshalJSON() ([]byte, error) {
 func (pc PartyDisbanded) MarshalJSON() ([]byte, error) {
 	type alias PartyDisbanded
 	return fromTagMsg("PartyDisbanded", alias(pc))
+}
+
+// MarshalJSON makes JSON.
+func (pc PartyWaiting) MarshalJSON() ([]byte, error) {
+	type alias PartyWaiting
+	return fromTagMsg("PartyWaiting", alias(pc))
 }

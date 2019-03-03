@@ -10,6 +10,12 @@ type Action struct {
 	ToServer
 }
 
+// ClientInfo contains a client name (may not be unique) and CID (unique).
+type ClientInfo struct {
+	CID
+	Name string
+}
+
 // ClientMap represents a group of related clients. It contains two public
 // fields: M, a mapping from Client IDs to Clients, and C, a channel on which
 // messages from all the clients stored in M are sent, with associated CID
@@ -18,6 +24,7 @@ type Action struct {
 type ClientMap struct {
 	C     chan Action           // messages from the Clients in M, tagged with CID
 	M     map[CID]*Client       // if M[x] = c, c.CID = x
+	info  []ClientInfo          // if M[x] = c, info has {CID: x, Name: c.name}
 	quits map[CID]chan struct{} // iff M[x] = c, close(quits[x]) will stop piping
 }
 
@@ -26,6 +33,7 @@ func NewClientMap() *ClientMap {
 	cm := &ClientMap{
 		C:     make(chan Action),
 		M:     make(map[CID]*Client),
+		info:  make([]ClientInfo, 0),
 		quits: make(map[CID]chan struct{}),
 	}
 	return cm
@@ -44,6 +52,7 @@ func (cm *ClientMap) Add(cl *Client) {
 	cm.M[cl.CID] = cl
 	cm.quits[cl.CID] = quit
 	go cm.pipe(cl.CID, cl.recv, quit)
+	cm.setInfo()
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see
@@ -58,7 +67,22 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	delete(cm.M, cid)
 	close(cm.quits[cid])
 	delete(cm.quits, cid)
+	cm.setInfo()
 	return cl
+}
+
+// Info gets the current info.
+func (cm *ClientMap) Info() []ClientInfo {
+	return cm.info
+}
+
+// setInfo sets the current info.
+func (cm *ClientMap) setInfo() {
+	info := make([]ClientInfo, 0, len(cm.M))
+	for cid, cl := range cm.M {
+		info = append(info, ClientInfo{CID: cid, Name: cl.name})
+	}
+	cm.info = info
 }
 
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging

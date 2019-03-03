@@ -53,8 +53,15 @@ func NewParty(
 		clients: clients,
 		started: false,
 	}
+	p.broadcastInfo()
 	go p.run()
 	return p
+}
+
+func (p *Party) broadcastInfo() {
+	for _, cl := range p.clients.M {
+		cl.send <- PartyWaiting{Clients: p.clients.Info()}
+	}
 }
 
 func (p *Party) run() {
@@ -62,6 +69,7 @@ func (p *Party) run() {
 		select {
 		case cl := <-p.recv:
 			p.clients.Add(cl)
+			p.broadcastInfo()
 		case ac := <-p.clients.C:
 			cid := ac.CID
 			switch ac.ToServer.(type) {
@@ -71,11 +79,13 @@ func (p *Party) run() {
 					p.done <- p.PID
 					return
 				}
+				p.broadcastInfo()
 			case PartyLeave:
 				if cid == p.leader {
 					p.done <- p.PID
 				} else {
 					p.send <- p.clients.Rm(cid)
+					p.broadcastInfo()
 				}
 			}
 		}
