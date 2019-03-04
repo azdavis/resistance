@@ -27,9 +27,10 @@ func (lb *Lobby) run() {
 	parties := NewPartyMap()
 	done := make(chan PID, lobbyChLen)
 	broadcastParties := func() {
+		msg := PartyChoosing{Parties: parties.Info()}
 		for _, cl := range clients.M {
 			if cl.name != "" {
-				cl.send <- PartyChoosing{Parties: parties.Info()}
+				cl.send <- msg
 			}
 		}
 	}

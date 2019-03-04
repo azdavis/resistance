@@ -62,11 +62,12 @@ func (p *Party) LeaderName() string {
 }
 
 func (p *Party) broadcastInfo() {
+	clientInfo := p.clients.Info()
 	for cid, cl := range p.clients.M {
 		cl.send <- PartyWaiting{
 			Self:    cid,
 			Leader:  p.leader,
-			Clients: p.clients.Info(),
+			Clients: clientInfo,
 		}
 	}
 }
