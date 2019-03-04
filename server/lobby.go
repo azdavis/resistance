@@ -28,6 +28,7 @@ func (lb *Lobby) run() {
 	partiesInfo := func() []PartyInfo {
 		ret := make([]PartyInfo, 0, len(parties.M))
 		for pid, party := range parties.M {
+			// TODO race with party.run
 			if party.started {
 				continue
 			}
