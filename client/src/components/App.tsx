@@ -28,7 +28,7 @@ export default (): JSX.Element => {
     case "Closed":
       return <Closed />;
     case "NameChoosing":
-      return <NameChooser send={send} />;
+      return <NameChooser send={send} valid={s.Valid} />;
     case "PartyChoosing":
       return <PartyChooser send={send!} parties={s.Parties} />;
     case "PartyWaiting":

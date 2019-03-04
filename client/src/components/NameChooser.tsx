@@ -5,9 +5,10 @@ import "./NameChooser.css";
 
 type Props = {
   send: Send | null;
+  valid: boolean;
 };
 
-export default ({ send }: Props): JSX.Element => {
+export default ({ send, valid }: Props): JSX.Element => {
   const nameRef = useRef<HTMLInputElement>(null);
   useEffect(() => nameRef.current!.focus(), []);
   return (
@@ -22,7 +23,7 @@ export default ({ send }: Props): JSX.Element => {
           send({ T: "NameChoose", Name: nameRef.current!.value });
         }}
       >
-        <label htmlFor="name">Player name</label>
+        <label htmlFor="name">Player name{!valid && <b> invalid</b>}</label>
         <input type="text" id="name" autoCorrect="off" ref={nameRef} />
         <Button value="Submit" submit disabled={send === null} />
       </form>
