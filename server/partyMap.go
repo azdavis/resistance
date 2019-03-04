@@ -59,7 +59,7 @@ func (pm *PartyMap) Rm(pid PID) *Party {
 
 // Info returns information about the the members of this PartyMap.
 func (pm *PartyMap) Info() []PartyInfo {
-	ret := make([]PartyInfo, 0, len(pm.sorted.M))
+	ret := make([]PartyInfo, len(pm.sorted.M))
 	for i, e := range pm.sorted.M {
 		ret[i] = PartyInfo{PID(e.K), e.V}
 	}

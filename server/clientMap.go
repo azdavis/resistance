@@ -88,7 +88,7 @@ func (cm *ClientMap) pipe(cid CID, ch chan ToServer, quit chan struct{}) {
 
 // Info returns information about the the members of this ClientMap.
 func (cm *ClientMap) Info() []ClientInfo {
-	ret := make([]ClientInfo, 0, len(cm.sorted.M))
+	ret := make([]ClientInfo, len(cm.sorted.M))
 	for i, e := range cm.sorted.M {
 		ret[i] = ClientInfo{CID(e.K), e.V}
 	}
