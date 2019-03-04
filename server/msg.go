@@ -20,6 +20,7 @@ func (NameChoose) isToServer()  {}
 func (PartyChoose) isToServer() {}
 func (PartyLeave) isToServer()  {}
 func (PartyCreate) isToServer() {}
+func (GameStart) isToServer()   {}
 
 // Close means the client closed itself. No further Actions will follow from
 // this client.
@@ -40,6 +41,9 @@ type PartyLeave struct{}
 
 // PartyCreate is a request to create a new party, with oneself as the leader.
 type PartyCreate struct{}
+
+// GameStart is a request to start the game.
+type GameStart struct{}
 
 // ToClient //////////////////////////////////////////////////////////////////
 
@@ -129,6 +133,10 @@ func JSONToAction(bs []byte) (ToServer, error) {
 		return msg, err
 	case "PartyCreate":
 		var msg PartyCreate
+		err = json.Unmarshal(tm.P, &msg)
+		return msg, err
+	case "GameStart":
+		var msg GameStart
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	default:

@@ -7,7 +7,8 @@ export type ToServer =
   | { T: "NameChoose"; Name: string }
   | { T: "PartyChoose"; PID: PID }
   | { T: "PartyLeave" }
-  | { T: "PartyCreate" };
+  | { T: "PartyCreate" }
+  | { T: "GameStart" };
 
 export type Send = Dispatch<ToServer>;
 
