@@ -63,7 +63,7 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
 // each action with the CID. pipe quits when the given quit channel is closed.
-func (cm *ClientMap) pipe(cid CID, ch chan ToServer, quit chan struct{}) {
+func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, quit <-chan struct{}) {
 	log.Println("enter pipe", cid)
 	for {
 		select {

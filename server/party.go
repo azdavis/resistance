@@ -24,22 +24,22 @@ type PID uint64
 // the Lobby which contains a pointer to this Party will receive along done and
 // will start cleaning up the party.
 type Party struct {
-	PID                  // unique
-	leader  CID          // controls when game starts, can unilaterally disband
-	name    string       // leader name
-	done    chan PID     // send own PID when party disbands
-	send    chan *Client // outgoing clients
-	recv    chan *Client // incoming clients
-	clients *ClientMap   // clients in the party (includes leader)
-	started bool         // whether the game has started
+	PID                    // unique
+	leader  CID            // controls when game starts
+	name    string         // leader name
+	done    chan<- PID     // send own PID when party disbands
+	send    chan<- *Client // outgoing clients
+	recv    chan *Client   // incoming clients
+	clients *ClientMap     // clients in the party (includes leader)
+	started bool           // whether the game has started
 }
 
 // NewParty returns a new Party.
 func NewParty(
 	pid PID,
 	leader *Client,
-	send chan *Client,
-	done chan PID,
+	send chan<- *Client,
+	done chan<- PID,
 ) *Party {
 	clients := NewClientMap()
 	clients.Add(leader)

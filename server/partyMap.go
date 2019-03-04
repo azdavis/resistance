@@ -24,8 +24,8 @@ func NewPartyMap() *PartyMap {
 // Add creates and returns a Party with the given information.
 func (pm *PartyMap) Add(
 	leader *Client,
-	send chan *Client,
-	done chan PID,
+	send chan<- *Client,
+	done chan<- PID,
 ) *Party {
 	pid := pm.nextPID
 	pm.nextPID++
