@@ -10,31 +10,23 @@ type Action struct {
 	ToServer
 }
 
-// ClientInfo contains info about a Client.
-type ClientInfo struct {
-	CID
-	Name string
-}
-
 // ClientMap represents a group of related clients. It contains two public
 // fields: M, a mapping from Client IDs to Clients, and C, a channel on which
 // messages from all the clients stored in M are sent, with associated CID
 // information attached to each ToServer (see Action). Only one goroutine may
 // call Add or Rm or access M at a time.
 type ClientMap struct {
-	C      chan Action           // messages from the Clients in M
-	M      map[CID]*Client       // if M[x] = c, c.CID = x
-	sorted *SortedMap            // sorted map from CID to name
-	quits  map[CID]chan struct{} // iff M[x] = c, close(quits[x]) stop piping
+	C     chan Action           // messages from the Clients in M
+	M     map[CID]*Client       // if M[x] = c, c.CID = x
+	quits map[CID]chan struct{} // iff M[x] = c, close(quits[x]) stop piping
 }
 
 // NewClientMap returns a new ClientMap.
 func NewClientMap() *ClientMap {
 	cm := &ClientMap{
-		C:      make(chan Action),
-		M:      make(map[CID]*Client),
-		sorted: NewSortedMap(5),
-		quits:  make(map[CID]chan struct{}),
+		C:     make(chan Action),
+		M:     make(map[CID]*Client),
+		quits: make(map[CID]chan struct{}),
 	}
 	return cm
 }
@@ -52,7 +44,6 @@ func (cm *ClientMap) Add(cl *Client) {
 	cm.M[cl.CID] = cl
 	cm.quits[cl.CID] = quit
 	go cm.pipe(cl.CID, cl.recv, quit)
-	cm.sorted.Add(uint64(cl.CID), cl.name)
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see
@@ -67,7 +58,6 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	delete(cm.M, cid)
 	close(cm.quits[cid])
 	delete(cm.quits, cid)
-	cm.sorted.Rm(uint64(cid))
 	return cl
 }
 
@@ -84,13 +74,4 @@ func (cm *ClientMap) pipe(cid CID, ch chan ToServer, quit chan struct{}) {
 			cm.C <- Action{cid, ac}
 		}
 	}
-}
-
-// Info returns information about the the members of this ClientMap.
-func (cm *ClientMap) Info() []ClientInfo {
-	ret := make([]ClientInfo, len(cm.sorted.M))
-	for i, e := range cm.sorted.M {
-		ret[i] = ClientInfo{CID(e.K), e.V}
-	}
-	return ret
 }

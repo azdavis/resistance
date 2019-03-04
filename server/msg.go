@@ -62,9 +62,21 @@ type NameChoosing struct {
 	Valid bool // whether the name was valid
 }
 
+// PartyInfo contains info about a Party.
+type PartyInfo struct {
+	PID
+	Leader string
+}
+
 // PartyChoosing is sent to a client who is choosing their party.
 type PartyChoosing struct {
 	Parties []PartyInfo // available parties to join
+}
+
+// ClientInfo contains info about a Client.
+type ClientInfo struct {
+	CID
+	Name string
 }
 
 // PartyWaiting is sent to a client who is in a party whose game has not yet

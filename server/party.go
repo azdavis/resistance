@@ -51,7 +51,7 @@ func NewParty(
 		clients: clients,
 		started: false,
 	}
-	p.broadcastInfo()
+	p.broadcastPartyWaiting()
 	go p.run()
 	return p
 }
@@ -61,8 +61,16 @@ func (p *Party) LeaderName() string {
 	return p.clients.M[p.leader].name
 }
 
-func (p *Party) broadcastInfo() {
-	clientInfo := p.clients.Info()
+func (p *Party) clientsInfo() []ClientInfo {
+	ret := make([]ClientInfo, 0, len(p.clients.M))
+	for cid, cl := range p.clients.M {
+		ret = append(ret, ClientInfo{cid, cl.name})
+	}
+	return ret
+}
+
+func (p *Party) broadcastPartyWaiting() {
+	clientInfo := p.clientsInfo()
 	for cid, cl := range p.clients.M {
 		cl.send <- PartyWaiting{
 			Self:    cid,
@@ -84,7 +92,7 @@ func (p *Party) run() {
 		select {
 		case cl := <-p.recv:
 			p.clients.Add(cl)
-			p.broadcastInfo()
+			p.broadcastPartyWaiting()
 		case ac := <-p.clients.C:
 			cid := ac.CID
 			switch ac.ToServer.(type) {
@@ -93,13 +101,13 @@ func (p *Party) run() {
 				if cid == p.leader || p.started {
 					return
 				}
-				p.broadcastInfo()
+				p.broadcastPartyWaiting()
 			case PartyLeave:
 				p.send <- p.clients.Rm(cid)
 				if cid == p.leader {
 					return
 				}
-				p.broadcastInfo()
+				p.broadcastPartyWaiting()
 			}
 		}
 	}
