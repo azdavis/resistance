@@ -103,10 +103,10 @@ func (p *Party) run() {
 				}
 				p.broadcastPartyWaiting()
 			case PartyLeave:
-				p.send <- p.clients.Rm(cid)
 				if cid == p.leader {
 					return
 				}
+				p.send <- p.clients.Rm(cid)
 				p.broadcastPartyWaiting()
 			}
 		}
