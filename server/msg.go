@@ -108,8 +108,9 @@ func fromTagMsg(t string, p interface{}) ([]byte, error) {
 	return json.Marshal(tagMsg{T: t, P: json.RawMessage(bs)})
 }
 
-// JSONToAction tries to turn a JSON encoding of a tagMsg into a ToServer.
-func JSONToAction(bs []byte) (ToServer, error) {
+// UnmarshalJSONToServer tries to turn a JSON encoding of a tagMsg into a
+// ToServer.
+func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
 	var tm tagMsg
 	err := json.Unmarshal(bs, &tm)
 	if err != nil {
@@ -137,7 +138,7 @@ func JSONToAction(bs []byte) (ToServer, error) {
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	default:
-		return nil, fmt.Errorf("unknown action type: %s", tm.T)
+		return nil, fmt.Errorf("unknown tag: %s", tm.T)
 	}
 }
 

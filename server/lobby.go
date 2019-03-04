@@ -56,24 +56,24 @@ func (lb *Lobby) run() {
 			broadcastParties()
 		case ac := <-clients.C:
 			cid := ac.CID
-			switch ac := ac.ToServer.(type) {
+			switch ts := ac.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
 			case NameChoose:
-				log.Println("NameChoose", cid, ac.Name)
+				log.Println("NameChoose", cid, ts.Name)
 				cl, ok := clients.M[cid]
 				if !ok {
 					continue
 				}
-				if !validName(ac.Name) {
+				if !validName(ts.Name) {
 					cl.send <- NameChoosing{Valid: false}
 					continue
 				}
-				cl.name = ac.Name
+				cl.name = ts.Name
 				cl.send <- PartyChoosing{Parties: partiesInfo()}
 			case PartyChoose:
-				log.Println("PartyChoose", cid, ac.PID)
-				party, ok := parties.M[ac.PID]
+				log.Println("PartyChoose", cid, ts.PID)
+				party, ok := parties.M[ts.PID]
 				if !ok {
 					continue
 				}

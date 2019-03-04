@@ -62,11 +62,11 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 		if mt != ws.TextMessage {
 			continue
 		}
-		ac, err := JSONToAction(bs)
+		ts, err := UnmarshalJSONToServer(bs)
 		if err != nil {
 			continue
 		}
-		cl.recv <- ac
+		cl.recv <- ts
 	}
 }
 

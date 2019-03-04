@@ -70,8 +70,8 @@ func (cm *ClientMap) pipe(cid CID, ch chan ToServer, quit chan struct{}) {
 		case <-quit:
 			log.Println("exit pipe", cid)
 			return
-		case ac := <-ch:
-			cm.C <- Action{cid, ac}
+		case ts := <-ch:
+			cm.C <- Action{cid, ts}
 		}
 	}
 }
