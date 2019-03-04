@@ -66,6 +66,7 @@ func (p *Party) LeaderName() string {
 	return p.name
 }
 
+// clientsInfo returns info about the Clients in this Party.
 func (p *Party) clientsInfo() []ClientInfo {
 	ret := make([]ClientInfo, 0, len(p.clients.M))
 	for cid, cl := range p.clients.M {
@@ -74,6 +75,8 @@ func (p *Party) clientsInfo() []ClientInfo {
 	return ret
 }
 
+// broadcastPartyWaiting broadcasts a PartyWaiting message to every Client in
+// this Party.
 func (p *Party) broadcastPartyWaiting() {
 	clientInfo := p.clientsInfo()
 	for cid, cl := range p.clients.M {
@@ -85,11 +88,15 @@ func (p *Party) broadcastPartyWaiting() {
 	}
 }
 
+// close signals the Lobby to clean up this Party. It should only be called from
+// run.
 func (p *Party) close() {
 	log.Println("exit run", p.PID)
 	p.done <- p.PID
 }
 
+// run runs the Party. When run returns, any remaining Clients are absorbed into
+// the Lobby.
 func (p *Party) run() {
 	log.Println("enter run", p.PID)
 	defer p.close()
