@@ -88,12 +88,12 @@ func (cm *ClientMap) setInfo() {
 
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
 // each action with the CID. pipe quits when the given quit channel is closed.
-func (cm *ClientMap) pipe(CID CID, ch chan ToServer, quit chan struct{}) {
-	log.Println("enter pipe", CID)
+func (cm *ClientMap) pipe(cid CID, ch chan ToServer, quit chan struct{}) {
+	log.Println("enter pipe", cid)
 	for {
 		select {
 		case <-quit:
-			log.Println("exit pipe", CID)
+			log.Println("exit pipe", cid)
 			return
 		case ac := <-ch:
 			cm.C <- Action{CID, ac}

@@ -46,13 +46,13 @@ func (pm *PartyMap) Add(
 
 // Rm removes the Party with the given PID. It returns the Party that was
 // removed. A Party with the given PID must exist in the PartyMap.
-func (pm *PartyMap) Rm(cid PID) *Party {
-	p, ok := pm.M[cid]
+func (pm *PartyMap) Rm(pid PID) *Party {
+	p, ok := pm.M[pid]
 	if !ok {
 		panic("not present")
 	}
-	log.Println("PartyMap Rm", cid)
-	delete(pm.M, cid)
+	log.Println("PartyMap Rm", pid)
+	delete(pm.M, pid)
 	pm.setInfo()
 	return p
 }
