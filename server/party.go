@@ -103,6 +103,9 @@ func (p *Party) run() {
 	for {
 		select {
 		case cl := <-p.recv:
+			if p.started {
+				continue
+			}
 			p.clients.Add(cl)
 			p.broadcastPartyWaiting()
 		case ac := <-p.clients.C:
