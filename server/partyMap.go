@@ -15,7 +15,7 @@ type PartyInfo struct {
 // call Add or Rm or access M at a time.
 type PartyMap struct {
 	M       map[PID]*Party // if M[x] = c, c.PID = x
-	info    []PartyInfo    // if M[x] = c, info contains an entry for c
+	sorted  *SortedMap     // sorted map from PID to leader
 	nextPID PID            // PID to use for the next Add call
 }
 
@@ -23,7 +23,7 @@ type PartyMap struct {
 func NewPartyMap() *PartyMap {
 	pm := &PartyMap{
 		M:       make(map[PID]*Party),
-		info:    make([]PartyInfo, 0),
+		sorted:  NewSortedMap(5),
 		nextPID: 1,
 	}
 	return pm
@@ -40,7 +40,7 @@ func (pm *PartyMap) Add(
 	log.Println("PartyMap Add", pid)
 	p := NewParty(pid, leader, send, done)
 	pm.M[pid] = p
-	pm.setInfo()
+	pm.sorted.Add(uint64(pid), leader.name)
 	return p
 }
 
@@ -53,21 +53,15 @@ func (pm *PartyMap) Rm(pid PID) *Party {
 	}
 	log.Println("PartyMap Rm", pid)
 	delete(pm.M, pid)
-	pm.setInfo()
+	pm.sorted.Rm(uint64(pid))
 	return p
 }
 
-// Info gets the current info. TODO have this sorted by PID, and use that fact
-// to make setInfo more efficient
+// Info returns information about the the members of this PartyMap.
 func (pm *PartyMap) Info() []PartyInfo {
-	return pm.info
-}
-
-// setInfo sets the current info.
-func (pm *PartyMap) setInfo() {
-	info := make([]PartyInfo, 0, len(pm.M))
-	for pid, party := range pm.M {
-		info = append(info, PartyInfo{PID: pid, Leader: party.LeaderName()})
+	ret := make([]PartyInfo, 0, len(pm.sorted.M))
+	for i, e := range pm.sorted.M {
+		ret[i] = PartyInfo{PID(e.K), e.V}
 	}
-	pm.info = info
+	return ret
 }

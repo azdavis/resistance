@@ -22,19 +22,19 @@ type ClientInfo struct {
 // information attached to each ToServer (see Action). Only one goroutine may
 // call Add or Rm or access M at a time.
 type ClientMap struct {
-	C     chan Action           // messages from the Clients in M, tagged with CID
-	M     map[CID]*Client       // if M[x] = c, c.CID = x
-	info  []ClientInfo          // if M[x] = c, info contains an entry for c
-	quits map[CID]chan struct{} // iff M[x] = c, close(quits[x]) will stop piping
+	C      chan Action           // messages from the Clients in M
+	M      map[CID]*Client       // if M[x] = c, c.CID = x
+	sorted *SortedMap            // sorted map from CID to name
+	quits  map[CID]chan struct{} // iff M[x] = c, close(quits[x]) stop piping
 }
 
 // NewClientMap returns a new ClientMap.
 func NewClientMap() *ClientMap {
 	cm := &ClientMap{
-		C:     make(chan Action),
-		M:     make(map[CID]*Client),
-		info:  make([]ClientInfo, 0),
-		quits: make(map[CID]chan struct{}),
+		C:      make(chan Action),
+		M:      make(map[CID]*Client),
+		sorted: NewSortedMap(5),
+		quits:  make(map[CID]chan struct{}),
 	}
 	return cm
 }
@@ -52,7 +52,7 @@ func (cm *ClientMap) Add(cl *Client) {
 	cm.M[cl.CID] = cl
 	cm.quits[cl.CID] = quit
 	go cm.pipe(cl.CID, cl.recv, quit)
-	cm.setInfo()
+	cm.sorted.Add(uint64(cl.CID), cl.name)
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see
@@ -67,23 +67,8 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	delete(cm.M, cid)
 	close(cm.quits[cid])
 	delete(cm.quits, cid)
-	cm.setInfo()
+	cm.sorted.Rm(uint64(cid))
 	return cl
-}
-
-// Info gets the current info. TODO have this sorted by CID, and use that fact
-// to make setInfo more efficient
-func (cm *ClientMap) Info() []ClientInfo {
-	return cm.info
-}
-
-// setInfo sets the current info.
-func (cm *ClientMap) setInfo() {
-	info := make([]ClientInfo, 0, len(cm.M))
-	for cid, cl := range cm.M {
-		info = append(info, ClientInfo{CID: cid, Name: cl.name})
-	}
-	cm.info = info
 }
 
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
@@ -96,7 +81,16 @@ func (cm *ClientMap) pipe(cid CID, ch chan ToServer, quit chan struct{}) {
 			log.Println("exit pipe", cid)
 			return
 		case ac := <-ch:
-			cm.C <- Action{CID, ac}
+			cm.C <- Action{cid, ac}
 		}
 	}
+}
+
+// Info returns information about the the members of this ClientMap.
+func (cm *ClientMap) Info() []ClientInfo {
+	ret := make([]ClientInfo, 0, len(cm.sorted.M))
+	for i, e := range cm.sorted.M {
+		ret[i] = ClientInfo{CID(e.K), e.V}
+	}
+	return ret
 }
