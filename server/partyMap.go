@@ -26,11 +26,12 @@ func (pm *PartyMap) Add(
 	leader *Client,
 	send chan<- *Client,
 	done chan<- PID,
+	start chan<- struct{},
 ) *Party {
 	pid := pm.nextPID
 	pm.nextPID++
 	log.Println("PartyMap Add", pid)
-	p := NewParty(pid, leader, send, done)
+	p := NewParty(pid, leader, send, done, start)
 	pm.M[pid] = p
 	return p
 }

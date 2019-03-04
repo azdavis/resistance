@@ -28,11 +28,15 @@ func (lb *Lobby) run() {
 	partiesInfo := func() []PartyInfo {
 		ret := make([]PartyInfo, 0, len(parties.M))
 		for pid, party := range parties.M {
+			if party.started {
+				continue
+			}
 			ret = append(ret, PartyInfo{pid, party.LeaderName()})
 		}
 		return ret
 	}
 	done := make(chan PID, lobbyChLen)
+	start := make(chan struct{}, lobbyChLen)
 	broadcastParties := func() {
 		msg := PartyChoosing{Parties: partiesInfo()}
 		for _, cl := range clients.M {
@@ -48,6 +52,8 @@ func (lb *Lobby) run() {
 			if cl.name != "" {
 				cl.send <- PartyChoosing{Parties: partiesInfo()}
 			}
+		case <-start:
+			broadcastParties()
 		case pid := <-done:
 			rmPartyClients := parties.Rm(pid).clients
 			for cid := range rmPartyClients.M {
@@ -84,7 +90,7 @@ func (lb *Lobby) run() {
 				if !ok {
 					continue
 				}
-				parties.Add(clients.Rm(cid), lb.recv, done)
+				parties.Add(clients.Rm(cid), lb.recv, done, start)
 				broadcastParties()
 			}
 		}

@@ -24,14 +24,15 @@ type PID uint64
 // the Lobby which contains a pointer to this Party will receive along done and
 // will start cleaning up the party.
 type Party struct {
-	PID                    // unique
-	leader  CID            // controls when game starts
-	name    string         // leader name
-	done    chan<- PID     // send own PID when party disbands
-	send    chan<- *Client // outgoing clients
-	recv    chan *Client   // incoming clients
-	clients *ClientMap     // clients in the party (includes leader)
-	started bool           // whether the game has started
+	PID                     // unique
+	leader  CID             // controls when game starts
+	name    string          // leader name
+	done    chan<- PID      // send own PID when party disbands
+	send    chan<- *Client  // outgoing clients
+	recv    chan *Client    // incoming clients
+	clients *ClientMap      // clients in the party (includes leader)
+	started bool            // whether the game has started
+	start   chan<- struct{} // signal when the game has started
 }
 
 // NewParty returns a new Party.
@@ -40,6 +41,7 @@ func NewParty(
 	leader *Client,
 	send chan<- *Client,
 	done chan<- PID,
+	start chan<- struct{},
 ) *Party {
 	clients := NewClientMap()
 	clients.Add(leader)
@@ -52,6 +54,7 @@ func NewParty(
 		recv:    make(chan *Client),
 		clients: clients,
 		started: false,
+		start:   start,
 	}
 	p.broadcastPartyWaiting()
 	go p.run()
@@ -110,6 +113,12 @@ func (p *Party) run() {
 				}
 				p.send <- p.clients.Rm(cid)
 				p.broadcastPartyWaiting()
+			case GameStart:
+				if cid != p.leader || p.started {
+					continue
+				}
+				p.started = true
+				p.start <- struct{}{}
 			}
 		}
 	}
