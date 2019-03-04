@@ -58,6 +58,10 @@ func (lb *Lobby) run() {
 				if !ok {
 					continue
 				}
+				if !validName(ac.Name) {
+					cl.send <- NameChoosing{Valid: false}
+					continue
+				}
 				cl.name = ac.Name
 				cl.send <- PartyChoosing{Parties: parties.Info()}
 			case PartyChoose:

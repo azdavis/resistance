@@ -6,7 +6,7 @@ import PartyChooser from "./PartyChooser";
 import PartyWaiter from "./PartyWaiter";
 
 const reducer = (s: State, a: State): State => a;
-const init: State = { T: "NameChoosing" };
+const init: State = { T: "NameChoosing", Valid: true };
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);

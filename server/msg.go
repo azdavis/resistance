@@ -43,25 +43,32 @@ type PartyCreate struct{}
 
 // ToClient //////////////////////////////////////////////////////////////////
 
-// ToClient is a state that a client could be in. It is sent to the client to
-// change the client's state. It may be sent in direct reply to a client's
-// ToServer, or it may be sent because the client was transitively affected by
-// another client's ToServer.
+// ToClient is sent to the client to change the client's state. It may be sent
+// in direct reply to a client's ToServer, or it may be sent because the client
+// was transitively affected by another client's ToServer.
 type ToClient interface {
 	json.Marshaler
 	isToClient()
 }
 
+func (NameChoosing) isToClient()  {}
 func (PartyChoosing) isToClient() {}
 func (PartyWaiting) isToClient()  {}
 
-// PartyChoosing is the state of a client choosing their party.
+// NameChoosing is sent to a client that requested a name change with
+// NameChoose. Valid is always false, since if name was valid, we would send
+// PartyChoosing instead.
+type NameChoosing struct {
+	Valid bool // whether the name was valid
+}
+
+// PartyChoosing is sent to a client who is choosing their party.
 type PartyChoosing struct {
 	Parties []PartyInfo // available parties to join
 }
 
-// PartyWaiting is the state of a client who is in a party, but the game has not
-// yet started.
+// PartyWaiting is sent to a client who is in a party whose game has not yet
+// started.
 type PartyWaiting struct {
 	Self    CID          // the client's own CID
 	Leader  CID          // info about this party
@@ -115,6 +122,12 @@ func JSONToAction(bs []byte) (ToServer, error) {
 	default:
 		return nil, ErrUnknownActionType
 	}
+}
+
+// MarshalJSON makes JSON.
+func (pc NameChoosing) MarshalJSON() ([]byte, error) {
+	type alias NameChoosing
+	return fromTagMsg("NameChoosing", alias(pc))
 }
 
 // MarshalJSON makes JSON.
