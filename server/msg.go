@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
+	"fmt"
 )
 
 // ToServer ////////////////////////////////////////////////////////////////////
@@ -108,9 +108,6 @@ func fromTagMsg(t string, p interface{}) ([]byte, error) {
 	return json.Marshal(tagMsg{T: t, P: json.RawMessage(bs)})
 }
 
-// ErrUnknownActionType means the T of a tagMsg did not match any known T.
-var ErrUnknownActionType = errors.New("unknown action type")
-
 // JSONToAction tries to turn a JSON encoding of a tagMsg into a ToServer.
 func JSONToAction(bs []byte) (ToServer, error) {
 	var tm tagMsg
@@ -140,7 +137,7 @@ func JSONToAction(bs []byte) (ToServer, error) {
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	default:
-		return nil, ErrUnknownActionType
+		return nil, fmt.Errorf("unknown action type: %s", tm.T)
 	}
 }
 
