@@ -30,6 +30,8 @@ export default ({ send, self, leader, clients }: Props): JSX.Element => (
     ))}
     <h2>Actions</h2>
     <Button value="Leave" onClick={() => send({ T: "PartyLeave" })} />
-    {self === leader && <Button value="Start" onClick={() => alert("NYI")} />}
+    {self === leader && (
+      <Button value="Start" onClick={() => send({ T: "GameStart" })} />
+    )}
   </div>
 );
