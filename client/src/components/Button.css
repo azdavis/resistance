@@ -4,15 +4,20 @@
   width: 100%;
   margin: 0.2em 0;
   padding: 0.2em;
-  border: 0;
+  border: 1px solid var(--light-gray);
   border-radius: 0;
-  background-color: #e6e6e6;
   font: inherit;
   color: inherit;
+  background-color: var(--light-gray);
   text-align: left;
   cursor: pointer;
 }
 
 .Button:active {
-  background-color: #e0e0e0;
+  background-color: var(--dark-gray);
+}
+
+.Button:focus {
+  outline: 0;
+  border-color: var(--blue);
 }

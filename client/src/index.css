@@ -7,6 +7,8 @@ html {
   font-family: Verdana, sans-serif;
   line-height: 1.5;
   --blue: #66d;
+  --light-gray: #e6e6e6;
+  --dark-gray: #e0e0e0;
 }
 
 body {
