@@ -6,9 +6,13 @@
   padding: 0.2em;
   border: 0;
   border-radius: 0;
-  background-color: #e3e3e3;
+  background-color: #e6e6e6;
   font: inherit;
   color: inherit;
   text-align: left;
   cursor: pointer;
+}
+
+.Button:active {
+  background-color: #e0e0e0;
 }
