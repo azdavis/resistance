@@ -24,10 +24,11 @@ func NewLobby() *Lobby {
 func (lb *Lobby) run() {
 	log.Println("enter Lobby run")
 	clients := NewClientMap()
-	parties := NewPartyMap()
+	parties := make(map[PID]*Party)
+	nextPID := PID(1)
 	partiesInfo := func() []PartyInfo {
-		ret := make([]PartyInfo, 0, len(parties.M))
-		for pid, party := range parties.M {
+		ret := make([]PartyInfo, 0, len(parties))
+		for pid, party := range parties {
 			// TODO race with party.run
 			if party.started {
 				continue
@@ -56,10 +57,11 @@ func (lb *Lobby) run() {
 		case <-start:
 			broadcastParties()
 		case pid := <-done:
-			rmPartyClients := parties.Rm(pid).clients
+			rmPartyClients := parties[pid].clients
 			for cid := range rmPartyClients.M {
 				clients.Add(rmPartyClients.Rm(cid))
 			}
+			delete(parties, pid)
 			broadcastParties()
 		case ac := <-clients.C:
 			cid := ac.CID
@@ -80,7 +82,7 @@ func (lb *Lobby) run() {
 				cl.send <- PartyChoosing{Parties: partiesInfo()}
 			case PartyChoose:
 				log.Println("PartyChoose", cid, ts.PID)
-				party, ok := parties.M[ts.PID]
+				party, ok := parties[ts.PID]
 				if !ok {
 					continue
 				}
@@ -91,7 +93,13 @@ func (lb *Lobby) run() {
 				if !ok {
 					continue
 				}
-				parties.Add(clients.Rm(cid), lb.recv, done, start)
+				parties[nextPID] = NewParty(
+					nextPID,
+					clients.Rm(cid),
+					lb.recv,
+					done,
+					start,
+				)
 				broadcastParties()
 			}
 		}
