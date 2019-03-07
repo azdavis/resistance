@@ -62,10 +62,10 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 // each action with the CID. pipe qs when the given q channel is closed.
 func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, q <-chan struct{}) {
 	log.Println("enter pipe", cid)
+	defer log.Println("exit pipe", cid)
 	for {
 		select {
 		case <-q:
-			log.Println("exit pipe", cid)
 			return
 		case ts := <-ch:
 			cm.C <- Action{cid, ts}

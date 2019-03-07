@@ -42,6 +42,7 @@ func (cl *Client) Close() {
 // sends the ToServer over rx.
 func (cl *Client) recvFrom(conn *ws.Conn) {
 	log.Println("enter recvFrom", cl.CID)
+	defer log.Println("exit recvFrom", cl.CID)
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
@@ -50,7 +51,6 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 			// since we may send garbage ToServers to listeners.
 			cl.rx <- Close{}
 			conn.Close()
-			log.Println("exit recvFrom", cl.CID)
 			return
 		}
 		if mt != ws.TextMessage {
@@ -67,11 +67,11 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 // sendTo sends every ToClient from tx over the websocket. See NewClient.
 func (cl *Client) sendTo(conn *ws.Conn) {
 	log.Println("enter sendTo", cl.CID)
+	defer log.Println("exit sendTo", cl.CID)
 	for m := range cl.tx {
 		err := conn.WriteJSON(m)
 		if err != nil {
 			log.Println("err sendTo", cl.CID, err)
 		}
 	}
-	log.Println("exit sendTo", cl.CID)
 }
