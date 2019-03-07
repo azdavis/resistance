@@ -7,10 +7,8 @@ import (
 
 // ToServer ////////////////////////////////////////////////////////////////////
 
-// ToServer is a usually parsed tagMsg.P sent from a client. It is a request
-// from the client to change state. The only ToServer that does not originate
-// from a tagMsg is Close. The client "sends" a Close ToServer by closing
-// itself.
+// ToServer is a request from the client to change state. The client "requests"
+// a Close by closing itself.
 type ToServer interface {
 	isToServer()
 }
