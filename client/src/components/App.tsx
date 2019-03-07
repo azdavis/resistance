@@ -6,41 +6,41 @@ import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
 
 const reducer = (s: State, tc: ToClient): State => {
-  switch (tc.T) {
+  switch (tc.t) {
     case "Close":
-      return { T: "Closed" };
+      return { t: "Closed" };
     case "RejectName":
-      return { T: "NameChoosing", valid: false };
+      return { t: "NameChoosing", valid: false };
     case "LobbyChoices":
-      return { T: "LobbyChoosing", lobbies: tc.Lobbies };
+      return { t: "LobbyChoosing", lobbies: tc.Lobbies };
     case "CurrentLobby":
       return {
-        T: "LobbyWaiting",
+        t: "LobbyWaiting",
         self: tc.Self,
         leader: tc.Leader,
         clients: tc.Clients,
       };
   }
 };
-const init: State = { T: "NameChoosing", valid: true };
+const init: State = { t: "NameChoosing", valid: true };
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<Send | null>(null);
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080/ws");
-    const newSend: Send = ({ T, ...P }) => {
-      ws.send(JSON.stringify({ T, P }));
+    const newSend: Send = ({ t, ...P }) => {
+      ws.send(JSON.stringify({ T: t, P }));
     };
     ws.onopen = () => setSend(() => newSend);
     ws.onmessage = e => {
       const { T, P } = JSON.parse(e.data);
-      d({ T, ...P });
+      d({ t: T, ...P });
     };
-    ws.onclose = () => d({ T: "Close" });
+    ws.onclose = () => d({ t: "Close" });
     return ws.close.bind(ws);
   }, []);
-  switch (s.T) {
+  switch (s.t) {
     case "Closed":
       return <Closed />;
     case "NameChoosing":

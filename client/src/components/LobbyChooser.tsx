@@ -12,14 +12,14 @@ export default ({ send, lobbies }: Props): JSX.Element => (
     <h1>Lobbies</h1>
     <Button
       value="Create new lobby"
-      onClick={() => send({ T: "LobbyCreate" })}
+      onClick={() => send({ t: "LobbyCreate" })}
     />
     <h2>Existing lobbies ({lobbies.length})</h2>
     {lobbies.map(({ GID, Leader }) => (
       <Button
         key={GID}
         value={Leader}
-        onClick={() => send({ T: "LobbyChoose", GID })}
+        onClick={() => send({ t: "LobbyChoose", GID })}
       />
     ))}
   </div>

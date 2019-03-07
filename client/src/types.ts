@@ -4,11 +4,11 @@ export type GID = number;
 export type CID = number;
 
 export type ToServer =
-  | { T: "NameChoose"; Name: string }
-  | { T: "LobbyChoose"; GID: GID }
-  | { T: "LobbyLeave" }
-  | { T: "LobbyCreate" }
-  | { T: "GameStart" };
+  | { t: "NameChoose"; Name: string }
+  | { t: "LobbyChoose"; GID: GID }
+  | { t: "LobbyLeave" }
+  | { t: "LobbyCreate" }
+  | { t: "GameStart" };
 
 export type Send = Dispatch<ToServer>;
 
@@ -23,13 +23,13 @@ export type Client = {
 };
 
 export type ToClient =
-  | { T: "Close" } // server will not actually ever send this.
-  | { T: "RejectName" }
-  | { T: "LobbyChoices"; Lobbies: Array<Lobby> }
-  | { T: "CurrentLobby"; Self: CID; Leader: CID; Clients: Array<Client> };
+  | { t: "Close" } // server will not actually ever send this.
+  | { t: "RejectName" }
+  | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
+  | { t: "CurrentLobby"; Self: CID; Leader: CID; Clients: Array<Client> };
 
 export type State =
-  | { T: "Closed" }
-  | { T: "NameChoosing"; valid: boolean }
-  | { T: "LobbyChoosing"; lobbies: Array<Lobby> }
-  | { T: "LobbyWaiting"; self: CID; leader: CID; clients: Array<Client> };
+  | { t: "Closed" }
+  | { t: "NameChoosing"; valid: boolean }
+  | { t: "LobbyChoosing"; lobbies: Array<Lobby> }
+  | { t: "LobbyWaiting"; self: CID; leader: CID; clients: Array<Client> };

@@ -20,7 +20,7 @@ export default ({ send, valid }: Props): JSX.Element => {
           if (send === null) {
             return;
           }
-          send({ T: "NameChoose", Name: nameRef.current!.value });
+          send({ t: "NameChoose", Name: nameRef.current!.value });
         }}
       >
         <label htmlFor="name">Player name{!valid && <b> invalid</b>}</label>
