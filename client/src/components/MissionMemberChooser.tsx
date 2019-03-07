@@ -5,9 +5,7 @@ type Props = {
   send: Send;
   captain: CID;
   me: CID;
-  leader: CID;
   clients: Array<Client>;
-  isSpy: boolean;
 };
 
 export default ({  }: Props): JSX.Element => (
