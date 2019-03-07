@@ -1,6 +1,7 @@
+import { Reducer } from "react";
 import { State, Action } from "./types";
 
-const reducer = (s: State, a: Action): State => {
+const reducer: Reducer<State, Action> = (s, a) => {
   switch (a.t) {
     case "Close":
       return { t: "Fatal", s, a };
