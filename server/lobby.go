@@ -86,7 +86,7 @@ func runLobby(
 				if cid != leader.CID {
 					continue
 				}
-				// TODO
+				log.Println("TODO")
 			}
 		}
 	}
