@@ -16,3 +16,8 @@ body {
   margin: 0 auto;
   padding: 0.5em;
 }
+
+pre {
+  font-family: Input, Menlo, Consolas, monospace;
+  overflow-x: auto;
+}
