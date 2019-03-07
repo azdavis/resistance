@@ -22,11 +22,14 @@ export type Client = {
   Name: string;
 };
 
-export type ToClient =
-  | { t: "Close" } // server will not actually ever send this.
+type SelfAction = { t: "Close" };
+
+type ToClient =
   | { t: "RejectName" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; Self: CID; Leader: CID; Clients: Array<Client> };
+
+export type Action = SelfAction | ToClient;
 
 export type State =
   | { t: "Closed" }

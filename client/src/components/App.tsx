@@ -1,24 +1,24 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { State, ToClient, Send } from "../types";
+import { State, Action, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
 
-const reducer = (s: State, tc: ToClient): State => {
-  switch (tc.t) {
+const reducer = (s: State, a: Action): State => {
+  switch (a.t) {
     case "Close":
       return { t: "Closed" };
     case "RejectName":
       return { t: "NameChoosing", valid: false };
     case "LobbyChoices":
-      return { t: "LobbyChoosing", lobbies: tc.Lobbies };
+      return { t: "LobbyChoosing", lobbies: a.Lobbies };
     case "CurrentLobby":
       return {
         t: "LobbyWaiting",
-        self: tc.Self,
-        leader: tc.Leader,
-        clients: tc.Clients,
+        self: a.Self,
+        leader: a.Leader,
+        clients: a.Clients,
       };
   }
 };
