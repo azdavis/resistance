@@ -25,7 +25,7 @@ func runNameChooser(tx chan<- *Client, rx <-chan *Client) {
 			case NameChoose:
 				if validName(ts.Name) {
 					cl := clients.Rm(cid)
-					cl.name = ts.Name
+					cl.Name = ts.Name
 					tx <- cl
 				} else {
 					clients.M[cid].tx <- NameChoosing{Valid: false}

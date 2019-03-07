@@ -21,7 +21,7 @@ func NewLobby(
 	toLobby := make(chan *Client)
 	lb := Lobby{
 		GID:    gid,
-		Leader: leader.name,
+		Leader: leader.Name,
 		tx:     toLobby,
 	}
 	go runLobby(gid, leader, toLobbyMap, toLobby)
@@ -47,7 +47,7 @@ func runLobby(
 	clientsInfo := func() []ClientInfo {
 		ret := make([]ClientInfo, 0, len(clients.M))
 		for cid, cl := range clients.M {
-			ret = append(ret, ClientInfo{cid, cl.name})
+			ret = append(ret, ClientInfo{cid, cl.Name})
 		}
 		return ret
 	}

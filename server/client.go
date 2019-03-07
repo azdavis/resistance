@@ -13,7 +13,7 @@ const clientChLen = 3
 // Close should be called after a Close{} is received on rx.
 type Client struct {
 	CID                // unique, never 0
-	name string        // if "", no name
+	Name string        // if "", no name
 	tx   chan ToClient // over the websocket
 	rx   chan ToServer // over the websocket
 }
@@ -24,7 +24,7 @@ type Client struct {
 func NewClient(conn *ws.Conn, cid CID) *Client {
 	cl := &Client{
 		CID:  cid,
-		name: "",
+		Name: "",
 		tx:   make(chan ToClient, clientChLen),
 		rx:   make(chan ToServer, clientChLen),
 	}
