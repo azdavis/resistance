@@ -6,7 +6,6 @@ import (
 
 func runLobbyMap(rx chan *Client) {
 	const chLen = 5
-	log.Println("enter LobbyMap run")
 	clients := NewClientMap()
 	lobbies := make(map[GID]*Lobby)
 	nextGID := GID(1)
