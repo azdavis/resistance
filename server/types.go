@@ -25,10 +25,11 @@ type ClientInfo struct {
 	Name string
 }
 
-// LobbyInfo contains info about a Lobby.
-type LobbyInfo struct {
-	GID
-	Leader string
+// LobbyMsg is sent from a lobby to the lobby manager.
+type LobbyMsg struct {
+	GID               // gid of this lobby
+	Close   bool      // whether to close this lobby
+	Clients []*Client // clients coming form this lobby
 }
 
 // ToServer ////////////////////////////////////////////////////////////////////
@@ -92,7 +93,7 @@ type NameChoosing struct {
 
 // LobbyChoosing is sent to a client who is choosing their lobby.
 type LobbyChoosing struct {
-	Lobbies []LobbyInfo // available lobbies to join
+	Lobbies []Lobby // available lobbies to join
 }
 
 // LobbyWaiting is sent to a client who is in a lobby whose game has not yet

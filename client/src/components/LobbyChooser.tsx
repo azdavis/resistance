@@ -1,10 +1,10 @@
 import React from "react";
-import { Send, LobbyInfo } from "../types";
+import { Send, Lobby } from "../types";
 import Button from "./Button";
 
 type Props = {
   send: Send;
-  lobbies: Array<LobbyInfo>;
+  lobbies: Array<Lobby>;
 };
 
 export default ({ send, lobbies }: Props): JSX.Element => (

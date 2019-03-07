@@ -12,7 +12,7 @@ export type ToServer =
 
 export type Send = Dispatch<ToServer>;
 
-export type LobbyInfo = {
+export type Lobby = {
   GID: GID;
   Leader: string;
 };
@@ -24,7 +24,7 @@ export type ClientInfo = {
 
 export type ToClient =
   | { T: "NameChoosing"; Valid: boolean }
-  | { T: "LobbyChoosing"; Lobbies: Array<LobbyInfo> }
+  | { T: "LobbyChoosing"; Lobbies: Array<Lobby> }
   | { T: "LobbyWaiting"; Self: CID; Leader: CID; Clients: Array<ClientInfo> };
 
 export type State = { T: "Closed" } | ToClient;
