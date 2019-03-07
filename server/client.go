@@ -6,8 +6,6 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-const clientChLen = 3
-
 // Client is a player of the game. It contains the CID, game information, and
 // the way to communicate with the actual person represented by this Client.
 // Close should be called after a Close{} is received on rx.
@@ -22,11 +20,12 @@ type Client struct {
 // to the given websocket connection. The CID should not be in use by any other
 // client. tx should be closed when this Client will no longer be used.
 func NewClient(conn *ws.Conn, cid CID) *Client {
+	const chLen = 3
 	cl := &Client{
 		CID:  cid,
 		Name: "",
-		tx:   make(chan ToClient, clientChLen),
-		rx:   make(chan ToServer, clientChLen),
+		tx:   make(chan ToClient, chLen),
+		rx:   make(chan ToServer, chLen),
 	}
 	go cl.recvFrom(conn)
 	go cl.sendTo(conn)
