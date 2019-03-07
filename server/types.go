@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+// Helper types ////////////////////////////////////////////////////////////////
+
 // CID is a unique identifier for a Client.
 type CID uint64
 
@@ -101,7 +103,7 @@ type LobbyWaiting struct {
 	Clients []ClientInfo // info about other clients in this lobby
 }
 
-// helpers /////////////////////////////////////////////////////////////////////
+// Helper functions ////////////////////////////////////////////////////////////
 
 // tagMsg is a JSON-encoded message.
 type tagMsg struct {
