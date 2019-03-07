@@ -79,13 +79,7 @@ func runLobbyMap(rx chan *Client) {
 				}
 				gid := nextGID
 				nextGID++
-				lobbies[gid] = NewLobby(
-					gid,
-					clients.Rm(cid),
-					rx,
-					done,
-					start,
-				)
+				lobbies[gid] = NewLobby(gid, clients.Rm(cid), rx, done, start)
 				broadcastLobbies()
 			}
 		}
