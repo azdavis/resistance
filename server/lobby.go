@@ -18,28 +18,32 @@ func NewLobby(
 	leader *Client,
 	toLobbyMap chan<- LobbyMsg,
 ) Lobby {
-	clients := NewClientMap()
-	clients.Add(leader)
 	toLobby := make(chan *Client)
 	lb := Lobby{
 		GID:    gid,
 		Leader: leader.name,
 		tx:     toLobby,
 	}
-	go lb.run(gid, leader, toLobbyMap, toLobby)
+	go runLobby(gid, leader, toLobbyMap, toLobby)
 	return lb
 }
 
-// run runs the Lobby. When run returns, any remaining Clients are absorbed into
-// the LobbyMap.
-func (lb Lobby) run(
+func runLobby(
 	gid GID,
 	leader *Client,
 	tx chan<- LobbyMsg,
 	rx <-chan *Client,
 ) {
+	// whenever sending on tx, must also select with rx to prevent deadlock.
 	clients := NewClientMap()
 	clients.Add(leader)
+	clientsList := func() []*Client {
+		ret := make([]*Client, 0, len(clients.M))
+		for _, cl := range clients.M {
+			ret = append(ret, cl)
+		}
+		return ret
+	}
 	clientsInfo := func() []ClientInfo {
 		ret := make([]ClientInfo, 0, len(clients.M))
 		for cid, cl := range clients.M {
@@ -58,7 +62,7 @@ func (lb Lobby) run(
 		}
 	}
 	broadcastLobbyWaiting()
-	log.Println("enter run", lb.GID)
+	log.Println("enter run", gid)
 	for {
 		select {
 		case cl := <-rx:
@@ -70,20 +74,33 @@ func (lb Lobby) run(
 			case Close:
 				clients.Rm(cid).Close()
 				if cid == leader.CID {
-					return
+					goto out
 				}
 				broadcastLobbyWaiting()
 			case LobbyLeave:
 				if cid == leader.CID {
-					return
+					goto out
 				}
-				lb.tx <- clients.Rm(cid)
+				msg := LobbyMsg{gid, false, []*Client{clients.Rm(cid)}}
+				select {
+				case cl := <-rx:
+					clients.Add(cl)
+				case tx <- msg:
+				}
 				broadcastLobbyWaiting()
 			case GameStart:
 				if cid != leader.CID {
 					continue
 				}
+				// TODO
 			}
 		}
 	}
+out:
+	select {
+	case cl := <-rx:
+		clients.Add(cl)
+	case tx <- LobbyMsg{gid, true, clientsList()}:
+	}
+	log.Println("exit run", gid)
 }
