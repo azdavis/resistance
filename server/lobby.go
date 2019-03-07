@@ -84,12 +84,13 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 	}
 
 out:
-	select {
-	case cl := <-rx:
-		clients.Add(cl)
-	case tx <- LobbyMsg{gid, true, clients.ToList()}:
-	}
+	cs := clients.ToList()
 	for cid := range clients.M {
 		clients.Rm(cid)
+	}
+	select {
+	case cl := <-rx:
+		cs = append(cs, cl)
+	case tx <- LobbyMsg{gid, true, cs}:
 	}
 }
