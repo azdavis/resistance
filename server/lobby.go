@@ -26,8 +26,8 @@ func NewLobby(gid GID, leader *Client, toLobbyMap chan<- LobbyMsg) Lobby {
 
 func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 	// whenever sending on tx, must also select with rx to prevent deadlock.
-	log.Println("enter run", gid)
-	defer log.Println("exit run", gid)
+	log.Println("enter runLobby", gid)
+	defer log.Println("exit runLobby", gid)
 
 	clients := NewClientMap()
 	clients.Add(leader)
