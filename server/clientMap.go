@@ -43,7 +43,7 @@ func (cm *ClientMap) Add(cl *Client) {
 	quit := make(chan struct{})
 	cm.M[cl.CID] = cl
 	cm.quits[cl.CID] = quit
-	go cm.pipe(cl.CID, cl.recv, quit)
+	go cm.pipe(cl.CID, cl.rx, quit)
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see

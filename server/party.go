@@ -11,12 +11,12 @@ type PID uint64
 // isolated from all other Parties.
 //
 // A Party always has at least one client inside. If the leader leaves, the
-// party disbands. New clients who want to join will arrive on recv. However,
+// party disbands. New clients who want to join will arrive on rx. However,
 // the party will only accept these new clients if the game has not yet started.
 // The leader decides when to start the game.
 //
-// If a single client wants to leave the party, send them back to the lobby on
-// send. The send and recv channels are only to be used before the game has
+// If a single client wants to leave the party, tx them back to the lobby on
+// tx. The tx and rx channels are only to be used before the game has
 // started.
 //
 // A Party can disband itself by sending its own PID along done. Once it does
@@ -27,9 +27,9 @@ type Party struct {
 	PID                     // unique
 	leader  CID             // controls when game starts
 	name    string          // leader name
-	done    chan<- PID      // send own PID when party disbands
-	send    chan<- *Client  // outgoing clients
-	recv    chan *Client    // incoming clients
+	done    chan<- PID      // tx own PID when party disbands
+	tx      chan<- *Client  // outgoing clients
+	rx      chan *Client    // incoming clients
 	clients *ClientMap      // clients in the party (includes leader)
 	started bool            // whether the game has started
 	start   chan<- struct{} // signal when the game has started
@@ -39,7 +39,7 @@ type Party struct {
 func NewParty(
 	pid PID,
 	leader *Client,
-	send chan<- *Client,
+	tx chan<- *Client,
 	done chan<- PID,
 	start chan<- struct{},
 ) *Party {
@@ -50,8 +50,8 @@ func NewParty(
 		leader:  leader.CID,
 		name:    leader.name,
 		done:    done,
-		send:    send,
-		recv:    make(chan *Client),
+		tx:      tx,
+		rx:      make(chan *Client),
 		clients: clients,
 		started: false,
 		start:   start,
@@ -80,7 +80,7 @@ func (p *Party) clientsInfo() []ClientInfo {
 func (p *Party) broadcastPartyWaiting() {
 	clientInfo := p.clientsInfo()
 	for cid, cl := range p.clients.M {
-		cl.send <- PartyWaiting{
+		cl.tx <- PartyWaiting{
 			Self:    cid,
 			Leader:  p.leader,
 			Clients: clientInfo,
@@ -102,7 +102,7 @@ func (p *Party) run() {
 	defer p.close()
 	for {
 		select {
-		case cl := <-p.recv:
+		case cl := <-p.rx:
 			if p.started {
 				continue
 			}
@@ -121,7 +121,7 @@ func (p *Party) run() {
 				if cid == p.leader {
 					return
 				}
-				p.send <- p.clients.Rm(cid)
+				p.tx <- p.clients.Rm(cid)
 				p.broadcastPartyWaiting()
 			case GameStart:
 				if cid != p.leader || p.started {

@@ -8,13 +8,13 @@ const lobbyChLen = 5
 
 // Lobby contains the Clients who are not part of a Party.
 type Lobby struct {
-	recv chan *Client // incoming clients
+	rx chan *Client // incoming clients
 }
 
 // NewLobby returns a new Lobby. It starts a goroutine which never stops.
 func NewLobby() *Lobby {
 	lb := &Lobby{
-		recv: make(chan *Client, lobbyChLen),
+		rx: make(chan *Client, lobbyChLen),
 	}
 	go lb.run()
 	return lb
@@ -43,16 +43,16 @@ func (lb *Lobby) run() {
 		msg := PartyChoosing{Parties: partiesInfo()}
 		for _, cl := range clients.M {
 			if cl.name != "" {
-				cl.send <- msg
+				cl.tx <- msg
 			}
 		}
 	}
 	for {
 		select {
-		case cl := <-lb.recv:
+		case cl := <-lb.rx:
 			clients.Add(cl)
 			if cl.name != "" {
-				cl.send <- PartyChoosing{Parties: partiesInfo()}
+				cl.tx <- PartyChoosing{Parties: partiesInfo()}
 			}
 		case <-start:
 			broadcastParties()
@@ -75,18 +75,18 @@ func (lb *Lobby) run() {
 					continue
 				}
 				if !validName(ts.Name) {
-					cl.send <- NameChoosing{Valid: false}
+					cl.tx <- NameChoosing{Valid: false}
 					continue
 				}
 				cl.name = ts.Name
-				cl.send <- PartyChoosing{Parties: partiesInfo()}
+				cl.tx <- PartyChoosing{Parties: partiesInfo()}
 			case PartyChoose:
 				log.Println("PartyChoose", cid, ts.PID)
 				party, ok := parties[ts.PID]
 				if !ok {
 					continue
 				}
-				party.recv <- clients.Rm(cid)
+				party.rx <- clients.Rm(cid)
 			case PartyCreate:
 				log.Println("PartyCreate", cid)
 				_, ok := clients.M[cid]
@@ -96,7 +96,7 @@ func (lb *Lobby) run() {
 				parties[nextPID] = NewParty(
 					nextPID,
 					clients.Rm(cid),
-					lb.recv,
+					lb.rx,
 					done,
 					start,
 				)
