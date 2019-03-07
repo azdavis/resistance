@@ -26,18 +26,14 @@ func runLobbyMap(rx chan *Client) {
 	broadcastLobbies := func() {
 		msg := LobbyChoosing{Lobbies: lobbiesInfo()}
 		for _, cl := range clients.M {
-			if cl.name != "" {
-				cl.tx <- msg
-			}
+			cl.tx <- msg
 		}
 	}
 	for {
 		select {
 		case cl := <-rx:
 			clients.Add(cl)
-			if cl.name != "" {
-				cl.tx <- LobbyChoosing{Lobbies: lobbiesInfo()}
-			}
+			cl.tx <- LobbyChoosing{Lobbies: lobbiesInfo()}
 		case <-start:
 			broadcastLobbies()
 		case gid := <-done:
@@ -52,18 +48,6 @@ func runLobbyMap(rx chan *Client) {
 			switch ts := ac.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
-			case NameChoose:
-				log.Println("NameChoose", cid, ts.Name)
-				cl, ok := clients.M[cid]
-				if !ok {
-					continue
-				}
-				if !validName(ts.Name) {
-					cl.tx <- NameChoosing{Valid: false}
-					continue
-				}
-				cl.name = ts.Name
-				cl.tx <- LobbyChoosing{Lobbies: lobbiesInfo()}
 			case LobbyChoose:
 				log.Println("LobbyChoose", cid, ts.GID)
 				lobby, ok := lobbies[ts.GID]
