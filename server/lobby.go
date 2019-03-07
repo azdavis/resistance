@@ -77,7 +77,16 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 				if cid != leader.CID {
 					continue
 				}
-				log.Println("TODO")
+				select {
+				case cl := <-rx:
+					clients.Add(cl)
+					// allow leader to re-verify whether the game should be started.
+					broadcastLobbyWaiting()
+					continue
+				case tx <- LobbyMsg{gid, true, []*Client{}}:
+				}
+				go runGame(gid, leader.CID, tx, clients)
+				return
 			}
 		}
 	}
