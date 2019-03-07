@@ -29,7 +29,7 @@ type ToClient =
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; Self: CID; Leader: CID; Clients: Array<Client> }
   | { t: "SetIsSpy"; IsSpy: boolean }
-  | { t: "NewMission"; IsCaptain: boolean };
+  | { t: "NewMission"; Captain: CID };
 
 export type Action = SelfAction | ToClient;
 

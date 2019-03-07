@@ -28,8 +28,8 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 
 	captainIdx := 0
-	for i, cl := range cs {
-		cl.tx <- NewMission{captainIdx == i}
+	for _, cl := range cs {
+		cl.tx <- NewMission{cs[captainIdx].CID}
 	}
 
 	for {

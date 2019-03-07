@@ -104,7 +104,7 @@ type SetIsSpy struct {
 
 // NewMission sets the client's role.
 type NewMission struct {
-	IsCaptain bool // iff true, client leads this mission
+	Captain CID // captain of this mission
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
