@@ -38,7 +38,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 		switch ac.ToServer.(type) {
 		case Close:
 			clients.Rm(cid).Close()
-			tx <- LobbyMsg{gid, false, cs}
+			tx <- LobbyMsg{gid, false, clients.ToList()}
 			return
 		}
 	}
