@@ -64,7 +64,7 @@ type LobbyCreate struct{}
 // GameStart is a request to start the game.
 type GameStart struct{}
 
-// ToClient //////////////////////////////////////////////////////////////////
+// ToClient ////////////////////////////////////////////////////////////////////
 
 // ToClient is sent to the client to change the client's state. It may be sent
 // in direct reply to a client's ToServer, or it may be sent because the client
