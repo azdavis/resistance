@@ -8,7 +8,7 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// Hub creates Clients from HTTP connections.
+// Hub is an http.Handler. It creates Clients from HTTP connections.
 type Hub struct {
 	mux     *sync.Mutex    // protect nextCID
 	nextCID CID            // the next Client will have this CID
