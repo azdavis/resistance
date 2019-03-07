@@ -119,15 +119,6 @@ type tagMsg struct {
 	P json.RawMessage // json encoding of thing
 }
 
-// fromTagMsg creates a JSON-encoded tagMsg.
-func fromTagMsg(t string, p interface{}) ([]byte, error) {
-	bs, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(tagMsg{T: t, P: json.RawMessage(bs)})
-}
-
 // UnmarshalJSONToServer tries to turn a JSON encoding of a tagMsg into a
 // ToServer.
 func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
@@ -160,6 +151,15 @@ func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
 	default:
 		return nil, fmt.Errorf("unknown tag: %s", tm.T)
 	}
+}
+
+// fromTagMsg creates a JSON-encoded tagMsg.
+func fromTagMsg(t string, p interface{}) ([]byte, error) {
+	bs, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(tagMsg{T: t, P: json.RawMessage(bs)})
 }
 
 // MarshalJSON makes JSON.
