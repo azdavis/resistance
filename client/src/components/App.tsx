@@ -4,6 +4,7 @@ import Fatal from "./Fatal";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
+import MissionMemberChooser from "./MissionMemberChooser";
 
 const reducer = (s: State, a: Action): State => {
   switch (a.t) {
@@ -56,5 +57,7 @@ export default (): JSX.Element => {
       return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
       return <LobbyWaiter send={send!} {...s} />;
+    case "MissionMemberChoosing":
+      return <MissionMemberChooser send={send!} {...s} />;
   }
 };

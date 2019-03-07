@@ -43,4 +43,12 @@ export type State =
       leader: CID;
       clients: Array<Client>;
       isSpy: boolean;
+    }
+  | {
+      t: "MissionMemberChoosing";
+      captain: CID;
+      self: CID;
+      leader: CID;
+      clients: Array<Client>;
+      isSpy: boolean;
     };
