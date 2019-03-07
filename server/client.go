@@ -15,11 +15,10 @@ type CID uint64
 // the way to communicate with the actual person represented by this Client.
 // Close should be called after a Close{} is received on rx.
 type Client struct {
-	CID                 // unique, never 0
-	name  string        // if "", no name
-	isSpy bool          // if false, is resistance
-	tx    chan ToClient // over the websocket
-	rx    chan ToServer // over the websocket
+	CID                // unique, never 0
+	name string        // if "", no name
+	tx   chan ToClient // over the websocket
+	rx   chan ToServer // over the websocket
 }
 
 // NewClient returns a new client. It starts goroutines to read from and write
@@ -27,11 +26,10 @@ type Client struct {
 // client. tx should be closed when this Client will no longer be used.
 func NewClient(conn *ws.Conn, cid CID) *Client {
 	cl := &Client{
-		CID:   cid,
-		name:  "",
-		isSpy: false,
-		tx:    make(chan ToClient, clientChLen),
-		rx:    make(chan ToServer, clientChLen),
+		CID:  cid,
+		name: "",
+		tx:   make(chan ToClient, clientChLen),
+		rx:   make(chan ToServer, clientChLen),
 	}
 	go cl.recvFrom(conn)
 	go cl.sendTo(conn)
