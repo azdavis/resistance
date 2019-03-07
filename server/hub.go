@@ -42,7 +42,7 @@ func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	conn, err := up.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println("ServeHTTP", err)
+		log.Println("err ServeHTTP", err)
 		return
 	}
 	h.mux.Lock()

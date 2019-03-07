@@ -1,9 +1,5 @@
 package main
 
-import (
-	"log"
-)
-
 func runLobbyMap(rx chan *Client) {
 	const chLen = 5
 	clients := NewClientMap()
@@ -42,14 +38,12 @@ func runLobbyMap(rx chan *Client) {
 			case Close:
 				clients.Rm(cid).Close()
 			case LobbyChoose:
-				log.Println("LobbyChoose", cid, ts.GID)
 				lobby, ok := lobbies[ts.GID]
 				if !ok {
 					continue
 				}
 				lobby.tx <- clients.Rm(cid)
 			case LobbyCreate:
-				log.Println("LobbyCreate", cid)
 				gid := nextGID
 				nextGID++
 				lobbies[gid] = NewLobby(gid, clients.Rm(cid), toLobbyMap)

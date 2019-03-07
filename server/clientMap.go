@@ -38,7 +38,6 @@ func (cm *ClientMap) Add(cl *Client) {
 	if ok {
 		panic("already present")
 	}
-	log.Println("ClientMap Add", cl.CID)
 	q := make(chan struct{})
 	cm.M[cl.CID] = cl
 	cm.qs[cl.CID] = q
@@ -53,7 +52,6 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	if !ok {
 		panic("not present")
 	}
-	log.Println("ClientMap Rm", cid)
 	delete(cm.M, cid)
 	close(cm.qs[cid])
 	delete(cm.qs, cid)
