@@ -100,6 +100,7 @@ func (lb *LobbyMap) run() {
 					done,
 					start,
 				)
+				nextGID++
 				broadcastLobbies()
 			}
 		}
