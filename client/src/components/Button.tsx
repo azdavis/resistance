@@ -1,5 +1,6 @@
 import React from "react";
 import "./Button.css";
+import "./FullWidth.css";
 
 type Props = {
   value: string;
@@ -9,5 +10,9 @@ type Props = {
 };
 
 export default ({ submit, ...rest }: Props): JSX.Element => (
-  <input type={submit ? "submit" : "button"} className="Button" {...rest} />
+  <input
+    type={submit ? "submit" : "button"}
+    className="Button FullWidth"
+    {...rest}
+  />
 );

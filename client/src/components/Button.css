@@ -1,7 +1,6 @@
 .Button {
   display: block;
   appearance: none;
-  width: 100%;
   margin: 0.2em 0;
   padding: 0.2em;
   border: 1px solid var(--light-gray);
