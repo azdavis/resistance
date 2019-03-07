@@ -47,11 +47,7 @@ func runLobby(
 	broadcastLobbyWaiting := func() {
 		cs := clientsList()
 		for cid, cl := range clients.M {
-			cl.tx <- LobbyWaiting{
-				Self:    cid,
-				Leader:  leader.CID,
-				Clients: cs,
-			}
+			cl.tx <- LobbyWaiting{cid, leader.CID, cs}
 		}
 	}
 	broadcastLobbyWaiting()
