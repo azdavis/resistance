@@ -13,6 +13,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 
 	cs := clients.ToList()
 
+	// TODO what if there are too few clients?
 	isSpy := make(map[CID]bool)
 	for i := len(clients.M) / s; i > 0; /* intentionally empty */ {
 		cid := cs[rand.Intn(len(cs))].CID
