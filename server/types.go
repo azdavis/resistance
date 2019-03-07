@@ -19,6 +19,18 @@ type Action struct {
 	ToServer
 }
 
+// ClientInfo contains info about a Client.
+type ClientInfo struct {
+	CID
+	Name string
+}
+
+// LobbyInfo contains info about a Lobby.
+type LobbyInfo struct {
+	GID
+	Leader string
+}
+
 // ToServer ////////////////////////////////////////////////////////////////////
 
 // ToServer is a request from the client to change state. The client "requests"
@@ -78,21 +90,9 @@ type NameChoosing struct {
 	Valid bool // whether the name was valid
 }
 
-// LobbyInfo contains info about a Lobby.
-type LobbyInfo struct {
-	GID
-	Leader string
-}
-
 // LobbyChoosing is sent to a client who is choosing their lobby.
 type LobbyChoosing struct {
 	Lobbies []LobbyInfo // available lobbies to join
-}
-
-// ClientInfo contains info about a Client.
-type ClientInfo struct {
-	CID
-	Name string
 }
 
 // LobbyWaiting is sent to a client who is in a lobby whose game has not yet
