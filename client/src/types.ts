@@ -17,7 +17,7 @@ export type Lobby = {
   Leader: string;
 };
 
-export type ClientInfo = {
+export type Client = {
   CID: CID;
   Name: string;
 };
@@ -25,6 +25,6 @@ export type ClientInfo = {
 export type ToClient =
   | { T: "NameChoosing"; Valid: boolean }
   | { T: "LobbyChoosing"; Lobbies: Array<Lobby> }
-  | { T: "LobbyWaiting"; Self: CID; Leader: CID; Clients: Array<ClientInfo> };
+  | { T: "LobbyWaiting"; Self: CID; Leader: CID; Clients: Array<Client> };
 
 export type State = { T: "Closed" } | ToClient;

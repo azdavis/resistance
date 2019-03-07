@@ -44,20 +44,13 @@ func runLobby(
 		}
 		return ret
 	}
-	clientsInfo := func() []ClientInfo {
-		ret := make([]ClientInfo, 0, len(clients.M))
-		for cid, cl := range clients.M {
-			ret = append(ret, ClientInfo{cid, cl.Name})
-		}
-		return ret
-	}
 	broadcastLobbyWaiting := func() {
-		clientInfo := clientsInfo()
+		cs := clientsList()
 		for cid, cl := range clients.M {
 			cl.tx <- LobbyWaiting{
 				Self:    cid,
 				Leader:  leader.CID,
-				Clients: clientInfo,
+				Clients: cs,
 			}
 		}
 	}

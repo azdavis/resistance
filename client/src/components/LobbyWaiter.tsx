@@ -1,12 +1,12 @@
 import React from "react";
-import { Send, CID, ClientInfo } from "../types";
+import { Send, CID, Client } from "../types";
 import Button from "./Button";
 
 type Props = {
   send: Send;
   self: CID;
   leader: CID;
-  clients: Array<ClientInfo>;
+  clients: Array<Client>;
 };
 
 const modifiers = (cid: CID, self: CID, leader: CID): string =>

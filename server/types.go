@@ -19,12 +19,6 @@ type Action struct {
 	ToServer
 }
 
-// ClientInfo contains info about a Client.
-type ClientInfo struct {
-	CID
-	Name string
-}
-
 // LobbyMsg is sent from a lobby to the lobby manager.
 type LobbyMsg struct {
 	GID               // gid of this lobby
@@ -99,9 +93,9 @@ type LobbyChoosing struct {
 // LobbyWaiting is sent to a client who is in a lobby whose game has not yet
 // started.
 type LobbyWaiting struct {
-	Self    CID          // the client's own CID
-	Leader  CID          // info about this lobby
-	Clients []ClientInfo // info about other clients in this lobby
+	Self    CID       // the client's own CID
+	Leader  CID       // info about this lobby
+	Clients []*Client // info about other clients in this lobby
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
