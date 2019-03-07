@@ -7,7 +7,7 @@ type Props = {
   lobbies: Array<Lobby>;
 };
 
-export default ({ send, lobbies }: Props): JSX.Element => (
+export default ({ send, lobbies }: Props) => (
   <div className="LobbyChooser">
     <h1>Lobbies</h1>
     <Button

@@ -5,6 +5,6 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default ({ children }: Props): JSX.Element => (
+export default ({ children }: Props) => (
   <div className="FullWidth">{children}</div>
 );

@@ -6,7 +6,7 @@ type Props = {
   isSpy: boolean;
 };
 
-export default ({ captain, isSpy }: Props): JSX.Element => (
+export default ({ captain, isSpy }: Props) => (
   <div className="MissionMemberWaiter">
     <h1>New mission</h1>
     <SpyStatus isSpy={isSpy} />

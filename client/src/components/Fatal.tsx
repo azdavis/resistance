@@ -6,7 +6,7 @@ type Props = {
   a: Action;
 };
 
-export default ({ s, a }: Props): JSX.Element => (
+export default ({ s, a }: Props) => (
   <div className="Fatal">
     <h1>Fatal error</h1>
     <p>

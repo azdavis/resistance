@@ -10,7 +10,7 @@ type Props = {
   isSpy: boolean;
 };
 
-export default ({ send, me, clients, isSpy }: Props): JSX.Element => {
+export default ({ send, me, clients, isSpy }: Props) => {
   const [selected, setSelected] = useState([me]);
   return (
     <div className="MissionMemberChooser">

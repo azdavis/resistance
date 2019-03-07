@@ -9,7 +9,7 @@ type Props = {
   onClick?: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
 };
 
-export default ({ submit, ...rest }: Props): JSX.Element => (
+export default ({ submit, ...rest }: Props) => (
   <input
     type={submit ? "submit" : "button"}
     className="Button FullWidth"

@@ -5,7 +5,7 @@ type Props = {
   isSpy: boolean;
 };
 
-export default ({ isSpy }: Props): JSX.Element => {
+export default ({ isSpy }: Props) => {
   const [show, setShow] = useState(false);
   const value = show
     ? `You ${isSpy ? "are" : "are not"} a spy`

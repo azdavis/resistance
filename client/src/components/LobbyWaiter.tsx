@@ -19,7 +19,7 @@ const modifiers = (cid: CID, me: CID, leader: CID): string =>
     ? " (leader)"
     : "";
 
-export default ({ send, me, leader, clients }: Props): JSX.Element => (
+export default ({ send, me, leader, clients }: Props) => (
   <div className="LobbyWaiter">
     <h1>Lobby</h1>
     <h2>Members</h2>

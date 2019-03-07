@@ -8,7 +8,7 @@ type Props = {
   valid: boolean;
 };
 
-export default ({ send, valid }: Props): JSX.Element => {
+export default ({ send, valid }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
   useEffect(() => nameRef.current!.focus(), []);
   return (
