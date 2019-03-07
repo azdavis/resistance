@@ -4,33 +4,33 @@ import Button from "./Button";
 
 type Props = {
   send: Send;
-  self: CID;
+  me: CID;
   leader: CID;
   clients: Array<Client>;
 };
 
-const modifiers = (cid: CID, self: CID, leader: CID): string =>
-  cid === self && cid === leader
+const modifiers = (cid: CID, me: CID, leader: CID): string =>
+  cid === me && cid === leader
     ? " (you, leader)"
-    : cid === self
+    : cid === me
     ? " (you)"
     : cid === leader
     ? " (leader)"
     : "";
 
-export default ({ send, self, leader, clients }: Props): JSX.Element => (
+export default ({ send, me, leader, clients }: Props): JSX.Element => (
   <div className="LobbyWaiter">
     <h1>Lobby</h1>
     <h2>Members</h2>
     {clients.map(({ CID, Name }) => (
       <div key={CID}>
         {Name}
-        {modifiers(CID, self, leader)}
+        {modifiers(CID, me, leader)}
       </div>
     ))}
     <h2>Actions</h2>
     <Button value="Leave" onClick={() => send({ t: "LobbyLeave" })} />
-    {self === leader && (
+    {me === leader && (
       <Button value="Start" onClick={() => send({ t: "GameStart" })} />
     )}
   </div>

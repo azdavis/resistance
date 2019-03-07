@@ -27,7 +27,7 @@ type SelfAction = { t: "Close" };
 type ToClient =
   | { t: "RejectName" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
-  | { t: "CurrentLobby"; Self: CID; Leader: CID; Clients: Array<Client> }
+  | { t: "CurrentLobby"; Me: CID; Leader: CID; Clients: Array<Client> }
   | { t: "SetIsSpy"; IsSpy: boolean }
   | { t: "NewMission"; Captain: CID };
 
@@ -39,7 +39,7 @@ export type State =
   | { t: "LobbyChoosing"; lobbies: Array<Lobby> }
   | {
       t: "LobbyWaiting";
-      self: CID;
+      me: CID;
       leader: CID;
       clients: Array<Client>;
       isSpy: boolean;
@@ -47,7 +47,7 @@ export type State =
   | {
       t: "MissionMemberChoosing";
       captain: CID;
-      self: CID;
+      me: CID;
       leader: CID;
       clients: Array<Client>;
       isSpy: boolean;

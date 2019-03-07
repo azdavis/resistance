@@ -17,7 +17,7 @@ const reducer = (s: State, a: Action): State => {
     case "CurrentLobby":
       return {
         t: "LobbyWaiting",
-        self: a.Self,
+        me: a.Me,
         leader: a.Leader,
         clients: a.Clients,
         isSpy: false,

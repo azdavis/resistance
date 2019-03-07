@@ -4,7 +4,7 @@ import { Send, CID, Client } from "../types";
 type Props = {
   send: Send;
   captain: CID;
-  self: CID;
+  me: CID;
   leader: CID;
   clients: Array<Client>;
   isSpy: boolean;
