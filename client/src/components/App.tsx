@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect, useState } from "react";
 import { State, Action, Send } from "../types";
+import Invalid from "./Invalid";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
@@ -41,6 +42,8 @@ export default (): JSX.Element => {
     return ws.close.bind(ws);
   }, []);
   switch (s.t) {
+    case "Invalid":
+      return <Invalid {...s} />;
     case "Closed":
       return <Closed />;
     case "NameChoosing":
