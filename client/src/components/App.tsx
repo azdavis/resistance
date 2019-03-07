@@ -1,40 +1,12 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { State, Action, Send } from "../types";
+import { Send } from "../types";
+import { reducer, init } from "../state";
 import Fatal from "./Fatal";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
 import MissionMemberChooser from "./MissionMemberChooser";
 import MissionMemberWaiter from "./MissionMemberWaiter";
-
-const reducer = (s: State, a: Action): State => {
-  switch (a.t) {
-    case "Close":
-      return { t: "Fatal", s, a };
-    case "RejectName":
-      return { t: "NameChoosing", valid: false };
-    case "LobbyChoices":
-      return { t: "LobbyChoosing", lobbies: a.Lobbies };
-    case "CurrentLobby":
-      return {
-        t: "LobbyWaiting",
-        me: a.Me,
-        leader: a.Leader,
-        clients: a.Clients,
-        isSpy: false,
-      };
-    case "SetIsSpy":
-      return s.t === "LobbyWaiting"
-        ? { ...s, isSpy: a.IsSpy }
-        : { t: "Fatal", s, a };
-    case "NewMission":
-      return s.t === "LobbyWaiting"
-        ? { ...s, t: "MissionMemberChoosing", captain: a.Captain }
-        : { t: "Fatal", s, a };
-  }
-};
-
-const init: State = { t: "NameChoosing", valid: true };
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);

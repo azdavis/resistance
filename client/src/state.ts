@@ -1,0 +1,32 @@
+import { State, Action } from "./types";
+
+const reducer = (s: State, a: Action): State => {
+  switch (a.t) {
+    case "Close":
+      return { t: "Fatal", s, a };
+    case "RejectName":
+      return { t: "NameChoosing", valid: false };
+    case "LobbyChoices":
+      return { t: "LobbyChoosing", lobbies: a.Lobbies };
+    case "CurrentLobby":
+      return {
+        t: "LobbyWaiting",
+        me: a.Me,
+        leader: a.Leader,
+        clients: a.Clients,
+        isSpy: false,
+      };
+    case "SetIsSpy":
+      return s.t === "LobbyWaiting"
+        ? { ...s, isSpy: a.IsSpy }
+        : { t: "Fatal", s, a };
+    case "NewMission":
+      return s.t === "LobbyWaiting"
+        ? { ...s, t: "MissionMemberChoosing", captain: a.Captain }
+        : { t: "Fatal", s, a };
+  }
+};
+
+const init: State = { t: "NameChoosing", valid: true };
+
+export { reducer, init };
