@@ -11,7 +11,7 @@ type Lobby struct {
 	recv chan *Client // incoming clients
 }
 
-// NewLobby returns a new Lobby. It starts a goroutine which never exits.
+// NewLobby returns a new Lobby. It starts a goroutine which never stops.
 func NewLobby() *Lobby {
 	lb := &Lobby{
 		recv: make(chan *Client, lobbyChLen),
