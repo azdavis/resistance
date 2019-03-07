@@ -10,7 +10,7 @@ export default ({ s, a }: Props) => (
   <div className="Fatal">
     <h1>Fatal error</h1>
     <p>
-      An occurrence, that the developer of this app did not foresee occurring,
+      An occurrence, which the developer of this app did not foresee occurring,
       occurred. Said occurrence is shown below.
     </p>
     <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
