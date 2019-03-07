@@ -74,25 +74,22 @@ type ToClient interface {
 	isToClient()
 }
 
-func (NameChoosing) isToClient()  {}
-func (LobbyChoosing) isToClient() {}
-func (LobbyWaiting) isToClient()  {}
+func (RejectName) isToClient()   {}
+func (LobbyChoices) isToClient() {}
+func (CurrentLobby) isToClient() {}
 
-// NameChoosing is sent to a client that requested a name change with
-// NameChoose. Valid is always false, since if name was valid, we would send
-// LobbyChoosing instead.
-type NameChoosing struct {
-	Valid bool // whether the name was valid
-}
+// RejectName is sent to a client that requested a name change with
+// NameChoose.
+type RejectName struct{}
 
-// LobbyChoosing is sent to a client who is choosing their lobby.
-type LobbyChoosing struct {
+// LobbyChoices is sent to a client who is choosing their lobby.
+type LobbyChoices struct {
 	Lobbies []Lobby // available lobbies to join
 }
 
-// LobbyWaiting is sent to a client who is in a lobby whose game has not yet
+// CurrentLobby is sent to a client who is in a lobby whose game has not yet
 // started.
-type LobbyWaiting struct {
+type CurrentLobby struct {
 	Self    CID       // the client's own CID
 	Leader  CID       // info about this lobby
 	Clients []*Client // info about other clients in this lobby
@@ -150,19 +147,19 @@ func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
 }
 
 // MarshalJSON makes JSON.
-func (pc NameChoosing) MarshalJSON() ([]byte, error) {
-	type alias NameChoosing
-	return fromTagMsg("NameChoosing", alias(pc))
+func (pc RejectName) MarshalJSON() ([]byte, error) {
+	type alias RejectName
+	return fromTagMsg("RejectName", alias(pc))
 }
 
 // MarshalJSON makes JSON.
-func (pc LobbyChoosing) MarshalJSON() ([]byte, error) {
-	type alias LobbyChoosing
-	return fromTagMsg("LobbyChoosing", alias(pc))
+func (pc LobbyChoices) MarshalJSON() ([]byte, error) {
+	type alias LobbyChoices
+	return fromTagMsg("LobbyChoices", alias(pc))
 }
 
 // MarshalJSON makes JSON.
-func (pc LobbyWaiting) MarshalJSON() ([]byte, error) {
-	type alias LobbyWaiting
-	return fromTagMsg("LobbyWaiting", alias(pc))
+func (pc CurrentLobby) MarshalJSON() ([]byte, error) {
+	type alias CurrentLobby
+	return fromTagMsg("CurrentLobby", alias(pc))
 }

@@ -23,8 +23,13 @@ export type Client = {
 };
 
 export type ToClient =
-  | { T: "NameChoosing"; Valid: boolean }
-  | { T: "LobbyChoosing"; Lobbies: Array<Lobby> }
-  | { T: "LobbyWaiting"; Self: CID; Leader: CID; Clients: Array<Client> };
+  | { T: "Close" } // server will not actually ever send this.
+  | { T: "RejectName" }
+  | { T: "LobbyChoices"; Lobbies: Array<Lobby> }
+  | { T: "CurrentLobby"; Self: CID; Leader: CID; Clients: Array<Client> };
 
-export type State = { T: "Closed" } | ToClient;
+export type State =
+  | { T: "Closed" }
+  | { T: "NameChoosing"; valid: boolean }
+  | { T: "LobbyChoosing"; lobbies: Array<Lobby> }
+  | { T: "LobbyWaiting"; self: CID; leader: CID; clients: Array<Client> };
