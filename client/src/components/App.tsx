@@ -1,7 +1,6 @@
 import React, { useReducer, useEffect, useState } from "react";
 import { State, Action, Send } from "../types";
 import Invalid from "./Invalid";
-import Closed from "./Closed";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
@@ -9,7 +8,7 @@ import LobbyWaiter from "./LobbyWaiter";
 const reducer = (s: State, a: Action): State => {
   switch (a.t) {
     case "Close":
-      return { t: "Closed" };
+      return { t: "Invalid", s, a };
     case "RejectName":
       return { t: "NameChoosing", valid: false };
     case "LobbyChoices":
@@ -44,8 +43,6 @@ export default (): JSX.Element => {
   switch (s.t) {
     case "Invalid":
       return <Invalid {...s} />;
-    case "Closed":
-      return <Closed />;
     case "NameChoosing":
       return <NameChooser send={send} {...s} />;
     case "LobbyChoosing":
