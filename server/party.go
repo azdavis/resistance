@@ -11,18 +11,17 @@ type PID uint64
 // isolated from all other Parties.
 //
 // A Party always has at least one client inside. If the leader leaves, the
-// party disbands. New clients who want to join will arrive on rx. However,
-// the party will only accept these new clients if the game has not yet started.
-// The leader decides when to start the game.
+// party disbands. New clients who want to join will arrive on rx. However, the
+// party will only accept these new clients if the game has not yet started. The
+// leader decides when to start the game.
 //
-// If a single client wants to leave the party, tx them back to the lobby on
-// tx. The tx and rx channels are only to be used before the game has
-// started.
+// If a single client wants to leave the party, tx them back to the lobbyMap on
+// tx. The tx and rx channels are only to be used before the game has started.
 //
 // A Party can disband itself by sending its own PID along done. Once it does
 // this, it should stop modifying itself (i.e., it should exit from run), since
-// the Lobby which contains a pointer to this Party will receive along done and
-// will start cleaning up the party.
+// the LobbyMap which contains a pointer to this Party will receive along done
+// and will start cleaning up the party.
 type Party struct {
 	PID                     // unique
 	leader  CID             // controls when game starts
@@ -88,15 +87,15 @@ func (p *Party) broadcastPartyWaiting() {
 	}
 }
 
-// close signals the Lobby to clean up this Party. It should only be called from
-// run.
+// close signals the LobbyMap to clean up this Party. It should only be called
+// from run.
 func (p *Party) close() {
 	log.Println("exit run", p.PID)
 	p.done <- p.PID
 }
 
 // run runs the Party. When run returns, any remaining Clients are absorbed into
-// the Lobby.
+// the LobbyMap.
 func (p *Party) run() {
 	log.Println("enter run", p.PID)
 	defer p.close()

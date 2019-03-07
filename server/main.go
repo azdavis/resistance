@@ -8,7 +8,7 @@ import (
 
 func main() {
 	log.Println("start")
-	lb := NewLobby()
+	lb := NewLobbyMap()
 	s := &http.Server{
 		Handler:      NewHub(lb.rx),
 		Addr:         ":8080",

@@ -4,25 +4,25 @@ import (
 	"log"
 )
 
-const lobbyChLen = 5
+const lobbyMapChLen = 5
 
-// Lobby contains the Clients who are not part of a Party.
-type Lobby struct {
+// LobbyMap contains the Clients who are not part of a Party.
+type LobbyMap struct {
 	rx chan *Client // incoming clients
 }
 
-// NewLobby returns a new Lobby. It starts a goroutine which never stops.
-func NewLobby() *Lobby {
-	lb := &Lobby{
-		rx: make(chan *Client, lobbyChLen),
+// NewLobbyMap returns a new LobbyMap. It starts a goroutine which never stops.
+func NewLobbyMap() *LobbyMap {
+	lb := &LobbyMap{
+		rx: make(chan *Client, lobbyMapChLen),
 	}
 	go lb.run()
 	return lb
 }
 
-// run runs the Lobby.
-func (lb *Lobby) run() {
-	log.Println("enter Lobby run")
+// run runs the LobbyMap.
+func (lb *LobbyMap) run() {
+	log.Println("enter LobbyMap run")
 	clients := NewClientMap()
 	parties := make(map[PID]*Party)
 	nextPID := PID(1)
@@ -37,8 +37,8 @@ func (lb *Lobby) run() {
 		}
 		return ret
 	}
-	done := make(chan PID, lobbyChLen)
-	start := make(chan struct{}, lobbyChLen)
+	done := make(chan PID, lobbyMapChLen)
+	start := make(chan struct{}, lobbyMapChLen)
 	broadcastParties := func() {
 		msg := PartyChoosing{Parties: partiesInfo()}
 		for _, cl := range clients.M {
