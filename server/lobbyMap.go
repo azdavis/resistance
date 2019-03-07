@@ -14,7 +14,7 @@ func runLobbyMap(rx chan *Client) {
 		return ret
 	}
 
-	broadcastLobbies := func() {
+	broadcastLobbyChoosing := func() {
 		msg := LobbyChoosing{Lobbies: lobbiesList()}
 		for _, cl := range clients.M {
 			cl.tx <- msg
@@ -33,7 +33,7 @@ func runLobbyMap(rx chan *Client) {
 			if m.Close {
 				delete(lobbies, m.GID)
 			}
-			broadcastLobbies()
+			broadcastLobbyChoosing()
 		case ac := <-clients.C:
 			cid := ac.CID
 			switch ts := ac.ToServer.(type) {
@@ -49,7 +49,7 @@ func runLobbyMap(rx chan *Client) {
 				gid := nextGID
 				nextGID++
 				lobbies[gid] = NewLobby(gid, clients.Rm(cid), toLobbyMap)
-				broadcastLobbies()
+				broadcastLobbyChoosing()
 			}
 		}
 	}
