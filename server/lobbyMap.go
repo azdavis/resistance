@@ -1,10 +1,11 @@
 package main
 
 func runLobbyMap(rx chan *Client) {
-	const chLen = 5
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
+	toLobbyMap := make(chan LobbyMsg)
 	nextGID := GID(1)
+
 	lobbiesList := func() []Lobby {
 		ret := make([]Lobby, 0, len(lobbies))
 		for _, lobby := range lobbies {
@@ -12,13 +13,14 @@ func runLobbyMap(rx chan *Client) {
 		}
 		return ret
 	}
-	toLobbyMap := make(chan LobbyMsg)
+
 	broadcastLobbies := func() {
 		msg := LobbyChoosing{Lobbies: lobbiesList()}
 		for _, cl := range clients.M {
 			cl.tx <- msg
 		}
 	}
+
 	for {
 		select {
 		case cl := <-rx:

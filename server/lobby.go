@@ -35,8 +35,11 @@ func runLobby(
 	rx <-chan *Client,
 ) {
 	// whenever sending on tx, must also select with rx to prevent deadlock.
+	log.Println("enter run", gid)
+
 	clients := NewClientMap()
 	clients.Add(leader)
+
 	clientsList := func() []*Client {
 		ret := make([]*Client, 0, len(clients.M))
 		for _, cl := range clients.M {
@@ -44,14 +47,16 @@ func runLobby(
 		}
 		return ret
 	}
+
 	broadcastLobbyWaiting := func() {
 		cs := clientsList()
 		for cid, cl := range clients.M {
 			cl.tx <- LobbyWaiting{cid, leader.CID, cs}
 		}
 	}
+
 	broadcastLobbyWaiting()
-	log.Println("enter run", gid)
+
 	for {
 		select {
 		case cl := <-rx:
@@ -85,6 +90,7 @@ func runLobby(
 			}
 		}
 	}
+
 out:
 	select {
 	case cl := <-rx:
