@@ -8,8 +8,8 @@ func runLobbyMap(rx chan *Client) {
 
 	lobbiesList := func() []Lobby {
 		ret := make([]Lobby, 0, len(lobbies))
-		for _, lobby := range lobbies {
-			ret = append(ret, lobby)
+		for _, lb := range lobbies {
+			ret = append(ret, lb)
 		}
 		return ret
 	}
@@ -45,11 +45,11 @@ func runLobbyMap(rx chan *Client) {
 			case Close:
 				clients.Rm(cid).Close()
 			case LobbyChoose:
-				lobby, ok := lobbies[ts.GID]
+				lb, ok := lobbies[ts.GID]
 				if !ok {
 					continue
 				}
-				lobby.tx <- clients.Rm(cid)
+				lb.tx <- clients.Rm(cid)
 			case LobbyCreate:
 				gid := nextGID
 				nextGID++
