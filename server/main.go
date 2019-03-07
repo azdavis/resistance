@@ -8,9 +8,10 @@ import (
 
 func main() {
 	log.Println("start")
-	lb := NewLobbyMap()
+	clientCh := make(chan *Client, 3)
+	runLobbyMap(clientCh)
 	s := &http.Server{
-		Handler:      NewHub(lb.rx),
+		Handler:      NewHub(clientCh),
 		Addr:         ":8080",
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,

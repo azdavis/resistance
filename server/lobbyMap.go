@@ -4,24 +4,8 @@ import (
 	"log"
 )
 
-const lobbyMapChLen = 5
-
-// LobbyMap contains the Clients who are not part of a Lobby.
-type LobbyMap struct {
-	rx chan *Client // incoming clients
-}
-
-// NewLobbyMap returns a new LobbyMap. It starts a goroutine which never stops.
-func NewLobbyMap() *LobbyMap {
-	lb := &LobbyMap{
-		rx: make(chan *Client, lobbyMapChLen),
-	}
-	go lb.run()
-	return lb
-}
-
-// run runs the LobbyMap.
-func (lb *LobbyMap) run() {
+func runLobbyMap(rx chan *Client) {
+	const chLen = 5
 	log.Println("enter LobbyMap run")
 	clients := NewClientMap()
 	lobbies := make(map[GID]*Lobby)
@@ -37,8 +21,8 @@ func (lb *LobbyMap) run() {
 		}
 		return ret
 	}
-	done := make(chan GID, lobbyMapChLen)
-	start := make(chan struct{}, lobbyMapChLen)
+	done := make(chan GID, chLen)
+	start := make(chan struct{}, chLen)
 	broadcastLobbies := func() {
 		msg := LobbyChoosing{Lobbies: lobbiesInfo()}
 		for _, cl := range clients.M {
@@ -49,7 +33,7 @@ func (lb *LobbyMap) run() {
 	}
 	for {
 		select {
-		case cl := <-lb.rx:
+		case cl := <-rx:
 			clients.Add(cl)
 			if cl.name != "" {
 				cl.tx <- LobbyChoosing{Lobbies: lobbiesInfo()}
@@ -98,7 +82,7 @@ func (lb *LobbyMap) run() {
 				lobbies[gid] = NewLobby(
 					gid,
 					clients.Rm(cid),
-					lb.rx,
+					rx,
 					done,
 					start,
 				)
