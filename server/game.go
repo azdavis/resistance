@@ -21,7 +21,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 			i--
 		}
 	}
-	log.Println("spies", isSpy)
+	log.Println("spies", gid, isSpy)
 
 	for {
 		ac := <-clients.C
