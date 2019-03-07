@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default ({ s, a }: Props): JSX.Element => (
-  <div className="Invalid">
+  <div className="Fatal">
     <h1>Fatal error</h1>
     <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
   </div>

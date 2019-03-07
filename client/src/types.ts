@@ -34,7 +34,7 @@ type ToClient =
 export type Action = SelfAction | ToClient;
 
 export type State =
-  | { t: "Invalid"; s: State; a: Action }
+  | { t: "Fatal"; s: State; a: Action }
   | { t: "NameChoosing"; valid: boolean }
   | { t: "LobbyChoosing"; lobbies: Array<Lobby> }
   | {

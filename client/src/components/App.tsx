@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState } from "react";
 import { State, Action, Send } from "../types";
-import Invalid from "./Invalid";
+import Fatal from "./Fatal";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
@@ -8,7 +8,7 @@ import LobbyWaiter from "./LobbyWaiter";
 const reducer = (s: State, a: Action): State => {
   switch (a.t) {
     case "Close":
-      return { t: "Invalid", s, a };
+      return { t: "Fatal", s, a };
     case "RejectName":
       return { t: "NameChoosing", valid: false };
     case "LobbyChoices":
@@ -24,9 +24,9 @@ const reducer = (s: State, a: Action): State => {
     case "SetIsSpy":
       return s.t === "LobbyWaiting"
         ? { ...s, isSpy: a.IsSpy }
-        : { t: "Invalid", s, a };
+        : { t: "Fatal", s, a };
     case "NewMission":
-      return { t: "Invalid", s, a };
+      return { t: "Fatal", s, a };
   }
 };
 const init: State = { t: "NameChoosing", valid: true };
@@ -48,8 +48,8 @@ export default (): JSX.Element => {
     return ws.close.bind(ws);
   }, []);
   switch (s.t) {
-    case "Invalid":
-      return <Invalid {...s} />;
+    case "Fatal":
+      return <Fatal {...s} />;
     case "NameChoosing":
       return <NameChooser send={send} {...s} />;
     case "LobbyChoosing":
