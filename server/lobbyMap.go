@@ -93,14 +93,15 @@ func (lb *LobbyMap) run() {
 				if !ok {
 					continue
 				}
-				lobbies[nextGID] = NewLobby(
-					nextGID,
+				gid := nextGID
+				nextGID++
+				lobbies[gid] = NewLobby(
+					gid,
 					clients.Rm(cid),
 					lb.rx,
 					done,
 					start,
 				)
-				nextGID++
 				broadcastLobbies()
 			}
 		}
