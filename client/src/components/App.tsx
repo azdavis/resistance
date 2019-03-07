@@ -30,6 +30,7 @@ const reducer = (s: State, a: Action): State => {
       return { t: "Fatal", s, a };
   }
 };
+
 const init: State = { t: "NameChoosing", valid: true };
 
 export default (): JSX.Element => {
