@@ -44,17 +44,10 @@ export default (): JSX.Element => {
     case "Closed":
       return <Closed />;
     case "NameChoosing":
-      return <NameChooser send={send} valid={s.valid} />;
+      return <NameChooser send={send} {...s} />;
     case "LobbyChoosing":
-      return <LobbyChooser send={send!} lobbies={s.lobbies} />;
+      return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
-      return (
-        <LobbyWaiter
-          send={send!}
-          self={s.self}
-          leader={s.leader}
-          clients={s.clients}
-        />
-      );
+      return <LobbyWaiter send={send!} {...s} />;
   }
 };
