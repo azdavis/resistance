@@ -46,7 +46,6 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 			cl.tx <- LobbyWaiting{cid, leader.CID, cs}
 		}
 	}
-
 	broadcastLobbyWaiting()
 
 	for {
