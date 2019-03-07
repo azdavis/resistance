@@ -6,8 +6,7 @@ import (
 	"time"
 )
 
-func main() {
-	log.Println("start")
+func newServer() *http.Server {
 	toLobbyMap := make(chan *Client, 3)
 	toNameChooser := make(chan *Client, 3)
 	go runLobbyMap(toLobbyMap)
@@ -18,5 +17,10 @@ func main() {
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
-	log.Fatal(s.ListenAndServe())
+	return s
+}
+
+func main() {
+	log.Println("start")
+	log.Fatal(newServer().ListenAndServe())
 }
