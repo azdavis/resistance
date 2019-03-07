@@ -77,6 +77,8 @@ type ToClient interface {
 func (RejectName) isToClient()   {}
 func (LobbyChoices) isToClient() {}
 func (CurrentLobby) isToClient() {}
+func (SetIsSpy) isToClient()     {}
+func (NewMission) isToClient()   {}
 
 // RejectName is sent to a client that requested a name change with
 // NameChoose.
@@ -93,6 +95,16 @@ type CurrentLobby struct {
 	Self    CID       // the client's own CID
 	Leader  CID       // info about this lobby
 	Clients []*Client // info about other clients in this lobby
+}
+
+// SetIsSpy sets the client's role.
+type SetIsSpy struct {
+	IsSpy bool // if false, client is resistance
+}
+
+// NewMission sets the client's role.
+type NewMission struct {
+	IsCaptain bool // iff true, client leads this mission
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
@@ -162,4 +174,16 @@ func (pc LobbyChoices) MarshalJSON() ([]byte, error) {
 func (pc CurrentLobby) MarshalJSON() ([]byte, error) {
 	type alias CurrentLobby
 	return fromTagMsg("CurrentLobby", alias(pc))
+}
+
+// MarshalJSON makes JSON.
+func (pc SetIsSpy) MarshalJSON() ([]byte, error) {
+	type alias SetIsSpy
+	return fromTagMsg("SetIsSpy", alias(pc))
+}
+
+// MarshalJSON makes JSON.
+func (pc NewMission) MarshalJSON() ([]byte, error) {
+	type alias NewMission
+	return fromTagMsg("NewMission", alias(pc))
 }

@@ -23,6 +23,15 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 	log.Println("spies", gid, isSpy)
 
+	for _, cl := range cs {
+		cl.tx <- SetIsSpy{isSpy[cl.CID]}
+	}
+
+	captainIdx := 0
+	for i, cl := range cs {
+		cl.tx <- NewMission{captainIdx == i}
+	}
+
 	for {
 		ac := <-clients.C
 		cid := ac.CID

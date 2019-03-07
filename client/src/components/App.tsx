@@ -19,7 +19,14 @@ const reducer = (s: State, a: Action): State => {
         self: a.Self,
         leader: a.Leader,
         clients: a.Clients,
+        isSpy: false,
       };
+    case "SetIsSpy":
+      return s.t === "LobbyWaiting"
+        ? { ...s, isSpy: a.IsSpy }
+        : { t: "Invalid", s, a };
+    case "NewMission":
+      return { t: "Invalid", s, a };
   }
 };
 const init: State = { t: "NameChoosing", valid: true };
