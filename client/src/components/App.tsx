@@ -67,6 +67,7 @@ export default (): JSX.Element => {
       ) : (
         <MissionMemberWaiter
           captain={s.clients.find(x => x.CID === s.captain)!.Name}
+          isSpy={s.isSpy}
         />
       );
   }
