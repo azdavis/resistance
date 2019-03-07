@@ -9,7 +9,7 @@ func runLobbyMap(rx chan *Client) {
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
 	nextGID := GID(1)
-	lobbiesInfo := func() []Lobby {
+	lobbiesList := func() []Lobby {
 		ret := make([]Lobby, 0, len(lobbies))
 		for _, lobby := range lobbies {
 			ret = append(ret, lobby)
@@ -18,7 +18,7 @@ func runLobbyMap(rx chan *Client) {
 	}
 	toLobbyMap := make(chan LobbyMsg)
 	broadcastLobbies := func() {
-		msg := LobbyChoosing{Lobbies: lobbiesInfo()}
+		msg := LobbyChoosing{Lobbies: lobbiesList()}
 		for _, cl := range clients.M {
 			cl.tx <- msg
 		}
@@ -27,7 +27,7 @@ func runLobbyMap(rx chan *Client) {
 		select {
 		case cl := <-rx:
 			clients.Add(cl)
-			cl.tx <- LobbyChoosing{Lobbies: lobbiesInfo()}
+			cl.tx <- LobbyChoosing{Lobbies: lobbiesList()}
 		case m := <-toLobbyMap:
 			for _, cl := range m.Clients {
 				clients.Add(cl)
