@@ -15,8 +15,9 @@ type GID uint64
 // lobby will only accept these new clients if the game has not yet started. The
 // leader decides when to start the game.
 //
-// If a single client wants to leave the lobby, tx them back to the lobbyMap on
-// tx. The tx and rx channels are only to be used before the game has started.
+// If a single client wants to leave the lobby, send them back to the lobbyMap
+// on tx. The tx and rx channels are only to be used before the game has
+// started.
 //
 // A Lobby can disband itself by sending its own GID along done. Once it does
 // this, it should stop modifying itself (i.e., it should exit from run), since
@@ -26,7 +27,7 @@ type Lobby struct {
 	GID                     // unique
 	leader  CID             // controls when game starts
 	name    string          // leader name
-	done    chan<- GID      // tx own GID when lobby disbands
+	done    chan<- GID      // send own GID when lobby disbands
 	tx      chan<- *Client  // outgoing clients
 	rx      chan *Client    // incoming clients
 	clients *ClientMap      // clients in the lobby (includes leader)

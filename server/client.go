@@ -51,7 +51,7 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 		if err != nil {
 			log.Println("err recvFrom", cl.CID, err)
 			// no further ToServers will be sent on rx. however, do not close rx,
-			// since we may tx garbage ToServers to listeners.
+			// since we may send garbage ToServers to listeners.
 			cl.rx <- Close{}
 			conn.Close()
 			log.Println("exit recvFrom", cl.CID)

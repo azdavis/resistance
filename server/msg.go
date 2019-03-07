@@ -60,7 +60,7 @@ func (LobbyChoosing) isToClient() {}
 func (LobbyWaiting) isToClient()  {}
 
 // NameChoosing is sent to a client that requested a name change with
-// NameChoose. Valid is always false, since if name was valid, we would tx
+// NameChoose. Valid is always false, since if name was valid, we would send
 // LobbyChoosing instead.
 type NameChoosing struct {
 	Valid bool // whether the name was valid
