@@ -19,8 +19,8 @@ const modifiers = (cid: CID, self: CID, leader: CID): string =>
     : "";
 
 export default ({ send, self, leader, clients }: Props): JSX.Element => (
-  <div className="PartyWaiter">
-    <h1>Party</h1>
+  <div className="LobbyWaiter">
+    <h1>Lobby</h1>
     <h2>Members</h2>
     {clients.map(({ CID, Name }) => (
       <div key={CID}>
@@ -29,7 +29,7 @@ export default ({ send, self, leader, clients }: Props): JSX.Element => (
       </div>
     ))}
     <h2>Actions</h2>
-    <Button value="Leave" onClick={() => send({ T: "PartyLeave" })} />
+    <Button value="Leave" onClick={() => send({ T: "LobbyLeave" })} />
     {self === leader && (
       <Button value="Start" onClick={() => send({ T: "GameStart" })} />
     )}

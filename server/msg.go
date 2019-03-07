@@ -17,9 +17,9 @@ type ToServer interface {
 
 func (Close) isToServer()       {}
 func (NameChoose) isToServer()  {}
-func (PartyChoose) isToServer() {}
-func (PartyLeave) isToServer()  {}
-func (PartyCreate) isToServer() {}
+func (LobbyChoose) isToServer() {}
+func (LobbyLeave) isToServer()  {}
+func (LobbyCreate) isToServer() {}
 func (GameStart) isToServer()   {}
 
 // Close means the client closed itself. No further Actions will follow from
@@ -31,16 +31,16 @@ type NameChoose struct {
 	Name string // desired name
 }
 
-// PartyChoose is a request to choose one's party.
-type PartyChoose struct {
-	PID // desired PID
+// LobbyChoose is a request to choose one's lobby.
+type LobbyChoose struct {
+	GID // desired GID
 }
 
-// PartyLeave is a request to leave the client's current party.
-type PartyLeave struct{}
+// LobbyLeave is a request to leave the client's current lobby.
+type LobbyLeave struct{}
 
-// PartyCreate is a request to create a new party, with oneself as the leader.
-type PartyCreate struct{}
+// LobbyCreate is a request to create a new lobby, with oneself as the leader.
+type LobbyCreate struct{}
 
 // GameStart is a request to start the game.
 type GameStart struct{}
@@ -56,25 +56,25 @@ type ToClient interface {
 }
 
 func (NameChoosing) isToClient()  {}
-func (PartyChoosing) isToClient() {}
-func (PartyWaiting) isToClient()  {}
+func (LobbyChoosing) isToClient() {}
+func (LobbyWaiting) isToClient()  {}
 
 // NameChoosing is sent to a client that requested a name change with
 // NameChoose. Valid is always false, since if name was valid, we would tx
-// PartyChoosing instead.
+// LobbyChoosing instead.
 type NameChoosing struct {
 	Valid bool // whether the name was valid
 }
 
-// PartyInfo contains info about a Party.
-type PartyInfo struct {
-	PID
+// LobbyInfo contains info about a Lobby.
+type LobbyInfo struct {
+	GID
 	Leader string
 }
 
-// PartyChoosing is sent to a client who is choosing their party.
-type PartyChoosing struct {
-	Parties []PartyInfo // available parties to join
+// LobbyChoosing is sent to a client who is choosing their lobby.
+type LobbyChoosing struct {
+	Lobbies []LobbyInfo // available lobbies to join
 }
 
 // ClientInfo contains info about a Client.
@@ -83,12 +83,12 @@ type ClientInfo struct {
 	Name string
 }
 
-// PartyWaiting is sent to a client who is in a party whose game has not yet
+// LobbyWaiting is sent to a client who is in a lobby whose game has not yet
 // started.
-type PartyWaiting struct {
+type LobbyWaiting struct {
 	Self    CID          // the client's own CID
-	Leader  CID          // info about this party
-	Clients []ClientInfo // info about other clients in this party
+	Leader  CID          // info about this lobby
+	Clients []ClientInfo // info about other clients in this lobby
 }
 
 // helpers /////////////////////////////////////////////////////////////////////
@@ -121,16 +121,16 @@ func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
 		var msg NameChoose
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
-	case "PartyChoose":
-		var msg PartyChoose
+	case "LobbyChoose":
+		var msg LobbyChoose
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
-	case "PartyLeave":
-		var msg PartyLeave
+	case "LobbyLeave":
+		var msg LobbyLeave
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
-	case "PartyCreate":
-		var msg PartyCreate
+	case "LobbyCreate":
+		var msg LobbyCreate
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	case "GameStart":
@@ -149,13 +149,13 @@ func (pc NameChoosing) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSON makes JSON.
-func (pc PartyChoosing) MarshalJSON() ([]byte, error) {
-	type alias PartyChoosing
-	return fromTagMsg("PartyChoosing", alias(pc))
+func (pc LobbyChoosing) MarshalJSON() ([]byte, error) {
+	type alias LobbyChoosing
+	return fromTagMsg("LobbyChoosing", alias(pc))
 }
 
 // MarshalJSON makes JSON.
-func (pc PartyWaiting) MarshalJSON() ([]byte, error) {
-	type alias PartyWaiting
-	return fromTagMsg("PartyWaiting", alias(pc))
+func (pc LobbyWaiting) MarshalJSON() ([]byte, error) {
+	type alias LobbyWaiting
+	return fromTagMsg("LobbyWaiting", alias(pc))
 }

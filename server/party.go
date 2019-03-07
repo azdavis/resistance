@@ -4,48 +4,48 @@ import (
 	"log"
 )
 
-// PID is a unique identifier for a Party.
-type PID uint64
+// GID is a unique identifier for a Lobby.
+type GID uint64
 
-// Party represents a group of clients all playing together. A Party is totally
-// isolated from all other Parties.
+// Lobby represents a group of clients all playing together. A Lobby is totally
+// isolated from all other Lobbies.
 //
-// A Party always has at least one client inside. If the leader leaves, the
-// party disbands. New clients who want to join will arrive on rx. However, the
-// party will only accept these new clients if the game has not yet started. The
+// A Lobby always has at least one client inside. If the leader leaves, the
+// lobby disbands. New clients who want to join will arrive on rx. However, the
+// lobby will only accept these new clients if the game has not yet started. The
 // leader decides when to start the game.
 //
-// If a single client wants to leave the party, tx them back to the lobbyMap on
+// If a single client wants to leave the lobby, tx them back to the lobbyMap on
 // tx. The tx and rx channels are only to be used before the game has started.
 //
-// A Party can disband itself by sending its own PID along done. Once it does
+// A Lobby can disband itself by sending its own GID along done. Once it does
 // this, it should stop modifying itself (i.e., it should exit from run), since
-// the LobbyMap which contains a pointer to this Party will receive along done
-// and will start cleaning up the party.
-type Party struct {
-	PID                     // unique
+// the LobbyMap which contains a pointer to this Lobby will receive along done
+// and will start cleaning up the lobby.
+type Lobby struct {
+	GID                     // unique
 	leader  CID             // controls when game starts
 	name    string          // leader name
-	done    chan<- PID      // tx own PID when party disbands
+	done    chan<- GID      // tx own GID when lobby disbands
 	tx      chan<- *Client  // outgoing clients
 	rx      chan *Client    // incoming clients
-	clients *ClientMap      // clients in the party (includes leader)
+	clients *ClientMap      // clients in the lobby (includes leader)
 	started bool            // whether the game has started
 	start   chan<- struct{} // signal when the game has started
 }
 
-// NewParty returns a new Party.
-func NewParty(
-	pid PID,
+// NewLobby returns a new Lobby.
+func NewLobby(
+	gid GID,
 	leader *Client,
 	tx chan<- *Client,
-	done chan<- PID,
+	done chan<- GID,
 	start chan<- struct{},
-) *Party {
+) *Lobby {
 	clients := NewClientMap()
 	clients.Add(leader)
-	p := &Party{
-		PID:     pid,
+	p := &Lobby{
+		GID:     gid,
 		leader:  leader.CID,
 		name:    leader.name,
 		done:    done,
@@ -55,18 +55,18 @@ func NewParty(
 		started: false,
 		start:   start,
 	}
-	p.broadcastPartyWaiting()
+	p.broadcastLobbyWaiting()
 	go p.run()
 	return p
 }
 
-// LeaderName returns the name of the leader of this party.
-func (p *Party) LeaderName() string {
+// LeaderName returns the name of the leader of this lobby.
+func (p *Lobby) LeaderName() string {
 	return p.name
 }
 
-// clientsInfo returns info about the Clients in this Party.
-func (p *Party) clientsInfo() []ClientInfo {
+// clientsInfo returns info about the Clients in this Lobby.
+func (p *Lobby) clientsInfo() []ClientInfo {
 	ret := make([]ClientInfo, 0, len(p.clients.M))
 	for cid, cl := range p.clients.M {
 		ret = append(ret, ClientInfo{cid, cl.name})
@@ -74,12 +74,12 @@ func (p *Party) clientsInfo() []ClientInfo {
 	return ret
 }
 
-// broadcastPartyWaiting broadcasts a PartyWaiting message to every Client in
-// this Party.
-func (p *Party) broadcastPartyWaiting() {
+// broadcastLobbyWaiting broadcasts a LobbyWaiting message to every Client in
+// this Lobby.
+func (p *Lobby) broadcastLobbyWaiting() {
 	clientInfo := p.clientsInfo()
 	for cid, cl := range p.clients.M {
-		cl.tx <- PartyWaiting{
+		cl.tx <- LobbyWaiting{
 			Self:    cid,
 			Leader:  p.leader,
 			Clients: clientInfo,
@@ -87,17 +87,17 @@ func (p *Party) broadcastPartyWaiting() {
 	}
 }
 
-// close signals the LobbyMap to clean up this Party. It should only be called
+// close signals the LobbyMap to clean up this Lobby. It should only be called
 // from run.
-func (p *Party) close() {
-	log.Println("exit run", p.PID)
-	p.done <- p.PID
+func (p *Lobby) close() {
+	log.Println("exit run", p.GID)
+	p.done <- p.GID
 }
 
-// run runs the Party. When run returns, any remaining Clients are absorbed into
+// run runs the Lobby. When run returns, any remaining Clients are absorbed into
 // the LobbyMap.
-func (p *Party) run() {
-	log.Println("enter run", p.PID)
+func (p *Lobby) run() {
+	log.Println("enter run", p.GID)
 	defer p.close()
 	for {
 		select {
@@ -106,7 +106,7 @@ func (p *Party) run() {
 				continue
 			}
 			p.clients.Add(cl)
-			p.broadcastPartyWaiting()
+			p.broadcastLobbyWaiting()
 		case ac := <-p.clients.C:
 			cid := ac.CID
 			switch ac.ToServer.(type) {
@@ -115,13 +115,13 @@ func (p *Party) run() {
 				if cid == p.leader || p.started {
 					return
 				}
-				p.broadcastPartyWaiting()
-			case PartyLeave:
+				p.broadcastLobbyWaiting()
+			case LobbyLeave:
 				if cid == p.leader {
 					return
 				}
 				p.tx <- p.clients.Rm(cid)
-				p.broadcastPartyWaiting()
+				p.broadcastLobbyWaiting()
 			case GameStart:
 				if cid != p.leader || p.started {
 					continue

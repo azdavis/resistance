@@ -1,19 +1,19 @@
 import { Dispatch } from "react";
 
-export type PID = number;
+export type GID = number;
 export type CID = number;
 
 export type ToServer =
   | { T: "NameChoose"; Name: string }
-  | { T: "PartyChoose"; PID: PID }
-  | { T: "PartyLeave" }
-  | { T: "PartyCreate" }
+  | { T: "LobbyChoose"; GID: GID }
+  | { T: "LobbyLeave" }
+  | { T: "LobbyCreate" }
   | { T: "GameStart" };
 
 export type Send = Dispatch<ToServer>;
 
-export type PartyInfo = {
-  PID: PID;
+export type LobbyInfo = {
+  GID: GID;
   Leader: string;
 };
 
@@ -24,7 +24,7 @@ export type ClientInfo = {
 
 export type ToClient =
   | { T: "NameChoosing"; Valid: boolean }
-  | { T: "PartyChoosing"; Parties: Array<PartyInfo> }
-  | { T: "PartyWaiting"; Self: CID; Leader: CID; Clients: Array<ClientInfo> };
+  | { T: "LobbyChoosing"; Lobbies: Array<LobbyInfo> }
+  | { T: "LobbyWaiting"; Self: CID; Leader: CID; Clients: Array<ClientInfo> };
 
 export type State = { T: "Closed" } | ToClient;

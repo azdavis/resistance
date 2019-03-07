@@ -2,8 +2,8 @@ import React, { useReducer, useEffect, useState } from "react";
 import { State, Send } from "../types";
 import Closed from "./Closed";
 import NameChooser from "./NameChooser";
-import PartyChooser from "./PartyChooser";
-import PartyWaiter from "./PartyWaiter";
+import LobbyChooser from "./LobbyChooser";
+import LobbyWaiter from "./LobbyWaiter";
 
 const reducer = (s: State, a: State): State => a;
 const init: State = { T: "NameChoosing", Valid: true };
@@ -29,11 +29,11 @@ export default (): JSX.Element => {
       return <Closed />;
     case "NameChoosing":
       return <NameChooser send={send} valid={s.Valid} />;
-    case "PartyChoosing":
-      return <PartyChooser send={send!} parties={s.Parties} />;
-    case "PartyWaiting":
+    case "LobbyChoosing":
+      return <LobbyChooser send={send!} lobbies={s.Lobbies} />;
+    case "LobbyWaiting":
       return (
-        <PartyWaiter
+        <LobbyWaiter
           send={send!}
           self={s.Self}
           leader={s.Leader}

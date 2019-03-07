@@ -6,7 +6,7 @@ import (
 
 const lobbyMapChLen = 5
 
-// LobbyMap contains the Clients who are not part of a Party.
+// LobbyMap contains the Clients who are not part of a Lobby.
 type LobbyMap struct {
 	rx chan *Client // incoming clients
 }
@@ -24,23 +24,23 @@ func NewLobbyMap() *LobbyMap {
 func (lb *LobbyMap) run() {
 	log.Println("enter LobbyMap run")
 	clients := NewClientMap()
-	parties := make(map[PID]*Party)
-	nextPID := PID(1)
-	partiesInfo := func() []PartyInfo {
-		ret := make([]PartyInfo, 0, len(parties))
-		for pid, party := range parties {
-			// TODO race with party.run
-			if party.started {
+	lobbies := make(map[GID]*Lobby)
+	nextGID := GID(1)
+	lobbiesInfo := func() []LobbyInfo {
+		ret := make([]LobbyInfo, 0, len(lobbies))
+		for gid, lobby := range lobbies {
+			// TODO race with lobby.run
+			if lobby.started {
 				continue
 			}
-			ret = append(ret, PartyInfo{pid, party.LeaderName()})
+			ret = append(ret, LobbyInfo{gid, lobby.LeaderName()})
 		}
 		return ret
 	}
-	done := make(chan PID, lobbyMapChLen)
+	done := make(chan GID, lobbyMapChLen)
 	start := make(chan struct{}, lobbyMapChLen)
-	broadcastParties := func() {
-		msg := PartyChoosing{Parties: partiesInfo()}
+	broadcastLobbies := func() {
+		msg := LobbyChoosing{Lobbies: lobbiesInfo()}
 		for _, cl := range clients.M {
 			if cl.name != "" {
 				cl.tx <- msg
@@ -52,17 +52,17 @@ func (lb *LobbyMap) run() {
 		case cl := <-lb.rx:
 			clients.Add(cl)
 			if cl.name != "" {
-				cl.tx <- PartyChoosing{Parties: partiesInfo()}
+				cl.tx <- LobbyChoosing{Lobbies: lobbiesInfo()}
 			}
 		case <-start:
-			broadcastParties()
-		case pid := <-done:
-			rmPartyClients := parties[pid].clients
-			for cid := range rmPartyClients.M {
-				clients.Add(rmPartyClients.Rm(cid))
+			broadcastLobbies()
+		case gid := <-done:
+			rmLobbyClients := lobbies[gid].clients
+			for cid := range rmLobbyClients.M {
+				clients.Add(rmLobbyClients.Rm(cid))
 			}
-			delete(parties, pid)
-			broadcastParties()
+			delete(lobbies, gid)
+			broadcastLobbies()
 		case ac := <-clients.C:
 			cid := ac.CID
 			switch ts := ac.ToServer.(type) {
@@ -79,28 +79,28 @@ func (lb *LobbyMap) run() {
 					continue
 				}
 				cl.name = ts.Name
-				cl.tx <- PartyChoosing{Parties: partiesInfo()}
-			case PartyChoose:
-				log.Println("PartyChoose", cid, ts.PID)
-				party, ok := parties[ts.PID]
+				cl.tx <- LobbyChoosing{Lobbies: lobbiesInfo()}
+			case LobbyChoose:
+				log.Println("LobbyChoose", cid, ts.GID)
+				lobby, ok := lobbies[ts.GID]
 				if !ok {
 					continue
 				}
-				party.rx <- clients.Rm(cid)
-			case PartyCreate:
-				log.Println("PartyCreate", cid)
+				lobby.rx <- clients.Rm(cid)
+			case LobbyCreate:
+				log.Println("LobbyCreate", cid)
 				_, ok := clients.M[cid]
 				if !ok {
 					continue
 				}
-				parties[nextPID] = NewParty(
-					nextPID,
+				lobbies[nextGID] = NewLobby(
+					nextGID,
 					clients.Rm(cid),
 					lb.rx,
 					done,
 					start,
 				)
-				broadcastParties()
+				broadcastLobbies()
 			}
 		}
 	}
