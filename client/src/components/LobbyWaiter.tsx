@@ -1,6 +1,7 @@
 import React from "react";
 import { Send, CID, Client } from "../types";
 import Button from "./Button";
+import FullWidth from "./FullWidth";
 
 type Props = {
   send: Send;
@@ -23,10 +24,10 @@ export default ({ send, me, leader, clients }: Props): JSX.Element => (
     <h1>Lobby</h1>
     <h2>Members</h2>
     {clients.map(({ CID, Name }) => (
-      <div key={CID}>
+      <FullWidth key={CID}>
         {Name}
         {modifiers(CID, me, leader)}
-      </div>
+      </FullWidth>
     ))}
     <h2>Actions</h2>
     <Button value="Leave" onClick={() => send({ t: "LobbyLeave" })} />
