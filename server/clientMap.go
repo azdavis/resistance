@@ -58,6 +58,15 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	return cl
 }
 
+// ToList converts the ClientMap to a list. The order is arbitrary.
+func (cm *ClientMap) ToList() []*Client {
+	ret := make([]*Client, 0, len(cm.M))
+	for _, cl := range cm.M {
+		ret = append(ret, cl)
+	}
+	return ret
+}
+
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
 // each action with the CID. pipe qs when the given q channel is closed.
 func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, q <-chan struct{}) {

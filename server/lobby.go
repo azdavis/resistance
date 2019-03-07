@@ -32,16 +32,8 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 	clients := NewClientMap()
 	clients.Add(leader)
 
-	clientsList := func() []*Client {
-		ret := make([]*Client, 0, len(clients.M))
-		for _, cl := range clients.M {
-			ret = append(ret, cl)
-		}
-		return ret
-	}
-
 	broadcastLobbyWaiting := func() {
-		cs := clientsList()
+		cs := clients.ToList()
 		for cid, cl := range clients.M {
 			cl.tx <- LobbyWaiting{cid, leader.CID, cs}
 		}
@@ -95,7 +87,7 @@ out:
 	select {
 	case cl := <-rx:
 		clients.Add(cl)
-	case tx <- LobbyMsg{gid, true, clientsList()}:
+	case tx <- LobbyMsg{gid, true, clients.ToList()}:
 	}
 	for cid := range clients.M {
 		clients.Rm(cid)
