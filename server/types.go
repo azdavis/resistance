@@ -19,7 +19,7 @@ type Action struct {
 	ToServer
 }
 
-// LobbyMsg is sent from a lobby to the lobby manager.
+// LobbyMsg is sent from a lobby or game to the lobby manager.
 type LobbyMsg struct {
 	GID               // gid of this lobby
 	Close   bool      // whether to close this lobby
