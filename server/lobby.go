@@ -95,5 +95,8 @@ out:
 		clients.Add(cl)
 	case tx <- LobbyMsg{gid, true, clientsList()}:
 	}
+	for cid := range clients.M {
+		clients.Rm(cid)
+	}
 	log.Println("exit run", gid)
 }
