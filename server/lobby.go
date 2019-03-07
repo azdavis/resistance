@@ -13,11 +13,7 @@ type Lobby struct {
 }
 
 // NewLobby returns a new Lobby.
-func NewLobby(
-	gid GID,
-	leader *Client,
-	toLobbyMap chan<- LobbyMsg,
-) Lobby {
+func NewLobby(gid GID, leader *Client, toLobbyMap chan<- LobbyMsg) Lobby {
 	toLobby := make(chan *Client)
 	lb := Lobby{
 		GID:    gid,
@@ -28,12 +24,7 @@ func NewLobby(
 	return lb
 }
 
-func runLobby(
-	gid GID,
-	leader *Client,
-	tx chan<- LobbyMsg,
-	rx <-chan *Client,
-) {
+func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 	// whenever sending on tx, must also select with rx to prevent deadlock.
 	log.Println("enter run", gid)
 
