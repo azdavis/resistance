@@ -5,6 +5,18 @@ import (
 	"fmt"
 )
 
+// CID is a unique identifier for a Client.
+type CID uint64
+
+// GID is a unique identifier for a Game (or a Lobby, which will become a Game).
+type GID uint64
+
+// Action is a CID + ToServer.
+type Action struct {
+	CID
+	ToServer
+}
+
 // ToServer ////////////////////////////////////////////////////////////////////
 
 // ToServer is a request from the client to change state. The client "requests"

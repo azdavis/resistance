@@ -4,12 +4,6 @@ import (
 	"log"
 )
 
-// Action is a CID + ToServer.
-type Action struct {
-	CID
-	ToServer
-}
-
 // ClientMap represents a group of related clients.
 //
 // It contains two public fields:

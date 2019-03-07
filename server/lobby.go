@@ -4,9 +4,6 @@ import (
 	"log"
 )
 
-// GID is a unique identifier for a Lobby.
-type GID uint64
-
 // Lobby represents a group of clients all playing together. A Lobby is totally
 // isolated from all other Lobbies.
 //
