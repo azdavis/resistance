@@ -56,10 +56,6 @@ func runLobbyMap(rx chan *Client) {
 				lobby.rx <- clients.Rm(cid)
 			case LobbyCreate:
 				log.Println("LobbyCreate", cid)
-				_, ok := clients.M[cid]
-				if !ok {
-					continue
-				}
 				gid := nextGID
 				nextGID++
 				lobbies[gid] = NewLobby(gid, clients.Rm(cid), rx, done, start)
