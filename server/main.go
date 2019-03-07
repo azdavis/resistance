@@ -9,7 +9,7 @@ import (
 func main() {
 	log.Println("start")
 	clientCh := make(chan *Client, 3)
-	runLobbyMap(clientCh)
+	go runLobbyMap(clientCh)
 	s := &http.Server{
 		Handler:      NewHub(clientCh),
 		Addr:         ":8080",
