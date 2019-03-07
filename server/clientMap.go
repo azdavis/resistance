@@ -10,11 +10,16 @@ type Action struct {
 	ToServer
 }
 
-// ClientMap represents a group of related clients. It contains two public
-// fields: M, a mapping from Client IDs to Clients, and C, a channel on which
-// messages from all the clients stored in M are sent, with associated CID
-// information attached to each ToServer (see Action). Only one goroutine may
-// call Add or Rm or access M at a time.
+// ClientMap represents a group of related clients.
+//
+// It contains two public fields:
+//
+// 1. M, a mapping from Client IDs to Clients.
+//
+// 2. C, a channel on which messages from all the clients stored in M are sent,
+// with associated CID information attached to each ToServer (see Action).
+//
+// Only one goroutine may access a ClientMap at a time.
 type ClientMap struct {
 	C     chan Action           // messages from the Clients in M
 	M     map[CID]*Client       // if M[x] = c, c.CID = x
