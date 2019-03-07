@@ -32,8 +32,13 @@ func runLobbyMap(rx chan *Client) {
 			}
 			if m.Close {
 				delete(lobbies, m.GID)
+				broadcastLobbyChoosing()
+			} else {
+				msg := LobbyChoosing{Lobbies: lobbiesList()}
+				for _, cl := range m.Clients {
+					cl.tx <- msg
+				}
 			}
-			broadcastLobbyChoosing()
 		case ac := <-clients.C:
 			cid := ac.CID
 			switch ts := ac.ToServer.(type) {
