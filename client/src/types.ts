@@ -9,7 +9,8 @@ export type ToServer =
   | { t: "LobbyChoose"; GID: GID }
   | { t: "LobbyLeave" }
   | { t: "LobbyCreate" }
-  | { t: "GameStart" };
+  | { t: "GameStart" }
+  | { t: "MissionMemberChoose"; Members: Array<CID> };
 
 export type Send = Dispatch<ToServer>;
 
