@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "./Button";
+import Toggle from "./Toggle";
 import SpyStatus from "./SpyStatus";
 import { Send, CID, Client } from "../types";
 
@@ -18,7 +18,7 @@ export default ({ send, me, clients, isSpy }: Props) => {
       <SpyStatus isSpy={isSpy} />
       <p>Choose the members for the mission.</p>
       {clients.map(({ CID, Name }) => (
-        <Button key={CID} value={Name} />
+        <Toggle key={CID} value={Name} />
       ))}
       <p>TODO</p>
     </div>

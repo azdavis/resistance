@@ -1,0 +1,21 @@
+.Toggle {
+  display: flex;
+  user-select: none;
+}
+
+.Toggle input[type="checkbox"] {
+  display: block;
+  appearance: none;
+  width: 1.5em;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  cursor: inherit;
+}
+
+.Toggle input[type="checkbox"]:checked::after {
+  content: "✓";
+}
