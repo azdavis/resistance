@@ -23,8 +23,10 @@ export default ({ send, valid }: Props) => {
           send({ t: "NameChoose", Name: nameRef.current!.value });
         }}
       >
-        <label htmlFor="name">Player name{!valid && <b> invalid</b>}</label>
-        <input type="text" id="name" autoCorrect="off" ref={nameRef} />
+        <label>
+          Player name{!valid && <b> invalid</b>}
+          <input type="text" autoCorrect="off" ref={nameRef} />
+        </label>
         <Button type="submit" value="Submit" disabled={send === null} />
       </form>
     </div>
