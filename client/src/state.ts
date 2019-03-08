@@ -23,7 +23,7 @@ const reducer: Reducer<State, Action> = (s, a) => {
         : { t: "Fatal", s, a };
     case "NewMission":
       return s.t === "LobbyWaiting"
-        ? { ...s, t: "MissionMemberChoosing", captain: a.Captain }
+        ? { ...s, t: "MissionChoosing", captain: a.Captain }
         : { t: "Fatal", s, a };
   }
 };

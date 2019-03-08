@@ -5,8 +5,8 @@ import Fatal from "./Fatal";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
-import MissionMemberChooser from "./MissionMemberChooser";
-import MissionMemberWaiter from "./MissionMemberWaiter";
+import MissionChooser from "./MissionChooser";
+import MissionWaiter from "./MissionWaiter";
 
 export default () => {
   const [s, d] = useReducer(reducer, init);
@@ -33,11 +33,11 @@ export default () => {
       return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
       return <LobbyWaiter send={send!} {...s} />;
-    case "MissionMemberChoosing":
+    case "MissionChoosing":
       return s.me === s.captain ? (
-        <MissionMemberChooser send={send!} {...s} />
+        <MissionChooser send={send!} {...s} />
       ) : (
-        <MissionMemberWaiter
+        <MissionWaiter
           captain={s.clients.find(x => x.CID === s.captain)!.Name}
           isSpy={s.isSpy}
         />

@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default ({ captain, isSpy }: Props) => (
-  <div className="MissionMemberWaiter">
+  <div className="MissionWaiter">
     <h1>New mission</h1>
     <SpyStatus isSpy={isSpy} />
     <p>{captain}, the mission captain, is selecting members for the mission.</p>

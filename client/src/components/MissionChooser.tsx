@@ -16,7 +16,7 @@ export default ({ send, me, clients, isSpy }: Props) => {
     clients.map(({ CID }) => CID === me),
   );
   return (
-    <div className="MissionMemberChooser">
+    <div className="MissionChooser">
       <h1>New mission</h1>
       <SpyStatus isSpy={isSpy} />
       <p>Choose the members for the mission.</p>
@@ -29,7 +29,7 @@ export default ({ send, me, clients, isSpy }: Props) => {
               Members.push(clients[i].CID);
             }
           }
-          send({ t: "MissionMemberChoose", Members });
+          send({ t: "MissionChoose", Members });
         }}
       >
         {clients.map(({ CID, Name }, i) => (

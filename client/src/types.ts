@@ -10,7 +10,7 @@ export type ToServer =
   | { t: "LobbyLeave" }
   | { t: "LobbyCreate" }
   | { t: "GameStart" }
-  | { t: "MissionMemberChoose"; Members: Array<CID> };
+  | { t: "MissionChoose"; Members: Array<CID> };
 
 export type Send = Dispatch<ToServer>;
 
@@ -48,7 +48,7 @@ export type State =
       isSpy: boolean;
     }
   | {
-      t: "MissionMemberChoosing";
+      t: "MissionChoosing";
       captain: CID;
       me: CID;
       leader: CID;
