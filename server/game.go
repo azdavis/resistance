@@ -6,17 +6,19 @@ import (
 )
 
 func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
-	// about 1/s of the clients will be spies.
+	cs := clients.ToList()
+	n := len(cs)
+	// n/s clients will be spies.
 	const s = 4
+	// n/m clients each round will be part of a mission.
+	const m = 5
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
-	cs := clients.ToList()
-
 	// TODO what if there are too few clients?
 	isSpy := make(map[CID]bool)
-	for i := len(clients.M) / s; i > 0; /* intentionally empty */ {
-		cid := cs[rand.Intn(len(cs))].CID
+	for i := n / s; i > 0; /* intentionally empty */ {
+		cid := cs[rand.Intn(n)].CID
 		if !isSpy[cid] {
 			isSpy[cid] = true
 			i--
@@ -29,7 +31,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 
 	captainIdx := 0
-	msg := NewMission{cs[captainIdx].CID}
+	msg := NewMission{cs[captainIdx].CID, n / m}
 	for _, cl := range cs {
 		cl.tx <- msg
 	}
