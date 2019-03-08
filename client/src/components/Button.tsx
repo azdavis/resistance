@@ -4,15 +4,11 @@ import "./FullWidth.css";
 
 type Props = {
   value: string;
-  submit?: boolean;
+  type?: "button" | "submit" | "reset";
   disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
 };
 
-export default ({ submit, ...rest }: Props) => (
-  <input
-    type={submit ? "submit" : "button"}
-    className="Button FullWidth"
-    {...rest}
-  />
+export default ({ type = "button", ...rest }: Props) => (
+  <input type={type} className="Button FullWidth" {...rest} />
 );

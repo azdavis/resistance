@@ -25,7 +25,7 @@ export default ({ send, valid }: Props) => {
       >
         <label htmlFor="name">Player name{!valid && <b> invalid</b>}</label>
         <input type="text" id="name" autoCorrect="off" ref={nameRef} />
-        <Button value="Submit" submit disabled={send === null} />
+        <Button type="submit" value="Submit" disabled={send === null} />
       </form>
     </div>
   );
