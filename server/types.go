@@ -108,12 +108,12 @@ type CurrentLobby struct {
 	Clients []*Client // info about other clients in this lobby
 }
 
-// SetIsSpy sets the client's role.
+// SetIsSpy sets whether the clients is a spy or not.
 type SetIsSpy struct {
 	IsSpy bool // if false, client is resistance
 }
 
-// NewMission sets the client's role.
+// NewMission notifies the client that a new mission has started.
 type NewMission struct {
 	Captain CID // captain of this mission
 }
