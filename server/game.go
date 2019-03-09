@@ -13,6 +13,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	const s = 4
 	// n/m clients each round will be part of a mission.
 	const m = 5
+	nMission := n / m
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
@@ -31,7 +32,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 
 	captainIdx := 0
-	msg := NewMission{cs[captainIdx].CID, n / m}
+	msg := NewMission{cs[captainIdx].CID, nMission}
 	for _, cl := range cs {
 		cl.tx <- msg
 	}
@@ -39,11 +40,15 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	for {
 		ac := <-clients.C
 		cid := ac.CID
-		switch ac.ToServer.(type) {
+		switch ts := ac.ToServer.(type) {
 		case Close:
 			clients.Rm(cid).Close()
 			tx <- LobbyMsg{gid, false, clients.Clear()}
 			return
+		case MissionChoose:
+			if len(ts.Members) != nMission {
+				continue
+			}
 		}
 	}
 }
