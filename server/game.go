@@ -38,8 +38,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 		cl.tx <- msg
 	}
 
-	for {
-		ac := <-clients.C
+	for ac := range clients.C {
 		cid := ac.CID
 		switch ts := ac.ToServer.(type) {
 		case Close:
