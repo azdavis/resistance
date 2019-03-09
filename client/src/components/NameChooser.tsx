@@ -1,14 +1,15 @@
 import React, { useRef, useEffect } from "react";
-import { Send } from "../types";
+import { D, Send } from "../types";
 import Button from "./Button";
 import "./NameChooser.css";
 
 type Props = {
+  d: D;
   send: Send | null;
   valid: boolean;
 };
 
-export default ({ send, valid }: Props) => {
+export default ({ d, send, valid }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
   useEffect(() => nameRef.current!.focus(), []);
   return (
@@ -29,6 +30,7 @@ export default ({ send, valid }: Props) => {
         </label>
         <Button type="submit" value="Submit" disabled={send === null} />
       </form>
+      <Button value="How to play" onClick={() => d({ t: "GoHowTo" })} />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Send } from "../types";
 import { reducer, init } from "../state";
 import Fatal from "./Fatal";
 import Disbanded from "./Disbanded";
+import HowTo from "./HowTo";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
@@ -30,8 +31,10 @@ export default (): JSX.Element => {
       return <Fatal {...s} />;
     case "Disbanded":
       return <Disbanded d={d} />;
+    case "HowTo":
+      return <HowTo d={d} />;
     case "NameChoosing":
-      return <NameChooser send={send} {...s} />;
+      return <NameChooser d={d} send={send} {...s} />;
     case "LobbyChoosing":
       return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
