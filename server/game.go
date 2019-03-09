@@ -6,6 +6,9 @@ import (
 )
 
 func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
+	log.Println("enter runGame", gid)
+	defer log.Println("exit runGame", gid)
+
 	cs := clients.ToList()
 	// as per lobby.go, n >= minN.
 	n := len(cs)
@@ -14,8 +17,6 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	// n/m clients each round will be part of a mission.
 	const m = 5
 	nMission := n / m
-	log.Println("enter runGame", gid)
-	defer log.Println("exit runGame", gid)
 
 	isSpy := make(map[CID]bool)
 	for i := n / s; i > 0; /* intentionally empty */ {
