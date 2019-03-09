@@ -1,6 +1,8 @@
 import { Reducer } from "react";
 import { State, Action } from "./types";
 
+const init: State = { t: "NameChoosing", valid: true };
+
 const reducer: Reducer<State, Action> = (s, a) => {
   switch (a.t) {
     case "Close":
@@ -50,6 +52,4 @@ const reducer: Reducer<State, Action> = (s, a) => {
   }
 };
 
-const init: State = { t: "NameChoosing", valid: true };
-
-export { reducer, init };
+export { init, reducer };
