@@ -19,6 +19,9 @@ const modifiers = (cid: CID, me: CID, leader: CID): string =>
     ? " (leader)"
     : "";
 
+// keep in sync with lobby.go
+const minN = 5;
+
 export default ({ send, me, leader, clients }: Props) => (
   <div className="LobbyWaiter">
     <h1>Lobby</h1>
@@ -32,7 +35,11 @@ export default ({ send, me, leader, clients }: Props) => (
     <h2>Actions</h2>
     <Button value="Leave" onClick={() => send({ t: "LobbyLeave" })} />
     {me === leader && (
-      <Button value="Start" onClick={() => send({ t: "GameStart" })} />
+      <Button
+        value="Start"
+        onClick={() => send({ t: "GameStart" })}
+        disabled={clients.length < minN}
+      />
     )}
   </div>
 );
