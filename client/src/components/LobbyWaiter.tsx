@@ -1,9 +1,10 @@
 import React from "react";
-import { Send, CID, Client } from "../types";
+import { D, Send, CID, Client } from "../types";
 import Button from "./Button";
 import FullWidth from "./FullWidth";
 
 type Props = {
+  d: D;
   send: Send;
   me: CID;
   leader: CID;
@@ -22,7 +23,7 @@ const modifiers = (cid: CID, me: CID, leader: CID): string =>
 // keep in sync with lobby.go
 const minN = 5;
 
-export default ({ send, me, leader, clients }: Props) => (
+export default ({ d, send, me, leader, clients }: Props) => (
   <div className="LobbyWaiter">
     <h1>Lobby</h1>
     <h2>Members</h2>
@@ -33,7 +34,13 @@ export default ({ send, me, leader, clients }: Props) => (
       </FullWidth>
     ))}
     <h2>Actions</h2>
-    <Button value="Leave" onClick={() => send({ t: "LobbyLeave" })} />
+    <Button
+      value="Leave"
+      onClick={() => {
+        d({ t: "LobbyLeave" });
+        send({ t: "LobbyLeave" });
+      }}
+    />
     {me === leader && (
       <Button
         value="Start"

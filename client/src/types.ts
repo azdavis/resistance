@@ -25,7 +25,7 @@ export type Client = {
   Name: string;
 };
 
-type SelfAction = { t: "Close" };
+type SelfAction = { t: "Close" } | { t: "AckDisbanded" } | { t: "LobbyLeave" };
 
 // These should be kept in sync with types.go.
 type ToClient =
@@ -36,9 +36,11 @@ type ToClient =
   | { t: "NewMission"; Captain: CID; NumClients: number };
 
 export type Action = SelfAction | ToClient;
+export type D = Dispatch<Action>;
 
 export type State =
   | { t: "Fatal"; s: State; a: Action }
+  | { t: "Disbanded"; lobbies: Array<Lobby> }
   | { t: "NameChoosing"; valid: boolean }
   | { t: "LobbyChoosing"; lobbies: Array<Lobby> }
   | {
@@ -47,6 +49,7 @@ export type State =
       leader: CID;
       clients: Array<Client>;
       isSpy: boolean;
+      didLeave: boolean;
     }
   | {
       t: "MissionChoosing";

@@ -5,10 +5,22 @@ const reducer: Reducer<State, Action> = (s, a) => {
   switch (a.t) {
     case "Close":
       return { t: "Fatal", s, a };
+    case "AckDisbanded":
+      return s.t === "Disbanded"
+        ? { ...s, t: "LobbyChoosing" }
+        : { t: "Fatal", s, a };
+    case "LobbyLeave":
+      return s.t === "LobbyWaiting"
+        ? { ...s, didLeave: true }
+        : { t: "Fatal", s, a };
     case "RejectName":
       return { t: "NameChoosing", valid: false };
     case "LobbyChoices":
-      return { t: "LobbyChoosing", lobbies: a.Lobbies };
+      return s.t === "LobbyChoosing" ||
+        s.t === "NameChoosing" ||
+        (s.t === "LobbyWaiting" && s.didLeave)
+        ? { t: "LobbyChoosing", lobbies: a.Lobbies }
+        : { t: "Disbanded", lobbies: a.Lobbies };
     case "CurrentLobby":
       return {
         t: "LobbyWaiting",
@@ -16,6 +28,7 @@ const reducer: Reducer<State, Action> = (s, a) => {
         leader: a.Leader,
         clients: a.Clients,
         isSpy: false,
+        didLeave: false,
       };
     case "SetIsSpy":
       return s.t === "LobbyWaiting"

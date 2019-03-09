@@ -2,6 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 import { Send } from "../types";
 import { reducer, init } from "../state";
 import Fatal from "./Fatal";
+import Disbanded from "./Disbanded";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
@@ -27,12 +28,14 @@ export default (): JSX.Element => {
   switch (s.t) {
     case "Fatal":
       return <Fatal {...s} />;
+    case "Disbanded":
+      return <Disbanded d={d} />;
     case "NameChoosing":
       return <NameChooser send={send} {...s} />;
     case "LobbyChoosing":
       return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
-      return <LobbyWaiter send={send!} {...s} />;
+      return <LobbyWaiter send={send!} d={d} {...s} />;
     case "MissionChoosing":
       return s.me === s.captain ? (
         <MissionChooser send={send!} {...s} />
