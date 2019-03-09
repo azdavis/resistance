@@ -4,7 +4,7 @@ import { Dispatch } from "react";
 export type GID = number;
 export type CID = number;
 
-export type ToServer =
+type ToServer =
   // Client "sends" a Close by closing the connection.
   | { t: "NameChoose"; Name: string }
   | { t: "LobbyChoose"; GID: GID }
