@@ -13,8 +13,8 @@
 }
 
 .Button:not(:disabled):active {
-  background-color: var(--dark-gray);
   border-color: var(--dark-gray);
+  background-color: var(--dark-gray);
 }
 
 .Button:focus {
