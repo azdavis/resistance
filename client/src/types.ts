@@ -15,15 +15,8 @@ type ToServer =
 
 export type Send = Dispatch<ToServer>;
 
-export type Lobby = {
-  GID: GID;
-  Leader: string;
-};
-
-export type Client = {
-  CID: CID;
-  Name: string;
-};
+export type Lobby = { GID: GID; Leader: string };
+export type Client = { CID: CID; Name: string };
 
 type SelfAction =
   | { t: "Close" }
