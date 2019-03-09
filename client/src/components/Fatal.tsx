@@ -9,7 +9,7 @@ type Props = {
 export default ({ s, a }: Props) => (
   <div className="Fatal">
     <h1>Fatal error</h1>
-    <p>An unforseen occurrence occurred.</p>
+    <p>An error occurred from which the application cannot recover.</p>
     <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
   </div>
 );
