@@ -2,7 +2,7 @@ import React from "react";
 import { D, Send, CID, Client } from "../types";
 import { MinN } from "../consts";
 import Button from "./Button";
-import FullWidth from "./FullWidth";
+import "./FullWidth.css";
 
 type Props = {
   d: D;
@@ -26,10 +26,10 @@ export default ({ d, send, me, leader, clients }: Props) => (
     <h1>Lobby</h1>
     <h2>Members ({clients.length})</h2>
     {clients.map(({ CID, Name }) => (
-      <FullWidth key={CID}>
+      <div className="FullWidth" key={CID}>
         {Name}
         {modifiers(CID, me, leader)}
-      </FullWidth>
+      </div>
     ))}
     <h2>Actions</h2>
     <Button
