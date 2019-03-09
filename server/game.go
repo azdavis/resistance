@@ -7,7 +7,7 @@ import (
 
 func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	cs := clients.ToList()
-	// as per lobby.go, n >= 5.
+	// as per lobby.go, n >= minN.
 	n := len(cs)
 	// n/s clients will be spies.
 	const s = 4
