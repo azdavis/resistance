@@ -12,6 +12,10 @@ type Props = {
   numClients: number;
 };
 
+function id<T>(x: T): T {
+  return x;
+}
+
 export default ({ send, me, clients, isSpy, numClients }: Props) => {
   const [checked, setChecked] = useState(() =>
     clients.map(({ CID }) => CID === me),
@@ -41,7 +45,7 @@ export default ({ send, me, clients, isSpy, numClients }: Props) => {
           }
           send({ t: "MissionChoose", Members });
         }}
-        disabled={checked.filter(b => b).length != numClients}
+        disabled={checked.filter(id).length != numClients}
       />
     </div>
   );
