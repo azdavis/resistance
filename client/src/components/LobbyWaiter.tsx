@@ -24,7 +24,7 @@ const modifiers = (cid: CID, me: CID, leader: CID): string =>
 export default ({ d, send, me, leader, clients }: Props) => (
   <div className="LobbyWaiter">
     <h1>Lobby</h1>
-    <h2>Members</h2>
+    <h2>Members ({clients.length})</h2>
     {clients.map(({ CID, Name }) => (
       <FullWidth key={CID}>
         {Name}
