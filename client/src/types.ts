@@ -5,6 +5,7 @@ export type CID = number;
 
 // These should be kept in sync with types.go.
 export type ToServer =
+  // Client "sends" a Close by closing the connection.
   | { t: "NameChoose"; Name: string }
   | { t: "LobbyChoose"; GID: GID }
   | { t: "LobbyLeave" }
