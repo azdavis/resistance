@@ -6,7 +6,7 @@ type Props = {
   value: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
 };
 
 export default ({ type = "button", ...rest }: Props) => (
