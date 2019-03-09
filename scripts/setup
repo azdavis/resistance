@@ -12,4 +12,4 @@ cd client
 npm install
 
 cd ../server
-go build
+go install
