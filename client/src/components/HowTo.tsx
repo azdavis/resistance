@@ -2,7 +2,9 @@ import React from "react";
 import { D } from "../types";
 import Button from "./Button";
 
-type Props = { d: D };
+type Props = {
+  d: D;
+};
 
 export default ({ d }: Props) => (
   <div className="HowTo">
