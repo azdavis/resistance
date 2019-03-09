@@ -39,12 +39,10 @@ export default ({ d, send, me, leader, clients }: Props) => (
         send({ t: "LobbyLeave" });
       }}
     />
-    {me === leader && (
-      <Button
-        value="Start"
-        onClick={() => send({ t: "GameStart" })}
-        disabled={clients.length < MinN}
-      />
-    )}
+    <Button
+      value="Start"
+      onClick={() => send({ t: "GameStart" })}
+      disabled={me !== leader || clients.length < MinN}
+    />
   </div>
 );
