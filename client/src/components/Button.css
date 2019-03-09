@@ -12,12 +12,16 @@
   cursor: pointer;
 }
 
-.Button:active {
+.Button:not(:disabled):active {
   background-color: var(--dark-gray);
+  border-color: var(--dark-gray);
 }
 
 .Button:focus {
   outline: 0;
+}
+
+.Button:not(:active):focus {
   border-color: var(--blue);
 }
 
