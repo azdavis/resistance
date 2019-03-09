@@ -8,7 +8,7 @@ import LobbyWaiter from "./LobbyWaiter";
 import MissionChooser from "./MissionChooser";
 import MissionWaiter from "./MissionWaiter";
 
-export default () => {
+export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<Send | null>(null);
   useEffect(() => {
