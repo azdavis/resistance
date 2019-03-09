@@ -67,6 +67,16 @@ func (cm *ClientMap) ToList() []*Client {
 	return ret
 }
 
+// Clear removes all clients from M. It returns ToList (which was calculated
+// before removing all the clients).
+func (cm *ClientMap) Clear() []*Client {
+	ret := cm.ToList()
+	for cid := range cm.M {
+		cm.Rm(cid)
+	}
+	return ret
+}
+
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
 // each action with the CID. pipe qs when the given q channel is closed.
 func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, q <-chan struct{}) {

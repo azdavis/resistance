@@ -88,10 +88,7 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 	}
 
 out:
-	cs := clients.ToList()
-	for cid := range clients.M {
-		clients.Rm(cid)
-	}
+	cs := clients.Clear()
 	select {
 	case cl := <-rx:
 		cs = append(cs, cl)
