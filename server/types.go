@@ -1,3 +1,4 @@
+// These should be kept in sync with types.ts.
 package main
 
 import (
@@ -30,8 +31,6 @@ type LobbyMsg struct {
 
 // ToServer is a request from the client to change state. The client "requests"
 // a Close by closing itself.
-//
-// These should be kept in sync with types.ts.
 type ToServer interface {
 	isToServer()
 }
@@ -78,8 +77,6 @@ type MissionChoose struct {
 // ToClient is sent to the client to change the client's state. It may be sent
 // in direct reply to a client's ToServer, or it may be sent because the client
 // was transitively affected by another client's ToServer.
-//
-// These should be kept in sync with types.ts.
 type ToClient interface {
 	json.Marshaler
 	isToClient()

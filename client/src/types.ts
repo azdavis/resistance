@@ -1,9 +1,9 @@
+// These should be kept in sync with types.go.
 import { Dispatch } from "react";
 
 export type GID = number;
 export type CID = number;
 
-// These should be kept in sync with types.go.
 export type ToServer =
   // Client "sends" a Close by closing the connection.
   | { t: "NameChoose"; Name: string }
@@ -32,7 +32,6 @@ type SelfAction =
   | { t: "GoNameChoose" }
   | { t: "GoHowTo" };
 
-// These should be kept in sync with types.go.
 type ToClient =
   | { t: "RejectName" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
