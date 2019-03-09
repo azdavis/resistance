@@ -14,5 +14,5 @@ if git status --porcelain -unormal | grep .; then
 fi
 
 cd server
-go build
 go vet
+go build
