@@ -28,7 +28,6 @@ func NewLobby(gid GID, leader *Client, toLobbyMap chan<- LobbyMsg) Lobby {
 
 func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 	// keep in sync with LobbyWaiter.tsx and game.go
-	const minN = 5
 	// whenever sending on tx, must also select with rx to prevent deadlock.
 	log.Println("enter runLobby", gid)
 	defer log.Println("exit runLobby", gid)
@@ -70,7 +69,7 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 				}
 				broadcastLobbyWaiting()
 			case GameStart:
-				if cid != leader.CID || len(clients.M) < minN {
+				if cid != leader.CID || len(clients.M) < MinN {
 					continue
 				}
 				select {

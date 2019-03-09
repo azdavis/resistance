@@ -1,5 +1,6 @@
 import React from "react";
 import { D, Send, CID, Client } from "../types";
+import { MinN } from "../consts";
 import Button from "./Button";
 import FullWidth from "./FullWidth";
 
@@ -19,9 +20,6 @@ const modifiers = (cid: CID, me: CID, leader: CID): string =>
     : cid === leader
     ? " (leader)"
     : "";
-
-// keep in sync with lobby.go
-const minN = 5;
 
 export default ({ d, send, me, leader, clients }: Props) => (
   <div className="LobbyWaiter">
@@ -45,7 +43,7 @@ export default ({ d, send, me, leader, clients }: Props) => (
       <Button
         value="Start"
         onClick={() => send({ t: "GameStart" })}
-        disabled={clients.length < minN}
+        disabled={clients.length < MinN}
       />
     )}
   </div>
