@@ -1,6 +1,6 @@
 import React from "react";
 import "./Button.css";
-import "./FullWidth.css";
+import "./Truncated.css";
 import "./Toggle.css";
 
 type Props = {
@@ -12,6 +12,6 @@ type Props = {
 export default ({ value, checked, onChange }: Props) => (
   <label className="Button Toggle">
     <input type="checkbox" checked={checked} onChange={onChange} />
-    <div className="FullWidth">{value}</div>
+    <div className="Truncated">{value}</div>
   </label>
 );

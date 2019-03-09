@@ -1,6 +1,6 @@
 import React from "react";
 import "./Button.css";
-import "./FullWidth.css";
+import "./Truncated.css";
 
 type Props = {
   value: string;
@@ -10,5 +10,5 @@ type Props = {
 };
 
 export default ({ type = "button", ...rest }: Props) => (
-  <input type={type} className="Button FullWidth" {...rest} />
+  <input type={type} className="Button Truncated" {...rest} />
 );
