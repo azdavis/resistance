@@ -20,9 +20,18 @@ export default ({ send, me, clients, isSpy }: Props) => {
       <h1>New mission</h1>
       <SpyStatus isSpy={isSpy} />
       <p>Choose the members for the mission.</p>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
+      {clients.map(({ CID, Name }, i) => (
+        <Toggle
+          key={CID}
+          value={Name}
+          checked={checked[i]}
+          onChange={() => setChecked(checked.map((b, j) => (i === j ? !b : b)))}
+        />
+      ))}
+      <Button
+        type="submit"
+        value="Submit"
+        onClick={() => {
           const Members: Array<CID> = [];
           for (let i = 0; i < clients.length; i++) {
             if (checked[i]) {
@@ -31,19 +40,7 @@ export default ({ send, me, clients, isSpy }: Props) => {
           }
           send({ t: "MissionChoose", Members });
         }}
-      >
-        {clients.map(({ CID, Name }, i) => (
-          <Toggle
-            key={CID}
-            value={Name}
-            checked={checked[i]}
-            onChange={() =>
-              setChecked(checked.map((b, j) => (i === j ? !b : b)))
-            }
-          />
-        ))}
-        <Button type="submit" value="Submit" />
-      </form>
+      />
     </div>
   );
 };
