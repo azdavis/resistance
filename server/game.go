@@ -7,6 +7,7 @@ import (
 
 func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	cs := clients.ToList()
+	// as per lobby.go, n >= 5.
 	n := len(cs)
 	// n/s clients will be spies.
 	const s = 4
@@ -15,7 +16,6 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
-	// TODO what if there are too few clients?
 	isSpy := make(map[CID]bool)
 	for i := n / s; i > 0; /* intentionally empty */ {
 		cid := cs[rand.Intn(n)].CID
