@@ -10,10 +10,7 @@ type Props = {
 export default ({ send, lobbies }: Props) => (
   <div className="LobbyChooser">
     <h1>Lobbies</h1>
-    <Button
-      value="Create new lobby"
-      onClick={() => send({ t: "LobbyCreate" })}
-    />
+    <Button value="Create new" onClick={() => send({ t: "LobbyCreate" })} />
     <h2>Existing lobbies ({lobbies.length})</h2>
     {lobbies.map(({ GID, Leader }) => (
       <Button
