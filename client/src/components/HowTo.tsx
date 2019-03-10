@@ -15,10 +15,6 @@ export default ({ d }: Props) => (
       Some of the players are spies. The rest of the players are members of the
       resistance.
     </p>
-    <p>
-      A player knows whether they are a spy or not, but a player does not know
-      whether another player is a spy or not.
-    </p>
     <p>The first of the spies and resistance to get 3 points wins the game.</p>
     <p>
       The game is played in rounds. In every round of the game, a mission
