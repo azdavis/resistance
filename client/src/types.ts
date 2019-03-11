@@ -58,6 +58,7 @@ export type State =
       me: CID;
       clients: Array<Client>;
       isSpy: boolean;
+      mission: { captain: CID; numMembers: number } | null;
     }
   | {
       t: "MemberChoosing";

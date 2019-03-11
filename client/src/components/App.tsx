@@ -42,7 +42,7 @@ export default (): JSX.Element => {
     case "LobbyWaiting":
       return <LobbyWaiter send={send!} d={d} {...s} />;
     case "RoleViewing":
-      return <RoleViewer d={d} isSpy={s.isSpy} />;
+      return <RoleViewer d={d} isSpy={s.isSpy} wait={s.mission === null} />;
     case "MemberChoosing":
       return s.me === s.captain ? (
         <MemberChooser send={send!} {...s} />
