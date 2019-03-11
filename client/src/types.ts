@@ -56,7 +56,6 @@ export type State =
       t: "MemberChoosing";
       captain: CID;
       me: CID;
-      leader: CID;
       clients: Array<Client>;
       isSpy: boolean;
       numMembers: number;
@@ -65,7 +64,6 @@ export type State =
       t: "MemberVoting";
       captain: CID;
       me: CID;
-      leader: CID;
       clients: Array<Client>;
       isSpy: boolean;
       members: Array<CID>;
