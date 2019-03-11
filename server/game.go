@@ -18,19 +18,20 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	const m = 5
 	nMission := n / m
 
-	isSpy := make(map[CID]bool)
+	// start all false
+	isSpy := make([]bool, n)
 	for i := n / s; i > 0; /* intentionally empty */ {
-		cid := cs[rand.Intn(n)].CID
-		if isSpy[cid] {
+		j := rand.Intn(n)
+		if isSpy[j] {
 			continue
 		}
-		isSpy[cid] = true
+		isSpy[j] = true
 		i--
 	}
 	log.Println("spies", gid, isSpy)
 
-	for _, cl := range cs {
-		cl.tx <- SetIsSpy{isSpy[cl.CID]}
+	for i, cl := range cs {
+		cl.tx <- SetIsSpy{isSpy[i]}
 	}
 
 	captainIdx := 0
