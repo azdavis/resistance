@@ -49,6 +49,10 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 			if cid != cs[captainIdx].CID || len(ts.Members) != nMission {
 				continue
 			}
+			msg := MemberPropose{ts.Members}
+			for _, cl := range cs {
+				cl.tx <- msg
+			}
 		}
 	}
 }
