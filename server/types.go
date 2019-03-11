@@ -42,6 +42,7 @@ func (LobbyLeave) isToServer()   {}
 func (LobbyCreate) isToServer()  {}
 func (GameStart) isToServer()    {}
 func (MemberChoose) isToServer() {}
+func (MemberVote) isToServer()   {}
 
 // Close means the client closed itself. No further Actions will follow from
 // this client.
@@ -70,6 +71,11 @@ type GameStart struct{}
 // members of this mission.
 type MemberChoose struct {
 	Members []CID // the proposed members of the mission
+}
+
+// MemberVote is sent by a client to vote for the proposed mission members.
+type MemberVote struct {
+	Vote bool // whether the client approved of the proposed members
 }
 
 // ToClient ////////////////////////////////////////////////////////////////////
@@ -155,6 +161,10 @@ func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
 		return msg, err
 	case "MemberChoose":
 		var msg MemberChoose
+		err = json.Unmarshal(tm.P, &msg)
+		return msg, err
+	case "MemberVote":
+		var msg MemberVote
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	default:

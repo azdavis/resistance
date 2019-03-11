@@ -11,7 +11,8 @@ type ToServer =
   | { t: "LobbyLeave" }
   | { t: "LobbyCreate" }
   | { t: "GameStart" }
-  | { t: "MemberChoose"; Members: Array<CID> };
+  | { t: "MemberChoose"; Members: Array<CID> }
+  | { t: "MemberVote"; Vote: boolean };
 
 export type Send = Dispatch<ToServer>;
 
