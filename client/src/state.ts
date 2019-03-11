@@ -38,20 +38,31 @@ const reducer: Reducer<State, Action> = (s, a) => {
       };
     case "SetIsSpy":
       return s.t === "LobbyWaiting"
-        ? { ...s, isSpy: a.IsSpy }
+        ? {
+            t: "RoleViewing",
+            me: s.me,
+            clients: s.clients,
+            isSpy: a.IsSpy,
+            mission: null,
+          }
         : { t: "Fatal", s, a };
     case "AckRole":
-      return { t: "Fatal", s, a };
-    case "NewMission":
-      // TODO get mission when not first mission?
-      return s.t === "LobbyWaiting"
+      return s.t === "RoleViewing" && s.mission !== null
         ? {
             t: "MemberChoosing",
             me: s.me,
-            captain: a.Captain,
+            captain: s.mission.captain,
             clients: s.clients,
             isSpy: s.isSpy,
-            numMembers: a.NumMembers,
+            numMembers: s.mission.numMembers,
+          }
+        : { t: "Fatal", s, a };
+    case "NewMission":
+      // TODO get mission when not first mission?
+      return s.t === "RoleViewing"
+        ? {
+            ...s,
+            mission: { captain: a.Captain, numMembers: a.NumMembers },
           }
         : { t: "Fatal", s, a };
     case "MemberPropose":
