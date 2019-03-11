@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { D } from "../types";
-import SpyStatus from "./SpyStatus";
 import Button from "./Button";
 
 type Props = {
@@ -10,10 +9,14 @@ type Props = {
 };
 
 export default ({ d, isSpy, wait }: Props) => {
+  const [show, setShow] = useState(false);
+  const value = show
+    ? `You ${isSpy ? "are" : "are not"} a spy`
+    : "View spy status";
   return (
     <div className="RoleViewer">
       <h1>Role</h1>
-      <SpyStatus isSpy={isSpy} />
+      <Button value={value} onClick={() => setShow(!show)} />
       <Button
         value="Continue"
         onClick={() => d({ t: "AckRole" })}
