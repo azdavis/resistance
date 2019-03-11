@@ -4,8 +4,8 @@ import Button from "./Button";
 
 type Props = {
   send: Send;
-  captain: CID;
   me: CID;
+  captain: CID;
   clients: Array<Client>;
   members: Array<CID>;
 };
