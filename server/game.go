@@ -5,6 +5,14 @@ import (
 	"math/rand"
 )
 
+type state uint
+
+const (
+	memberChoosing state = iota
+	memberVoting
+	missionRunning
+)
+
 func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
@@ -34,6 +42,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 		cl.tx <- SetIsSpy{isSpy[i]}
 	}
 
+	state := memberChoosing
 	captainIdx := 0
 	msg := NewMission{cs[captainIdx].CID, nMission}
 	for _, cl := range cs {
@@ -48,13 +57,16 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 			tx <- LobbyMsg{gid, false, clients.Clear()}
 			return
 		case MemberChoose:
-			if cid != cs[captainIdx].CID || len(ts.Members) != nMission {
+			if state != memberChoosing ||
+				cid != cs[captainIdx].CID ||
+				len(ts.Members) != nMission {
 				continue
 			}
 			msg := MemberPropose{ts.Members}
 			for _, cl := range cs {
 				cl.tx <- msg
 			}
+			state = memberVoting
 		}
 	}
 }
