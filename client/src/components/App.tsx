@@ -49,5 +49,7 @@ export default (): JSX.Element => {
           numMembers={s.numMembers}
         />
       );
+    case "MemberVoting":
+      throw "TODO";
   }
 };

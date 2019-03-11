@@ -59,4 +59,13 @@ export type State =
       clients: Array<Client>;
       isSpy: boolean;
       numMembers: number;
+    }
+  | {
+      t: "MemberVoting";
+      captain: CID;
+      me: CID;
+      leader: CID;
+      clients: Array<Client>;
+      isSpy: boolean;
+      members: Array<CID>;
     };
