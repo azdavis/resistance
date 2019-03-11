@@ -10,9 +10,7 @@ type Props = {
 
 export default ({ d, isSpy, wait }: Props) => {
   const [show, setShow] = useState(false);
-  const value = show
-    ? `You ${isSpy ? "are" : "are not"} a spy`
-    : "View spy status";
+  const value = show ? `You ${isSpy ? "are" : "are not"} a spy` : "View role";
   return (
     <div className="RoleViewer">
       <h1>Role</h1>
