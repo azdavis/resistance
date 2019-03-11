@@ -57,6 +57,8 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 	newMission()
 
+	votes := make(map[CID]bool)
+
 	for ac := range clients.C {
 		cid := ac.CID
 		switch ts := ac.ToServer.(type) {
@@ -75,6 +77,34 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 				cl.tx <- msg
 			}
 			state = memberVoting
+		case MemberVote:
+			if state != memberVoting {
+				continue
+			}
+			_, ok := votes[cid]
+			if ok {
+				continue
+			}
+			votes[cid] = ts.Vote
+			if len(votes) != n {
+				continue
+			}
+			yes := 0
+			for _, v := range votes {
+				if v {
+					yes++
+				}
+			}
+			start := yes > n/2
+			msg := MemberResult{start}
+			for _, cl := range cs {
+				cl.tx <- msg
+			}
+			if start {
+				state = missionRunning
+			} else {
+				newMission()
+			}
 		}
 	}
 }
