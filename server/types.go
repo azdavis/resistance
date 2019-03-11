@@ -69,7 +69,7 @@ type GameStart struct{}
 // MemberChoose is a request from the captain to use the given CIDs as the
 // members of this mission.
 type MemberChoose struct {
-	Members []CID
+	Members []CID // the proposed members of the mission
 }
 
 // ToClient ////////////////////////////////////////////////////////////////////
