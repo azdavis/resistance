@@ -113,7 +113,7 @@ type SetIsSpy struct {
 // NewMission notifies the client that a new mission has started.
 type NewMission struct {
 	Captain    CID // captain of this mission
-	NumClients int // number of members on this mission
+	NumMembers int // number of members on this mission
 }
 
 // Helper functions ////////////////////////////////////////////////////////////

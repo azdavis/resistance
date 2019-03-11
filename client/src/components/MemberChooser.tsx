@@ -9,14 +9,14 @@ type Props = {
   me: CID;
   clients: Array<Client>;
   isSpy: boolean;
-  numClients: number;
+  numMembers: number;
 };
 
 function id<T>(x: T): T {
   return x;
 }
 
-export default ({ send, me, clients, isSpy, numClients }: Props) => {
+export default ({ send, me, clients, isSpy, numMembers }: Props) => {
   const [checked, setChecked] = useState(() =>
     clients.map(({ CID }) => CID === me),
   );
@@ -24,7 +24,7 @@ export default ({ send, me, clients, isSpy, numClients }: Props) => {
     <div className="MemberChooser">
       <h1>New mission</h1>
       <SpyStatus isSpy={isSpy} />
-      <p>Choose {numClients} members for the mission.</p>
+      <p>Choose {numMembers} members for the mission.</p>
       {clients.map(({ CID, Name }, i) => (
         <Toggle
           key={CID}
@@ -45,7 +45,7 @@ export default ({ send, me, clients, isSpy, numClients }: Props) => {
           }
           send({ t: "MemberChoose", Members });
         }}
-        disabled={checked.filter(id).length != numClients}
+        disabled={checked.filter(id).length != numMembers}
       />
     </div>
   );
