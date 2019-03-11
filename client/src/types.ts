@@ -50,7 +50,6 @@ export type State =
       me: CID;
       leader: CID;
       clients: Array<Client>;
-      isSpy: boolean;
       didLeave: boolean;
     }
   | {
@@ -65,7 +64,6 @@ export type State =
       me: CID;
       captain: CID;
       clients: Array<Client>;
-      isSpy: boolean;
       numMembers: number;
     }
   | {

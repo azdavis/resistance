@@ -33,7 +33,6 @@ const reducer: Reducer<State, Action> = (s, a) => {
         me: a.Me,
         leader: a.Leader,
         clients: a.Clients,
-        isSpy: false,
         didLeave: false,
       };
     case "SetIsSpy":
@@ -53,7 +52,6 @@ const reducer: Reducer<State, Action> = (s, a) => {
             me: s.me,
             captain: s.mission.captain,
             clients: s.clients,
-            isSpy: s.isSpy,
             numMembers: s.mission.numMembers,
           }
         : { t: "Fatal", s, a };
