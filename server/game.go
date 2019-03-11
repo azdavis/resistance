@@ -21,10 +21,11 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	isSpy := make(map[CID]bool)
 	for i := n / s; i > 0; /* intentionally empty */ {
 		cid := cs[rand.Intn(n)].CID
-		if !isSpy[cid] {
-			isSpy[cid] = true
-			i--
+		if isSpy[cid] {
+			continue
 		}
+		isSpy[cid] = true
+		i--
 	}
 	log.Println("spies", gid, isSpy)
 
