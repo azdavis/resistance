@@ -72,6 +72,5 @@ export type State =
       me: CID;
       captain: CID;
       clients: Array<Client>;
-      isSpy: boolean;
       members: Array<CID>;
     };
