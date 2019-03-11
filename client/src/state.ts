@@ -43,6 +43,7 @@ const reducer: Reducer<State, Action> = (s, a) => {
     case "AckRole":
       return { t: "Fatal", s, a };
     case "NewMission":
+      // TODO get mission when not first mission?
       return s.t === "LobbyWaiting"
         ? {
             t: "MemberChoosing",
