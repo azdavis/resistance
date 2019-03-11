@@ -66,8 +66,8 @@ type LobbyCreate struct{}
 // GameStart is a request to start the game.
 type GameStart struct{}
 
-// MemberChoose is a request from the mission captain to use the given CIDs
-// as the members of this mission.
+// MemberChoose is a request from the captain to use the given CIDs as the
+// members of this mission.
 type MemberChoose struct {
 	Members []CID
 }

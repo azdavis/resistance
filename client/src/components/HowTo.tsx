@@ -17,13 +17,13 @@ export default ({ d }: Props) => (
     </p>
     <p>The first of the spies and resistance to get 3 points wins the game.</p>
     <p>
-      The game is played in rounds. In every round of the game, a mission
-      captain is chosen. The mission captain chooses a certain group of players
-      to participate in the mission.
+      The game is played in rounds. In every round of the game, a captain is
+      chosen. The captain chooses a certain group of players to participate in
+      the mission.
     </p>
     <p>
-      When the mission captain has finished choosing the members of the mission,
-      all players vote on whether the mission occurs. This vote is public. The
+      When the captain has finished choosing the members of the mission, all
+      players vote on whether the mission occurs. This vote is public. The
       winner is decided by simple majority, with ties resulting in the mission
       not occurring.
     </p>

@@ -10,6 +10,6 @@ export default ({ captain, isSpy }: Props) => (
   <div className="MemberWaiter">
     <h1>New mission</h1>
     <SpyStatus isSpy={isSpy} />
-    <p>{captain}, the mission captain, is selecting members for the mission.</p>
+    <p>{captain}, the captain, is selecting members for the mission.</p>
   </div>
 );
