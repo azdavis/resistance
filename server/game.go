@@ -43,7 +43,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 
 	var state state
-	captainIdx := 0
+	captainIdx := n - 1
 	newMission := func() {
 		state = memberChoosing
 		captainIdx++
