@@ -54,16 +54,16 @@ export type State =
     }
   | {
       t: "MemberChoosing";
-      captain: CID;
       me: CID;
+      captain: CID;
       clients: Array<Client>;
       isSpy: boolean;
       numMembers: number;
     }
   | {
       t: "MemberVoting";
-      captain: CID;
       me: CID;
+      captain: CID;
       clients: Array<Client>;
       isSpy: boolean;
       members: Array<CID>;

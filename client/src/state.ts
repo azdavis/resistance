@@ -53,8 +53,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
       return s.t === "MemberChoosing"
         ? {
             t: "MemberVoting",
-            captain: s.captain,
             me: s.me,
+            captain: s.captain,
             clients: s.clients,
             isSpy: s.isSpy,
             members: a.Members,
