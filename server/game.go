@@ -42,12 +42,20 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 		cl.tx <- SetIsSpy{isSpy[i]}
 	}
 
-	state := memberChoosing
+	var state state
 	captainIdx := 0
-	msg := NewMission{cs[captainIdx].CID, nMission}
-	for _, cl := range cs {
-		cl.tx <- msg
+	newMission := func() {
+		state = memberChoosing
+		captainIdx++
+		if captainIdx == n {
+			captainIdx = 0
+		}
+		msg := NewMission{cs[captainIdx].CID, nMission}
+		for _, cl := range cs {
+			cl.tx <- msg
+		}
 	}
+	newMission()
 
 	for ac := range clients.C {
 		cid := ac.CID
