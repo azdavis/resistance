@@ -7,6 +7,7 @@ import HowTo from "./HowTo";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
+import RoleViewer from "./RoleViewer";
 import MemberChooser from "./MemberChooser";
 import MemberWaiter from "./MemberWaiter";
 import MemberVoter from "./MemberVoter";
@@ -40,6 +41,8 @@ export default (): JSX.Element => {
       return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
       return <LobbyWaiter send={send!} d={d} {...s} />;
+    case "RoleViewing":
+      return <RoleViewer d={d} isSpy={s.isSpy} />;
     case "MemberChoosing":
       return s.me === s.captain ? (
         <MemberChooser send={send!} {...s} />

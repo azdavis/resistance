@@ -54,6 +54,12 @@ export type State =
       didLeave: boolean;
     }
   | {
+      t: "RoleViewing";
+      me: CID;
+      clients: Array<Client>;
+      isSpy: boolean;
+    }
+  | {
       t: "MemberChoosing";
       me: CID;
       captain: CID;
