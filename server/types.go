@@ -88,11 +88,12 @@ type ToClient interface {
 	isToClient()
 }
 
-func (RejectName) isToClient()   {}
-func (LobbyChoices) isToClient() {}
-func (CurrentLobby) isToClient() {}
-func (SetIsSpy) isToClient()     {}
-func (NewMission) isToClient()   {}
+func (RejectName) isToClient()    {}
+func (LobbyChoices) isToClient()  {}
+func (CurrentLobby) isToClient()  {}
+func (SetIsSpy) isToClient()      {}
+func (NewMission) isToClient()    {}
+func (MemberPropose) isToClient() {}
 
 // RejectName is sent to a client that requested a name change with
 // NameChoose.
@@ -120,6 +121,12 @@ type SetIsSpy struct {
 type NewMission struct {
 	Captain    CID // captain of this mission
 	NumMembers int // number of members on this mission
+}
+
+// MemberPropose notifies the client that the captain has selected mission
+// candidates, and voting on whether the mission will proceed can begin.
+type MemberPropose struct {
+	Members []CID // CIDs selected by the captain
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
@@ -209,4 +216,10 @@ func (pc SetIsSpy) MarshalJSON() ([]byte, error) {
 func (pc NewMission) MarshalJSON() ([]byte, error) {
 	type alias NewMission
 	return fromTagMsg("NewMission", alias(pc))
+}
+
+// MarshalJSON makes JSON.
+func (pc MemberPropose) MarshalJSON() ([]byte, error) {
+	type alias MemberPropose
+	return fromTagMsg("MemberPropose", alias(pc))
 }
