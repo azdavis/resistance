@@ -21,7 +21,7 @@ export default ({ send, me, clients, isSpy, numClients }: Props) => {
     clients.map(({ CID }) => CID === me),
   );
   return (
-    <div className="MissionChooser">
+    <div className="MemberChooser">
       <h1>New mission</h1>
       <SpyStatus isSpy={isSpy} />
       <p>Choose {numClients} members for the mission.</p>
@@ -43,7 +43,7 @@ export default ({ send, me, clients, isSpy, numClients }: Props) => {
               Members.push(clients[i].CID);
             }
           }
-          send({ t: "MissionChoose", Members });
+          send({ t: "MemberChoose", Members });
         }}
         disabled={checked.filter(id).length != numClients}
       />

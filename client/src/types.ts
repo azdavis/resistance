@@ -11,7 +11,7 @@ type ToServer =
   | { t: "LobbyLeave" }
   | { t: "LobbyCreate" }
   | { t: "GameStart" }
-  | { t: "MissionChoose"; Members: Array<CID> };
+  | { t: "MemberChoose"; Members: Array<CID> };
 
 export type Send = Dispatch<ToServer>;
 
@@ -50,7 +50,7 @@ export type State =
       didLeave: boolean;
     }
   | {
-      t: "MissionChoosing";
+      t: "MemberChoosing";
       captain: CID;
       me: CID;
       leader: CID;

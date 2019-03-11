@@ -7,8 +7,8 @@ import HowTo from "./HowTo";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
-import MissionChooser from "./MissionChooser";
-import MissionWaiter from "./MissionWaiter";
+import MemberChooser from "./MemberChooser";
+import MemberWaiter from "./MemberWaiter";
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
@@ -39,11 +39,11 @@ export default (): JSX.Element => {
       return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
       return <LobbyWaiter send={send!} d={d} {...s} />;
-    case "MissionChoosing":
+    case "MemberChoosing":
       return s.me === s.captain ? (
-        <MissionChooser send={send!} {...s} />
+        <MemberChooser send={send!} {...s} />
       ) : (
-        <MissionWaiter
+        <MemberWaiter
           captain={s.clients.find(x => x.CID === s.captain)!.Name}
           isSpy={s.isSpy}
         />

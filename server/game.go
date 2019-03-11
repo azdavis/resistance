@@ -45,7 +45,7 @@ func runGame(gid GID, leaderID CID, tx chan<- LobbyMsg, clients *ClientMap) {
 			clients.Rm(cid).Close()
 			tx <- LobbyMsg{gid, false, clients.Clear()}
 			return
-		case MissionChoose:
+		case MemberChoose:
 			if cid != cs[captainIdx].CID || len(ts.Members) != nMission {
 				continue
 			}

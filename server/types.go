@@ -35,13 +35,13 @@ type ToServer interface {
 	isToServer()
 }
 
-func (Close) isToServer()         {}
-func (NameChoose) isToServer()    {}
-func (LobbyChoose) isToServer()   {}
-func (LobbyLeave) isToServer()    {}
-func (LobbyCreate) isToServer()   {}
-func (GameStart) isToServer()     {}
-func (MissionChoose) isToServer() {}
+func (Close) isToServer()        {}
+func (NameChoose) isToServer()   {}
+func (LobbyChoose) isToServer()  {}
+func (LobbyLeave) isToServer()   {}
+func (LobbyCreate) isToServer()  {}
+func (GameStart) isToServer()    {}
+func (MemberChoose) isToServer() {}
 
 // Close means the client closed itself. No further Actions will follow from
 // this client.
@@ -66,9 +66,9 @@ type LobbyCreate struct{}
 // GameStart is a request to start the game.
 type GameStart struct{}
 
-// MissionChoose is a request from the mission captain to use the given CIDs
+// MemberChoose is a request from the mission captain to use the given CIDs
 // as the members of this mission.
-type MissionChoose struct {
+type MemberChoose struct {
 	Members []CID
 }
 
@@ -153,8 +153,8 @@ func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
 		var msg GameStart
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
-	case "MissionChoose":
-		var msg MissionChoose
+	case "MemberChoose":
+		var msg MemberChoose
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	default:
