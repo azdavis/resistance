@@ -61,6 +61,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
             members: a.Members,
           }
         : { t: "Fatal", s, a };
+    case "MemberResult":
+      return { t: "Fatal", s, a };
   }
 };
 
