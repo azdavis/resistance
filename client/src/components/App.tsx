@@ -9,6 +9,7 @@ import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
 import MemberChooser from "./MemberChooser";
 import MemberWaiter from "./MemberWaiter";
+import MemberVoter from "./MemberVoter";
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
@@ -50,6 +51,6 @@ export default (): JSX.Element => {
         />
       );
     case "MemberVoting":
-      throw "TODO";
+      return <MemberVoter send={send!} {...s} />;
   }
 };
