@@ -24,7 +24,8 @@ type SelfAction =
   | { t: "AckDisbanded" }
   | { t: "LobbyLeave" }
   | { t: "GoNameChoose" }
-  | { t: "GoHowTo" };
+  | { t: "GoHowTo" }
+  | { t: "AckRole" };
 
 type ToClient =
   | { t: "RejectName" }

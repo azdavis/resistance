@@ -40,6 +40,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
       return s.t === "LobbyWaiting"
         ? { ...s, isSpy: a.IsSpy }
         : { t: "Fatal", s, a };
+    case "AckRole":
+      return { t: "Fatal", s, a };
     case "NewMission":
       return s.t === "LobbyWaiting"
         ? {
