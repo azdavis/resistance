@@ -9,14 +9,16 @@ type Props = {
   wait: boolean;
 };
 
-export default ({ d, isSpy, wait }: Props) => (
-  <div className="RoleViewer">
-    <h1>Role</h1>
-    <SpyStatus isSpy={isSpy} />
-    <Button
-      value="Continue"
-      onClick={() => d({ t: "AckRole" })}
-      disabled={wait}
-    />
-  </div>
-);
+export default ({ d, isSpy, wait }: Props) => {
+  return (
+    <div className="RoleViewer">
+      <h1>Role</h1>
+      <SpyStatus isSpy={isSpy} />
+      <Button
+        value="Continue"
+        onClick={() => d({ t: "AckRole" })}
+        disabled={wait}
+      />
+    </div>
+  );
+};
