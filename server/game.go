@@ -13,6 +13,16 @@ const (
 	missionVoting
 )
 
+func numTrue(xs map[CID]bool) int {
+	ret := 0
+	for _, x := range xs {
+		if x {
+			ret++
+		}
+	}
+	return ret
+}
+
 // TODO ensure that at least one spy is included in the first mission?
 func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	log.Println("enter runGame", gid)
@@ -89,13 +99,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			if len(votes) != n {
 				continue
 			}
-			yes := 0
-			for _, v := range votes {
-				if v {
-					yes++
-				}
-			}
-			if yes > n/2 {
+			if numTrue(votes) > n/2 {
 				state = missionVoting
 				for _, cl := range cs {
 					cl.tx <- MemberAccept{}
