@@ -72,9 +72,8 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				len(ts.Members) != nMission {
 				continue
 			}
-			msg := MemberPropose{ts.Members}
 			for _, cl := range cs {
-				cl.tx <- msg
+				cl.tx <- MemberPropose{ts.Members}
 			}
 			state = memberVoting
 		case MemberVote:
@@ -97,9 +96,8 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			}
 			if yes > n/2 {
 				state = missionRunning
-				msg := MemberAccept{}
 				for _, cl := range cs {
-					cl.tx <- msg
+					cl.tx <- MemberAccept{}
 				}
 			} else {
 				newMission()
