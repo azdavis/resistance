@@ -34,7 +34,7 @@ type ToClient =
   | { t: "SetIsSpy"; IsSpy: boolean }
   | { t: "NewMission"; Captain: CID; NumMembers: number }
   | { t: "MemberPropose"; Members: Array<CID> }
-  | { t: "MemberResult"; Vote: boolean };
+  | { t: "MemberAccept" };
 
 export type Action = SelfAction | ToClient;
 export type D = Dispatch<Action>;

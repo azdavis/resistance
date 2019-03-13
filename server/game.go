@@ -96,12 +96,12 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				}
 			}
 			start := yes > n/2
-			msg := MemberResult{start}
-			for _, cl := range cs {
-				cl.tx <- msg
-			}
 			if start {
 				state = missionRunning
+				msg := MemberAccept{}
+				for _, cl := range cs {
+					cl.tx <- msg
+				}
 			} else {
 				newMission()
 			}
