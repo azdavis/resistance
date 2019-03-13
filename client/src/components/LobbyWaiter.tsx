@@ -1,6 +1,6 @@
 import React from "react";
 import { D, Send, CID, Client } from "../types";
-import { MinN } from "../consts";
+import { MinN, MaxN } from "../consts";
 import Button from "./Button";
 import "./Truncated.css";
 
@@ -42,7 +42,7 @@ export default ({ d, send, me, leader, clients }: Props) => (
     <Button
       value="Start"
       onClick={() => send({ t: "GameStart" })}
-      disabled={me !== leader || clients.length < MinN}
+      disabled={me !== leader || clients.length < MinN || clients.length > MaxN}
     />
   </div>
 );

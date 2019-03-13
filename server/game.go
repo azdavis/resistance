@@ -29,7 +29,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	defer log.Println("exit runGame", gid)
 
 	cs := clients.ToList()
-	// as per lobby.go, n >= MinN.
+	// as per lobby.go, MinN <= n <= MaxN.
 	n := len(cs)
 	// n/s clients will be spies.
 	const s = 4
