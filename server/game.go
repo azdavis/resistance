@@ -23,6 +23,15 @@ func numTrue(xs map[CID]bool) int {
 	return ret
 }
 
+func hasCID(xs []CID, x CID) bool {
+	for _, y := range xs {
+		if x == y {
+			return true
+		}
+	}
+	return false
+}
+
 // TODO ensure that at least one spy is included in the first mission?
 func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	log.Println("enter runGame", gid)
@@ -68,6 +77,9 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 	newMission()
 
+	// invariant: state == missionVoting <=> members != nil
+	var members []CID
+	// used for both voting on mission members and voting on mission itself
 	votes := make(map[CID]bool)
 
 	for ac := range clients.C {
@@ -84,6 +96,8 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				continue
 			}
 			state = memberVoting
+			members = ts.Members
+			votes = make(map[CID]bool)
 			for _, cl := range cs {
 				cl.tx <- MemberPropose{ts.Members}
 			}
@@ -107,6 +121,19 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			} else {
 				newMission()
 			}
+		case MissionVote:
+			if state != missionVoting || !hasCID(members, cid) {
+				continue
+			}
+			_, ok := votes[cid]
+			if ok {
+				continue
+			}
+			votes[cid] = ts.Vote
+			if len(votes) != n {
+				continue
+			}
+			// TODO
 		}
 	}
 }
