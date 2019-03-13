@@ -76,7 +76,6 @@ export type State =
   | {
       t: "MissionVoting";
       me: CID;
-      captain: CID;
       clients: Array<Client>;
       canVote: boolean;
     };

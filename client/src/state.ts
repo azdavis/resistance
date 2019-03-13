@@ -78,7 +78,6 @@ const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MissionVoting",
             me: s.me,
-            captain: s.captain,
             clients: s.clients,
             canVote: s.members.includes(s.me),
           }
