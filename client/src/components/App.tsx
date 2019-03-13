@@ -11,6 +11,8 @@ import RoleViewer from "./RoleViewer";
 import MemberChooser from "./MemberChooser";
 import MemberWaiter from "./MemberWaiter";
 import MemberVoter from "./MemberVoter";
+import MissionVoter from "./MissionVoter";
+import MissionWaiter from "./MissionWaiter";
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
@@ -55,6 +57,6 @@ export default (): JSX.Element => {
     case "MemberVoting":
       return <MemberVoter send={send!} {...s} />;
     case "MissionVoting":
-      throw "TODO";
+      return s.canVote ? <MissionVoter send={send!} /> : <MissionWaiter />;
   }
 };
