@@ -45,6 +45,14 @@ const reducer: Reducer<State, Action> = (s, a) => {
             mission: null,
           }
         : { t: "Fatal", s, a };
+    case "NewMission":
+      // TODO get mission when not first mission?
+      return s.t === "RoleViewing"
+        ? {
+            ...s,
+            mission: { captain: a.Captain, numMembers: a.NumMembers },
+          }
+        : { t: "Fatal", s, a };
     case "AckRole":
       return s.t === "RoleViewing" && s.mission !== null
         ? {
@@ -53,14 +61,6 @@ const reducer: Reducer<State, Action> = (s, a) => {
             captain: s.mission.captain,
             clients: s.clients,
             numMembers: s.mission.numMembers,
-          }
-        : { t: "Fatal", s, a };
-    case "NewMission":
-      // TODO get mission when not first mission?
-      return s.t === "RoleViewing"
-        ? {
-            ...s,
-            mission: { captain: a.Captain, numMembers: a.NumMembers },
           }
         : { t: "Fatal", s, a };
     case "MemberPropose":
