@@ -69,7 +69,7 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 				}
 				broadcastLobbyWaiting()
 			case GameStart:
-				if cid != leader.CID || len(clients.M) < MinN || len(clients.M) > MaxN {
+				if cid != leader.CID || !OkGameSize(len(clients.M)) {
 					continue
 				}
 				select {
