@@ -10,7 +10,7 @@ type state uint
 const (
 	memberChoosing state = iota
 	memberVoting
-	missionRunning
+	missionVoting
 )
 
 // TODO ensure that at least one spy is included in the first mission?
@@ -96,7 +96,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				}
 			}
 			if yes > n/2 {
-				state = missionRunning
+				state = missionVoting
 				for _, cl := range cs {
 					cl.tx <- MemberAccept{}
 				}
