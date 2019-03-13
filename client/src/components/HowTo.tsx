@@ -1,6 +1,6 @@
 import React from "react";
 import { D } from "../types";
-import { MinN, MaxN } from "../consts";
+import { minN, maxN } from "../consts";
 import Button from "./Button";
 
 type Props = {
@@ -11,7 +11,7 @@ export default ({ d }: Props) => (
   <div className="HowTo">
     <h1>How to play</h1>
     <p>
-      Groups of at least {MinN} and at most {MaxN} players may play.
+      Groups of at least {minN} and at most {maxN} players may play.
     </p>
     <p>
       Some of the players are spies. The rest of the players are members of the
