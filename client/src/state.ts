@@ -74,7 +74,15 @@ const reducer: Reducer<State, Action> = (s, a) => {
           }
         : { t: "Fatal", s, a };
     case "MemberAccept":
-      return { t: "Fatal", s, a };
+      return s.t === "MemberVoting"
+        ? {
+            t: "MissionVoting",
+            me: s.me,
+            captain: s.captain,
+            clients: s.clients,
+            canVote: s.members.includes(s.me),
+          }
+        : { t: "Fatal", s, a };
   }
 };
 

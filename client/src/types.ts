@@ -72,4 +72,11 @@ export type State =
       captain: CID;
       clients: Array<Client>;
       members: Array<CID>;
+    }
+  | {
+      t: "MissionVoting";
+      me: CID;
+      captain: CID;
+      clients: Array<Client>;
+      canVote: boolean;
     };

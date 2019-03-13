@@ -54,5 +54,7 @@ export default (): JSX.Element => {
       );
     case "MemberVoting":
       return <MemberVoter send={send!} {...s} />;
+    case "MissionVoting":
+      throw "TODO";
   }
 };
