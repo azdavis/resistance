@@ -21,7 +21,7 @@ const modifiers = (cid: CID, me: CID, captain: CID): string =>
 
 export default ({ send, captain, me, clients, members }: Props) => (
   <div className="MemberVoter">
-    <h1>Vote</h1>
+    <h1>Member vote</h1>
     <p>
       The captain has selected the following players to participate in the
       mission.
