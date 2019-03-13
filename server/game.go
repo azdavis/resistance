@@ -73,10 +73,10 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				len(ts.Members) != nMission {
 				continue
 			}
+			state = memberVoting
 			for _, cl := range cs {
 				cl.tx <- MemberPropose{ts.Members}
 			}
-			state = memberVoting
 		case MemberVote:
 			if state != memberVoting {
 				continue
