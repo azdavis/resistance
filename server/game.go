@@ -130,7 +130,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				continue
 			}
 			votes[cid] = ts.Vote
-			if len(votes) != n {
+			if len(votes) != nMission {
 				continue
 			}
 			// TODO
