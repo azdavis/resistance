@@ -63,6 +63,7 @@ export type State =
       isSpy: boolean;
       captain: CID;
       numMembers: number;
+      members: Array<CID> | null;
     }
   | {
       t: "MemberChoosing";
