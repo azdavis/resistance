@@ -11,7 +11,7 @@ type Props = {
   spyWin: number;
 };
 
-export default ({ send, d, success, resWin, spyWin }: Props) => (
+export default ({ d, send, success, resWin, spyWin }: Props) => (
   <div className="MissionResultViewer">
     <h1>Mission result</h1>
     <p>The mission {success ? "succeeded" : "failed"}.</p>
