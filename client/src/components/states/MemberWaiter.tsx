@@ -1,15 +1,18 @@
 import React from "react";
+import { CID, Client } from "../../types";
 
 type Props = {
-  captain: string;
+  clients: Array<Client>;
+  captain: CID;
   numMembers: number;
 };
 
-export default ({ captain, numMembers }: Props) => (
+export default ({ captain, clients, numMembers }: Props) => (
   <div className="MemberWaiter">
     <h1>New mission</h1>
     <p>
-      {captain}, the captain, is selecting {numMembers} members for the mission.
+      The captain, {clients.find(({ CID }) => CID === captain)!.Name}, is
+      selecting {numMembers} members for the mission.
     </p>
   </div>
 );

@@ -51,7 +51,8 @@ export default (): JSX.Element => {
         <MemberChooser send={send!} {...s} />
       ) : (
         <MemberWaiter
-          captain={s.clients.find(x => x.CID === s.captain)!.Name}
+          clients={s.clients}
+          captain={s.captain}
           numMembers={s.numMembers}
         />
       );
