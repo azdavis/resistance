@@ -96,4 +96,6 @@ export type State =
       resWin: number;
       spyWin: number;
       success: boolean;
+      captain: CID;
+      numMembers: number;
     };

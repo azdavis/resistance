@@ -97,6 +97,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
             resWin: s.resWin + (a.Success ? 1 : 0),
             spyWin: s.spyWin + (a.Success ? 0 : 1),
             success: a.Success,
+            captain: a.Captain,
+            numMembers: a.NumMembers,
           }
         : { t: "Fatal", s, a };
     case "AckMissionResult":
