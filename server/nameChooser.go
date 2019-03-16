@@ -26,7 +26,7 @@ func runNameChooser(tx chan<- *Client, rx <-chan *Client) {
 					cl.Name = ts.Name
 					tx <- cl
 				} else {
-					clients.M[cid].tx <- RejectName{}
+					clients.M[cid].tx <- NameReject{}
 				}
 			}
 		}

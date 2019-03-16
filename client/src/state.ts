@@ -19,7 +19,7 @@ const reducer: Reducer<State, Action> = (s, a) => {
       return init;
     case "GoHowTo":
       return { t: "HowTo" };
-    case "RejectName":
+    case "NameReject":
       return { t: "NameChoosing", valid: false };
     case "LobbyChoices":
       return s.t === "LobbyChoosing" ||

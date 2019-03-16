@@ -99,7 +99,7 @@ type ToClient interface {
 	isToClient()
 }
 
-func (RejectName) isToClient()    {}
+func (NameReject) isToClient()    {}
 func (LobbyChoices) isToClient()  {}
 func (CurrentLobby) isToClient()  {}
 func (FirstMission) isToClient()  {}
@@ -108,9 +108,9 @@ func (MemberAccept) isToClient()  {}
 func (MemberReject) isToClient()  {}
 func (MissionResult) isToClient() {}
 
-// RejectName is sent to a client that requested a name change with
+// NameReject is sent to a client that requested a name change with
 // NameChoose.
-type RejectName struct{}
+type NameReject struct{}
 
 // LobbyChoices is sent to a client who is choosing their lobby.
 type LobbyChoices struct {
@@ -224,9 +224,9 @@ func fromTagMsg(t string, p interface{}) ([]byte, error) {
 }
 
 // MarshalJSON makes JSON.
-func (x RejectName) MarshalJSON() ([]byte, error) {
-	type alias RejectName
-	return fromTagMsg("RejectName", alias(x))
+func (x NameReject) MarshalJSON() ([]byte, error) {
+	type alias NameReject
+	return fromTagMsg("NameReject", alias(x))
 }
 
 // MarshalJSON makes JSON.
