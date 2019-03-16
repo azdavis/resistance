@@ -222,49 +222,49 @@ func fromTagMsg(t string, p interface{}) ([]byte, error) {
 }
 
 // MarshalJSON makes JSON.
-func (pc RejectName) MarshalJSON() ([]byte, error) {
+func (x RejectName) MarshalJSON() ([]byte, error) {
 	type alias RejectName
-	return fromTagMsg("RejectName", alias(pc))
+	return fromTagMsg("RejectName", alias(x))
 }
 
 // MarshalJSON makes JSON.
-func (pc LobbyChoices) MarshalJSON() ([]byte, error) {
+func (x LobbyChoices) MarshalJSON() ([]byte, error) {
 	type alias LobbyChoices
-	return fromTagMsg("LobbyChoices", alias(pc))
+	return fromTagMsg("LobbyChoices", alias(x))
 }
 
 // MarshalJSON makes JSON.
-func (pc CurrentLobby) MarshalJSON() ([]byte, error) {
+func (x CurrentLobby) MarshalJSON() ([]byte, error) {
 	type alias CurrentLobby
-	return fromTagMsg("CurrentLobby", alias(pc))
+	return fromTagMsg("CurrentLobby", alias(x))
 }
 
 // MarshalJSON makes JSON.
-func (pc FirstMission) MarshalJSON() ([]byte, error) {
+func (x FirstMission) MarshalJSON() ([]byte, error) {
 	type alias FirstMission
-	return fromTagMsg("FirstMission", alias(pc))
+	return fromTagMsg("FirstMission", alias(x))
 }
 
 // MarshalJSON makes JSON.
-func (pc NewMission) MarshalJSON() ([]byte, error) {
+func (x NewMission) MarshalJSON() ([]byte, error) {
 	type alias NewMission
-	return fromTagMsg("NewMission", alias(pc))
+	return fromTagMsg("NewMission", alias(x))
 }
 
 // MarshalJSON makes JSON.
-func (pc MemberPropose) MarshalJSON() ([]byte, error) {
+func (x MemberPropose) MarshalJSON() ([]byte, error) {
 	type alias MemberPropose
-	return fromTagMsg("MemberPropose", alias(pc))
+	return fromTagMsg("MemberPropose", alias(x))
 }
 
 // MarshalJSON makes JSON.
-func (pc MemberAccept) MarshalJSON() ([]byte, error) {
+func (x MemberAccept) MarshalJSON() ([]byte, error) {
 	type alias MemberAccept
-	return fromTagMsg("MemberAccept", alias(pc))
+	return fromTagMsg("MemberAccept", alias(x))
 }
 
 // MarshalJSON makes JSON.
-func (pc MissionResult) MarshalJSON() ([]byte, error) {
+func (x MissionResult) MarshalJSON() ([]byte, error) {
 	type alias MissionResult
-	return fromTagMsg("MissionResult", alias(pc))
+	return fromTagMsg("MissionResult", alias(x))
 }
