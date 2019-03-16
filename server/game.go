@@ -98,8 +98,8 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				continue
 			}
 			state = memberVoting
-			members = ts.Members
 			votes = make(map[CID]bool)
+			members = ts.Members
 			for _, cl := range cs {
 				cl.tx <- MemberPropose{ts.Members}
 			}
@@ -117,6 +117,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			}
 			if numTrue(votes) > n/2 {
 				state = missionVoting
+				votes = make(map[CID]bool)
 				for _, cl := range cs {
 					cl.tx <- MemberAccept{}
 				}
@@ -140,6 +141,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			if len(votes) != nMission {
 				continue
 			}
+			members = nil
 			success := numTrue(votes) > nMission/2
 			if success {
 				resWinN++
@@ -148,7 +150,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			}
 			msg := MissionResult{Success: success}
 			if resWinN < MaxWin && spyWinN < MaxWin {
-				state = missionVoting
+				state = memberChoosing
 				msg.Captain, msg.NumMembers = newMission()
 			} else {
 				state = gameOver
