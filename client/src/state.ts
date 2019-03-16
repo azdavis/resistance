@@ -99,6 +99,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
             success: a.Success,
           }
         : { t: "Fatal", s, a };
+    case "AckMissionResult":
+      return s;
   }
 };
 
