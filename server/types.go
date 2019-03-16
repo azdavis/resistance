@@ -102,6 +102,7 @@ func (SetIsSpy) isToClient()      {}
 func (NewMission) isToClient()    {}
 func (MemberPropose) isToClient() {}
 func (MemberAccept) isToClient()  {}
+func (MissionResult) isToClient() {}
 
 // RejectName is sent to a client that requested a name change with
 // NameChoose.
@@ -141,6 +142,11 @@ type MemberPropose struct {
 // concluded, and the proposed members have been accepted. To signal the
 // proposed members have not been accepted, send a NewMission.
 type MemberAccept struct{}
+
+// MissionResult notifies the client that voting on the mission has concluded.
+type MissionResult struct {
+	Success bool // whether the mission succeeded
+}
 
 // Helper functions ////////////////////////////////////////////////////////////
 
@@ -245,4 +251,10 @@ func (pc MemberPropose) MarshalJSON() ([]byte, error) {
 func (pc MemberAccept) MarshalJSON() ([]byte, error) {
 	type alias MemberAccept
 	return fromTagMsg("MemberAccept", alias(pc))
+}
+
+// MarshalJSON makes JSON.
+func (pc MissionResult) MarshalJSON() ([]byte, error) {
+	type alias MissionResult
+	return fromTagMsg("MissionResult", alias(pc))
 }
