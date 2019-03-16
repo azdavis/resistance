@@ -39,16 +39,18 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
+	// all the clients, in a stable order.
 	cs := clients.ToList()
-	// as per lobby.go, MinN <= n <= MaxN
+	// as per lobby.go, MinN <= n <= MaxN.
 	n := len(cs)
-	// n/s clients will be spies
+
+	// n/s clients will be spies.
 	const s = 4
-	// n/m clients each round will be part of a mission
+	// n/m clients each round will be part of a mission.
 	const m = 5
 	nMission := n / m
 
-	// start all false
+	// invariant: isSpy[i] <=> cs[i] is a spy.
 	isSpy := make([]bool, n)
 	for i := n / s; i > 0; /* intentionally empty */ {
 		j := rand.Intn(n)
@@ -60,8 +62,11 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 	log.Printf("runGame %v spies: %+v", gid, isSpy)
 
+	// current state.
 	state := memberChoosing
+	// invariant: cs[captain] is the current captain.
 	captain := 0
+	// update captain.
 	nextCaptain := func() {
 		state = memberChoosing
 		captain++
@@ -70,12 +75,14 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 		}
 	}
 
-	// invariant: 0 <= spyWinN, resWinN <= MaxWin
-	spyWinN := 0
-	resWinN := 0
+	// invariant: 0 <= resWin <= MaxWin
+	resWin := 0
+	// invariant: 0 <= spyWin <= MaxWin
+	spyWin := 0
 
 	// invariant: state == missionVoting <=> members != nil
 	var members []CID
+
 	// used for both voting on mission members and voting on mission itself
 	votes := make(map[CID]bool)
 
@@ -146,12 +153,12 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			members = nil
 			success := numTrue(votes) > nMission/2
 			if success {
-				resWinN++
+				resWin++
 			} else {
-				spyWinN++
+				spyWin++
 			}
 			msg := MissionResult{Success: success}
-			if resWinN < MaxWin && spyWinN < MaxWin {
+			if resWin < MaxWin && spyWin < MaxWin {
 				nextCaptain()
 				msg.Captain = cs[captain].CID
 				msg.NumMembers = nMission
