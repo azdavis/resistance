@@ -34,6 +34,7 @@ func hasCID(xs []CID, x CID) bool {
 }
 
 // TODO ensure that at least one spy is included in the first mission?
+// TODO improve numbers for mission size / fails required to fail mission?
 func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
@@ -89,6 +90,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 		cid := ac.CID
 		switch ts := ac.ToServer.(type) {
 		case Close:
+			// TODO allow reconnecting?
 			clients.Rm(cid).Close()
 			tx <- LobbyMsg{gid, false, clients.Clear()}
 			return
