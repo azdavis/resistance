@@ -121,7 +121,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			} else {
 				state = memberChoosing
 				c, n := newMission()
-				msg := NewMission{c, n}
+				msg := MemberReject{c, n}
 				for _, cl := range cs {
 					cl.tx <- msg
 				}

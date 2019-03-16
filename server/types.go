@@ -103,7 +103,7 @@ func (RejectName) isToClient()    {}
 func (LobbyChoices) isToClient()  {}
 func (CurrentLobby) isToClient()  {}
 func (FirstMission) isToClient()  {}
-func (NewMission) isToClient()    {}
+func (MemberReject) isToClient()  {}
 func (MemberPropose) isToClient() {}
 func (MemberAccept) isToClient()  {}
 func (MissionResult) isToClient() {}
@@ -132,22 +132,22 @@ type FirstMission struct {
 	NumMembers int  // number of members on this mission
 }
 
-// NewMission notifies the client that a new mission has started.
-type NewMission struct {
-	Captain    CID // captain of this mission
-	NumMembers int // number of members on this mission
-}
-
 // MemberPropose notifies the client that the captain has selected mission
 // candidates, and voting on whether the mission will proceed can begin.
 type MemberPropose struct {
 	Members []CID // CIDs selected by the captain
 }
 
-// MemberAccept notifies the client that voting on the proposed mission has
-// concluded, and the proposed members have been accepted. To signal the
-// proposed members have not been accepted, send a NewMission.
+// MemberAccept notifies the client that the proposed members have been
+// accepted.
 type MemberAccept struct{}
+
+// MemberReject notifies the client that the proposed members have been
+// rejected.
+type MemberReject struct {
+	Captain    CID // captain of this mission
+	NumMembers int // number of members on this mission
+}
 
 // MissionResult notifies the client that voting on the mission has concluded.
 type MissionResult struct {
@@ -248,9 +248,9 @@ func (x FirstMission) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSON makes JSON.
-func (x NewMission) MarshalJSON() ([]byte, error) {
-	type alias NewMission
-	return fromTagMsg("NewMission", alias(x))
+func (x MemberReject) MarshalJSON() ([]byte, error) {
+	type alias MemberReject
+	return fromTagMsg("MemberReject", alias(x))
 }
 
 // MarshalJSON makes JSON.

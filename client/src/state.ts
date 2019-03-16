@@ -70,7 +70,7 @@ const reducer: Reducer<State, Action> = (s, a) => {
             members: a.Members,
           }
         : { t: "Fatal", s, a };
-    case "NewMission":
+    case "MemberReject":
       return s.t === "MemberVoting"
         ? {
             t: "MemberChoosing",
