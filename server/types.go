@@ -44,6 +44,7 @@ func (GameStart) isToServer()    {}
 func (MemberChoose) isToServer() {}
 func (MemberVote) isToServer()   {}
 func (MissionVote) isToServer()  {}
+func (GameLeave) isToServer()    {}
 
 // Close means the client closed itself. No further Actions will follow from
 // this client.
@@ -84,6 +85,9 @@ type MemberVote struct {
 type MissionVote struct {
 	Vote bool // whether the client wants the mission to succeed
 }
+
+// GameLeave is sent by a client who is leaving the game they are in.
+type GameLeave struct{}
 
 // ToClient ////////////////////////////////////////////////////////////////////
 
@@ -195,6 +199,10 @@ func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
 		return msg, err
 	case "MissionVote":
 		var msg MissionVote
+		err = json.Unmarshal(tm.P, &msg)
+		return msg, err
+	case "GameLeave":
+		var msg GameLeave
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	default:
