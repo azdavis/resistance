@@ -1,9 +1,9 @@
 import { Reducer } from "react";
 import { State, Action } from "./types";
 
-const init: State = { t: "NameChoosing", valid: true };
+export const init: State = { t: "NameChoosing", valid: true };
 
-const reducer: Reducer<State, Action> = (s, a) => {
+export const reducer: Reducer<State, Action> = (s, a) => {
   switch (a.t) {
     case "Close":
       return { t: "Fatal", s, a };
@@ -152,5 +152,3 @@ const reducer: Reducer<State, Action> = (s, a) => {
         : { t: "Fatal", s, a };
   }
 };
-
-export { init, reducer };
