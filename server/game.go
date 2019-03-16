@@ -62,20 +62,19 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 		cl.tx <- SetIsSpy{isSpy[i]}
 	}
 
-	var state state
+	state := memberChoosing
 	captainIdx := n - 1
-	newMission := func() {
-		state = memberChoosing
+	newMission := func() NewMission {
 		captainIdx++
 		if captainIdx == n {
 			captainIdx = 0
 		}
-		msg := NewMission{cs[captainIdx].CID, nMission}
-		for _, cl := range cs {
-			cl.tx <- msg
-		}
+		return NewMission{cs[captainIdx].CID, nMission}
 	}
-	newMission()
+	msg := newMission()
+	for _, cl := range cs {
+		cl.tx <- msg
+	}
 
 	// invariant: state == missionVoting <=> members != nil
 	var members []CID
@@ -119,7 +118,11 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 					cl.tx <- MemberAccept{}
 				}
 			} else {
-				newMission()
+				state = memberChoosing
+				msg := newMission()
+				for _, cl := range cs {
+					cl.tx <- msg
+				}
 			}
 		case MissionVote:
 			if state != missionVoting || !hasCID(members, cid) {
