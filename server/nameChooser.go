@@ -1,12 +1,14 @@
 package main
 
 import (
-	"strings"
+	"regexp"
 )
+
+var validNameRE = regexp.MustCompile(`[^\s]`)
 
 func validName(s string) bool {
 	const maxLen = 32
-	return s != "" && len(s) < maxLen && strings.TrimSpace(s) != ""
+	return s != "" && len(s) < maxLen && validNameRE.Match([]byte(s))
 }
 
 func runNameChooser(tx chan<- *Client, rx <-chan *Client) {
