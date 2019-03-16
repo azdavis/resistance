@@ -145,8 +145,8 @@ type MemberAccept struct{}
 // MemberReject notifies the client that the proposed members have been
 // rejected.
 type MemberReject struct {
-	Captain    CID // captain of this mission
-	NumMembers int // number of members on this mission
+	Captain    CID // captain of new mission
+	NumMembers int // number of members on new mission
 }
 
 // MissionResult notifies the client that voting on the mission has concluded.
