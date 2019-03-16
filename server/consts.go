@@ -11,3 +11,7 @@ const MaxN = 7
 func OkGameSize(n int) bool {
 	return MinN <= n && n <= MaxN
 }
+
+// MaxWin is the number of wins either side must accumulate before the game is
+// over.
+const MaxWin = 3
