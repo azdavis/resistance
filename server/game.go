@@ -69,11 +69,6 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			captain = 0
 		}
 	}
-	msg := FirstMission{Captain: cs[captain].CID, NumMembers: nMission}
-	for i, cl := range cs {
-		msg.IsSpy = isSpy[i]
-		cl.tx <- msg
-	}
 
 	// invariant: 0 <= spyWinN, resWinN <= MaxWin
 	spyWinN := 0
@@ -83,6 +78,12 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	var members []CID
 	// used for both voting on mission members and voting on mission itself
 	votes := make(map[CID]bool)
+
+	msg := FirstMission{Captain: cs[captain].CID, NumMembers: nMission}
+	for i, cl := range cs {
+		msg.IsSpy = isSpy[i]
+		cl.tx <- msg
+	}
 
 	for ac := range clients.C {
 		log.Printf("runGame %v %+v", gid, ac)
