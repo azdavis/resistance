@@ -1,6 +1,6 @@
 import React from "react";
 import { Send, CID, Client } from "../../types";
-import Button from "../Button";
+import Voter from "../Voter";
 
 type Props = {
   send: Send;
@@ -34,14 +34,13 @@ export default ({ send, captain, me, clients, members }: Props) => (
           {modifiers(CID, me, captain)}
         </div>
       ))}
-    <p>Should the mission occur?</p>
-    <Button
-      value="The mission should occur"
-      onClick={() => send({ t: "MemberVote", Vote: true })}
-    />
-    <Button
-      value="The mission should not occur"
-      onClick={() => send({ t: "MemberVote", Vote: false })}
+    <Voter
+      prompt="Should the mission occur?"
+      options={[
+        ["The mission should occur", true],
+        ["The mission should not occur", false],
+      ]}
+      onVote={Vote => send({ t: "MemberVote", Vote })}
     />
   </div>
 );
