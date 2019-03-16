@@ -149,7 +149,8 @@ type MemberAccept struct{}
 
 // MissionResult notifies the client that voting on the mission has concluded.
 type MissionResult struct {
-	Success bool // whether the mission succeeded
+	Success    bool // whether this mission succeeded
+	NewMission      // new mission (if any)
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
