@@ -31,8 +31,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
       return {
         t: "LobbyWaiting",
         me: a.Me,
-        leader: a.Leader,
         clients: a.Clients,
+        leader: a.Leader,
         didLeave: false,
       };
     case "SetIsSpy":
@@ -58,10 +58,10 @@ const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MemberChoosing",
             me: s.me,
+            clients: s.clients,
             resWin: 0,
             spyWin: 0,
             captain: s.mission.captain,
-            clients: s.clients,
             numMembers: s.mission.numMembers,
           }
         : { t: "Fatal", s, a };
@@ -70,10 +70,10 @@ const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MemberVoting",
             me: s.me,
+            clients: s.clients,
             resWin: s.resWin,
             spyWin: s.spyWin,
             captain: s.captain,
-            clients: s.clients,
             members: a.Members,
           }
         : { t: "Fatal", s, a };
@@ -82,9 +82,9 @@ const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MissionVoting",
             me: s.me,
+            clients: s.clients,
             resWin: s.resWin,
             spyWin: s.spyWin,
-            clients: s.clients,
             canVote: s.members.includes(s.me),
           }
         : { t: "Fatal", s, a };
@@ -93,6 +93,7 @@ const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MissionResultViewing",
             me: s.me,
+            clients: s.clients,
             ...(a.Success
               ? {
                   resWin: s.resWin + 1,
@@ -102,7 +103,6 @@ const reducer: Reducer<State, Action> = (s, a) => {
                   resWin: s.resWin,
                   spyWin: s.spyWin + 1,
                 }),
-            clients: s.clients,
           }
         : { t: "Fatal", s, a };
   }
