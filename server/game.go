@@ -41,19 +41,17 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 
 	// all the clients, in a stable order.
 	cs := clients.ToList()
-	// as per lobby.go, MinN <= n <= MaxN.
-	n := len(cs)
 
-	// n/s clients will be spies.
+	// len(cs)/s clients will be spies.
 	const s = 4
-	// n/m clients each round will be part of a mission.
+	// len(cs)/m clients each round will be part of a mission.
 	const m = 5
-	nMission := n / m
+	nMission := len(cs) / m
 
 	// invariant: isSpy[i] <=> cs[i] is a spy.
-	isSpy := make([]bool, n)
-	for i := n / s; i > 0; /* intentionally empty */ {
-		j := rand.Intn(n)
+	isSpy := make([]bool, len(cs))
+	for i := len(cs) / s; i > 0; /* intentionally empty */ {
+		j := rand.Intn(len(cs))
 		if isSpy[j] {
 			continue
 		}
@@ -70,7 +68,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	nextCaptain := func() {
 		state = memberChoosing
 		captain++
-		if captain == n {
+		if captain == len(cs) {
 			captain = 0
 		}
 	}
@@ -122,10 +120,10 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				continue
 			}
 			votes[cid] = ts.Vote
-			if len(votes) != n {
+			if len(votes) != len(cs) {
 				continue
 			}
-			if numTrue(votes) > n/2 {
+			if numTrue(votes) > len(votes)/2 {
 				state = missionVoting
 				votes = make(map[CID]bool)
 				for _, cl := range cs {
