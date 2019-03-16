@@ -94,15 +94,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
             t: "MissionResultViewing",
             me: s.me,
             clients: s.clients,
-            ...(a.Success
-              ? {
-                  resWin: s.resWin + 1,
-                  spyWin: s.spyWin,
-                }
-              : {
-                  resWin: s.resWin,
-                  spyWin: s.spyWin + 1,
-                }),
+            resWin: s.resWin + (a.Success ? 1 : 0),
+            spyWin: s.spyWin + (a.Success ? 0 : 1),
             success: a.Success,
           }
         : { t: "Fatal", s, a };
