@@ -102,7 +102,17 @@ const reducer: Reducer<State, Action> = (s, a) => {
           }
         : { t: "Fatal", s, a };
     case "AckMissionResult":
-      return s;
+      return s.t === "MissionResultViewing"
+        ? {
+            t: "MemberChoosing",
+            me: s.me,
+            clients: s.clients,
+            resWin: s.resWin,
+            spyWin: s.spyWin,
+            captain: s.captain,
+            numMembers: s.numMembers,
+          }
+        : { t: "Fatal", s, a };
   }
 };
 
