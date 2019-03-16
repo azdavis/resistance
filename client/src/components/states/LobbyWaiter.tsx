@@ -1,7 +1,7 @@
 import React from "react";
-import { D, Send, CID, Client } from "../types";
-import { okGameSize } from "../consts";
-import Button from "./Button";
+import { D, Send, CID, Client } from "../../types";
+import { okGameSize } from "../../consts";
+import Button from "../Button";
 import "./Truncated.css";
 
 type Props = {

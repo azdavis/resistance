@@ -1,7 +1,7 @@
 import React from "react";
-import { D } from "../types";
-import { minN, maxN } from "../consts";
-import Button from "./Button";
+import { D } from "../../types";
+import { minN, maxN } from "../../consts";
+import Button from "../Button";
 
 type Props = {
   d: D;

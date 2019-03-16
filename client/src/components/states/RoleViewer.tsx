@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { D } from "../types";
-import Button from "./Button";
+import { D } from "../../types";
+import Button from "../Button";
 
 type Props = {
   d: D;

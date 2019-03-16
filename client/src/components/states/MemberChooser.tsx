@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Toggle from "./Toggle";
-import Button from "./Button";
-import { Send, CID, Client } from "../types";
+import Toggle from "../Toggle";
+import Button from "../Button";
+import { Send, CID, Client } from "../../types";
 
 type Props = {
   send: Send;

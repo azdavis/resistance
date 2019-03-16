@@ -1,18 +1,18 @@
 import React, { useReducer, useEffect, useState } from "react";
 import { Send } from "../types";
 import { reducer, init } from "../state";
-import Fatal from "./Fatal";
-import Disbanded from "./Disbanded";
-import HowTo from "./HowTo";
-import NameChooser from "./NameChooser";
-import LobbyChooser from "./LobbyChooser";
-import LobbyWaiter from "./LobbyWaiter";
-import RoleViewer from "./RoleViewer";
-import MemberChooser from "./MemberChooser";
-import MemberWaiter from "./MemberWaiter";
-import MemberVoter from "./MemberVoter";
-import MissionVoter from "./MissionVoter";
-import MissionWaiter from "./MissionWaiter";
+import Fatal from "./states/Fatal";
+import Disbanded from "./states/Disbanded";
+import HowTo from "./states/HowTo";
+import NameChooser from "./states/NameChooser";
+import LobbyChooser from "./states/LobbyChooser";
+import LobbyWaiter from "./states/LobbyWaiter";
+import RoleViewer from "./states/RoleViewer";
+import MemberChooser from "./states/MemberChooser";
+import MemberWaiter from "./states/MemberWaiter";
+import MemberVoter from "./states/MemberVoter";
+import MissionVoter from "./states/MissionVoter";
+import MissionWaiter from "./states/MissionWaiter";
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);

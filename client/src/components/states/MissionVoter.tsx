@@ -1,6 +1,6 @@
 import React from "react";
-import { Send } from "../types";
-import Button from "./Button";
+import { Send } from "../../types";
+import Button from "../Button";
 
 type Props = {
   send: Send;
