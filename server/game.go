@@ -61,16 +61,16 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 
 	state := memberChoosing
 	captainIdx := n - 1
-	newMission := func() NewMission {
+	newMission := func() (CID, int) {
 		captainIdx++
 		if captainIdx == n {
 			captainIdx = 0
 		}
-		return NewMission{cs[captainIdx].CID, nMission}
+		return cs[captainIdx].CID, nMission
 	}
-	nm := newMission()
+	c, n := newMission()
 	for i, cl := range cs {
-		cl.tx <- FirstMission{isSpy[i], nm}
+		cl.tx <- FirstMission{isSpy[i], c, n}
 	}
 
 	// invariant: 0 <= spyWinN, resWinN <= MaxWin
@@ -120,7 +120,8 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				}
 			} else {
 				state = memberChoosing
-				msg := newMission()
+				c, n := newMission()
+				msg := NewMission{c, n}
 				for _, cl := range cs {
 					cl.tx <- msg
 				}
@@ -146,7 +147,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			msg := MissionResult{Success: success}
 			if resWinN < MaxWin && spyWinN < MaxWin {
 				state = missionVoting
-				msg.NewMission = newMission()
+				msg.Captain, msg.NumMembers = newMission()
 			} else {
 				state = gameOver
 			}

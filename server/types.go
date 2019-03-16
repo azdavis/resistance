@@ -128,7 +128,8 @@ type CurrentLobby struct {
 // FirstMission is sent to start the game.
 type FirstMission struct {
 	IsSpy      bool // whether the client is a spy
-	NewMission      // the new mission
+	Captain    CID  // captain of this mission
+	NumMembers int  // number of members on this mission
 }
 
 // NewMission notifies the client that a new mission has started.
@@ -151,7 +152,8 @@ type MemberAccept struct{}
 // MissionResult notifies the client that voting on the mission has concluded.
 type MissionResult struct {
 	Success    bool // whether this mission succeeded
-	NewMission      // new mission (if any)
+	Captain    CID  // captain of new mission
+	NumMembers int  // number of members on new mission
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
