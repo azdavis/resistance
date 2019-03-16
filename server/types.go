@@ -103,9 +103,9 @@ func (RejectName) isToClient()    {}
 func (LobbyChoices) isToClient()  {}
 func (CurrentLobby) isToClient()  {}
 func (FirstMission) isToClient()  {}
-func (MemberReject) isToClient()  {}
 func (MemberPropose) isToClient() {}
 func (MemberAccept) isToClient()  {}
+func (MemberReject) isToClient()  {}
 func (MissionResult) isToClient() {}
 
 // RejectName is sent to a client that requested a name change with
@@ -248,12 +248,6 @@ func (x FirstMission) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSON makes JSON.
-func (x MemberReject) MarshalJSON() ([]byte, error) {
-	type alias MemberReject
-	return fromTagMsg("MemberReject", alias(x))
-}
-
-// MarshalJSON makes JSON.
 func (x MemberPropose) MarshalJSON() ([]byte, error) {
 	type alias MemberPropose
 	return fromTagMsg("MemberPropose", alias(x))
@@ -263,6 +257,12 @@ func (x MemberPropose) MarshalJSON() ([]byte, error) {
 func (x MemberAccept) MarshalJSON() ([]byte, error) {
 	type alias MemberAccept
 	return fromTagMsg("MemberAccept", alias(x))
+}
+
+// MarshalJSON makes JSON.
+func (x MemberReject) MarshalJSON() ([]byte, error) {
+	type alias MemberReject
+	return fromTagMsg("MemberReject", alias(x))
 }
 
 // MarshalJSON makes JSON.
