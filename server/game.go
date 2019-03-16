@@ -58,7 +58,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 		isSpy[j] = true
 		i--
 	}
-	log.Println("spies", gid, isSpy)
+	log.Printf("runGame %v spies: %+v", gid, isSpy)
 
 	state := memberChoosing
 	captain := 0
@@ -86,7 +86,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 
 	for ac := range clients.C {
-		log.Printf("runGame %v %+v", gid, ac)
+		log.Printf("runGame %v ac: %+v", gid, ac)
 		cid := ac.CID
 		switch ts := ac.ToServer.(type) {
 		case Close:
