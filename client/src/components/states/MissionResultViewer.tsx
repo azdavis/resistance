@@ -20,7 +20,13 @@ export default ({ send, d, success, resWin, spyWin }: Props) => (
     {resWin < maxWin && spyWin < maxWin ? (
       <Button value="Ok" onClick={() => d({ t: "AckMissionResult" })} />
     ) : (
-      <Button value="Return" onClick={() => send({ t: "GameLeave" })} />
+      <Button
+        value="Return"
+        onClick={() => {
+          d({ t: "GameLeave" });
+          send({ t: "GameLeave" });
+        }}
+      />
     )}
   </div>
 );

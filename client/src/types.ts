@@ -28,7 +28,8 @@ type SelfAction =
   | { t: "GoNameChoose" }
   | { t: "GoHowTo" }
   | { t: "AckRole" }
-  | { t: "AckMissionResult" };
+  | { t: "AckMissionResult" }
+  | { t: "GameLeave" };
 
 type ToClient =
   | { t: "RejectName" }
@@ -101,4 +102,5 @@ export type State =
       captain: CID;
       numMembers: number;
       members: Array<CID> | null;
+      didLeave: boolean;
     };

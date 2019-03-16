@@ -24,7 +24,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
     case "LobbyChoices":
       return s.t === "LobbyChoosing" ||
         s.t === "NameChoosing" ||
-        (s.t === "LobbyWaiting" && s.didLeave)
+        (s.t === "LobbyWaiting" && s.didLeave) ||
+        (s.t === "MissionResultViewing" && s.didLeave)
         ? { t: "LobbyChoosing", lobbies: a.Lobbies }
         : { t: "Disbanded", lobbies: a.Lobbies };
     case "CurrentLobby":
@@ -120,6 +121,7 @@ const reducer: Reducer<State, Action> = (s, a) => {
             captain: a.Captain,
             numMembers: a.NumMembers,
             members: null,
+            didLeave: false,
           }
         : { t: "Fatal", s, a };
     case "AckMissionResult":
@@ -143,6 +145,10 @@ const reducer: Reducer<State, Action> = (s, a) => {
               captain: s.captain,
               members: s.members,
             }
+        : { t: "Fatal", s, a };
+    case "GameLeave":
+      return s.t === "MissionResultViewing"
+        ? { ...s, didLeave: true }
         : { t: "Fatal", s, a };
   }
 };
