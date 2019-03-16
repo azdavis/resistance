@@ -24,9 +24,9 @@ func numTrue(xs map[CID]bool) int {
 	return ret
 }
 
-func hasCID(xs []CID, x CID) bool {
-	for _, y := range xs {
-		if x == y {
+func hasCID(xs []CID, y CID) bool {
+	for _, x := range xs {
+		if y == x {
 			return true
 		}
 	}
