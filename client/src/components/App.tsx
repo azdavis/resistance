@@ -58,5 +58,7 @@ export default (): JSX.Element => {
       return <MemberVoter send={send!} {...s} />;
     case "MissionVoting":
       return s.canVote ? <MissionVoter send={send!} /> : <MissionWaiter />;
+    case "MissionResultViewing":
+      throw "TODO";
   }
 };

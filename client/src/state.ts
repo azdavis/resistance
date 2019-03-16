@@ -89,7 +89,22 @@ const reducer: Reducer<State, Action> = (s, a) => {
           }
         : { t: "Fatal", s, a };
     case "MissionResult":
-      return s;
+      return s.t === "MissionVoting"
+        ? {
+            t: "MissionResultViewing",
+            me: s.me,
+            ...(a.Success
+              ? {
+                  resWin: s.resWin + 1,
+                  spyWin: s.spyWin,
+                }
+              : {
+                  resWin: s.resWin,
+                  spyWin: s.spyWin + 1,
+                }),
+            clients: s.clients,
+          }
+        : { t: "Fatal", s, a };
   }
 };
 

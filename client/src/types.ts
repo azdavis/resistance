@@ -86,4 +86,11 @@ export type State =
       spyWin: number;
       clients: Array<Client>;
       canVote: boolean;
+    }
+  | {
+      t: "MissionResultViewing";
+      me: CID;
+      resWin: number;
+      spyWin: number;
+      clients: Array<Client>;
     };
