@@ -2,7 +2,7 @@ import React from "react";
 import { D, Send, CID, Client } from "../../types";
 import { okGameSize } from "../../consts";
 import Button from "../Button";
-import "./Truncated.css";
+import "../Truncated.css";
 
 type Props = {
   d: D;
