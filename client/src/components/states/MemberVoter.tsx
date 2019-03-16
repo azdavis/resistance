@@ -36,10 +36,7 @@ export default ({ send, captain, me, clients, members }: Props) => (
       ))}
     <Voter
       prompt="Should the mission occur?"
-      options={[
-        ["The mission should occur", true],
-        ["The mission should not occur", false],
-      ]}
+      options={[["Occur", true], ["Not occur", false]]}
       onVote={Vote => send({ t: "MemberVote", Vote })}
     />
   </div>

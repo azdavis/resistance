@@ -11,10 +11,7 @@ export default ({ send }: Props) => (
     <h1>Mission vote</h1>
     <Voter
       prompt="Should the mission succeed?"
-      options={[
-        ["The mission should succeed", true],
-        ["The mission should fail", false],
-      ]}
+      options={[["Succeed", true], ["Fail", false]]}
       onVote={Vote => send({ t: "MissionVote", Vote })}
     />
   </div>
