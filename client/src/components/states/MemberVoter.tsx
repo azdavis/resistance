@@ -23,8 +23,8 @@ export default ({ send, captain, me, clients, members }: Props) => (
   <div className="MemberVoter">
     <h1>Member vote</h1>
     <p>
-      The captain has selected the following players to participate in the
-      mission.
+      The captain, {clients.find(({ CID }) => CID === captain)!.Name}, has
+      selected the following players to participate in the mission.
     </p>
     {clients
       .filter(({ CID }) => members.includes(CID))
