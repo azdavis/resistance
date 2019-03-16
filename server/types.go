@@ -102,7 +102,7 @@ type ToClient interface {
 func (RejectName) isToClient()    {}
 func (LobbyChoices) isToClient()  {}
 func (CurrentLobby) isToClient()  {}
-func (SetIsSpy) isToClient()      {}
+func (FirstMission) isToClient()  {}
 func (NewMission) isToClient()    {}
 func (MemberPropose) isToClient() {}
 func (MemberAccept) isToClient()  {}
@@ -125,9 +125,10 @@ type CurrentLobby struct {
 	Clients []*Client // info about other clients in this lobby
 }
 
-// SetIsSpy sets whether the clients is a spy or not.
-type SetIsSpy struct {
-	IsSpy bool // if false, client is resistance
+// FirstMission is sent to start the game.
+type FirstMission struct {
+	IsSpy      bool // whether the client is a spy
+	NewMission      // the new mission
 }
 
 // NewMission notifies the client that a new mission has started.
@@ -239,9 +240,9 @@ func (pc CurrentLobby) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSON makes JSON.
-func (pc SetIsSpy) MarshalJSON() ([]byte, error) {
-	type alias SetIsSpy
-	return fromTagMsg("SetIsSpy", alias(pc))
+func (pc FirstMission) MarshalJSON() ([]byte, error) {
+	type alias FirstMission
+	return fromTagMsg("FirstMission", alias(pc))
 }
 
 // MarshalJSON makes JSON.

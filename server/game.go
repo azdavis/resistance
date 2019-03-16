@@ -59,10 +59,6 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	}
 	log.Println("spies", gid, isSpy)
 
-	for i, cl := range cs {
-		cl.tx <- SetIsSpy{isSpy[i]}
-	}
-
 	state := memberChoosing
 	captainIdx := n - 1
 	newMission := func() NewMission {
@@ -72,9 +68,9 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 		}
 		return NewMission{cs[captainIdx].CID, nMission}
 	}
-	msg := newMission()
-	for _, cl := range cs {
-		cl.tx <- msg
+	nm := newMission()
+	for i, cl := range cs {
+		cl.tx <- FirstMission{isSpy[i], nm}
 	}
 
 	// invariant: 0 <= spyWinN, resWinN <= MaxWin

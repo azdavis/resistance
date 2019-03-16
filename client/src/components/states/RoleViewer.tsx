@@ -5,21 +5,16 @@ import Button from "../Button";
 type Props = {
   d: D;
   isSpy: boolean;
-  wait: boolean;
 };
 
-export default ({ d, isSpy, wait }: Props) => {
+export default ({ d, isSpy }: Props) => {
   const [show, setShow] = useState(false);
   const value = show ? `You ${isSpy ? "are" : "are not"} a spy` : "View role";
   return (
     <div className="RoleViewer">
       <h1>Role</h1>
       <Button value={value} onClick={() => setShow(!show)} />
-      <Button
-        value="Continue"
-        onClick={() => d({ t: "AckRole" })}
-        disabled={wait}
-      />
+      <Button value="Continue" onClick={() => d({ t: "AckRole" })} />
     </div>
   );
 };

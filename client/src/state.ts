@@ -35,34 +35,27 @@ const reducer: Reducer<State, Action> = (s, a) => {
         leader: a.Leader,
         didLeave: false,
       };
-    case "SetIsSpy":
+    case "FirstMission":
       return s.t === "LobbyWaiting"
         ? {
             t: "RoleViewing",
             me: s.me,
             clients: s.clients,
             isSpy: a.IsSpy,
-            mission: null,
-          }
-        : { t: "Fatal", s, a };
-    case "NewMission":
-      // TODO get mission when not first mission?
-      return s.t === "RoleViewing"
-        ? {
-            ...s,
-            mission: { captain: a.Captain, numMembers: a.NumMembers },
+            captain: a.Captain,
+            numMembers: a.NumMembers,
           }
         : { t: "Fatal", s, a };
     case "AckRole":
-      return s.t === "RoleViewing" && s.mission !== null
+      return s.t === "RoleViewing"
         ? {
             t: "MemberChoosing",
             me: s.me,
             clients: s.clients,
             resWin: 0,
             spyWin: 0,
-            captain: s.mission.captain,
-            numMembers: s.mission.numMembers,
+            captain: s.captain,
+            numMembers: s.numMembers,
           }
         : { t: "Fatal", s, a };
     case "MemberPropose":
@@ -75,6 +68,18 @@ const reducer: Reducer<State, Action> = (s, a) => {
             spyWin: s.spyWin,
             captain: s.captain,
             members: a.Members,
+          }
+        : { t: "Fatal", s, a };
+    case "NewMission":
+      return s.t === "MemberVoting"
+        ? {
+            t: "MemberChoosing",
+            me: s.me,
+            clients: s.clients,
+            resWin: s.resWin,
+            spyWin: s.spyWin,
+            captain: a.Captain,
+            numMembers: a.NumMembers,
           }
         : { t: "Fatal", s, a };
     case "MemberAccept":

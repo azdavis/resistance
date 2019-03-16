@@ -34,7 +34,7 @@ type ToClient =
   | { t: "RejectName" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; Me: CID; Leader: CID; Clients: Array<Client> }
-  | { t: "SetIsSpy"; IsSpy: boolean }
+  | { t: "FirstMission"; IsSpy: boolean; Captain: CID; NumMembers: number }
   | { t: "NewMission"; Captain: CID; NumMembers: number }
   | { t: "MemberPropose"; Members: Array<CID> }
   | { t: "MemberAccept" }
@@ -61,7 +61,8 @@ export type State =
       me: CID;
       clients: Array<Client>;
       isSpy: boolean;
-      mission: { captain: CID; numMembers: number } | null;
+      captain: CID;
+      numMembers: number;
     }
   | {
       t: "MemberChoosing";
