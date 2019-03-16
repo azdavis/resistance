@@ -64,6 +64,8 @@ export type State =
   | {
       t: "MemberChoosing";
       me: CID;
+      resWin: number;
+      spyWin: number;
       captain: CID;
       clients: Array<Client>;
       numMembers: number;
@@ -71,6 +73,8 @@ export type State =
   | {
       t: "MemberVoting";
       me: CID;
+      resWin: number;
+      spyWin: number;
       captain: CID;
       clients: Array<Client>;
       members: Array<CID>;
@@ -78,6 +82,8 @@ export type State =
   | {
       t: "MissionVoting";
       me: CID;
+      resWin: number;
+      spyWin: number;
       clients: Array<Client>;
       canVote: boolean;
     };

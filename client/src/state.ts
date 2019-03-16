@@ -58,6 +58,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MemberChoosing",
             me: s.me,
+            resWin: 0,
+            spyWin: 0,
             captain: s.mission.captain,
             clients: s.clients,
             numMembers: s.mission.numMembers,
@@ -68,6 +70,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MemberVoting",
             me: s.me,
+            resWin: s.resWin,
+            spyWin: s.spyWin,
             captain: s.captain,
             clients: s.clients,
             members: a.Members,
@@ -78,6 +82,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MissionVoting",
             me: s.me,
+            resWin: s.resWin,
+            spyWin: s.spyWin,
             clients: s.clients,
             canVote: s.members.includes(s.me),
           }
