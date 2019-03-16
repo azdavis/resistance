@@ -11,6 +11,7 @@ const (
 	memberChoosing state = iota
 	memberVoting
 	missionVoting
+	gameOver
 )
 
 func numTrue(xs map[CID]bool) int {
@@ -76,6 +77,10 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 		cl.tx <- msg
 	}
 
+	// invariant: 0 <= spyWinN, resWinN <= MaxWin
+	spyWinN := 0
+	resWinN := 0
+
 	// invariant: state == missionVoting <=> members != nil
 	var members []CID
 	// used for both voting on mission members and voting on mission itself
@@ -136,7 +141,22 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			if len(votes) != nMission {
 				continue
 			}
-			// TODO
+			success := numTrue(votes) > nMission/2
+			if success {
+				resWinN++
+			} else {
+				spyWinN++
+			}
+			msg := MissionResult{Success: success}
+			if resWinN < MaxWin && spyWinN < MaxWin {
+				state = missionVoting
+				msg.NewMission = newMission()
+			} else {
+				state = gameOver
+			}
+			for _, cl := range cs {
+				cl.tx <- msg
+			}
 		}
 	}
 }
