@@ -63,6 +63,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	state := memberChoosing
 	captain := 0
 	newCaptain := func() {
+		state = memberChoosing
 		captain++
 		if captain == n {
 			captain = 0
@@ -123,7 +124,6 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 					cl.tx <- MemberAccept{}
 				}
 			} else {
-				state = memberChoosing
 				newCaptain()
 				msg := MemberReject{Captain: cs[captain].CID, NumMembers: nMission}
 				for _, cl := range cs {
@@ -151,7 +151,6 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			}
 			msg := MissionResult{Success: success}
 			if resWinN < MaxWin && spyWinN < MaxWin {
-				state = memberChoosing
 				newCaptain()
 				msg.Captain = cs[captain].CID
 				msg.NumMembers = nMission
