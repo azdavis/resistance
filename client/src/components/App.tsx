@@ -43,7 +43,7 @@ export default (): JSX.Element => {
     case "LobbyChoosing":
       return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
-      return <LobbyWaiter send={send!} d={d} {...s} />;
+      return <LobbyWaiter d={d} send={send!} {...s} />;
     case "RoleViewing":
       return <RoleViewer d={d} isSpy={s.isSpy} />;
     case "MemberChoosing":
@@ -61,6 +61,6 @@ export default (): JSX.Element => {
     case "MissionVoting":
       return s.canVote ? <MissionVoter send={send!} /> : <MissionWaiter />;
     case "MissionResultViewing":
-      return <MissionResultViewer send={send!} d={d} {...s} />;
+      return <MissionResultViewer d={d} send={send!} {...s} />;
   }
 };

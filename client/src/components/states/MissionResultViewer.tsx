@@ -4,8 +4,8 @@ import { maxWin } from "../../consts";
 import Button from "../Button";
 
 type Props = {
-  send: Send;
   d: D;
+  send: Send;
   success: boolean;
   resWin: number;
   spyWin: number;
