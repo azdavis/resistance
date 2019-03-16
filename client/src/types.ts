@@ -100,4 +100,5 @@ export type State =
       success: boolean;
       captain: CID;
       numMembers: number;
+      members: Array<CID> | null;
     };

@@ -82,6 +82,8 @@ const reducer: Reducer<State, Action> = (s, a) => {
           }
         : s.t === "RoleViewing"
         ? { ...s, members: a.Members }
+        : s.t === "MissionResultViewing"
+        ? { ...s, members: a.Members }
         : { t: "Fatal", s, a };
     case "MemberAccept":
       return s.t === "MemberVoting"
@@ -117,19 +119,30 @@ const reducer: Reducer<State, Action> = (s, a) => {
             success: a.Success,
             captain: a.Captain,
             numMembers: a.NumMembers,
+            members: null,
           }
         : { t: "Fatal", s, a };
     case "AckMissionResult":
       return s.t === "MissionResultViewing"
-        ? {
-            t: "MemberChoosing",
-            me: s.me,
-            clients: s.clients,
-            resWin: s.resWin,
-            spyWin: s.spyWin,
-            captain: s.captain,
-            numMembers: s.numMembers,
-          }
+        ? s.members === null
+          ? {
+              t: "MemberChoosing",
+              me: s.me,
+              clients: s.clients,
+              resWin: s.resWin,
+              spyWin: s.spyWin,
+              captain: s.captain,
+              numMembers: s.numMembers,
+            }
+          : {
+              t: "MemberVoting",
+              me: s.me,
+              clients: s.clients,
+              resWin: s.resWin,
+              spyWin: s.spyWin,
+              captain: s.captain,
+              members: s.members,
+            }
         : { t: "Fatal", s, a };
   }
 };
