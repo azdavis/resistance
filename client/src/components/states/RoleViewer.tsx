@@ -7,12 +7,10 @@ type Props = {
   isSpy: boolean;
 };
 
-export default ({ d, isSpy }: Props) => {
-  return (
-    <div className="RoleViewer">
-      <h1>Role</h1>
-      <p>You {isSpy ? "are" : "are not"} a spy.</p>
-      <Button value="Continue" onClick={() => d({ t: "AckRole" })} />
-    </div>
-  );
-};
+export default ({ d, isSpy }: Props) => (
+  <div className="RoleViewer">
+    <h1>Role</h1>
+    <p>You {isSpy ? "are" : "are not"} a spy.</p>
+    <Button value="Continue" onClick={() => d({ t: "AckRole" })} />
+  </div>
+);
