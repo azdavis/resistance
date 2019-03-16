@@ -153,6 +153,15 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			for _, cl := range cs {
 				cl.tx <- msg
 			}
+		case GameLeave:
+			if state != gameOver {
+				continue
+			}
+			cl := clients.Rm(cid)
+			tx <- LobbyMsg{gid, false, []*Client{cl}}
+			if len(clients.M) == 0 {
+				return
+			}
 		}
 	}
 }
