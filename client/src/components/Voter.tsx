@@ -9,9 +9,10 @@ type Props<T> = {
 
 export default function<T>({ prompt, options, onVote }: Props<T>) {
   const [vote, setVote] = useState<string | null>(null);
+  const didVote = vote !== null;
   return (
     <div className="Voter">
-      <p>{vote === null ? prompt : `You voted: ${vote}`}</p>
+      <p>{didVote ? `You voted: ${vote}` : prompt}</p>
       {options.map(([k, v]) => (
         <Button
           key={k}
@@ -20,7 +21,7 @@ export default function<T>({ prompt, options, onVote }: Props<T>) {
             setVote(k);
             onVote(v);
           }}
-          disabled={vote !== null}
+          disabled={didVote}
         />
       ))}
     </div>
