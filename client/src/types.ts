@@ -93,4 +93,5 @@ export type State =
       clients: Array<Client>;
       resWin: number;
       spyWin: number;
+      success: boolean;
     };

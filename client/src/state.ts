@@ -103,6 +103,7 @@ const reducer: Reducer<State, Action> = (s, a) => {
                   resWin: s.resWin,
                   spyWin: s.spyWin + 1,
                 }),
+            success: a.Success,
           }
         : { t: "Fatal", s, a };
   }
