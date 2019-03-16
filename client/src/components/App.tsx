@@ -13,6 +13,7 @@ import MemberWaiter from "./states/MemberWaiter";
 import MemberVoter from "./states/MemberVoter";
 import MissionVoter from "./states/MissionVoter";
 import MissionWaiter from "./states/MissionWaiter";
+import MissionResultViewer from "./states/MissionResultViewer";
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
@@ -59,6 +60,6 @@ export default (): JSX.Element => {
     case "MissionVoting":
       return s.canVote ? <MissionVoter send={send!} /> : <MissionWaiter />;
     case "MissionResultViewing":
-      throw "TODO";
+      return <MissionResultViewer send={send!} d={d} {...s} />;
   }
 };
