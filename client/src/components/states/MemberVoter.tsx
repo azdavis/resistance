@@ -19,6 +19,11 @@ const modifiers = (cid: CID, me: CID, captain: CID): string =>
     ? " (captain)"
     : "";
 
+const options: Array<[string, boolean]> = [
+  ["Occur", true],
+  ["Not occur", false],
+];
+
 export default ({ send, captain, me, clients, members }: Props) => (
   <div className="MemberVoter">
     <h1>Member vote</h1>
@@ -36,7 +41,7 @@ export default ({ send, captain, me, clients, members }: Props) => (
       ))}
     <Voter
       prompt="Should the mission occur?"
-      options={[["Occur", true], ["Not occur", false]]}
+      options={options}
       onVote={Vote => send({ t: "MemberVote", Vote })}
     />
   </div>
