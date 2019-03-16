@@ -85,6 +85,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	votes := make(map[CID]bool)
 
 	for ac := range clients.C {
+		log.Printf("runGame %v %+v", gid, ac)
 		cid := ac.CID
 		switch ts := ac.ToServer.(type) {
 		case Close:
