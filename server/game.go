@@ -61,6 +61,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	log.Printf("runGame %v spies: %+v", gid, isSpy)
 
 	// current state.
+	// invariant: state == gameOver <=> resWin == MaxWin || spyWin == MaxWin
 	state := memberChoosing
 	// invariant: cs[captain] is the current captain.
 	captain := 0
