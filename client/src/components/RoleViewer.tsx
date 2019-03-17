@@ -1,6 +1,6 @@
 import React from "react";
-import { D } from "../../types";
-import Button from "../Button";
+import { D } from "../types";
+import Button from "./basic/Button";
 
 type Props = {
   d: D;

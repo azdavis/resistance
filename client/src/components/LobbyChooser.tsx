@@ -1,6 +1,6 @@
 import React from "react";
-import { Send, Lobby } from "../../types";
-import Button from "../Button";
+import { Send, Lobby } from "../types";
+import Button from "./basic/Button";
 
 type Props = {
   send: Send;

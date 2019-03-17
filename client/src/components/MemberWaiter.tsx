@@ -1,6 +1,6 @@
 import React from "react";
-import { CID, Client } from "../../types";
-import { getCaptain } from "../../consts";
+import { CID, Client } from "../types";
+import { getCaptain } from "../consts";
 
 type Props = {
   clients: Array<Client>;

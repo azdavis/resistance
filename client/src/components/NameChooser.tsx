@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
-import { D, Send } from "../../types";
-import Button from "../Button";
+import { D, Send } from "../types";
+import Button from "./basic/Button";
 import "./NameChooser.css";
 
 type Props = {

@@ -1,7 +1,7 @@
 import React from "react";
-import { Send, CID, Client } from "../../types";
-import { getCaptain } from "../../consts";
-import Voter from "../Voter";
+import { Send, CID, Client } from "../types";
+import { getCaptain } from "../consts";
+import Voter from "./basic/Voter";
 
 type Props = {
   send: Send;

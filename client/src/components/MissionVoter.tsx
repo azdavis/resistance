@@ -1,6 +1,6 @@
 import React from "react";
-import { Send } from "../../types";
-import Voter from "../Voter";
+import { Send } from "../types";
+import Voter from "./basic/Voter";
 
 type Props = {
   send: Send;

@@ -1,5 +1,5 @@
 import React from "react";
-import { State, Action } from "../../types";
+import { State, Action } from "../types";
 
 type Props = {
   s: State;

@@ -1,7 +1,7 @@
 import React from "react";
-import { D, Send } from "../../types";
-import { maxWin } from "../../consts";
-import Button from "../Button";
+import { D, Send } from "../types";
+import { maxWin } from "../consts";
+import Button from "./basic/Button";
 
 type Props = {
   d: D;
