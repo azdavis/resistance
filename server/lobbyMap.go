@@ -4,7 +4,7 @@ func runLobbyMap(rx chan *Client) {
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
 	toLobbyMap := make(chan LobbyMsg)
-	nextGID := GID(1)
+	next := GID(1)
 
 	lobbiesList := func() []Lobby {
 		ret := make([]Lobby, 0, len(lobbies))
@@ -51,8 +51,8 @@ func runLobbyMap(rx chan *Client) {
 				}
 				lb.tx <- clients.Rm(cid)
 			case LobbyCreate:
-				gid := nextGID
-				nextGID++
+				gid := next
+				next++
 				lobbies[gid] = NewLobby(gid, clients.Rm(cid), toLobbyMap)
 				broadcastLobbyChoosing()
 			}
