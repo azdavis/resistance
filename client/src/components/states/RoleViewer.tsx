@@ -10,7 +10,7 @@ type Props = {
 export default ({ d, isSpy }: Props) => (
   <div className="RoleViewer">
     <h1>Role</h1>
-    <p>You {isSpy ? "are" : "are not"} a spy.</p>
+    <p>You are a {isSpy ? "spy" : "resistance member"}.</p>
     <Button value="Ok" onClick={() => d({ t: "AckRole" })} />
   </div>
 );
