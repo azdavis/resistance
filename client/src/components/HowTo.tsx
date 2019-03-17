@@ -13,10 +13,7 @@ export default ({ d }: Props) => (
     <p>
       Groups of at least {minN} and at most {maxN} players may play.
     </p>
-    <p>
-      Some of the players are spies. The rest of the players are members of the
-      resistance.
-    </p>
+    <p>Some players are spies. The rest are members of the resistance.</p>
     <p>
       The first of the spies and resistance to get {maxWin} points wins the
       game.
