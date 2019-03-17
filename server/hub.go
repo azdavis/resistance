@@ -10,19 +10,19 @@ import (
 
 // Hub is an http.Handler. It creates Clients from HTTP connections.
 type Hub struct {
-	mux     *sync.Mutex    // protect nextCID
-	nextCID CID            // the next Client will have this CID
-	tx      chan<- *Client // outgoing clients
-	up      ws.Upgrader    // websocket upgrader
+	mux  *sync.Mutex    // protect next
+	next CID            // the next Client will have this CID
+	tx   chan<- *Client // outgoing clients
+	up   ws.Upgrader    // websocket upgrader
 }
 
 // NewHub returns a new Hub.
 func NewHub(tx chan<- *Client) *Hub {
 	h := &Hub{
-		mux:     &sync.Mutex{},
-		nextCID: 1,
-		tx:      tx,
-		up:      ws.Upgrader{CheckOrigin: unsafeAllowAny},
+		mux:  &sync.Mutex{},
+		next: 1,
+		tx:   tx,
+		up:   ws.Upgrader{CheckOrigin: unsafeAllowAny},
 	}
 	return h
 }
@@ -46,8 +46,8 @@ func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.mux.Lock()
-	cid := h.nextCID
-	h.nextCID++
+	cid := h.next
+	h.next++
 	h.mux.Unlock()
 	h.tx <- NewClient(conn, cid)
 }
