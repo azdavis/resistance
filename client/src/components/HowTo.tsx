@@ -34,7 +34,7 @@ export default ({ d }: Props) => (
     <p>If too many missions do not occur in a row, the spies get 1 point.</p>
     <p>
       If the mission does occur, the members of the mission vote on whether the
-      mission succeeds or not.
+      mission succeeds.
     </p>
     <p>If the mission succeeds, the resistance gets 1 point.</p>
     <p>If the mission fails, the spies get 1 point.</p>
