@@ -13,6 +13,7 @@ type Hub struct {
 	mux     *sync.Mutex    // protect nextCID
 	nextCID CID            // the next Client will have this CID
 	tx      chan<- *Client // outgoing clients
+	up      ws.Upgrader    // websocket upgrader
 }
 
 // NewHub returns a new Hub.
@@ -21,6 +22,7 @@ func NewHub(tx chan<- *Client) *Hub {
 		mux:     &sync.Mutex{},
 		nextCID: 1,
 		tx:      tx,
+		up:      ws.Upgrader{CheckOrigin: unsafeAllowAny},
 	}
 	return h
 }
@@ -30,8 +32,6 @@ func unsafeAllowAny(r *http.Request) bool {
 	return true
 }
 
-var up = ws.Upgrader{CheckOrigin: unsafeAllowAny}
-
 // ServeHTTP tries to upgrade the (w, r) pair into a websocket connection. If it
 // is successful, it makes a new Client with a fresh CID and sends it along
 // tx.
@@ -40,7 +40,7 @@ func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
-	conn, err := up.Upgrade(w, r, nil)
+	conn, err := h.up.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("err ServeHTTP", err)
 		return
