@@ -23,8 +23,8 @@ export default ({ d }: Props) => (
     </p>
     <p>
       The game is played in rounds. In every round of the game, a captain is
-      chosen. The captain chooses a certain group of players to participate in
-      the mission.
+      chosen. The captain chooses a certain group of players to participate in a
+      mission.
     </p>
     <p>
       When the captain has finished choosing the members of the mission, all
