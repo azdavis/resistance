@@ -28,15 +28,13 @@ export default ({ d }: Props) => (
     </p>
     <p>
       When the captain has finished choosing the members of the mission, all
-      players vote on whether the mission occurs. The winner is decided by
-      simple majority, with ties resulting in the mission not occurring.
+      players vote on whether the mission occurs.
     </p>
     <p>If the mission does not occur, the next round is started.</p>
     <p>If too many missions do not occur in a row, the spies get 1 point.</p>
     <p>
       If the mission does occur, the members of the mission vote on whether the
-      mission succeeds or not. The winner is decided based on how many members
-      were in the mission.
+      mission succeeds or not.
     </p>
     <p>If the mission succeeds, the resistance gets 1 point.</p>
     <p>If the mission fails, the spies get 1 point.</p>
