@@ -78,6 +78,9 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	// invariant: 0 <= spyWin <= MaxWin
 	spyWin := 0
 
+	// invariant: 0 := skip <= MaxSkip
+	skip := 0
+
 	// invariant: state == missionVoting <=> members != nil
 	var members []CID
 
@@ -131,6 +134,12 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				}
 			} else {
 				nextCaptain()
+				skip++
+				if skip == MaxSkip {
+					spyWin++
+					skip = 0
+				}
+				// TODO communicate the extra spy point with client.
 				msg := MemberReject{Captain: cs[captain].CID, NumMembers: nMission}
 				for _, cl := range cs {
 					cl.tx <- msg

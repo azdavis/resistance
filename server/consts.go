@@ -15,3 +15,7 @@ func OkGameSize(n int) bool {
 // MaxWin is the number of wins either side must accumulate before the game is
 // over.
 const MaxWin = 3
+
+// MaxSkip is the number of missions that can be skipped in a row before the
+// spies automatically get a point.
+const MaxSkip = 3
