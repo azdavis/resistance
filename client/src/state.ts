@@ -103,7 +103,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             me: s.me,
             clients: s.clients,
             resWin: s.resWin,
-            spyWin: s.spyWin,
+            spyWin: s.spyWin + (a.SpyWin ? 1 : 0),
             captain: a.Captain,
             members: a.Members,
           }
