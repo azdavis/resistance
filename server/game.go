@@ -137,7 +137,10 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 				nextCaptain()
 				skip++
 				// TODO communicate the extra spy point with client.
-				msg := MemberReject{Captain: cs[captain].CID, Members: nMission}
+				msg := MemberReject{
+					Captain: cs[captain].CID,
+					Members: nMission,
+				}
 				for _, cl := range cs {
 					cl.tx <- msg
 				}
