@@ -136,14 +136,14 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			} else {
 				nextCaptain()
 				skip++
-				if skip == MaxSkip {
-					spyWin++
-					skip = 0
-				}
 				// TODO communicate the extra spy point with client.
 				msg := MemberReject{Captain: cs[captain].CID, Members: nMission}
 				for _, cl := range cs {
 					cl.tx <- msg
+				}
+				if skip == MaxSkip {
+					spyWin++
+					skip = 0
 				}
 			}
 		case MissionVote:
