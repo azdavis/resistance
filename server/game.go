@@ -149,7 +149,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 					spyWin++
 					skip = 0
 				}
-				if spyWin == MaxWin {
+				if spyWin >= MaxWin {
 					state = gameOver
 				}
 			}
