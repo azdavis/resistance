@@ -149,6 +149,9 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 					spyWin++
 					skip = 0
 				}
+				if spyWin == MaxWin {
+					state = gameOver
+				}
 			}
 		case MissionVote:
 			if state != missionVoting || !hasCID(members, cid) {
