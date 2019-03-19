@@ -23,7 +23,7 @@ export default ({ d, send, success, resWin, spyWin }: Props) => (
       <>
         <p>The {resWin > spyWin ? "resistance has" : "spies have"} won.</p>
         <Button
-          value="Return"
+          value="Leave"
           onClick={() => {
             d({ t: "GameLeave" });
             send({ t: "GameLeave" });
