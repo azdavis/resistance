@@ -88,7 +88,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 	// used for both voting on mission members and voting on mission itself
 	votes := make(map[CID]bool)
 
-	msg := FirstMission{Captain: cs[captain].CID, NumMembers: nMission}
+	msg := FirstMission{Captain: cs[captain].CID, Members: nMission}
 	for i, cl := range cs {
 		msg.IsSpy = isSpy[i]
 		cl.tx <- msg
@@ -141,7 +141,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 					skip = 0
 				}
 				// TODO communicate the extra spy point with client.
-				msg := MemberReject{Captain: cs[captain].CID, NumMembers: nMission}
+				msg := MemberReject{Captain: cs[captain].CID, Members: nMission}
 				for _, cl := range cs {
 					cl.tx <- msg
 				}
@@ -169,7 +169,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			if resWin < MaxWin && spyWin < MaxWin {
 				nextCaptain()
 				msg.Captain = cs[captain].CID
-				msg.NumMembers = nMission
+				msg.Members = nMission
 			} else {
 				state = gameOver
 			}

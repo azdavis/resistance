@@ -44,13 +44,12 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             clients: s.clients,
             isSpy: a.IsSpy,
             captain: a.Captain,
-            numMembers: a.NumMembers,
-            members: null,
+            members: a.Members,
           }
         : { t: "Fatal", s, a };
     case "AckRole":
       return s.t === "RoleViewing"
-        ? s.members === null
+        ? typeof s.members === "number"
           ? {
               t: "MemberChoosing",
               me: s.me,
@@ -58,7 +57,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
               resWin: 0,
               spyWin: 0,
               captain: s.captain,
-              numMembers: s.numMembers,
+              members: s.members,
             }
           : {
               t: "MemberVoting",
@@ -106,7 +105,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             resWin: s.resWin,
             spyWin: s.spyWin,
             captain: a.Captain,
-            numMembers: a.NumMembers,
+            members: a.Members,
           }
         : { t: "Fatal", s, a };
     case "MissionResult":
@@ -119,14 +118,13 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             spyWin: s.spyWin + (a.Success ? 0 : 1),
             success: a.Success,
             captain: a.Captain,
-            numMembers: a.NumMembers,
-            members: null,
+            members: a.Members,
             didLeave: false,
           }
         : { t: "Fatal", s, a };
     case "AckMissionResult":
       return s.t === "MissionResultViewing"
-        ? s.members === null
+        ? typeof s.members === "number"
           ? {
               t: "MemberChoosing",
               me: s.me,
@@ -134,7 +132,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
               resWin: s.resWin,
               spyWin: s.spyWin,
               captain: s.captain,
-              numMembers: s.numMembers,
+              members: s.members,
             }
           : {
               t: "MemberVoting",

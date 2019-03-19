@@ -53,7 +53,7 @@ export default (): JSX.Element => {
         <MemberWaiter
           clients={s.clients}
           captain={s.captain}
-          numMembers={s.numMembers}
+          members={s.members}
         />
       );
     case "MemberVoting":

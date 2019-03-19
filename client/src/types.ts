@@ -35,11 +35,11 @@ type ToClient =
   | { t: "NameReject" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; Me: CID; Leader: CID; Clients: Array<Client> }
-  | { t: "FirstMission"; IsSpy: boolean; Captain: CID; NumMembers: number }
+  | { t: "FirstMission"; IsSpy: boolean; Captain: CID; Members: number }
   | { t: "MemberPropose"; Members: Array<CID> }
   | { t: "MemberAccept" }
-  | { t: "MemberReject"; Captain: CID; NumMembers: number }
-  | { t: "MissionResult"; Success: boolean; Captain: CID; NumMembers: number };
+  | { t: "MemberReject"; Captain: CID; Members: number }
+  | { t: "MissionResult"; Success: boolean; Captain: CID; Members: number };
 
 export type Action = SelfAction | ToClient;
 export type D = Dispatch<Action>;
@@ -63,8 +63,7 @@ export type State =
       clients: Array<Client>;
       isSpy: boolean;
       captain: CID;
-      numMembers: number;
-      members: Array<CID> | null;
+      members: number | Array<CID>;
     }
   | {
       t: "MemberChoosing";
@@ -73,7 +72,7 @@ export type State =
       resWin: number;
       spyWin: number;
       captain: CID;
-      numMembers: number;
+      members: number;
     }
   | {
       t: "MemberVoting";
@@ -100,7 +99,6 @@ export type State =
       spyWin: number;
       success: boolean;
       captain: CID;
-      numMembers: number;
-      members: Array<CID> | null;
+      members: number | Array<CID>;
       didLeave: boolean;
     };
