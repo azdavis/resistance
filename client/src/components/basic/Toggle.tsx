@@ -9,9 +9,9 @@ type Props = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default ({ value, checked, onChange }: Props) => (
+export default ({ value, ...rest }: Props) => (
   <label className="Button Toggle">
-    <input type="checkbox" checked={checked} onChange={onChange} />
+    <input type="checkbox" {...rest} />
     <div className="Truncated">{value}</div>
   </label>
 );
