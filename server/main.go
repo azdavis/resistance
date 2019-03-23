@@ -7,12 +7,12 @@ import (
 )
 
 func newServer() *http.Server {
-	toLobbyMap := make(chan *Client, 3)
-	toWelcomer := make(chan *Client, 3)
-	go runLobbyMap(toLobbyMap)
-	go runWelcomer(toLobbyMap, toWelcomer)
+	txLobbyMap := make(chan *Client, 3)
+	txWelcomer := make(chan *Client, 3)
+	go runLobbyMap(txLobbyMap)
+	go runWelcomer(txLobbyMap, txWelcomer)
 	s := &http.Server{
-		Handler:      NewHub(toWelcomer),
+		Handler:      NewHub(txWelcomer),
 		Addr:         ":8080",
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,

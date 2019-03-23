@@ -1,9 +1,9 @@
 package main
 
-func runLobbyMap(rx chan *Client) {
+func runLobbyMap(rxWelcomer chan *Client) {
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
-	toLobbyMap := make(chan LobbyMsg)
+	rxLobby := make(chan LobbyMsg)
 	next := GID(1)
 
 	lobbiesList := func() []Lobby {
@@ -23,10 +23,10 @@ func runLobbyMap(rx chan *Client) {
 
 	for {
 		select {
-		case cl := <-rx:
+		case cl := <-rxWelcomer:
 			clients.Add(cl)
 			cl.tx <- LobbyChoices{lobbiesList()}
-		case m := <-toLobbyMap:
+		case m := <-rxLobby:
 			for _, cl := range m.Clients {
 				clients.Add(cl)
 			}
@@ -53,7 +53,7 @@ func runLobbyMap(rx chan *Client) {
 			case LobbyCreate:
 				gid := next
 				next++
-				lobbies[gid] = NewLobby(gid, clients.Rm(cid), toLobbyMap)
+				lobbies[gid] = NewLobby(gid, clients.Rm(cid), rxLobby)
 				broadcastLobbyChoosing()
 			}
 		}
