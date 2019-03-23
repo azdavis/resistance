@@ -12,6 +12,7 @@ import (
 type CID uint64
 
 // GID is a unique identifier for a Game (or a Lobby, which will become a Game).
+// 0 means 'no GID'.
 type GID uint64
 
 // Action is a CID + ToServer.
