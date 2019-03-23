@@ -1,7 +1,7 @@
 import { Reducer } from "react";
 import { State, Action } from "./types";
 
-export const init: State = { t: "Welcome" };
+export const init: State = { t: "Welcome", me: null };
 
 export const reducer: Reducer<State, Action> = (s, a) => {
   if (s.t === "Fatal") {
@@ -11,7 +11,11 @@ export const reducer: Reducer<State, Action> = (s, a) => {
     case "Close":
       return { t: "Fatal", s, a };
     case "SetMe":
-      return s;
+      return s.t === "Welcome"
+        ? { ...s, me: a.Me }
+        : s.t === "HowTo"
+        ? { ...s, me: a.Me }
+        : { t: "Fatal", s, a };
     case "AckDisbanded":
       return s.t === "Disbanded"
         ? { ...s, t: "LobbyChoosing" }
@@ -22,14 +26,16 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         : { t: "Fatal", s, a };
     case "GoWelcome":
       return s.t === "HowTo" || s.t === "NameChoosing"
-        ? { t: "Welcome" }
+        ? { t: "Welcome", me: s.me }
         : { t: "Fatal", s, a };
     case "GoNameChoose":
-      return s.t === "Welcome"
-        ? { t: "NameChoosing", valid: true }
+      return s.t === "Welcome" && s.me !== null
+        ? { t: "NameChoosing", me: s.me, valid: true }
         : { t: "Fatal", s, a };
     case "GoHowTo":
-      return s.t === "Welcome" ? { t: "HowTo" } : { t: "Fatal", s, a };
+      return s.t === "Welcome"
+        ? { t: "HowTo", me: s.me }
+        : { t: "Fatal", s, a };
     case "NameReject":
       return s.t === "NameChoosing"
         ? { ...s, valid: false }
@@ -39,8 +45,10 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         s.t === "NameChoosing" ||
         (s.t === "LobbyWaiting" && s.didLeave) ||
         (s.t === "MissionResultViewing" && s.didLeave)
-        ? { t: "LobbyChoosing", lobbies: a.Lobbies }
-        : { t: "Disbanded", lobbies: a.Lobbies };
+        ? { t: "LobbyChoosing", me: s.me, lobbies: a.Lobbies }
+        : s.me === null
+        ? { t: "Fatal", s, a }
+        : { t: "Disbanded", me: s.me, lobbies: a.Lobbies };
     case "CurrentLobby":
       return s.t === "LobbyChoosing" || s.t === "LobbyWaiting"
         ? {
