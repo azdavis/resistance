@@ -12,7 +12,7 @@ import (
 type Hub struct {
 	mux  *sync.Mutex    // protect next
 	next CID            // the next Client will have this CID
-	tx   chan<- *Client // from this to runNameChooser
+	tx   chan<- *Client // from this to runWelcomeLobby
 	up   ws.Upgrader    // websocket upgrader
 }
 

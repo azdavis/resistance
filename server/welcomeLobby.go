@@ -11,7 +11,7 @@ func validName(s string) bool {
 	return s != "" && len(s) <= maxLen && validNameRE.Match([]byte(s))
 }
 
-func runNameChooser(tx chan<- *Client, rx <-chan *Client) {
+func runWelcomeLobby(tx chan<- *Client, rx <-chan *Client) {
 	clients := NewClientMap()
 	for {
 		select {
