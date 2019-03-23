@@ -126,7 +126,6 @@ type LobbyChoices struct {
 // CurrentLobby is sent to a client who is in a lobby whose game has not yet
 // started.
 type CurrentLobby struct {
-	Me      CID       // the client's own CID
 	Leader  CID       // info about this lobby
 	Clients []*Client // info about other clients in this lobby
 }

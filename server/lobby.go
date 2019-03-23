@@ -36,8 +36,8 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 
 	broadcastLobbyWaiting := func() {
 		cs := clients.ToList()
-		for cid, cl := range clients.M {
-			cl.tx <- CurrentLobby{cid, leader.CID, cs}
+		for _, cl := range clients.M {
+			cl.tx <- CurrentLobby{leader.CID, cs}
 		}
 	}
 	broadcastLobbyWaiting()

@@ -53,7 +53,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
       return s.t === "LobbyChoosing" || s.t === "LobbyWaiting"
         ? {
             t: "LobbyWaiting",
-            me: a.Me,
+            me: s.me,
             clients: a.Clients,
             leader: a.Leader,
             didLeave: false,
