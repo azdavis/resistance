@@ -35,6 +35,6 @@ export default ({ d }: Props) => (
     </p>
     <p>If the mission succeeds, the resistance gets 1 point.</p>
     <p>If the mission fails, the spies get 1 point.</p>
-    <Button value="Return" onClick={() => d({ t: "GoWelcome" })} />
+    <Button value="Back" onClick={() => d({ t: "GoWelcome" })} />
   </div>
 );

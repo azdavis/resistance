@@ -30,7 +30,7 @@ export default ({ d, send, valid }: Props) => {
         </label>
         <Button type="submit" value="Submit" disabled={send === null} />
       </form>
-      <Button value="Return" onClick={() => d({ t: "GoWelcome" })} />
+      <Button value="Back" onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };
