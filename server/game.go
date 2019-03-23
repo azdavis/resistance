@@ -5,6 +5,11 @@ import (
 	"math/rand"
 )
 
+// Game is a group of clients playing a game together.
+type Game struct {
+	GID // unique
+}
+
 type state uint
 
 const (
@@ -31,6 +36,15 @@ func hasCID(xs []CID, y CID) bool {
 		}
 	}
 	return false
+}
+
+// NewGame returns a new Game.
+func NewGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) Game {
+	g := Game{
+		GID: gid,
+	}
+	go runGame(gid, tx, clients)
+	return g
 }
 
 // TODO ensure that at least one spy is included in the first mission?

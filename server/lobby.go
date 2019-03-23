@@ -79,7 +79,7 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 					continue
 				case tx <- LobbyMsg{gid, true, []*Client{}}:
 				}
-				go runGame(gid, tx, clients)
+				NewGame(gid, tx, clients)
 				return
 			}
 		}
