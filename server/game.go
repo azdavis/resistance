@@ -47,7 +47,6 @@ func NewGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) Game {
 	return g
 }
 
-// TODO ensure that at least one spy is included in the first mission?
 // TODO improve numbers for mission size / fails required to fail mission?
 func runGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) {
 	log.Println("enter runGame", gid)
