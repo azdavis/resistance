@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { D, Send } from "../types";
 import Button from "./basic/Button";
-import ButtonLink from "./basic/ButtonLink";
 import "./NameChooser.css";
 
 type Props = {
@@ -31,12 +30,6 @@ export default ({ d, send, valid }: Props) => {
         </label>
         <Button type="submit" value="Submit" disabled={send === null} />
       </form>
-      <h2>More</h2>
-      <Button value="How to play" onClick={() => d({ t: "GoHowTo" })} />
-      <ButtonLink
-        value="Source code"
-        href="https://github.com/azdavis/resistance"
-      />
     </div>
   );
 };
