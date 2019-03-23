@@ -94,9 +94,13 @@ func runGame(
 	// invariant: the client with CID cids[captain] is the current captain.
 	captain := 0
 
+	// invariant: state == missionVoting <=> members != nil
+	var members []CID
+
 	// update captain.
-	nextCaptain := func() {
+	newMemberChoosing := func() {
 		state = memberChoosing
+		members = nil
 		captain++
 		if captain == len(cids) {
 			captain = 0
@@ -111,9 +115,6 @@ func runGame(
 
 	// invariant: 0 := skip <= MaxSkip
 	skip := 0
-
-	// invariant: state == missionVoting <=> members != nil
-	var members []CID
 
 	// used for both voting on mission members and voting on mission itself
 	votes := make(map[CID]bool)
@@ -185,8 +186,7 @@ func runGame(
 						cl.tx <- MemberAccept{}
 					}
 				} else {
-					nextCaptain()
-					members = nil
+					newMemberChoosing()
 					skip++
 					spyDidWin := skip == MaxSkip
 					msg := MemberReject{
@@ -226,7 +226,7 @@ func runGame(
 				}
 				msg := MissionResult{Success: success}
 				if resWin < MaxWin && spyWin < MaxWin {
-					nextCaptain()
+					newMemberChoosing()
 					msg.Captain = cids[captain]
 					msg.Members = nMission
 				} else {
