@@ -3,6 +3,7 @@ import { Send } from "../types";
 import { reducer, init } from "../state";
 import Fatal from "./Fatal";
 import Disbanded from "./Disbanded";
+import Welcome from "./Welcome";
 import HowTo from "./HowTo";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
@@ -37,7 +38,7 @@ export default (): JSX.Element => {
     case "Disbanded":
       return <Disbanded d={d} />;
     case "Welcome":
-      throw "TODO";
+      return <Welcome d={d} />;
     case "HowTo":
       return <HowTo d={d} />;
     case "NameChoosing":
