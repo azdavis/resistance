@@ -62,17 +62,6 @@ func runGame(
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
-	reconnect := func(cl *Client) {
-		_, ok := clients.M[cl.CID]
-		if ok {
-			// oof
-			cl.Kill()
-		} else {
-			clients.Add(cl)
-			// TODO send a message to cl to get it up-to-date
-		}
-	}
-
 	// all the cids, in a stable order.
 	cids := make([]CID, 0, len(clients.M))
 	for cid := range clients.M {
@@ -128,6 +117,17 @@ func runGame(
 
 	// used for both voting on mission members and voting on mission itself
 	votes := make(map[CID]bool)
+
+	reconnect := func(cl *Client) {
+		_, ok := clients.M[cl.CID]
+		if ok {
+			// oof
+			cl.Kill()
+		} else {
+			clients.Add(cl)
+			// TODO send a message to cl to get it up-to-date
+		}
+	}
 
 	msg := BeginGame{Captain: cids[captain], NumMembers: nMission}
 	for i, cid := range cids {
