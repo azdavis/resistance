@@ -7,7 +7,8 @@ import (
 
 // Game is a group of clients playing a game together.
 type Game struct {
-	GID // unique
+	GID                // unique
+	tx  chan<- *Client // from runLobbyMap to this
 }
 
 type state uint
@@ -40,10 +41,12 @@ func hasCID(xs []CID, y CID) bool {
 
 // NewGame returns a new Game.
 func NewGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) Game {
+	rxLobbyMap := make(chan *Client)
 	g := Game{
 		GID: gid,
+		tx:  rxLobbyMap,
 	}
-	go runGame(gid, tx, clients)
+	go runGame(gid, tx, rxLobbyMap, clients)
 	return g
 }
 
@@ -51,6 +54,7 @@ func NewGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) Game {
 func runGame(
 	gid GID,
 	tx chan<- ToLobbyMap,
+	rx <-chan *Client,
 	clients *ClientMap,
 ) {
 	log.Println("enter runGame", gid)
