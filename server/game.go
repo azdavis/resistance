@@ -70,6 +70,7 @@ func runGame(
 
 	// len(cids)/s clients will be spies.
 	const s = 4
+
 	// len(cids)/m clients each round will be part of a mission.
 	const m = 5
 	nMission := len(cids) / m
@@ -89,8 +90,10 @@ func runGame(
 	// current state.
 	// invariant: state == gameOver <=> resWin == MaxWin || spyWin == MaxWin
 	state := memberChoosing
+
 	// invariant: the client with CID cids[captain] is the current captain.
 	captain := 0
+
 	// update captain.
 	nextCaptain := func() {
 		state = memberChoosing
@@ -102,6 +105,7 @@ func runGame(
 
 	// invariant: 0 <= resWin <= MaxWin
 	resWin := 0
+
 	// invariant: 0 <= spyWin <= MaxWin
 	spyWin := 0
 
