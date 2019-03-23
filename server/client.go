@@ -40,6 +40,15 @@ func (cl *Client) Close() {
 	close(cl.tx)
 }
 
+// Kill kills this Client. It should be called exactly once. No one else should
+// be reading from rx when this is called.
+func (cl *Client) Kill() {
+	cl.conn.Close()
+	for range cl.rx {
+	}
+	cl.Close()
+}
+
 // doRx reads from the conn, tries to parse the message, and if successful,
 // sends the ToServer over rx.
 func (cl *Client) doRx() {
