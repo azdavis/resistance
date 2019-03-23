@@ -22,7 +22,7 @@ export default ({ d, send, valid }: Props) => {
         }}
       >
         <input type="text" autoCorrect="off" ref={nameRef} />
-        {!valid && "Invalid"}
+        {valid ? null : "Invalid"}
         <Button type="submit" value="Submit" />
       </form>
       <Button value="Back" onClick={() => d({ t: "GoWelcome" })} />
