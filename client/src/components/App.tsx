@@ -38,7 +38,7 @@ export default (): JSX.Element => {
     case "Disbanded":
       return <Disbanded d={d} />;
     case "Welcome":
-      return <Welcome d={d} loading={send === null || s.me === null} />;
+      return <Welcome d={d} loading={send === null || s.me === 0} />;
     case "HowTo":
       return <HowTo d={d} />;
     case "NameChoosing":

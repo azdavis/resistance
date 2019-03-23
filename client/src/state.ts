@@ -1,7 +1,7 @@
 import { Reducer } from "react";
 import { State, Action } from "./types";
 
-export const init: State = { t: "Welcome", me: null };
+export const init: State = { t: "Welcome", me: 0 };
 
 export const reducer: Reducer<State, Action> = (s, a) => {
   if (s.t === "Fatal") {
@@ -29,7 +29,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? { t: "Welcome", me: s.me }
         : { t: "Fatal", s, a };
     case "GoNameChoose":
-      return s.t === "Welcome" && s.me !== null
+      return s.t === "Welcome" && s.me !== 0
         ? { t: "NameChoosing", me: s.me, valid: true }
         : { t: "Fatal", s, a };
     case "GoHowTo":
@@ -46,7 +46,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         (s.t === "LobbyWaiting" && s.didLeave) ||
         (s.t === "MissionResultViewing" && s.didLeave)
         ? { t: "LobbyChoosing", me: s.me, lobbies: a.Lobbies }
-        : s.me === null
+        : s.me === 0
         ? { t: "Fatal", s, a }
         : { t: "Disbanded", me: s.me, lobbies: a.Lobbies };
     case "CurrentLobby":
