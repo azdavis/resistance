@@ -14,6 +14,7 @@ type Client struct {
 	Name string        // if "", no name
 	tx   chan ToClient // over the websocket
 	rx   chan ToServer // over the websocket
+	conn *ws.Conn      // the websocket
 }
 
 // NewClient returns a new client. It starts goroutines to read from and write
@@ -26,9 +27,10 @@ func NewClient(conn *ws.Conn, cid CID) *Client {
 		Name: "",
 		tx:   make(chan ToClient, chLen),
 		rx:   make(chan ToServer, chLen),
+		conn: conn,
 	}
-	go cl.doRx(conn)
-	go cl.doTx(conn)
+	go cl.doRx()
+	go cl.doTx()
 	return cl
 }
 
@@ -40,16 +42,16 @@ func (cl *Client) Close() {
 
 // doRx reads from the conn, tries to parse the message, and if successful,
 // sends the ToServer over rx.
-func (cl *Client) doRx(conn *ws.Conn) {
+func (cl *Client) doRx() {
 	log.Println("enter doRx", cl.CID)
 	defer log.Println("exit doRx", cl.CID)
 	for {
-		mt, bs, err := conn.ReadMessage()
+		mt, bs, err := cl.conn.ReadMessage()
 		if err != nil {
 			log.Println("err doRx", cl.CID, err)
 			cl.rx <- Close{}
 			close(cl.rx)
-			conn.Close()
+			cl.conn.Close()
 			return
 		}
 		if mt != ws.TextMessage {
@@ -64,11 +66,11 @@ func (cl *Client) doRx(conn *ws.Conn) {
 }
 
 // doTx sends every ToClient from tx over the websocket. See NewClient.
-func (cl *Client) doTx(conn *ws.Conn) {
+func (cl *Client) doTx() {
 	log.Println("enter doTx", cl.CID)
 	defer log.Println("exit doTx", cl.CID)
 	for m := range cl.tx {
-		err := conn.WriteJSON(m)
+		err := cl.conn.WriteJSON(m)
 		if err != nil {
 			log.Println("err doTx", cl.CID, err)
 		}
