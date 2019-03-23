@@ -7,7 +7,7 @@ import (
 )
 
 func newServer() *http.Server {
-	txLobbyMap := make(chan *Client, 3)
+	txLobbyMap := make(chan ToLobbyMap, 3)
 	txWelcomer := make(chan *Client, 3)
 	go runLobbyMap(txLobbyMap)
 	go runWelcomer(txLobbyMap, txWelcomer)
