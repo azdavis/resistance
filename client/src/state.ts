@@ -21,13 +21,19 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? { ...s, didLeave: true }
         : { t: "Fatal", s, a };
     case "GoWelcome":
-      return { t: "Welcome" };
+      return s.t === "HowTo" || s.t === "NameChoosing"
+        ? { t: "Welcome" }
+        : { t: "Fatal", s, a };
     case "GoNameChoose":
-      return { t: "NameChoosing", valid: true };
+      return s.t === "Welcome"
+        ? { t: "NameChoosing", valid: true }
+        : { t: "Fatal", s, a };
     case "GoHowTo":
-      return { t: "HowTo" };
+      return s.t === "Welcome" ? { t: "HowTo" } : { t: "Fatal", s, a };
     case "NameReject":
-      return { t: "NameChoosing", valid: false };
+      return s.t === "NameChoosing"
+        ? { ...s, valid: false }
+        : { t: "Fatal", s, a };
     case "LobbyChoices":
       return s.t === "LobbyChoosing" ||
         s.t === "NameChoosing" ||
@@ -36,13 +42,15 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? { t: "LobbyChoosing", lobbies: a.Lobbies }
         : { t: "Disbanded", lobbies: a.Lobbies };
     case "CurrentLobby":
-      return {
-        t: "LobbyWaiting",
-        me: a.Me,
-        clients: a.Clients,
-        leader: a.Leader,
-        didLeave: false,
-      };
+      return s.t === "LobbyChoosing" || s.t === "LobbyWaiting"
+        ? {
+            t: "LobbyWaiting",
+            me: a.Me,
+            clients: a.Clients,
+            leader: a.Leader,
+            didLeave: false,
+          }
+        : { t: "Fatal", s, a };
     case "FirstMission":
       return s.t === "LobbyWaiting"
         ? {
