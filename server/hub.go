@@ -49,6 +49,5 @@ func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	cid := h.next
 	h.next++
 	h.mux.Unlock()
-	cl := NewClient(conn, cid)
-	h.tx <- cl
+	h.tx <- NewClient(conn, cid)
 }
