@@ -178,8 +178,7 @@ func (LobbyClose) isToLobbyMap() {}
 func (GameCreate) isToLobbyMap() {}
 func (GameClose) isToLobbyMap()  {}
 
-// ClientAdd signals that a client is returning to the lobby map, but the
-// active lobbies do not change.
+// ClientAdd signals that a client is being added to the lobby map.
 type ClientAdd struct {
 	*Client // the client that is being added
 }
