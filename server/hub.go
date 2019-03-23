@@ -13,7 +13,7 @@ type Hub struct {
 	mux  *sync.Mutex    // protect next
 	next CID            // the next Client will have this CID
 	up   ws.Upgrader    // websocket upgrader
-	tx   chan<- *Client // from this to runWelcomeLobby
+	tx   chan<- *Client // from this to runWelcomer
 }
 
 // NewHub returns a new Hub.
