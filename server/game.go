@@ -186,6 +186,7 @@ func runGame(
 					}
 				} else {
 					nextCaptain()
+					members = nil
 					skip++
 					spyDidWin := skip == MaxSkip
 					msg := MemberReject{
