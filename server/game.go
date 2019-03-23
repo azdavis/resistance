@@ -64,17 +64,18 @@ func runGame(
 
 	// all the clients, in a stable order.
 	cs := clients.ToList()
+	n := len(cs)
 
-	// len(cs)/s clients will be spies.
+	// n/s clients will be spies.
 	const s = 4
-	// len(cs)/m clients each round will be part of a mission.
+	// n/m clients each round will be part of a mission.
 	const m = 5
-	nMission := len(cs) / m
+	nMission := n / m
 
 	// invariant: isSpy[i] <=> cs[i] is a spy.
-	isSpy := make([]bool, len(cs))
-	for i := len(cs) / s; i > 0; /* intentionally empty */ {
-		j := rand.Intn(len(cs))
+	isSpy := make([]bool, n)
+	for i := n / s; i > 0; /* intentionally empty */ {
+		j := rand.Intn(n)
 		if isSpy[j] {
 			continue
 		}
@@ -92,7 +93,7 @@ func runGame(
 	nextCaptain := func() {
 		state = memberChoosing
 		captain++
-		if captain == len(cs) {
+		if captain == n {
 			captain = 0
 		}
 	}
@@ -149,7 +150,7 @@ func runGame(
 					continue
 				}
 				votes[cid] = ts.Vote
-				if len(votes) != len(cs) {
+				if len(votes) != n {
 					continue
 				}
 				if numTrue(votes) > len(votes)/2 {
