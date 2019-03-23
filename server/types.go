@@ -99,6 +99,7 @@ type ToClient interface {
 	isToClient()
 }
 
+func (SetMe) isToClient()         {}
 func (NameReject) isToClient()    {}
 func (LobbyChoices) isToClient()  {}
 func (CurrentLobby) isToClient()  {}
@@ -107,6 +108,11 @@ func (MemberPropose) isToClient() {}
 func (MemberAccept) isToClient()  {}
 func (MemberReject) isToClient()  {}
 func (MissionResult) isToClient() {}
+
+// SetMe sets the client's own CID.
+type SetMe struct {
+	Me CID
+}
 
 // NameReject is sent to a client that requested a name change with
 // NameChoose.
@@ -222,6 +228,12 @@ func fromTagMsg(t string, p interface{}) ([]byte, error) {
 		return nil, err
 	}
 	return json.Marshal(tagMsg{T: t, P: json.RawMessage(bs)})
+}
+
+// MarshalJSON makes JSON.
+func (x SetMe) MarshalJSON() ([]byte, error) {
+	type alias SetMe
+	return fromTagMsg("SetMe", alias(x))
 }
 
 // MarshalJSON makes JSON.

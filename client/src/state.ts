@@ -7,6 +7,8 @@ export const reducer: Reducer<State, Action> = (s, a) => {
   switch (a.t) {
     case "Close":
       return { t: "Fatal", s, a };
+    case "SetMe":
+      return s;
     case "AckDisbanded":
       return s.t === "Disbanded"
         ? { ...s, t: "LobbyChoosing" }
