@@ -13,7 +13,7 @@ type Lobby struct {
 }
 
 // NewLobby returns a new Lobby.
-func NewLobby(gid GID, leader *Client, txLobbyMap chan<- ToLobbyMap) Lobby {
+func NewLobby(gid GID, leader *Client, tx chan<- ToLobbyMap) Lobby {
 	// if this channel is to be buffered, it must be drained when exiting from
 	// runLobby.
 	rxLobbyMap := make(chan *Client)
@@ -22,7 +22,7 @@ func NewLobby(gid GID, leader *Client, txLobbyMap chan<- ToLobbyMap) Lobby {
 		Leader: leader.Name,
 		tx:     rxLobbyMap,
 	}
-	go runLobby(gid, leader, txLobbyMap, rxLobbyMap)
+	go runLobby(gid, leader, tx, rxLobbyMap)
 	return lb
 }
 
