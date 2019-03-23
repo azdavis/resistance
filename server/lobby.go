@@ -26,7 +26,12 @@ func NewLobby(gid GID, leader *Client, txLobbyMap chan<- ToLobbyMap) Lobby {
 	return lb
 }
 
-func runLobby(gid GID, leader *Client, tx chan<- ToLobbyMap, rx <-chan *Client) {
+func runLobby(
+	gid GID,
+	leader *Client,
+	tx chan<- ToLobbyMap,
+	rx <-chan *Client,
+) {
 	// whenever sending on tx, must also select with rx to prevent deadlock.
 	log.Println("enter runLobby", gid)
 	defer log.Println("exit runLobby", gid)

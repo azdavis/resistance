@@ -48,7 +48,11 @@ func NewGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) Game {
 }
 
 // TODO improve numbers for mission size / fails required to fail mission?
-func runGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) {
+func runGame(
+	gid GID,
+	tx chan<- ToLobbyMap,
+	clients *ClientMap,
+) {
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
