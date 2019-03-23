@@ -40,22 +40,22 @@ func hasCID(xs []CID, y CID) bool {
 }
 
 // NewGame returns a new Game.
-func NewGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) Game {
+func NewGame(gid GID, clients *ClientMap, tx chan<- ToLobbyMap) Game {
 	rxLobbyMap := make(chan *Client)
 	g := Game{
 		GID: gid,
 		tx:  rxLobbyMap,
 	}
-	go runGame(gid, tx, rxLobbyMap, clients)
+	go runGame(gid, clients, tx, rxLobbyMap)
 	return g
 }
 
 // TODO improve numbers for mission size / fails required to fail mission?
 func runGame(
 	gid GID,
+	clients *ClientMap,
 	tx chan<- ToLobbyMap,
 	rx <-chan *Client,
-	clients *ClientMap,
 ) {
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)

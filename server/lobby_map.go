@@ -39,7 +39,7 @@ func runLobbyMap(rxWelcomer chan *Client) {
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameCreate:
-				games[m.GID] = NewGame(m.GID, rxLobby, m.Clients)
+				games[m.GID] = NewGame(m.GID, m.Clients, rxLobby)
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameClose:
