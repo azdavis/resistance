@@ -6,6 +6,7 @@ export type CID = number;
 
 type ToServer =
   // Client "sends" a Close by closing the connection.
+  | { t: "Connect"; Me: CID }
   | { t: "NameChoose"; Name: string }
   | { t: "LobbyChoose"; GID: GID }
   | { t: "LobbyLeave" }
