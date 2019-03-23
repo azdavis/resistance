@@ -28,7 +28,7 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client) {
 				if validName(ts.Name) {
 					cl := clients.Rm(cid)
 					cl.Name = ts.Name
-					tx <- ClientLeave{cl}
+					tx <- ClientAdd{cl}
 				} else {
 					clients.M[cid].tx <- NameReject{}
 				}

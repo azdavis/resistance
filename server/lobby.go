@@ -65,7 +65,7 @@ func runLobby(
 				if cid == leader.CID {
 					goto out
 				}
-				msg := ClientLeave{clients.Rm(cid)}
+				msg := ClientAdd{clients.Rm(cid)}
 				select {
 				case cl := <-rx:
 					clients.Add(cl)

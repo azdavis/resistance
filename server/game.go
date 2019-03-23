@@ -213,7 +213,7 @@ func runGame(
 				tx <- GameClose{gid, []*Client{cl}}
 				return
 			}
-			tx <- ClientLeave{cl}
+			tx <- ClientAdd{cl}
 		}
 	}
 }

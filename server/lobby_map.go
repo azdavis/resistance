@@ -25,7 +25,7 @@ func runLobbyMap(rx chan ToLobbyMap) {
 		select {
 		case m := <-rx:
 			switch m := m.(type) {
-			case ClientLeave:
+			case ClientAdd:
 				clients.Add(m.Client)
 				m.Client.tx <- LobbyChoices{lobbiesList()}
 			case LobbyClose:

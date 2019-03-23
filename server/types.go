@@ -172,15 +172,15 @@ type ToLobbyMap interface {
 	isToLobbyMap()
 }
 
-func (ClientLeave) isToLobbyMap() {}
-func (LobbyClose) isToLobbyMap()  {}
-func (GameCreate) isToLobbyMap()  {}
-func (GameClose) isToLobbyMap()   {}
+func (ClientAdd) isToLobbyMap()  {}
+func (LobbyClose) isToLobbyMap() {}
+func (GameCreate) isToLobbyMap() {}
+func (GameClose) isToLobbyMap()  {}
 
-// ClientLeave signals that a client is returning to the lobby map, but the
+// ClientAdd signals that a client is returning to the lobby map, but the
 // active lobbies do not change.
-type ClientLeave struct {
-	*Client // the client that is leaving
+type ClientAdd struct {
+	*Client // the client that is being added
 }
 
 // LobbyClose signals that a lobby is closing.
