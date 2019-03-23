@@ -191,7 +191,8 @@ type LobbyClose struct {
 
 // GameCreate signals that a lobby is turning into a game.
 type GameCreate struct {
-	GID // gid of this lobby
+	GID                // gid of this lobby
+	Clients *ClientMap // clients in this lobby
 }
 
 // GameClose signals that a game is closing.

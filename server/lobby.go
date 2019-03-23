@@ -77,9 +77,8 @@ func runLobby(gid GID, leader *Client, tx chan<- ToLobbyMap, rx <-chan *Client) 
 					// allow leader to re-verify whether the game should be started.
 					broadcastLobbyWaiting()
 					continue
-				case tx <- GameCreate{gid}:
+				case tx <- GameCreate{gid, clients}:
 				}
-				NewGame(gid, tx, clients)
 				return
 			}
 		}

@@ -3,6 +3,7 @@ package main
 func runLobbyMap(rxWelcomer chan *Client) {
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
+	games := make(map[GID]Game)
 	rxLobby := make(chan ToLobbyMap)
 	next := GID(1)
 
@@ -38,9 +39,11 @@ func runLobbyMap(rxWelcomer chan *Client) {
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameCreate:
+				games[m.GID] = NewGame(m.GID, rxLobby, m.Clients)
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameClose:
+				delete(games, m.GID)
 				msg := LobbyChoices{lobbiesList()}
 				for _, cl := range m.Clients {
 					clients.Add(cl)
