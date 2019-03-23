@@ -25,6 +25,7 @@ type SelfAction =
   | { t: "Close" }
   | { t: "AckDisbanded" }
   | { t: "LobbyLeave" }
+  | { t: "GoWelcome" }
   | { t: "GoNameChoose" }
   | { t: "GoHowTo" }
   | { t: "AckRole" }

@@ -15,6 +15,8 @@ export const reducer: Reducer<State, Action> = (s, a) => {
       return s.t === "LobbyWaiting"
         ? { ...s, didLeave: true }
         : { t: "Fatal", s, a };
+    case "GoWelcome":
+      return init;
     case "GoNameChoose":
       return { t: "NameChoosing", valid: true };
     case "GoHowTo":
