@@ -15,7 +15,8 @@ type Lobby struct {
 // NewLobby returns a new Lobby.
 func NewLobby(gid GID, leader *Client, tx chan<- ToLobbyMap) Lobby {
 	// if this channel is to be buffered, it must be drained when exiting from
-	// runLobby.
+	// runLobby, and such draining must only occur after we've sent a message to
+	// runLobbyMap that will ensure no further messages get sent on this channel.
 	rxLobbyMap := make(chan *Client)
 	lb := Lobby{
 		GID:    gid,

@@ -41,6 +41,7 @@ func hasCID(xs []CID, y CID) bool {
 
 // NewGame returns a new Game.
 func NewGame(gid GID, clients *ClientMap, tx chan<- ToLobbyMap) Game {
+	// see NewLobby.
 	rxLobbyMap := make(chan *Client)
 	g := Game{
 		GID: gid,
@@ -57,6 +58,7 @@ func runGame(
 	tx chan<- ToLobbyMap,
 	rx <-chan *Client,
 ) {
+	// whenever sending on tx, must also select with rx to prevent deadlock.
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
