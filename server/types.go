@@ -172,26 +172,32 @@ type ToLobbyMap interface {
 	isToLobbyMap()
 }
 
-func (NewClients) isToLobbyMap() {}
-func (LobbyClose) isToLobbyMap() {}
-func (MkGame) isToLobbyMap()     {}
+func (ClientLeave) isToLobbyMap() {}
+func (LobbyClose) isToLobbyMap()  {}
+func (GameCreate) isToLobbyMap()  {}
+func (GameClose) isToLobbyMap()   {}
 
-// NewClients signals that some clients are returning to the lobby map, but
-// the active lobbies do not change.
-type NewClients struct {
-	Clients []*Client // the client that is leaving
+// ClientLeave signals that a client is returning to the lobby map, but the
+// active lobbies do not change.
+type ClientLeave struct {
+	*Client // the client that is leaving
 }
 
-// LobbyClose signals that a lobby is closing, and all clients inside the lobby
-// are returning to the lobby map.
+// LobbyClose signals that a lobby is closing.
 type LobbyClose struct {
 	GID               // gid of this lobby
 	Clients []*Client // clients coming from this lobby
 }
 
-// MkGame signals that a lobby is turning into a game.
-type MkGame struct {
+// GameCreate signals that a lobby is turning into a game.
+type GameCreate struct {
 	GID // gid of this lobby
+}
+
+// GameClose signals that a game is closing.
+type GameClose struct {
+	GID               // gid of this game
+	Clients []*Client // clients coming from this game
 }
 
 // Helper functions ////////////////////////////////////////////////////////////

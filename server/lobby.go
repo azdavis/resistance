@@ -60,7 +60,7 @@ func runLobby(gid GID, leader *Client, tx chan<- ToLobbyMap, rx <-chan *Client) 
 				if cid == leader.CID {
 					goto out
 				}
-				msg := NewClients{[]*Client{clients.Rm(cid)}}
+				msg := ClientLeave{clients.Rm(cid)}
 				select {
 				case cl := <-rx:
 					clients.Add(cl)
@@ -77,7 +77,7 @@ func runLobby(gid GID, leader *Client, tx chan<- ToLobbyMap, rx <-chan *Client) 
 					// allow leader to re-verify whether the game should be started.
 					broadcastLobbyWaiting()
 					continue
-				case tx <- MkGame{gid}:
+				case tx <- GameCreate{gid}:
 				}
 				NewGame(gid, tx, clients)
 				return

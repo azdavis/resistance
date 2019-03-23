@@ -115,7 +115,7 @@ func runGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) {
 		case Close:
 			// TODO allow reconnecting?
 			clients.Rm(cid).Close()
-			tx <- NewClients{clients.Clear()}
+			tx <- GameClose{gid, clients.Clear()}
 			return
 		case MemberChoose:
 			if state != memberChoosing ||
@@ -201,10 +201,12 @@ func runGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) {
 			if state != gameOver {
 				continue
 			}
-			tx <- NewClients{[]*Client{clients.Rm(cid)}}
+			cl := clients.Rm(cid)
 			if len(clients.M) == 0 {
+				tx <- GameClose{gid, []*Client{cl}}
 				return
 			}
+			tx <- ClientLeave{cl}
 		}
 	}
 }

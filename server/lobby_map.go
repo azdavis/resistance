@@ -28,21 +28,24 @@ func runLobbyMap(rxWelcomer chan *Client) {
 			cl.tx <- LobbyChoices{lobbiesList()}
 		case m := <-rxLobby:
 			switch m := m.(type) {
-			case NewClients:
-				msg := LobbyChoices{lobbiesList()}
-				for _, cl := range m.Clients {
-					clients.Add(cl)
-					cl.tx <- msg
-				}
+			case ClientLeave:
+				clients.Add(m.Client)
+				m.Client.tx <- LobbyChoices{lobbiesList()}
 			case LobbyClose:
 				for _, cl := range m.Clients {
 					clients.Add(cl)
 				}
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
-			case MkGame:
+			case GameCreate:
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
+			case GameClose:
+				msg := LobbyChoices{lobbiesList()}
+				for _, cl := range m.Clients {
+					clients.Add(cl)
+					cl.tx <- msg
+				}
 			}
 		case ac := <-clients.C:
 			cid := ac.CID
