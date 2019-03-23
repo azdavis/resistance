@@ -88,6 +88,10 @@ func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, q <-chan struct{}) {
 			return
 		case ts := <-ch:
 			cm.C <- Action{cid, ts}
+			_, ok := ts.(Close)
+			if ok {
+				return
+			}
 		}
 	}
 }
