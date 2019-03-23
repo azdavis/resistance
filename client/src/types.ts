@@ -33,7 +33,7 @@ type SelfAction =
   | { t: "GameLeave" };
 
 type ToClient =
-  | { t: "SetMe"; me: CID }
+  | { t: "SetMe"; Me: CID }
   | { t: "NameReject" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; Me: CID; Leader: CID; Clients: Array<Client> }
