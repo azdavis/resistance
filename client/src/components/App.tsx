@@ -24,7 +24,9 @@ export default (): JSX.Element => {
     const newSend: Send = ({ t, ...P }) => {
       ws.send(JSON.stringify({ T: t, P }));
     };
-    ws.onopen = () => setSend(() => newSend);
+    ws.onopen = () => {
+      setSend(() => newSend);
+    };
     ws.onmessage = e => {
       const { T, P } = JSON.parse(e.data);
       d({ t: T, ...P });
