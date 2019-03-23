@@ -1,7 +1,7 @@
 import { Reducer } from "react";
 import { State, Action } from "./types";
 
-export const init: State = { t: "NameChoosing", valid: true };
+export const init: State = { t: "Welcome" };
 
 export const reducer: Reducer<State, Action> = (s, a) => {
   switch (a.t) {
