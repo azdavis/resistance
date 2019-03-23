@@ -20,12 +20,11 @@ export default ({ d }: Props) => (
     </p>
     <p>
       The game is played in rounds. In every round of the game, a captain is
-      chosen. The captain chooses a certain group of players to participate in a
-      mission.
+      chosen. The captain chooses some players to participate in a mission.
     </p>
     <p>
-      When the captain has finished choosing the members of the mission, all
-      players vote on whether the mission occurs.
+      When the captain has finished choosing, all players vote on whether the
+      mission occurs.
     </p>
     <p>If the mission does not occur, the next round is started.</p>
     <p>If too many missions do not occur in a row, the spies get 1 point.</p>
