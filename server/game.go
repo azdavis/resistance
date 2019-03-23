@@ -118,105 +118,107 @@ func runGame(
 	}
 
 	for {
-		ac := <-clients.C
-		log.Printf("runGame %v ac: %+v", gid, ac)
-		cid := ac.CID
-		switch ts := ac.ToServer.(type) {
-		case Close:
-			// TODO allow reconnecting?
-			clients.Rm(cid).Close()
-			tx <- GameClose{gid, clients.Clear()}
-			return
-		case MemberChoose:
-			if state != memberChoosing ||
-				cid != cs[captain].CID ||
-				len(ts.Members) != nMission {
-				continue
-			}
-			state = memberVoting
-			votes = make(map[CID]bool)
-			members = ts.Members
-			for _, cl := range cs {
-				cl.tx <- MemberPropose{ts.Members}
-			}
-		case MemberVote:
-			if state != memberVoting {
-				continue
-			}
-			_, ok := votes[cid]
-			if ok {
-				continue
-			}
-			votes[cid] = ts.Vote
-			if len(votes) != len(cs) {
-				continue
-			}
-			if numTrue(votes) > len(votes)/2 {
-				state = missionVoting
-				votes = make(map[CID]bool)
-				for _, cl := range cs {
-					cl.tx <- MemberAccept{}
+		select {
+		case ac := <-clients.C:
+			log.Printf("runGame %v ac: %+v", gid, ac)
+			cid := ac.CID
+			switch ts := ac.ToServer.(type) {
+			case Close:
+				// TODO allow reconnecting?
+				clients.Rm(cid).Close()
+				tx <- GameClose{gid, clients.Clear()}
+				return
+			case MemberChoose:
+				if state != memberChoosing ||
+					cid != cs[captain].CID ||
+					len(ts.Members) != nMission {
+					continue
 				}
-			} else {
-				nextCaptain()
-				skip++
-				spyDidWin := skip == MaxSkip
-				msg := MemberReject{
-					Captain: cs[captain].CID,
-					Members: nMission,
-					SpyWin:  spyDidWin,
+				state = memberVoting
+				votes = make(map[CID]bool)
+				members = ts.Members
+				for _, cl := range cs {
+					cl.tx <- MemberPropose{ts.Members}
+				}
+			case MemberVote:
+				if state != memberVoting {
+					continue
+				}
+				_, ok := votes[cid]
+				if ok {
+					continue
+				}
+				votes[cid] = ts.Vote
+				if len(votes) != len(cs) {
+					continue
+				}
+				if numTrue(votes) > len(votes)/2 {
+					state = missionVoting
+					votes = make(map[CID]bool)
+					for _, cl := range cs {
+						cl.tx <- MemberAccept{}
+					}
+				} else {
+					nextCaptain()
+					skip++
+					spyDidWin := skip == MaxSkip
+					msg := MemberReject{
+						Captain: cs[captain].CID,
+						Members: nMission,
+						SpyWin:  spyDidWin,
+					}
+					for _, cl := range cs {
+						cl.tx <- msg
+					}
+					if spyDidWin {
+						spyWin++
+						skip = 0
+					}
+					if spyWin >= MaxWin {
+						state = gameOver
+					}
+				}
+			case MissionVote:
+				if state != missionVoting || !hasCID(members, cid) {
+					continue
+				}
+				_, ok := votes[cid]
+				if ok {
+					continue
+				}
+				votes[cid] = ts.Vote
+				if len(votes) != nMission {
+					continue
+				}
+				members = nil
+				success := numTrue(votes) > nMission/2
+				if success {
+					resWin++
+				} else {
+					spyWin++
+				}
+				msg := MissionResult{Success: success}
+				if resWin < MaxWin && spyWin < MaxWin {
+					nextCaptain()
+					msg.Captain = cs[captain].CID
+					msg.Members = nMission
+				} else {
+					state = gameOver
 				}
 				for _, cl := range cs {
 					cl.tx <- msg
 				}
-				if spyDidWin {
-					spyWin++
-					skip = 0
+			case GameLeave:
+				if state != gameOver {
+					continue
 				}
-				if spyWin >= MaxWin {
-					state = gameOver
+				cl := clients.Rm(cid)
+				if len(clients.M) == 0 {
+					tx <- GameClose{gid, []*Client{cl}}
+					return
 				}
+				tx <- ClientAdd{cl}
 			}
-		case MissionVote:
-			if state != missionVoting || !hasCID(members, cid) {
-				continue
-			}
-			_, ok := votes[cid]
-			if ok {
-				continue
-			}
-			votes[cid] = ts.Vote
-			if len(votes) != nMission {
-				continue
-			}
-			members = nil
-			success := numTrue(votes) > nMission/2
-			if success {
-				resWin++
-			} else {
-				spyWin++
-			}
-			msg := MissionResult{Success: success}
-			if resWin < MaxWin && spyWin < MaxWin {
-				nextCaptain()
-				msg.Captain = cs[captain].CID
-				msg.Members = nMission
-			} else {
-				state = gameOver
-			}
-			for _, cl := range cs {
-				cl.tx <- msg
-			}
-		case GameLeave:
-			if state != gameOver {
-				continue
-			}
-			cl := clients.Rm(cid)
-			if len(clients.M) == 0 {
-				tx <- GameClose{gid, []*Client{cl}}
-				return
-			}
-			tx <- ClientAdd{cl}
 		}
 	}
 }
