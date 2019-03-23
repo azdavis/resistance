@@ -5,7 +5,7 @@ export type GID = number;
 export type CID = number;
 
 type ToServer =
-  | { t: "Connect"; Me: CID }
+  | { t: "Connect" }
   | { t: "NameChoose"; Name: string }
   | { t: "LobbyChoose"; GID: GID }
   | { t: "LobbyLeave" }

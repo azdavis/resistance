@@ -25,7 +25,7 @@ export default (): JSX.Element => {
       ws.send(JSON.stringify({ T: t, P }));
     };
     ws.onopen = () => {
-      newSend({ t: "Connect", Me: 0 });
+      newSend({ t: "Connect" });
       setSend(() => newSend);
     };
     ws.onmessage = e => {

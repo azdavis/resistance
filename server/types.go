@@ -45,13 +45,8 @@ func (GameLeave) isToServer()    {}
 // this client.
 type Close struct{}
 
-// Connect means the client just (re)connected. TODO it's not secure to allow
-// the client to send this without some kind of cryptographic signature. With
-// the current setup, once a client disconnects, any other client can pretend to
-// be that client and the server will be none the wiser.
-type Connect struct {
-	Me CID // invariant: Me != 0 <=> client is reconnecting
-}
+// Connect means the client just connected.
+type Connect struct{}
 
 // NameChoose is a request to choose one's name.
 type NameChoose struct {
