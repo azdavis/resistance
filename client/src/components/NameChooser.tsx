@@ -5,7 +5,7 @@ import "./NameChooser.css";
 
 type Props = {
   d: D;
-  send: Send | null;
+  send: Send;
   valid: boolean;
 };
 
@@ -18,9 +18,6 @@ export default ({ d, send, valid }: Props) => {
       <form
         onSubmit={e => {
           e.preventDefault();
-          if (send === null) {
-            return;
-          }
           send({ t: "NameChoose", Name: nameRef.current!.value });
         }}
       >
@@ -28,7 +25,7 @@ export default ({ d, send, valid }: Props) => {
           Player name{!valid && <b> invalid</b>}
           <input type="text" autoCorrect="off" ref={nameRef} />
         </label>
-        <Button type="submit" value="Submit" disabled={send === null} />
+        <Button type="submit" value="Submit" />
       </form>
       <Button value="Back" onClick={() => d({ t: "GoWelcome" })} />
     </div>

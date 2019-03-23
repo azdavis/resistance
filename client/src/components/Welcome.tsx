@@ -5,13 +5,18 @@ import ButtonLink from "./basic/ButtonLink";
 
 type Props = {
   d: D;
+  loading: boolean;
 };
 
-export default ({ d }: Props) => {
+export default ({ d, loading }: Props) => {
   return (
     <div className="Welcome">
       <h1>Resistance</h1>
-      <Button value="Play" onClick={() => d({ t: "GoNameChoose" })} />
+      <Button
+        value="Play"
+        onClick={() => d({ t: "GoNameChoose" })}
+        disabled={loading}
+      />
       <Button value="Learn how to play" onClick={() => d({ t: "GoHowTo" })} />
       <ButtonLink
         value="View source code"
