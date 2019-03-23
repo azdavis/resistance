@@ -28,6 +28,14 @@ func runLobbyMap(rx chan ToLobbyMap) {
 			case ClientAdd:
 				clients.Add(m.Client)
 				m.Client.tx <- LobbyChoices{lobbiesList()}
+			case ClientReconnect:
+				g, ok := games[m.GID]
+				if ok {
+					g.tx <- m.Client
+				} else {
+					clients.Add(m.Client)
+					m.Client.tx <- LobbyChoices{lobbiesList()}
+				}
 			case LobbyClose:
 				for _, cl := range m.Clients {
 					clients.Add(cl)
