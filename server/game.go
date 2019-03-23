@@ -62,6 +62,16 @@ func runGame(
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
+	reconnect := func(cl *Client) {
+		_, ok := clients.M[cl.CID]
+		if ok {
+			cl.Kill()
+		} else {
+			clients.Add(cl)
+			// TODO send a message to cl to get it up-to-date
+		}
+	}
+
 	// all the cids, in a stable order.
 	cids := make([]CID, 0, len(clients.M))
 	for cid := range clients.M {
@@ -126,15 +136,19 @@ func runGame(
 
 	for {
 		select {
+		case cl := <-rx:
+			reconnect(cl)
 		case ac := <-clients.C:
 			log.Printf("runGame %v ac: %+v", gid, ac)
 			cid := ac.CID
 			switch ts := ac.ToServer.(type) {
 			case Close:
-				// TODO allow reconnecting?
 				clients.Rm(cid).Close()
-				tx <- GameClose{gid, clients.Clear()}
-				return
+				if len(clients.M) == 0 {
+					// TODO only do this after a timeout?
+					tx <- GameClose{gid, []*Client{}}
+					return
+				}
 			case MemberChoose:
 				if state != memberChoosing ||
 					cid != cids[captain] ||
