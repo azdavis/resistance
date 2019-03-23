@@ -117,7 +117,8 @@ func runGame(
 		cl.tx <- msg
 	}
 
-	for ac := range clients.C {
+	for {
+		ac := <-clients.C
 		log.Printf("runGame %v ac: %+v", gid, ac)
 		cid := ac.CID
 		switch ts := ac.ToServer.(type) {
