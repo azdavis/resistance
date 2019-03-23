@@ -60,7 +60,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             didLeave: false,
           }
         : { t: "Fatal", s, a };
-    case "FirstMission":
+    case "BeginGame":
       return s.t === "LobbyWaiting"
         ? {
             t: "RoleViewing",
@@ -69,7 +69,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             clients: s.clients,
             isSpy: a.IsSpy,
             captain: a.Captain,
-            members: a.Members,
+            members: a.NumMembers,
           }
         : { t: "Fatal", s, a };
     case "AckRole":

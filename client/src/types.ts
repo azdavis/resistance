@@ -37,7 +37,7 @@ type ToClient =
   | { t: "NameReject" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; GID: GID; Leader: CID; Clients: Array<Client> }
-  | { t: "FirstMission"; IsSpy: boolean; Captain: CID; Members: number }
+  | { t: "BeginGame"; IsSpy: boolean; Captain: CID; NumMembers: number }
   | { t: "MemberPropose"; Members: Array<CID> }
   | { t: "MemberAccept" }
   | { t: "MemberReject"; Captain: CID; Members: number; SpyWin: boolean }

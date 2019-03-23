@@ -111,7 +111,7 @@ func (SetMe) isToClient()         {}
 func (NameReject) isToClient()    {}
 func (LobbyChoices) isToClient()  {}
 func (CurrentLobby) isToClient()  {}
-func (FirstMission) isToClient()  {}
+func (BeginGame) isToClient()    {}
 func (MemberPropose) isToClient() {}
 func (MemberAccept) isToClient()  {}
 func (MemberReject) isToClient()  {}
@@ -139,11 +139,11 @@ type CurrentLobby struct {
 	Clients []*Client // info about other clients in this lobby
 }
 
-// FirstMission is sent to start the game.
-type FirstMission struct {
-	IsSpy   bool // whether the client is a spy
-	Captain CID  // captain of this mission
-	Members int  // number of members on this mission
+// BeginGame is sent to start the game.
+type BeginGame struct {
+	IsSpy      bool // whether the client is a spy
+	Captain    CID  // captain of this mission
+	NumMembers int  // number of members on this mission
 }
 
 // MemberPropose notifies the client that the captain has selected mission
@@ -313,9 +313,9 @@ func (x CurrentLobby) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSON makes JSON.
-func (x FirstMission) MarshalJSON() ([]byte, error) {
-	type alias FirstMission
-	return fromTagMsg("FirstMission", alias(x))
+func (x BeginGame) MarshalJSON() ([]byte, error) {
+	type alias BeginGame
+	return fromTagMsg("BeginGame", alias(x))
 }
 
 // MarshalJSON makes JSON.

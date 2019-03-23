@@ -129,7 +129,7 @@ func runGame(
 	// used for both voting on mission members and voting on mission itself
 	votes := make(map[CID]bool)
 
-	msg := FirstMission{Captain: cids[captain], Members: nMission}
+	msg := BeginGame{Captain: cids[captain], NumMembers: nMission}
 	for i, cid := range cids {
 		msg.IsSpy = isSpy[i]
 		clients.M[cid].tx <- msg
