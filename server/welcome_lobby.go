@@ -22,6 +22,8 @@ func runWelcomeLobby(tx chan<- *Client, rx <-chan *Client) {
 			switch ts := ac.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
+			case Connect:
+				clients.M[cid].tx <- SetMe{cid}
 			case NameChoose:
 				if validName(ts.Name) {
 					cl := clients.Rm(cid)
