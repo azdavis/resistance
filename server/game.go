@@ -144,10 +144,14 @@ func runGame(
 			switch ts := ac.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
-				if len(clients.M) == 0 {
-					// TODO only do this after a timeout?
-					tx <- GameClose{gid, []*Client{}}
-					return
+				// TODO only do this after a timeout?
+				for len(clients.M) == 0 {
+					select {
+					case tx <- GameClose{gid, []*Client{}}:
+						return
+					case cl := <-rx:
+						reconnect(cl)
+					}
 				}
 			case MemberChoose:
 				if state != memberChoosing ||
@@ -234,11 +238,19 @@ func runGame(
 					continue
 				}
 				cl := clients.Rm(cid)
-				if len(clients.M) == 0 {
-					tx <- GameClose{gid, []*Client{cl}}
-					return
+				for len(clients.M) == 0 {
+					select {
+					case tx <- GameClose{gid, []*Client{cl}}:
+						return
+					case cl := <-rx:
+						reconnect(cl)
+					}
 				}
-				tx <- ClientAdd{cl}
+				select {
+				case tx <- ClientAdd{cl}:
+				case cl := <-rx:
+					reconnect(cl)
+				}
 			}
 		}
 	}
