@@ -138,7 +138,7 @@ func runGame(
 				state = memberVoting
 				votes = make(map[CID]bool)
 				members = ts.Members
-				for _, cl := range cs {
+				for _, cl := range clients.M {
 					cl.tx <- MemberPropose{ts.Members}
 				}
 			case MemberVote:
@@ -156,7 +156,7 @@ func runGame(
 				if numTrue(votes) > len(votes)/2 {
 					state = missionVoting
 					votes = make(map[CID]bool)
-					for _, cl := range cs {
+					for _, cl := range clients.M {
 						cl.tx <- MemberAccept{}
 					}
 				} else {
@@ -168,7 +168,7 @@ func runGame(
 						Members: nMission,
 						SpyWin:  spyDidWin,
 					}
-					for _, cl := range cs {
+					for _, cl := range clients.M {
 						cl.tx <- msg
 					}
 					if spyDidWin {
@@ -206,7 +206,7 @@ func runGame(
 				} else {
 					state = gameOver
 				}
-				for _, cl := range cs {
+				for _, cl := range clients.M {
 					cl.tx <- msg
 				}
 			case GameLeave:
