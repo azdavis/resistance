@@ -4,6 +4,9 @@ import { State, Action } from "./types";
 export const init: State = { t: "Welcome" };
 
 export const reducer: Reducer<State, Action> = (s, a) => {
+  if (s.t === "Fatal") {
+    return s;
+  }
   switch (a.t) {
     case "Close":
       return { t: "Fatal", s, a };
