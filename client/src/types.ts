@@ -47,6 +47,7 @@ export type D = Dispatch<Action>;
 export type State =
   | { t: "Fatal"; s: State; a: Action }
   | { t: "Disbanded"; lobbies: Array<Lobby> }
+  | { t: "Welcome" }
   | { t: "HowTo" }
   | { t: "NameChoosing"; valid: boolean }
   | { t: "LobbyChoosing"; lobbies: Array<Lobby> }

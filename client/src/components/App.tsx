@@ -36,6 +36,8 @@ export default (): JSX.Element => {
       return <Fatal {...s} />;
     case "Disbanded":
       return <Disbanded d={d} />;
+    case "Welcome":
+      throw "TODO";
     case "HowTo":
       return <HowTo d={d} />;
     case "NameChoosing":
