@@ -62,9 +62,12 @@ func runGame(
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
-	// all the clients, in a stable order.
-	cs := clients.ToList()
-	n := len(cs)
+	// all the cids, in a stable order.
+	cids := make([]CID, 0, len(clients.M))
+	for cid := range clients.M {
+		cids = append(cids, cid)
+	}
+	n := len(cids)
 
 	// n/s clients will be spies.
 	const s = 4
@@ -72,7 +75,7 @@ func runGame(
 	const m = 5
 	nMission := n / m
 
-	// invariant: isSpy[i] <=> cs[i] is a spy.
+	// invariant: isSpy[i] <=> the client with CID cids[i] is a spy.
 	isSpy := make([]bool, n)
 	for i := n / s; i > 0; /* intentionally empty */ {
 		j := rand.Intn(n)
@@ -87,7 +90,7 @@ func runGame(
 	// current state.
 	// invariant: state == gameOver <=> resWin == MaxWin || spyWin == MaxWin
 	state := memberChoosing
-	// invariant: cs[captain] is the current captain.
+	// invariant: the client with CID cids[captain] is the current captain.
 	captain := 0
 	// update captain.
 	nextCaptain := func() {
@@ -112,10 +115,10 @@ func runGame(
 	// used for both voting on mission members and voting on mission itself
 	votes := make(map[CID]bool)
 
-	msg := FirstMission{Captain: cs[captain].CID, Members: nMission}
-	for i, cl := range cs {
+	msg := FirstMission{Captain: cids[captain], Members: nMission}
+	for i, cid := range cids {
 		msg.IsSpy = isSpy[i]
-		cl.tx <- msg
+		clients.M[cid].tx <- msg
 	}
 
 	for {
@@ -131,7 +134,7 @@ func runGame(
 				return
 			case MemberChoose:
 				if state != memberChoosing ||
-					cid != cs[captain].CID ||
+					cid != cids[captain] ||
 					len(ts.Members) != nMission {
 					continue
 				}
@@ -164,7 +167,7 @@ func runGame(
 					skip++
 					spyDidWin := skip == MaxSkip
 					msg := MemberReject{
-						Captain: cs[captain].CID,
+						Captain: cids[captain],
 						Members: nMission,
 						SpyWin:  spyDidWin,
 					}
@@ -201,7 +204,7 @@ func runGame(
 				msg := MissionResult{Success: success}
 				if resWin < MaxWin && spyWin < MaxWin {
 					nextCaptain()
-					msg.Captain = cs[captain].CID
+					msg.Captain = cids[captain]
 					msg.Members = nMission
 				} else {
 					state = gameOver
