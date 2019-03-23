@@ -12,8 +12,8 @@ import (
 type Hub struct {
 	mux  *sync.Mutex    // protect next
 	next CID            // the next Client will have this CID
-	tx   chan<- *Client // from this to runWelcomeLobby
 	up   ws.Upgrader    // websocket upgrader
+	tx   chan<- *Client // from this to runWelcomeLobby
 }
 
 // NewHub returns a new Hub.
@@ -21,8 +21,8 @@ func NewHub(tx chan<- *Client) *Hub {
 	h := &Hub{
 		mux:  &sync.Mutex{},
 		next: 1,
-		tx:   tx,
 		up:   ws.Upgrader{CheckOrigin: unsafeAllowAny},
+		tx:   tx,
 	}
 	return h
 }
