@@ -3,7 +3,7 @@ package main
 func runLobbyMap(rxWelcomer chan *Client) {
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
-	rxLobby := make(chan LobbyMsg)
+	rxLobby := make(chan ToLobbyMap)
 	next := GID(1)
 
 	lobbiesList := func() []Lobby {
@@ -27,17 +27,22 @@ func runLobbyMap(rxWelcomer chan *Client) {
 			clients.Add(cl)
 			cl.tx <- LobbyChoices{lobbiesList()}
 		case m := <-rxLobby:
-			for _, cl := range m.Clients {
-				clients.Add(cl)
-			}
-			if m.Close {
-				delete(lobbies, m.GID)
-				broadcastLobbyChoosing()
-			} else {
+			switch m := m.(type) {
+			case NewClients:
 				msg := LobbyChoices{lobbiesList()}
 				for _, cl := range m.Clients {
+					clients.Add(cl)
 					cl.tx <- msg
 				}
+			case LobbyClose:
+				for _, cl := range m.Clients {
+					clients.Add(cl)
+				}
+				delete(lobbies, m.GID)
+				broadcastLobbyChoosing()
+			case MkGame:
+				delete(lobbies, m.GID)
+				broadcastLobbyChoosing()
 			}
 		case ac := <-clients.C:
 			cid := ac.CID

@@ -39,7 +39,7 @@ func hasCID(xs []CID, y CID) bool {
 }
 
 // NewGame returns a new Game.
-func NewGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) Game {
+func NewGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) Game {
 	g := Game{
 		GID: gid,
 	}
@@ -49,7 +49,7 @@ func NewGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) Game {
 
 // TODO ensure that at least one spy is included in the first mission?
 // TODO improve numbers for mission size / fails required to fail mission?
-func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
+func runGame(gid GID, tx chan<- ToLobbyMap, clients *ClientMap) {
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
@@ -115,7 +115,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 		case Close:
 			// TODO allow reconnecting?
 			clients.Rm(cid).Close()
-			tx <- LobbyMsg{gid, false, clients.Clear()}
+			tx <- NewClients{clients.Clear()}
 			return
 		case MemberChoose:
 			if state != memberChoosing ||
@@ -201,7 +201,7 @@ func runGame(gid GID, tx chan<- LobbyMsg, clients *ClientMap) {
 			if state != gameOver {
 				continue
 			}
-			tx <- LobbyMsg{gid, false, []*Client{clients.Rm(cid)}}
+			tx <- NewClients{[]*Client{clients.Rm(cid)}}
 			if len(clients.M) == 0 {
 				return
 			}

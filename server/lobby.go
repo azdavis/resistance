@@ -13,7 +13,7 @@ type Lobby struct {
 }
 
 // NewLobby returns a new Lobby.
-func NewLobby(gid GID, leader *Client, txLobbyMap chan<- LobbyMsg) Lobby {
+func NewLobby(gid GID, leader *Client, txLobbyMap chan<- ToLobbyMap) Lobby {
 	// if this channel is to be buffered, it must be drained when exiting from
 	// runLobby.
 	rxLobbyMap := make(chan *Client)
@@ -26,7 +26,7 @@ func NewLobby(gid GID, leader *Client, txLobbyMap chan<- LobbyMsg) Lobby {
 	return lb
 }
 
-func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
+func runLobby(gid GID, leader *Client, tx chan<- ToLobbyMap, rx <-chan *Client) {
 	// whenever sending on tx, must also select with rx to prevent deadlock.
 	log.Println("enter runLobby", gid)
 	defer log.Println("exit runLobby", gid)
@@ -60,7 +60,7 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 				if cid == leader.CID {
 					goto out
 				}
-				msg := LobbyMsg{gid, false, []*Client{clients.Rm(cid)}}
+				msg := NewClients{[]*Client{clients.Rm(cid)}}
 				select {
 				case cl := <-rx:
 					clients.Add(cl)
@@ -77,7 +77,7 @@ func runLobby(gid GID, leader *Client, tx chan<- LobbyMsg, rx <-chan *Client) {
 					// allow leader to re-verify whether the game should be started.
 					broadcastLobbyWaiting()
 					continue
-				case tx <- LobbyMsg{gid, true, []*Client{}}:
+				case tx <- MkGame{gid}:
 				}
 				NewGame(gid, tx, clients)
 				return
@@ -90,6 +90,6 @@ out:
 	select {
 	case cl := <-rx:
 		cs = append(cs, cl)
-	case tx <- LobbyMsg{gid, true, cs}:
+	case tx <- LobbyClose{gid, cs}:
 	}
 }

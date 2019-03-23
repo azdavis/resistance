@@ -165,13 +165,33 @@ type MissionResult struct {
 	Members int  // number of members on new mission
 }
 
-// LobbyMsg ////////////////////////////////////////////////////////////////////
+// ToLobbyMap //////////////////////////////////////////////////////////////////
 
-// LobbyMsg is sent from a lobby or game to the lobby manager.
-type LobbyMsg struct {
+// ToLobbyMap is a message to the lobby map.
+type ToLobbyMap interface {
+	isToLobbyMap()
+}
+
+func (NewClients) isToLobbyMap() {}
+func (LobbyClose) isToLobbyMap() {}
+func (MkGame) isToLobbyMap()     {}
+
+// NewClients signals that some clients are returning to the lobby map, but
+// the active lobbies do not change.
+type NewClients struct {
+	Clients []*Client // the client that is leaving
+}
+
+// LobbyClose signals that a lobby is closing, and all clients inside the lobby
+// are returning to the lobby map.
+type LobbyClose struct {
 	GID               // gid of this lobby
-	Close   bool      // whether to close this lobby
-	Clients []*Client // clients coming form this lobby
+	Clients []*Client // clients coming from this lobby
+}
+
+// MkGame signals that a lobby is turning into a game.
+type MkGame struct {
+	GID // gid of this lobby
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
