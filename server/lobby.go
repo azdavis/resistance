@@ -9,7 +9,7 @@ import (
 type Lobby struct {
 	GID                   // unique
 	Leader string         // leader name
-	tx     chan<- *Client // incoming clients
+	tx     chan<- *Client // from runLobbyMap to this
 }
 
 // NewLobby returns a new Lobby.
