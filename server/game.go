@@ -65,6 +65,7 @@ func runGame(
 	reconnect := func(cl *Client) {
 		_, ok := clients.M[cl.CID]
 		if ok {
+			// oof
 			cl.Kill()
 		} else {
 			clients.Add(cl)
