@@ -14,17 +14,15 @@ export default ({ d, send, valid }: Props) => {
   useEffect(() => nameRef.current!.focus(), []);
   return (
     <div className="NameChooser">
-      <h1>Resistance</h1>
+      <h1>Player name</h1>
       <form
         onSubmit={e => {
           e.preventDefault();
           send({ t: "NameChoose", Name: nameRef.current!.value });
         }}
       >
-        <label>
-          Player name{!valid && <b> invalid</b>}
-          <input type="text" autoCorrect="off" ref={nameRef} />
-        </label>
+        <input type="text" autoCorrect="off" ref={nameRef} />
+        {!valid && "Invalid"}
         <Button type="submit" value="Submit" />
       </form>
       <Button value="Back" onClick={() => d({ t: "GoWelcome" })} />

@@ -1,7 +1,3 @@
-.NameChooser label {
-  display: block;
-}
-
 .NameChooser input[type="text"] {
   display: block;
   appearance: none;
