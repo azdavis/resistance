@@ -54,6 +54,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "LobbyWaiting",
             me: s.me,
+            gid: a.GID,
             clients: a.Clients,
             leader: a.Leader,
             didLeave: false,
@@ -64,6 +65,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "RoleViewing",
             me: s.me,
+            gid: s.gid,
             clients: s.clients,
             isSpy: a.IsSpy,
             captain: a.Captain,
@@ -76,6 +78,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
           ? {
               t: "MemberChoosing",
               me: s.me,
+              gid: s.gid,
               clients: s.clients,
               resWin: 0,
               spyWin: 0,
@@ -85,6 +88,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
           : {
               t: "MemberVoting",
               me: s.me,
+              gid: s.gid,
               clients: s.clients,
               resWin: 0,
               spyWin: 0,
@@ -97,6 +101,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MemberVoting",
             me: s.me,
+            gid: s.gid,
             clients: s.clients,
             resWin: s.resWin,
             spyWin: s.spyWin,
@@ -113,6 +118,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MissionVoting",
             me: s.me,
+            gid: s.gid,
             clients: s.clients,
             resWin: s.resWin,
             spyWin: s.spyWin,
@@ -124,6 +130,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MemberChoosing",
             me: s.me,
+            gid: s.gid,
             clients: s.clients,
             resWin: s.resWin,
             spyWin: s.spyWin + (a.SpyWin ? 1 : 0),
@@ -136,6 +143,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? {
             t: "MissionResultViewing",
             me: s.me,
+            gid: s.gid,
             clients: s.clients,
             resWin: s.resWin + (a.Success ? 1 : 0),
             spyWin: s.spyWin + (a.Success ? 0 : 1),
@@ -151,6 +159,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
           ? {
               t: "MemberChoosing",
               me: s.me,
+              gid: s.gid,
               clients: s.clients,
               resWin: s.resWin,
               spyWin: s.spyWin,
@@ -160,6 +169,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
           : {
               t: "MemberVoting",
               me: s.me,
+              gid: s.gid,
               clients: s.clients,
               resWin: s.resWin,
               spyWin: s.spyWin,

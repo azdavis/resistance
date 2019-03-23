@@ -56,6 +56,7 @@ export type State =
   | {
       t: "LobbyWaiting";
       me: CID;
+      gid: GID;
       clients: Array<Client>;
       leader: CID;
       didLeave: boolean;
@@ -63,6 +64,7 @@ export type State =
   | {
       t: "RoleViewing";
       me: CID;
+      gid: GID;
       clients: Array<Client>;
       isSpy: boolean;
       captain: CID;
@@ -71,6 +73,7 @@ export type State =
   | {
       t: "MemberChoosing";
       me: CID;
+      gid: GID;
       clients: Array<Client>;
       resWin: number;
       spyWin: number;
@@ -80,6 +83,7 @@ export type State =
   | {
       t: "MemberVoting";
       me: CID;
+      gid: GID;
       clients: Array<Client>;
       resWin: number;
       spyWin: number;
@@ -89,6 +93,7 @@ export type State =
   | {
       t: "MissionVoting";
       me: CID;
+      gid: GID;
       clients: Array<Client>;
       resWin: number;
       spyWin: number;
@@ -97,6 +102,7 @@ export type State =
   | {
       t: "MissionResultViewing";
       me: CID;
+      gid: GID;
       clients: Array<Client>;
       resWin: number;
       spyWin: number;
