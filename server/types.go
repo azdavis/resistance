@@ -31,6 +31,7 @@ type ToServer interface {
 
 func (Close) isToServer()        {}
 func (Connect) isToServer()      {}
+func (Reconnect) isToServer()    {}
 func (NameChoose) isToServer()   {}
 func (LobbyChoose) isToServer()  {}
 func (LobbyLeave) isToServer()   {}
@@ -47,6 +48,15 @@ type Close struct{}
 
 // Connect means the client just connected.
 type Connect struct{}
+
+// Reconnect means the client just reconnected. TODO it's not secure to allow
+// the client to send this without some kind of cryptographic signature. With
+// the current setup, once a client disconnects, any other client can pretend to
+// be that client and the server will be none the wiser.
+type Reconnect struct {
+	Me CID
+	GID
+}
 
 // NameChoose is a request to choose one's name.
 type NameChoose struct {
@@ -215,6 +225,10 @@ func UnmarshalJSONToServer(bs []byte) (ToServer, error) {
 	switch tm.T {
 	case "Connect":
 		var msg Connect
+		err = json.Unmarshal(tm.P, &msg)
+		return msg, err
+	case "Reconnect":
+		var msg Reconnect
 		err = json.Unmarshal(tm.P, &msg)
 		return msg, err
 	case "NameChoose":
