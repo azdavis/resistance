@@ -178,14 +178,21 @@ type ToLobbyMap interface {
 	isToLobbyMap()
 }
 
-func (ClientAdd) isToLobbyMap()  {}
-func (LobbyClose) isToLobbyMap() {}
-func (GameCreate) isToLobbyMap() {}
-func (GameClose) isToLobbyMap()  {}
+func (ClientAdd) isToLobbyMap()       {}
+func (ClientReconnect) isToLobbyMap() {}
+func (LobbyClose) isToLobbyMap()      {}
+func (GameCreate) isToLobbyMap()      {}
+func (GameClose) isToLobbyMap()       {}
 
 // ClientAdd signals that a client is being added to the lobby map.
 type ClientAdd struct {
 	*Client // the client that is being added
+}
+
+// ClientReconnect signals that a client is trying to reconnect to a game.
+type ClientReconnect struct {
+	*Client // the client that is being added
+	GID     // the game trying to be reconnected to
 }
 
 // LobbyClose signals that a lobby is closing.

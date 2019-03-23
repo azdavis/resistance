@@ -24,6 +24,8 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client) {
 				clients.Rm(cid).Close()
 			case Connect:
 				clients.M[cid].tx <- SetMe{cid}
+			case Reconnect:
+				tx <- ClientReconnect{clients.Rm(cid), ts.GID}
 			case NameChoose:
 				if validName(ts.Name) {
 					cl := clients.Rm(cid)
