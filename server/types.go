@@ -8,7 +8,7 @@ import (
 
 // Helper types ////////////////////////////////////////////////////////////////
 
-// CID is a unique identifier for a Client.
+// CID is a unique identifier for a Client. 0 means 'no CID'.
 type CID uint64
 
 // GID is a unique identifier for a Game (or a Lobby, which will become a Game).
