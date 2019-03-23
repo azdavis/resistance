@@ -27,8 +27,8 @@ func NewClient(conn *ws.Conn, cid CID) *Client {
 		tx:   make(chan ToClient, chLen),
 		rx:   make(chan ToServer, chLen),
 	}
-	go cl.recvFrom(conn)
-	go cl.sendTo(conn)
+	go cl.doRx(conn)
+	go cl.doTx(conn)
 	return cl
 }
 
@@ -38,15 +38,15 @@ func (cl *Client) Close() {
 	close(cl.tx)
 }
 
-// recvFrom reads from the conn, tries to parse the message, and if successful,
+// doRx reads from the conn, tries to parse the message, and if successful,
 // sends the ToServer over rx.
-func (cl *Client) recvFrom(conn *ws.Conn) {
-	log.Println("enter recvFrom", cl.CID)
-	defer log.Println("exit recvFrom", cl.CID)
+func (cl *Client) doRx(conn *ws.Conn) {
+	log.Println("enter doRx", cl.CID)
+	defer log.Println("exit doRx", cl.CID)
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
-			log.Println("err recvFrom", cl.CID, err)
+			log.Println("err doRx", cl.CID, err)
 			cl.rx <- Close{}
 			close(cl.rx)
 			conn.Close()
@@ -63,14 +63,14 @@ func (cl *Client) recvFrom(conn *ws.Conn) {
 	}
 }
 
-// sendTo sends every ToClient from tx over the websocket. See NewClient.
-func (cl *Client) sendTo(conn *ws.Conn) {
-	log.Println("enter sendTo", cl.CID)
-	defer log.Println("exit sendTo", cl.CID)
+// doTx sends every ToClient from tx over the websocket. See NewClient.
+func (cl *Client) doTx(conn *ws.Conn) {
+	log.Println("enter doTx", cl.CID)
+	defer log.Println("exit doTx", cl.CID)
 	for m := range cl.tx {
 		err := conn.WriteJSON(m)
 		if err != nil {
-			log.Println("err sendTo", cl.CID, err)
+			log.Println("err doTx", cl.CID, err)
 		}
 	}
 }
