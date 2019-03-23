@@ -21,13 +21,6 @@ type Action struct {
 	ToServer
 }
 
-// LobbyMsg is sent from a lobby or game to the lobby manager.
-type LobbyMsg struct {
-	GID               // gid of this lobby
-	Close   bool      // whether to close this lobby
-	Clients []*Client // clients coming form this lobby
-}
-
 // ToServer ////////////////////////////////////////////////////////////////////
 
 // ToServer is a request from the client to change state. The client "requests"
@@ -170,6 +163,15 @@ type MissionResult struct {
 	Success bool // whether this mission succeeded
 	Captain CID  // captain of new mission
 	Members int  // number of members on new mission
+}
+
+// LobbyMsg ////////////////////////////////////////////////////////////////////
+
+// LobbyMsg is sent from a lobby or game to the lobby manager.
+type LobbyMsg struct {
+	GID               // gid of this lobby
+	Close   bool      // whether to close this lobby
+	Clients []*Client // clients coming form this lobby
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
