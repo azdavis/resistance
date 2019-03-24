@@ -94,7 +94,9 @@ func runGame(
 	// invariant: the client with CID cids[captain] is the current captain.
 	captain := 0
 
-	// invariant: state == missionVoting <=> members != nil
+	// invariant:
+	// state == missionVoting || state == memberVoting
+	// <=> members != nil
 	var members []CID
 
 	// update captain.
