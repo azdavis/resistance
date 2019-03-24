@@ -99,15 +99,8 @@ func runGame(
 	// <=> members != nil
 	var members []CID
 
-	// update captain.
-	newMemberChoosing := func() {
-		state = memberChoosing
-		members = nil
-		captain++
-		if captain == len(cids) {
-			captain = 0
-		}
-	}
+	// invariant: members == nil <=> votes == nil
+	var votes map[CID]bool
 
 	// invariant: 0 <= resWin <= MaxWin
 	resWin := 0
@@ -118,8 +111,22 @@ func runGame(
 	// invariant: 0 := skip <= MaxSkip
 	skip := 0
 
-	// used for both voting on mission members and voting on mission itself
-	votes := make(map[CID]bool)
+	// update captain.
+	newMemberChoosing := func() {
+		state = memberChoosing
+		members = nil
+		votes = nil
+		captain++
+		if captain == len(cids) {
+			captain = 0
+		}
+	}
+
+	endGame := func() {
+		state = gameOver
+		members = nil
+		votes = nil
+	}
 
 	reconnect := func(cl *Client) {
 		_, ok := clients.M[cl.CID]
@@ -164,8 +171,8 @@ func runGame(
 					continue
 				}
 				state = memberVoting
-				votes = make(map[CID]bool)
 				members = ts.Members
+				votes = make(map[CID]bool)
 				for _, cl := range clients.M {
 					cl.tx <- MemberPropose{ts.Members}
 				}
@@ -204,7 +211,7 @@ func runGame(
 						skip = 0
 					}
 					if spyWin >= MaxWin {
-						state = gameOver
+						endGame()
 					}
 				}
 			case MissionVote:
@@ -219,7 +226,6 @@ func runGame(
 				if len(votes) != nMission {
 					continue
 				}
-				members = nil
 				success := numTrue(votes) > nMission/2
 				if success {
 					resWin++
@@ -232,7 +238,7 @@ func runGame(
 					msg.Captain = cids[captain]
 					msg.Members = nMission
 				} else {
-					state = gameOver
+					endGame()
 				}
 				for _, cl := range clients.M {
 					cl.tx <- msg
