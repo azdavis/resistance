@@ -76,13 +76,17 @@ func runLobby(
 					goto out
 				}
 				msg := ClientAdd{clients.Rm(cid)}
-				select {
-				case <-q:
-					clients.KillAll()
-					return
-				case cl := <-rx:
-					clients.Add(cl)
-				case tx <- msg:
+			inner:
+				for {
+					select {
+					case <-q:
+						clients.KillAll()
+						return
+					case cl := <-rx:
+						clients.Add(cl)
+					case tx <- msg:
+						break inner
+					}
 				}
 				broadcastLobbyWaiting()
 			case GameStart:
