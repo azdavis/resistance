@@ -20,7 +20,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
       return s.t === "Disbanded"
         ? { ...s, t: "LobbyChoosing" }
         : { t: "Fatal", s, a };
-    case "LobbyLeave":
+    case "GoLobbies":
       return s.t === "LobbyWaiting"
         ? { ...s, didLeave: true }
         : { t: "Fatal", s, a };

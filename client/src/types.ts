@@ -24,7 +24,7 @@ export type Client = { CID: CID; Name: string };
 type SelfAction =
   | { t: "Close" }
   | { t: "AckDisbanded" }
-  | { t: "LobbyLeave" }
+  | { t: "GoLobbies" }
   | { t: "GoWelcome" }
   | { t: "GoNameChoose" }
   | { t: "GoHowTo" }

@@ -35,7 +35,7 @@ export default ({ d, send, me, leader, clients }: Props) => (
     <Button
       value="Leave"
       onClick={() => {
-        d({ t: "LobbyLeave" });
+        d({ t: "GoLobbies" });
         send({ t: "LobbyLeave" });
       }}
     />
