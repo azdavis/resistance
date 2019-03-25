@@ -86,7 +86,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             members: a.Members,
             active: a.Active,
           }
-        : { t: "Fatal", s, a }; // TODO
+        : { t: "Fatal", s, a };
     case "EndGame":
       return s.t === "GamePlaying"
         ? {
