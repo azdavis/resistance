@@ -141,7 +141,7 @@ type CurrentLobby struct {
 // CurrentGame represents an in-progress game.
 // invariant: 0 <= ResPts < MaxPts
 // invariant: 0 <= SpyPts < MaxPts
-// invariant: Members != nil => len(members) == NumMembers
+// invariant: Members != nil => len(Members) == NumMembers
 // invariant: Active => Members != nil
 // invariant: Members == nil => !Active
 type CurrentGame struct {
