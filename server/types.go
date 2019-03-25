@@ -139,8 +139,8 @@ type CurrentLobby struct {
 // CurrentGame represents an in-progress game.
 // invariant: 0 <= ResPts < MaxPts
 // invariant: 0 <= SpyPts < MaxPts
-// invariant: Members != nil ==> len(members) == NumMembers
-// invariant: Active ==> Members != nil
+// invariant: Members != nil => len(members) == NumMembers
+// invariant: Active => Members != nil
 // invariant: Members == nil => !Active
 type CurrentGame struct {
 	IsSpy      bool  // whether this player is a spy
