@@ -53,8 +53,8 @@ func newTestClient() *testClient {
 	cl := &Client{
 		CID:  0,
 		Name: "",
-		tx:   make(chan ToClient, ClientChLen),
-		rx:   make(chan ToServer, ClientChLen),
+		tx:   make(chan ToClient),
+		rx:   make(chan ToServer),
 		conn: nil,
 	}
 	tc := &testClient{cl, make(chan struct{}), make(chan ToClient)}
