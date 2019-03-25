@@ -6,9 +6,8 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// Client is a player of the game. It contains the CID, game information, and
-// the way to communicate with the actual person represented by this Client.
-// Close should be called after a Close{} is received on rx.
+// Client is a player of the game. It contains the CID, name, and the way to
+// communicate with the actual person represented by this Client.
 type Client struct {
 	CID                // unique, never 0
 	Name string        // if "", no name
