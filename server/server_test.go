@@ -259,6 +259,10 @@ func TestTwoClients(t *testing.T) {
 		t.Fatal("leader differ", c1.Name, l1.Leader)
 	}
 	c2.send(LobbyChoose{l1.GID})
+	cl = c1.recvCurrentLobby(t)
+	if len(cl.Clients) != 2 {
+		t.Fatal("Clients not len 2")
+	}
 	cl = c2.recvCurrentLobby(t)
 	if len(cl.Clients) != 2 {
 		t.Fatal("Clients not len 2")
