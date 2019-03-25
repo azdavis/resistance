@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { D, Send } from "../../types";
 import Button from "../basic/Button";
-import "./NameChoosing.css";
+import TextInput from "../basic/TextInput";
 
 type Props = {
   d: D;
@@ -21,7 +21,7 @@ export default ({ d, send, valid }: Props) => {
           send({ t: "NameChoose", Name: nameRef.current!.value });
         }}
       >
-        <input type="text" autoCorrect="off" ref={nameRef} />
+        <TextInput ref={nameRef} />
         {valid ? null : "Invalid"}
         <Button type="submit" value="Submit" />
       </form>
