@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"sort"
 )
 
 // ClientMap represents a group of related clients.
@@ -58,12 +59,14 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 	return cl
 }
 
-// ToList converts the ClientMap to a list. The order is arbitrary.
+// ToList converts the ClientMap to a list. The order is sorted in
+// increasing-CID order.
 func (cm *ClientMap) ToList() []*Client {
 	ret := make([]*Client, 0, len(cm.M))
 	for _, cl := range cm.M {
 		ret = append(ret, cl)
 	}
+	sort.Slice(ret, func(i, j int) bool { return ret[i].CID < ret[j].CID })
 	return ret
 }
 
