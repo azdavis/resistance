@@ -148,6 +148,8 @@ func runGame(
 			cl.Kill()
 		} else {
 			clients.Add(cl)
+			// this client reconnected, so it has no name. but this client was in this
+			// game before, so we stored its name.
 			cl.Name = names[cl.CID]
 			cl.tx <- getCurrentGame(cl.CID)
 		}
