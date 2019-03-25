@@ -38,6 +38,7 @@ type ToClient =
   | { t: "BeginGame"; IsSpy: boolean; Captain: CID; NumMembers: number }
   | {
       t: "CurrentGame";
+      IsSpy: boolean;
       ResPts: number;
       SpyPts: number;
       Captain: CID;
@@ -88,6 +89,7 @@ export type State =
       me: CID;
       gid: GID;
       clients: Array<Client>;
+      isSpy: boolean;
       resPts: number;
       spyPts: number;
       captain: CID;

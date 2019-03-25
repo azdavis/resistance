@@ -155,6 +155,7 @@ type BeginGame struct {
 // invariant: Active ==> Members != nil
 // invariant: Members == nil => !Active
 type CurrentGame struct {
+	IsSpy      bool  // whether this player is a spy
 	ResPts     int   // number of wins the resistance has
 	SpyPts     int   // number of wins the spies have
 	Captain    CID   // captain of the mission

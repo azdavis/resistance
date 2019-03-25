@@ -8,6 +8,7 @@ type Props = {
   send: Send;
   me: CID;
   clients: Array<Client>;
+  isSpy: boolean;
   resPts: number;
   spyPts: number;
   captain: CID;
@@ -38,6 +39,7 @@ export default ({
   send,
   me,
   clients,
+  isSpy,
   resPts,
   spyPts,
   captain,
@@ -46,6 +48,7 @@ export default ({
 }: Props) => (
   <div className="GamePlayer">
     <h1>Game</h1>
+    <p>Allegiance: {isSpy ? "Spies" : "Resistance"}</p>
     <p>Resistance points: {resPts}</p>
     <p>Spy points: {spyPts}</p>
     <p>Captain: {getCaptain(clients, captain)}</p>
