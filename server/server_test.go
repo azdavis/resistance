@@ -199,3 +199,35 @@ func TestOneClient(t *testing.T) {
 		t.Fatal("lobbies not len 0")
 	}
 }
+
+func TestTwoClients(t *testing.T) {
+	s := NewServer()
+	defer s.closeAndWait()
+	c1 := s.addClient(t)
+	c2 := s.addClient(t)
+	c1.send(NameChoose{"c1"})
+	c2.send(NameChoose{"c2"})
+	c1.recvLobbyChoices(t)
+	c2.recvLobbyChoices(t)
+	c1.send(LobbyCreate{})
+	cl := c1.recvCurrentLobby(t)
+	if c1.CID != cl.Leader {
+		t.Fatal("leader differ", c1.CID, cl.Leader)
+	}
+	if len(cl.Clients) != 1 {
+		t.Fatal("Clients not len 1")
+	}
+	lc := c2.recvLobbyChoices(t)
+	if len(lc.Lobbies) != 1 {
+		t.Fatal("Lobbies not len 1")
+	}
+	l1 := lc.Lobbies[0]
+	if c1.Name != l1.Leader {
+		t.Fatal("leader differ", c1.Name, l1.Leader)
+	}
+	c2.send(LobbyChoose{l1.GID})
+	cl = c2.recvCurrentLobby(t)
+	if len(cl.Clients) != 2 {
+		t.Fatal("Clients not len 2")
+	}
+}
