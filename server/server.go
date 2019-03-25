@@ -1,15 +1,9 @@
 package main
 
-import (
-	"context"
-	"net/http"
-	"time"
-)
-
 // Server is the server.
 type Server struct {
-	q          chan<- struct{}
-	HTTPServer *http.Server
+	C chan<- *Client
+	q chan<- struct{}
 }
 
 // NewServer returns a new Server.
@@ -19,19 +13,11 @@ func NewServer() *Server {
 	q := make(chan struct{})
 	go runLobbyMap(txLobbyMap, q)
 	go runWelcomer(txLobbyMap, txWelcomer, q)
-	hs := &http.Server{
-		Handler:      NewHub(txWelcomer),
-		Addr:         ":8080",
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 5 * time.Second,
-	}
-	s := &Server{q, hs}
+	s := &Server{txWelcomer, q}
 	return s
 }
 
 // Close shuts down the Server. It should only be called once.
-func (s *Server) Close() error {
-	err := s.HTTPServer.Shutdown(context.Background())
+func (s *Server) Close() {
 	close(s.q)
-	return err
 }
