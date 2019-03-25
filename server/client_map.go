@@ -16,9 +16,9 @@ import (
 //
 // Only one goroutine may access a ClientMap at a time.
 type ClientMap struct {
-	C  chan Action           // messages from the Clients in M
-	M  map[CID]*Client       // if M[x] = c, c.CID = x
-	qs map[CID]chan struct{} // iff M[x] = c, close(qs[x]) stops piping
+	C  chan Action             // messages from the Clients in M
+	M  map[CID]*Client         // if M[x] = c, c.CID = x
+	qs map[CID]chan<- struct{} // iff M[x] = c, close(qs[x]) stops piping
 }
 
 // NewClientMap returns a new ClientMap.
@@ -26,7 +26,7 @@ func NewClientMap() *ClientMap {
 	cm := &ClientMap{
 		C:  make(chan Action),
 		M:  make(map[CID]*Client),
-		qs: make(map[CID]chan struct{}),
+		qs: make(map[CID]chan<- struct{}),
 	}
 	return cm
 }

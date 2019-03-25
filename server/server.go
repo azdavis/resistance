@@ -8,7 +8,7 @@ import (
 
 // Server is the server.
 type Server struct {
-	q          chan struct{}
+	q          chan<- struct{}
 	HTTPServer *http.Server
 }
 
