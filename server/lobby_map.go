@@ -1,5 +1,9 @@
 package main
 
+import (
+	"sort"
+)
+
 func runLobbyMap(rx chan ToLobbyMap) {
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
@@ -11,6 +15,7 @@ func runLobbyMap(rx chan ToLobbyMap) {
 		for _, lb := range lobbies {
 			ret = append(ret, lb)
 		}
+		sort.Slice(ret, func(i, j int) bool { return ret[i].GID < ret[j].GID })
 		return ret
 	}
 
