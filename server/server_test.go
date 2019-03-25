@@ -9,7 +9,7 @@ import (
 // testClient //////////////////////////////////////////////////////////////////
 
 type testClient struct {
-	cl  *Client
+	*Client
 	req chan struct{}
 	res chan ToClient
 }
@@ -36,7 +36,7 @@ func (tc *testClient) doTestTx() {
 	ms := make(map[uint]ToClient)
 	for {
 		select {
-		case m := <-tc.cl.tx:
+		case m := <-tc.tx:
 			ms[have] = m
 			have++
 		case <-tc.req:
@@ -51,7 +51,7 @@ func (tc *testClient) doTestTx() {
 }
 
 func (tc *testClient) send(m ToServer) {
-	tc.cl.rx <- m
+	tc.rx <- m
 }
 
 func (tc *testClient) recv() ToClient {
@@ -148,14 +148,14 @@ func (tc *testClient) recvEndGame(t *testing.T) EndGame {
 func (s *Server) addClient(t *testing.T) *testClient {
 	tc := newTestClient()
 	tc.send(Connect{})
-	s.C <- tc.cl
+	s.C <- tc.Client
 	m := tc.recv()
 	sm, ok := m.(SetMe)
 	if !ok {
 		t.Fatal("response was not SetMe")
 	}
-	if sm.Me != tc.cl.CID {
-		t.Fatal("SetMe CIDs differ", sm.Me, tc.cl.CID)
+	if sm.Me != tc.CID {
+		t.Fatal("SetMe CIDs differ", sm.Me, tc.CID)
 	}
 	return tc
 }
