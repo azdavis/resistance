@@ -71,7 +71,7 @@ export default ({
     {typeof members === "number" ? null : active ? (
       members.includes(me) ? (
         <Voter
-          // prevent the Voters from interfering with each other
+          // the `key`s must differ
           key="succeed"
           prompt="Should the mission succeed?"
           options={succeedOpts}
@@ -82,7 +82,7 @@ export default ({
       )
     ) : (
       <Voter
-        // prevent the Voters from interfering with each other
+        // the `key`s must differ
         key="occur"
         prompt="Should the mission occur?"
         options={occurOpts}
