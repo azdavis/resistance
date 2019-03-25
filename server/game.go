@@ -138,7 +138,7 @@ func runGame(
 			cl.Kill()
 		} else {
 			clients.Add(cl)
-			// TODO send a message to cl to get it up-to-date
+			cl.tx <- getCurrentGame(cl.CID)
 		}
 	}
 
