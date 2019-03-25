@@ -96,9 +96,12 @@ func runLobby(
 
 out:
 	cs := clients.Clear()
-	select {
-	case cl := <-rx:
-		cs = append(cs, cl)
-	case tx <- LobbyClose{gid, cs}:
+	for {
+		select {
+		case cl := <-rx:
+			cs = append(cs, cl)
+		case tx <- LobbyClose{gid, cs}:
+			return
+		}
 	}
 }

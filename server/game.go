@@ -234,9 +234,12 @@ func runGame(
 
 out:
 	cs := clients.Clear()
-	select {
-	case tx <- GameClose{gid, cs, EndGame{resPts, spyPts, nil}}:
-	case cl := <-rx:
-		cs = append(cs, cl)
+	for {
+		select {
+		case tx <- GameClose{gid, cs, EndGame{resPts, spyPts, nil}}:
+			return
+		case cl := <-rx:
+			cs = append(cs, cl)
+		}
 	}
 }
