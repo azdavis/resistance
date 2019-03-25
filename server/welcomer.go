@@ -11,10 +11,12 @@ func validName(s string) bool {
 	return s != "" && len(s) <= maxLen && validNameRE.Match([]byte(s))
 }
 
-func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client) {
+func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client, q <-chan struct{}) {
 	clients := NewClientMap()
 	for {
 		select {
+		case <-q:
+			return
 		case cl := <-rx:
 			clients.Add(cl)
 		case ac := <-clients.C:

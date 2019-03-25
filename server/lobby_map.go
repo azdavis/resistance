@@ -4,7 +4,7 @@ import (
 	"sort"
 )
 
-func runLobbyMap(rx chan ToLobbyMap) {
+func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
 	games := make(map[GID]Game)
@@ -29,6 +29,8 @@ func runLobbyMap(rx chan ToLobbyMap) {
 
 	for {
 		select {
+		case <-q:
+			return
 		case m := <-rx:
 			switch m := m.(type) {
 			case ClientAdd:
