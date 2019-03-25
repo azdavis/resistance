@@ -11,7 +11,7 @@ import (
 // Close should be called after a Close{} is received on rx.
 type Client struct {
 	CID                // unique, never 0
-	Name string        // if "", no name
+	Name string        // if "", no name (TODO reconnected client's name?)
 	tx   chan ToClient // over the websocket
 	rx   chan ToServer // over the websocket
 	conn *ws.Conn      // the websocket
