@@ -30,7 +30,8 @@ func NewServer() *Server {
 }
 
 // Close shuts down the Server. It should only be called once.
-func (s *Server) Close() {
-	s.HTTPServer.Shutdown(context.Background())
+func (s *Server) Close() error {
+	err := s.HTTPServer.Shutdown(context.Background())
 	close(s.q)
+	return err
 }
