@@ -197,7 +197,7 @@ func TestNumGoroutine(t *testing.T) {
 	s.addClient(t)
 	during := runtime.NumGoroutine()
 	s.Close()
-	time.Sleep(1000 * time.Millisecond)
+	time.Sleep(500 * time.Millisecond)
 	after := runtime.NumGoroutine()
 	if before > during {
 		t.Fatal("before > during", before, during)
