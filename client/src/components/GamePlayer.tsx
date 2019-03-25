@@ -44,14 +44,13 @@ export default ({
   members,
   active,
 }: Props) => {
-  const numMembers = typeof members === "number" ? members : members.length;
   return (
     <div className="GamePlayer">
       <h1>Game</h1>
       <p>Resistance points: {resPts}</p>
       <p>Spy points: {spyPts}</p>
       <p>Captain: {getCaptain(clients, captain)}</p>
-      <p>Members ({numMembers}):</p>
+      <p>Members: ({typeof members === "number" ? members : members.length})</p>
       {typeof members === "number" ? (
         me === captain ? (
           <MemberChooser {...{ send, me, clients, members }} />
