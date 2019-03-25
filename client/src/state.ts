@@ -17,7 +17,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? { ...s, me: a.Me }
         : { t: "Fatal", s, a };
     case "GoLobbies":
-      return s.t === "Disbanded"
+      return s.t === "Disbanded" || s.t === "GameEnded"
         ? { ...s, t: "LobbyChoosing" }
         : s.t === "LobbyWaiting"
         ? { ...s, didLeave: true }
