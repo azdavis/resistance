@@ -96,7 +96,6 @@ func runGame(
 		isSpy[cid] = true
 		i--
 	}
-	log.Printf("runGame %v spies: %+v", gid, isSpy)
 
 	// current state.
 	// invariant: state == gameOver <=> resPts == MaxPts || spyPts == MaxPts
@@ -161,6 +160,7 @@ func runGame(
 	}
 
 	broadcast()
+	log.Printf("runGame gid: %v, names: %+v, isSpy: %+v", gid, names, isSpy)
 
 	for {
 		select {
