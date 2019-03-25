@@ -9,6 +9,7 @@ import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
 import RoleViewer from "./RoleViewer";
+import GamePlayer from "./GamePlayer";
 import MemberChooser from "./MemberChooser";
 import MemberWaiter from "./MemberWaiter";
 import MemberVoter from "./MemberVoter";
@@ -53,7 +54,7 @@ export default (): JSX.Element => {
     case "RoleViewing":
       return <RoleViewer d={d} isSpy={s.isSpy} />;
     case "GamePlaying":
-      return <div>TODO</div>;
+      return <GamePlayer send={send!} {...s} />;
     case "GameEnded":
       return <div>TODO</div>;
     case "MemberChoosing":
