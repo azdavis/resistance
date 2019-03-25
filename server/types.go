@@ -124,12 +124,14 @@ type SetMe struct {
 type NameReject struct{}
 
 // LobbyChoices is sent to a client who is choosing their lobby.
+// invariant: Lobbies != nil
 type LobbyChoices struct {
 	Lobbies []Lobby // available lobbies to join
 }
 
 // CurrentLobby is sent to a client who is in a lobby whose game has not yet
 // started.
+// invariant: Clients != nil
 type CurrentLobby struct {
 	GID               // the GID of this lobby
 	Leader  CID       // the leader of this lobby
