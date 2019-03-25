@@ -1,10 +1,13 @@
 package main
 
 import (
+	"log"
 	"sort"
 )
 
 func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
+	log.Println("enter runLobbyMap")
+	defer log.Println("exit runLobbyMap")
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
 	games := make(map[GID]Game)
