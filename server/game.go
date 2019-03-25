@@ -71,6 +71,9 @@ func runGame(
 	}
 
 	// all the names.
+	// TODO race with unnamed reconnecting player making their way to game, and
+	// game closing. It's possible to have an un-named player infiltrate the lobby
+	// map.
 	names := make(map[CID]string)
 	for cid, cl := range clients.M {
 		names[cid] = cl.Name
