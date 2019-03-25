@@ -24,7 +24,15 @@ const modifiers = (cid: CID, me: CID, captain: CID): string =>
     ? " (captain)"
     : "";
 
-const options: Array<[string, boolean]> = [["Yes", true], ["No", false]];
+const succeedOpts: Array<[string, boolean]> = [
+  ["Succeed", true],
+  ["Fail", false],
+];
+
+const occurOpts: Array<[string, boolean]> = [
+  ["Occur", true],
+  ["Not occur", false],
+];
 
 export default ({
   send,
@@ -64,7 +72,7 @@ export default ({
         members.includes(me) ? (
           <Voter
             prompt="Should the mission succeed?"
-            options={options}
+            options={succeedOpts}
             onVote={Vote => send({ t: "MissionVote", Vote })}
           />
         ) : (
@@ -73,7 +81,7 @@ export default ({
       ) : (
         <Voter
           prompt="Should the mission occur?"
-          options={options}
+          options={occurOpts}
           onVote={Vote => send({ t: "MemberVote", Vote })}
         />
       )}
