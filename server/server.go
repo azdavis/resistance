@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Server runs the backend.
+// Server is the server.
 type Server struct {
 	HTTPServer *http.Server
 }
