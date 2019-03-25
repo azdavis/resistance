@@ -220,10 +220,10 @@ func runGame(
 				} else {
 					spyPts++
 				}
-				if resPts < MaxPts && spyPts < MaxPts {
-					newMemberChoosing()
-				} else {
+				if resPts >= MaxPts || spyPts >= MaxPts {
 					goto out
+				} else {
+					newMemberChoosing()
 				}
 				broadcast()
 			}
