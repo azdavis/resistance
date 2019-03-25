@@ -45,7 +45,9 @@ func (cl *Client) Close() {
 // Kill kills this Client. It should be called exactly once. No one else should
 // be reading from rx or writing to tx when this is called.
 func (cl *Client) Kill() {
-	if cl.conn != nil {
+	if cl.conn == nil {
+		close(cl.rx)
+	} else {
 		cl.conn.Close()
 	}
 	for range cl.rx {
