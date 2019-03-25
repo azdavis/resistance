@@ -20,8 +20,6 @@ export default ({ send, me, clients, members }: Props) => {
   );
   return (
     <div className="MemberChooser">
-      <h1>New mission</h1>
-      <p>Choose {members} members for the mission.</p>
       {clients.map(({ CID, Name }, i) => (
         <Toggle
           key={CID}

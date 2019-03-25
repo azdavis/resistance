@@ -17,7 +17,6 @@ const (
 	memberChoosing state = iota
 	memberVoting
 	missionVoting
-	gameOver
 )
 
 func numTrue(xs map[CID]bool) int {
@@ -121,10 +120,16 @@ func runGame(
 		}
 	}
 
-	endGame := func() {
-		state = gameOver
-		members = nil
-		votes = nil
+	getCurrentGame := func(cid CID) CurrentGame {
+		return CurrentGame{
+			IsSpy:      isSpy[cid],
+			ResPts:     resPts,
+			SpyPts:     spyPts,
+			Captain:    cids[captain],
+			NumMembers: nMission,
+			Members:    members,
+			Active:     state == missionVoting,
+		}
 	}
 
 	reconnect := func(cl *Client) {
@@ -137,11 +142,13 @@ func runGame(
 		}
 	}
 
-	msg := BeginGame{Captain: cids[captain], NumMembers: nMission}
-	for _, cl := range clients.M {
-		msg.IsSpy = isSpy[cl.CID]
-		cl.tx <- msg
+	broadcast := func() {
+		for _, cl := range clients.M {
+			cl.tx <- getCurrentGame(cl.CID)
+		}
 	}
+
+	broadcast()
 
 	for {
 		select {
@@ -154,14 +161,7 @@ func runGame(
 			case Close:
 				clients.Rm(cid).Close()
 				// TODO only do this after a timeout?
-				for len(clients.M) == 0 {
-					select {
-					case tx <- GameClose{gid, []*Client{}}:
-						return
-					case cl := <-rx:
-						reconnect(cl)
-					}
-				}
+				goto out
 			case MemberChoose:
 				if state != memberChoosing ||
 					cid != cids[captain] ||
@@ -171,9 +171,7 @@ func runGame(
 				state = memberVoting
 				members = ts.Members
 				votes = make(map[CID]bool)
-				for _, cl := range clients.M {
-					cl.tx <- MemberPropose{ts.Members}
-				}
+				broadcast()
 			case MemberVote:
 				if state != memberVoting {
 					continue
@@ -189,29 +187,19 @@ func runGame(
 				if numTrue(votes) > len(votes)/2 {
 					state = missionVoting
 					votes = make(map[CID]bool)
-					for _, cl := range clients.M {
-						cl.tx <- MemberAccept{}
-					}
 				} else {
 					newMemberChoosing()
 					skip++
 					spyGetPt := skip == MaxSkip
-					msg := MemberReject{
-						Captain:  cids[captain],
-						Members:  nMission,
-						SpyGetPt: spyGetPt,
-					}
-					for _, cl := range clients.M {
-						cl.tx <- msg
-					}
 					if spyGetPt {
 						spyPts++
 						skip = 0
 					}
 					if spyPts >= MaxPts {
-						endGame()
+						goto out
 					}
 				}
+				broadcast()
 			case MissionVote:
 				if state != missionVoting || !hasCID(members, cid) {
 					continue
@@ -230,36 +218,21 @@ func runGame(
 				} else {
 					spyPts++
 				}
-				msg := MissionResult{Success: success}
 				if resPts < MaxPts && spyPts < MaxPts {
 					newMemberChoosing()
-					msg.Captain = cids[captain]
-					msg.Members = nMission
 				} else {
-					endGame()
+					goto out
 				}
-				for _, cl := range clients.M {
-					cl.tx <- msg
-				}
-			case GameLeave:
-				if state != gameOver {
-					continue
-				}
-				cl := clients.Rm(cid)
-				for len(clients.M) == 0 {
-					select {
-					case tx <- GameClose{gid, []*Client{cl}}:
-						return
-					case cl := <-rx:
-						reconnect(cl)
-					}
-				}
-				select {
-				case tx <- ClientAdd{cl}:
-				case cl := <-rx:
-					reconnect(cl)
-				}
+				broadcast()
 			}
 		}
+	}
+
+out:
+	cs := clients.Clear()
+	select {
+	case tx <- GameClose{gid, cs}:
+	case cl := <-rx:
+		cs = append(cs, cl)
 	}
 }

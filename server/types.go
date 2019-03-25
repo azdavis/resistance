@@ -107,17 +107,12 @@ type ToClient interface {
 	isToClient()
 }
 
-func (SetMe) isToClient()         {}
-func (NameReject) isToClient()    {}
-func (LobbyChoices) isToClient()  {}
-func (CurrentLobby) isToClient()  {}
-func (BeginGame) isToClient()     {}
-func (CurrentGame) isToClient()   {}
-func (EndGame) isToClient()       {}
-func (MemberPropose) isToClient() {}
-func (MemberAccept) isToClient()  {}
-func (MemberReject) isToClient()  {}
-func (MissionResult) isToClient() {}
+func (SetMe) isToClient()        {}
+func (NameReject) isToClient()   {}
+func (LobbyChoices) isToClient() {}
+func (CurrentLobby) isToClient() {}
+func (CurrentGame) isToClient()  {}
+func (EndGame) isToClient()      {}
 
 // SetMe sets the client's own CID.
 type SetMe struct {
@@ -139,13 +134,6 @@ type CurrentLobby struct {
 	GID               // the GID of this lobby
 	Leader  CID       // the leader of this lobby
 	Clients []*Client // info about other clients in this lobby
-}
-
-// BeginGame is sent to start the game.
-type BeginGame struct {
-	IsSpy      bool // whether the client is a spy
-	Captain    CID  // captain of this mission
-	NumMembers int  // number of members on this mission
 }
 
 // CurrentGame represents an in-progress game.
@@ -172,31 +160,6 @@ type EndGame struct {
 	ResPts  int     // number of wins the resistance has
 	SpyPts  int     // number of wins the spies have
 	Lobbies []Lobby // available lobbies to join
-}
-
-// MemberPropose notifies the client that the captain has selected mission
-// candidates, and voting on whether the mission will proceed can begin.
-type MemberPropose struct {
-	Members []CID // CIDs selected by the captain
-}
-
-// MemberAccept notifies the client that the proposed members have been
-// accepted.
-type MemberAccept struct{}
-
-// MemberReject notifies the client that the proposed members have been
-// rejected.
-type MemberReject struct {
-	Captain  CID  // captain of new mission
-	Members  int  // number of members on new mission
-	SpyGetPt bool // whether the spies get a point
-}
-
-// MissionResult notifies the client that voting on the mission has concluded.
-type MissionResult struct {
-	Success bool // whether this mission succeeded
-	Captain CID  // captain of new mission
-	Members int  // number of members on new mission
 }
 
 // ToLobbyMap //////////////////////////////////////////////////////////////////
@@ -341,12 +304,6 @@ func (x CurrentLobby) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSON makes JSON.
-func (x BeginGame) MarshalJSON() ([]byte, error) {
-	type alias BeginGame
-	return fromTagMsg("BeginGame", alias(x))
-}
-
-// MarshalJSON makes JSON.
 func (x CurrentGame) MarshalJSON() ([]byte, error) {
 	type alias CurrentGame
 	return fromTagMsg("CurrentGame", alias(x))
@@ -356,28 +313,4 @@ func (x CurrentGame) MarshalJSON() ([]byte, error) {
 func (x EndGame) MarshalJSON() ([]byte, error) {
 	type alias EndGame
 	return fromTagMsg("EndGame", alias(x))
-}
-
-// MarshalJSON makes JSON.
-func (x MemberPropose) MarshalJSON() ([]byte, error) {
-	type alias MemberPropose
-	return fromTagMsg("MemberPropose", alias(x))
-}
-
-// MarshalJSON makes JSON.
-func (x MemberAccept) MarshalJSON() ([]byte, error) {
-	type alias MemberAccept
-	return fromTagMsg("MemberAccept", alias(x))
-}
-
-// MarshalJSON makes JSON.
-func (x MemberReject) MarshalJSON() ([]byte, error) {
-	type alias MemberReject
-	return fromTagMsg("MemberReject", alias(x))
-}
-
-// MarshalJSON makes JSON.
-func (x MissionResult) MarshalJSON() ([]byte, error) {
-	type alias MissionResult
-	return fromTagMsg("MissionResult", alias(x))
 }

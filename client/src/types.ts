@@ -26,16 +26,13 @@ type SelfAction =
   | { t: "GoLobbies" }
   | { t: "GoWelcome" }
   | { t: "GoNameChoose" }
-  | { t: "GoHowTo" }
-  | { t: "AckRole" }
-  | { t: "AckMissionResult" };
+  | { t: "GoHowTo" };
 
 type ToClient =
   | { t: "SetMe"; Me: CID }
   | { t: "NameReject" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; GID: GID; Leader: CID; Clients: Array<Client> }
-  | { t: "BeginGame"; IsSpy: boolean; Captain: CID; NumMembers: number }
   | {
       t: "CurrentGame";
       IsSpy: boolean;
@@ -51,11 +48,7 @@ type ToClient =
       ResPts: number;
       SpyPts: number;
       Lobbies: Array<Lobby>;
-    }
-  | { t: "MemberPropose"; Members: Array<CID> }
-  | { t: "MemberAccept" }
-  | { t: "MemberReject"; Captain: CID; Members: number; SpyGetPt: boolean }
-  | { t: "MissionResult"; Success: boolean; Captain: CID; Members: number };
+    };
 
 export type Action = SelfAction | ToClient;
 export type D = Dispatch<Action>;
@@ -76,15 +69,6 @@ export type State =
       didLeave: boolean;
     }
   | {
-      t: "RoleViewing";
-      me: CID;
-      gid: GID;
-      clients: Array<Client>;
-      isSpy: boolean;
-      captain: CID;
-      members: number | Array<CID>;
-    }
-  | {
       t: "GamePlaying";
       me: CID;
       gid: GID;
@@ -102,45 +86,4 @@ export type State =
       resPts: number;
       spyPts: number;
       lobbies: Array<Lobby>;
-    }
-  | {
-      t: "MemberChoosing";
-      me: CID;
-      gid: GID;
-      clients: Array<Client>;
-      resPts: number;
-      spyPts: number;
-      captain: CID;
-      members: number;
-    }
-  | {
-      t: "MemberVoting";
-      me: CID;
-      gid: GID;
-      clients: Array<Client>;
-      resPts: number;
-      spyPts: number;
-      captain: CID;
-      members: Array<CID>;
-    }
-  | {
-      t: "MissionVoting";
-      me: CID;
-      gid: GID;
-      clients: Array<Client>;
-      resPts: number;
-      spyPts: number;
-      canVote: boolean;
-    }
-  | {
-      t: "MissionResultViewing";
-      me: CID;
-      gid: GID;
-      clients: Array<Client>;
-      resPts: number;
-      spyPts: number;
-      success: boolean;
-      captain: CID;
-      members: number | Array<CID>;
-      didLeave: boolean;
     };

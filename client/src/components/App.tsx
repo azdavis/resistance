@@ -8,15 +8,8 @@ import HowTo from "./HowTo";
 import NameChooser from "./NameChooser";
 import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
-import RoleViewer from "./RoleViewer";
 import GamePlayer from "./GamePlayer";
 import GameEnd from "./GameEnd";
-import MemberChooser from "./MemberChooser";
-import MemberWaiter from "./MemberWaiter";
-import MemberVoter from "./MemberVoter";
-import MissionVoter from "./MissionVoter";
-import MissionWaiter from "./MissionWaiter";
-import MissionResultViewer from "./MissionResultViewer";
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
@@ -52,27 +45,9 @@ export default (): JSX.Element => {
       return <LobbyChooser send={send!} {...s} />;
     case "LobbyWaiting":
       return <LobbyWaiter d={d} send={send!} {...s} />;
-    case "RoleViewing":
-      return <RoleViewer d={d} isSpy={s.isSpy} />;
     case "GamePlaying":
       return <GamePlayer send={send!} {...s} />;
     case "GameEnded":
       return <GameEnd d={d} {...s} />;
-    case "MemberChoosing":
-      return s.me === s.captain ? (
-        <MemberChooser send={send!} {...s} />
-      ) : (
-        <MemberWaiter
-          clients={s.clients}
-          captain={s.captain}
-          members={s.members}
-        />
-      );
-    case "MemberVoting":
-      return <MemberVoter send={send!} {...s} />;
-    case "MissionVoting":
-      return s.canVote ? <MissionVoter send={send!} /> : <MissionWaiter />;
-    case "MissionResultViewing":
-      return <MissionResultViewer d={d} send={send!} {...s} />;
   }
 };
