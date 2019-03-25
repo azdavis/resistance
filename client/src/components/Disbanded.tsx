@@ -10,6 +10,6 @@ export default ({ d }: Props) => (
   <div className="Disbanded">
     <h1>Disbanded</h1>
     <p>The game or lobby you were in was disbanded.</p>
-    <Button value="Leave" onClick={() => d({ t: "AckDisbanded" })} />
+    <Button value="Leave" onClick={() => d({ t: "GoLobbies" })} />
   </div>
 );
