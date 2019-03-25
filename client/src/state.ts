@@ -29,7 +29,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
     case "Close":
       return { t: "Fatal", s, a };
     case "SetMe":
-      return s.t === "Welcome"
+      return s.t === "Welcome" || s.t === "Disconnected"
         ? { t: "Welcome", me: a.Me }
         : s.t === "HowTo"
         ? { t: "HowTo", me: a.Me }
@@ -78,6 +78,8 @@ export const reducer: Reducer<State, Action> = (s, a) => {
     case "CurrentGame":
       return s.t === "LobbyWaiting" || s.t === "GamePlaying"
         ? mkGamePlaying(s.me, s.gid, s.clients, a)
+        : s.t === "Disconnected" && s.game !== null
+        ? mkGamePlaying(s.me, s.game.gid, s.game.clients, a)
         : { t: "Fatal", s, a };
     case "EndGame":
       return s.t === "GamePlaying"
