@@ -199,9 +199,11 @@ type GameCreate struct {
 }
 
 // GameClose signals that a game is closing.
+// invariant: EndGame.Lobbies == nil when the GameClose is received from a game
 type GameClose struct {
 	GID               // gid of this game
 	Clients []*Client // clients coming from this game
+	EndGame           // the EndGame to send to the Clients
 }
 
 // Helper functions ////////////////////////////////////////////////////////////

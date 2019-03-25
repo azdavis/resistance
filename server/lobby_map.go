@@ -48,10 +48,10 @@ func runLobbyMap(rx chan ToLobbyMap) {
 				broadcastLobbyChoosing()
 			case GameClose:
 				delete(games, m.GID)
-				msg := LobbyChoices{lobbiesList()}
+				m.EndGame.Lobbies = lobbiesList()
 				for _, cl := range m.Clients {
 					clients.Add(cl)
-					cl.tx <- msg
+					cl.tx <- m.EndGame
 				}
 			}
 		case ac := <-clients.C:
