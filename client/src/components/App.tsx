@@ -52,6 +52,10 @@ export default (): JSX.Element => {
       return <LobbyWaiter d={d} send={send!} {...s} />;
     case "RoleViewing":
       return <RoleViewer d={d} isSpy={s.isSpy} />;
+    case "GamePlaying":
+      return <div>TODO</div>;
+    case "GameEnded":
+      return <div>TODO</div>;
     case "MemberChoosing":
       return s.me === s.captain ? (
         <MemberChooser send={send!} {...s} />

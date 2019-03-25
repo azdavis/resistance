@@ -84,6 +84,24 @@ export type State =
       members: number | Array<CID>;
     }
   | {
+      t: "GamePlaying";
+      me: CID;
+      gid: GID;
+      clients: Array<Client>;
+      resWin: number;
+      spyWin: number;
+      captain: CID;
+      members: number | Array<CID>;
+      active: boolean;
+    }
+  | {
+      t: "GameEnded";
+      me: CID;
+      resWin: number;
+      spyWin: number;
+      lobbies: Array<Lobby>;
+    }
+  | {
       t: "MemberChoosing";
       me: CID;
       gid: GID;
