@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "./basic/Button";
-import { D } from "../types";
+import Button from "../basic/Button";
+import { D } from "../../types";
 
 type Props = {
   d: D;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default ({ d, resPts, spyPts }: Props) => (
-  <div className="GameEnd">
+  <div className="GameEnded">
     <h1>Game over</h1>
     <p>Resistance points: {resPts}</p>
     <p>Spy points: {spyPts}</p>

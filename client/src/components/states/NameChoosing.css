@@ -1,4 +1,4 @@
-.NameChooser input[type="text"] {
+.NameChoosing input[type="text"] {
   display: block;
   appearance: none;
   width: 100%;
@@ -10,7 +10,7 @@
   color: inherit;
 }
 
-.NameChooser input[type="text"]:focus {
+.NameChoosing input[type="text"]:focus {
   outline: 0;
   border-color: var(--blue);
 }

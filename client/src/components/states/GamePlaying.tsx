@@ -1,8 +1,8 @@
 import React from "react";
-import { Send, Client, CID } from "../types";
-import { getCaptain } from "../consts";
-import Voter from "./basic/Voter";
-import MemberChooser from "./MemberChooser";
+import { Send, Client, CID } from "../../types";
+import { getCaptain } from "../../consts";
+import Voter from "../basic/Voter";
+import MemberChooser from "../basic/MemberChooser";
 
 type Props = {
   send: Send;
@@ -46,7 +46,7 @@ export default ({
   members,
   active,
 }: Props) => (
-  <div className="GamePlayer">
+  <div className="GamePlaying">
     <h1>Game</h1>
     <p>Allegiance: {isSpy ? "Spies" : "Resistance"}</p>
     <p>Resistance points: {resPts}</p>

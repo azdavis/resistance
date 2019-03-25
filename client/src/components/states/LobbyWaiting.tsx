@@ -1,8 +1,8 @@
 import React from "react";
-import { D, Send, CID, Client } from "../types";
-import { okGameSize } from "../consts";
-import Button from "./basic/Button";
-import "./basic/Truncated.css";
+import { D, Send, CID, Client } from "../../types";
+import { okGameSize } from "../../consts";
+import Button from "../basic/Button";
+import "../basic/Truncated.css";
 
 type Props = {
   d: D;
@@ -22,7 +22,7 @@ const modifiers = (cid: CID, me: CID, leader: CID): string =>
     : "";
 
 export default ({ d, send, me, leader, clients }: Props) => (
-  <div className="LobbyWaiter">
+  <div className="LobbyWaiting">
     <h1>Lobby</h1>
     <h2>Members ({clients.length})</h2>
     {clients.map(({ CID, Name }) => (

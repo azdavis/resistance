@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import { D, Send } from "../types";
-import Button from "./basic/Button";
-import "./NameChooser.css";
+import { D, Send } from "../../types";
+import Button from "../basic/Button";
+import "./NameChoosing.css";
 
 type Props = {
   d: D;
@@ -13,7 +13,7 @@ export default ({ d, send, valid }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
   useEffect(() => nameRef.current!.focus(), []);
   return (
-    <div className="NameChooser">
+    <div className="NameChoosing">
       <h1>Player name</h1>
       <form
         onSubmit={e => {

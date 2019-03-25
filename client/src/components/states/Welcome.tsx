@@ -1,7 +1,7 @@
 import React from "react";
-import { D } from "../types";
-import Button from "./basic/Button";
-import ButtonLink from "./basic/ButtonLink";
+import { D } from "../../types";
+import Button from "../basic/Button";
+import ButtonLink from "../basic/ButtonLink";
 
 type Props = {
   d: D;

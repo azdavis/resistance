@@ -1,15 +1,15 @@
 import React, { useReducer, useEffect, useState } from "react";
 import { Send } from "../types";
 import { reducer, init } from "../state";
-import Fatal from "./Fatal";
-import Disbanded from "./Disbanded";
-import Welcome from "./Welcome";
-import HowTo from "./HowTo";
-import NameChooser from "./NameChooser";
-import LobbyChooser from "./LobbyChooser";
-import LobbyWaiter from "./LobbyWaiter";
-import GamePlayer from "./GamePlayer";
-import GameEnd from "./GameEnd";
+import Fatal from "./states/Fatal";
+import Disbanded from "./states/Disbanded";
+import Welcome from "./states/Welcome";
+import HowTo from "./states/HowTo";
+import NameChoosing from "./states/NameChoosing";
+import LobbyChoosing from "./states/LobbyChoosing";
+import LobbyWaiting from "./states/LobbyWaiting";
+import GamePlaying from "./states/GamePlaying";
+import GameEnded from "./states/GameEnded";
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
@@ -40,14 +40,14 @@ export default (): JSX.Element => {
     case "HowTo":
       return <HowTo d={d} />;
     case "NameChoosing":
-      return <NameChooser d={d} send={send!} {...s} />;
+      return <NameChoosing d={d} send={send!} {...s} />;
     case "LobbyChoosing":
-      return <LobbyChooser send={send!} {...s} />;
+      return <LobbyChoosing send={send!} {...s} />;
     case "LobbyWaiting":
-      return <LobbyWaiter d={d} send={send!} {...s} />;
+      return <LobbyWaiting d={d} send={send!} {...s} />;
     case "GamePlaying":
-      return <GamePlayer send={send!} {...s} />;
+      return <GamePlaying send={send!} {...s} />;
     case "GameEnded":
-      return <GameEnd d={d} {...s} />;
+      return <GameEnded d={d} {...s} />;
   }
 };

@@ -1,6 +1,6 @@
 import React from "react";
-import { Send, Lobby } from "../types";
-import Button from "./basic/Button";
+import { Send, Lobby } from "../../types";
+import Button from "../basic/Button";
 
 type Props = {
   send: Send;
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default ({ send, lobbies }: Props) => (
-  <div className="LobbyChooser">
+  <div className="LobbyChoosing">
     <h1>Lobbies</h1>
     <Button value="Create new" onClick={() => send({ t: "LobbyCreate" })} />
     <h2>Existing lobbies ({lobbies.length})</h2>
