@@ -82,7 +82,7 @@ func (cm *ClientMap) Clear() []*Client {
 }
 
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
-// each action with the CID. pipe quits when the given q channel is closed.
+// each action with the CID. pipe quits when q is closed.
 func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, q <-chan struct{}) {
 	log.Println("enter pipe", cid)
 	defer log.Println("exit pipe", cid)
