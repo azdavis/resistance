@@ -56,7 +56,7 @@ func (cl *Client) Close() {
 	close(cl.tx)
 }
 
-// SendOn updates acCh.
+// SendOn updates acCh. It returns only once acCh has been updated.
 func (cl *Client) SendOn(acCh chan<- Action) {
 	cl.newAcCh <- acCh
 	<-cl.ackAcCh
