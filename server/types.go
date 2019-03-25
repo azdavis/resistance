@@ -143,7 +143,6 @@ type CurrentLobby struct {
 // invariant: 0 <= SpyPts < MaxPts
 // invariant: Members != nil => len(Members) == NumMembers
 // invariant: Active => Members != nil
-// invariant: Members == nil => !Active
 type CurrentGame struct {
 	IsSpy      bool  // whether this player is a spy
 	ResPts     int   // number of wins the resistance has
