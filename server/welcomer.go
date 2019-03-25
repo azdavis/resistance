@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"regexp"
 )
 
@@ -13,8 +12,6 @@ func validName(s string) bool {
 }
 
 func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client, q <-chan struct{}) {
-	log.Println("enter runWelcomer")
-	defer log.Println("exit runWelcomer")
 	clients := NewClientMap()
 	next := CID(1)
 	for {

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"math/rand"
 )
 
@@ -64,8 +63,6 @@ func runGame(
 	q <-chan struct{},
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
-	log.Println("enter runGame", gid)
-	defer log.Println("exit runGame", gid)
 
 	// all the cids, in a stable order.
 	cids := make([]CID, 0, len(clients.M))
@@ -162,7 +159,6 @@ func runGame(
 	}
 
 	broadcast()
-	log.Printf("runGame gid: %v, names: %+v, isSpy: %+v", gid, names, isSpy)
 
 	for {
 		select {
@@ -172,7 +168,6 @@ func runGame(
 		case cl := <-rx:
 			reconnect(cl)
 		case ac := <-clients.C:
-			log.Printf("runGame %v ac: %+v", gid, ac)
 			cid := ac.CID
 			switch ts := ac.ToServer.(type) {
 			case Close:

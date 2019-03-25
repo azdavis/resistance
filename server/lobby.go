@@ -1,9 +1,5 @@
 package main
 
-import (
-	"log"
-)
-
 // Lobby represents a group of clients all waiting for the same game to
 // start.
 type Lobby struct {
@@ -40,8 +36,6 @@ func runLobby(
 	q <-chan struct{},
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
-	log.Println("enter runLobby", gid)
-	defer log.Println("exit runLobby", gid)
 
 	clients := NewClientMap()
 	clients.Add(leader)
