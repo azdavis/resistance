@@ -52,7 +52,7 @@ export default ({
     <p>Resistance points: {resPts}</p>
     <p>Spy points: {spyPts}</p>
     <p>Captain: {getCaptain(clients, captain)}</p>
-    <p>Members: ({typeof members === "number" ? members : members.length})</p>
+    <p>Members ({typeof members === "number" ? members : members.length}):</p>
     {typeof members === "number" ? (
       me === captain ? (
         <MemberChooser {...{ send, me, clients, members }} />
