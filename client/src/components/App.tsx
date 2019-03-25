@@ -22,7 +22,11 @@ export default (): JSX.Element => {
       ws.send(JSON.stringify({ T: t, P }));
     };
     ws.onopen = () => {
-      newSend({ t: "Connect" });
+      newSend(
+        s.t === "Disconnected" && s.game !== null
+          ? { t: "Reconnect", Me: s.me, GID: s.game.gid }
+          : { t: "Connect" },
+      );
       setSend(() => newSend);
     };
     ws.onmessage = e => {
