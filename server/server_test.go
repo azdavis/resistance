@@ -41,12 +41,6 @@ func checkLobbies(t *testing.T, xs []Lobby) {
 	}
 }
 
-func checkPts(t *testing.T, pts int) {
-	if !(0 <= pts && pts < MaxPts) {
-		t.Fatal("pts not in range", pts)
-	}
-}
-
 // testClient //////////////////////////////////////////////////////////////////
 
 type testClient struct {
@@ -147,8 +141,12 @@ func (tc *testClient) recvCurrentGame(t *testing.T) CurrentGame {
 	if !ok {
 		t.Fatal("response was not CurrentGame")
 	}
-	checkPts(t, y.ResPts)
-	checkPts(t, y.SpyPts)
+	if !(0 <= y.ResPts && y.ResPts < MaxPts) {
+		t.Fatal("ResPts not in range", y.ResPts)
+	}
+	if !(0 <= y.SpyPts && y.SpyPts < MaxPts) {
+		t.Fatal("SpyPts not in range", y.SpyPts)
+	}
 	if y.Members != nil && len(y.Members) != y.NumMembers {
 		t.Fatal("number of members differ", len(y.Members), y.NumMembers)
 	}
@@ -167,8 +165,12 @@ func (tc *testClient) recvEndGame(t *testing.T) EndGame {
 	if !ok {
 		t.Fatal("response was not EndGame")
 	}
-	checkPts(t, y.ResPts)
-	checkPts(t, y.SpyPts)
+	if !(0 <= y.ResPts && y.ResPts <= MaxPts) {
+		t.Fatal("ResPts not in range", y.ResPts)
+	}
+	if !(0 <= y.SpyPts && y.SpyPts <= MaxPts) {
+		t.Fatal("SpyPts not in range", y.SpyPts)
+	}
 	if y.ResPts == MaxPts && y.SpyPts == MaxPts {
 		t.Fatal("both ResPts and SpyPts are MaxPts")
 	}
