@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"sort"
 )
 
@@ -16,17 +15,15 @@ import (
 //
 // Only one goroutine may access a ClientMap at a time.
 type ClientMap struct {
-	C  chan Action             // messages from the Clients in M
-	M  map[CID]*Client         // if M[x] = c, c.CID = x
-	qs map[CID]chan<- struct{} // iff M[x] = c, close(qs[x]) stops piping
+	C chan Action     // messages from the Clients in M
+	M map[CID]*Client // if M[x] = c, c.CID = x
 }
 
 // NewClientMap returns a new ClientMap.
 func NewClientMap() *ClientMap {
 	cm := &ClientMap{
-		C:  make(chan Action),
-		M:  make(map[CID]*Client),
-		qs: make(map[CID]chan<- struct{}),
+		C: make(chan Action),
+		M: make(map[CID]*Client),
 	}
 	return cm
 }
@@ -39,10 +36,8 @@ func (cm *ClientMap) Add(cl *Client) {
 	if ok {
 		panic("already present")
 	}
-	q := make(chan struct{})
 	cm.M[cl.CID] = cl
-	cm.qs[cl.CID] = q
-	go cm.pipe(cl.CID, cl.rx, q)
+	cl.SendOn(cm.C)
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see
@@ -54,8 +49,7 @@ func (cm *ClientMap) Rm(cid CID) *Client {
 		panic("not present")
 	}
 	delete(cm.M, cid)
-	close(cm.qs[cid])
-	delete(cm.qs, cid)
+	cl.SendOn(SendBlocks)
 	return cl
 }
 
@@ -85,26 +79,5 @@ func (cm *ClientMap) Clear() []*Client {
 func (cm *ClientMap) KillAll() {
 	for cid := range cm.M {
 		cm.Rm(cid).Kill()
-	}
-}
-
-// pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
-// each action with the CID. pipe quits when q is closed.
-func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, q <-chan struct{}) {
-	log.Println("enter pipe", cid)
-	defer log.Println("exit pipe", cid)
-	for {
-		select {
-		case <-q:
-			return
-		case ts := <-ch:
-			// TODO race between pulling a ts out of ch and a call to Rm, which tries
-			// and fails to quit this pipe because we're stuck on sending to C.
-			cm.C <- Action{cid, ts}
-			_, ok := ts.(Close)
-			if ok {
-				return
-			}
-		}
 	}
 }

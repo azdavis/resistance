@@ -50,14 +50,7 @@ type testClient struct {
 }
 
 func newTestClient() *testClient {
-	cl := &Client{
-		CID:  0,
-		Name: "",
-		tx:   make(chan ToClient),
-		rx:   make(chan ToServer),
-		conn: nil,
-	}
-	tc := &testClient{cl, make(chan struct{}), make(chan ToClient)}
+	tc := &testClient{NewClient(nil), make(chan struct{}), make(chan ToClient)}
 	go tc.doTestTx()
 	return tc
 }
