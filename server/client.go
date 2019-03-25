@@ -35,13 +35,14 @@ func NewClient(conn *ws.Conn, cid CID) *Client {
 }
 
 // Close quits the write goroutine. It should be called exactly once, when a
-// Close{} ToServer is received from this client.
+// Close{} ToServer is received from this client. No one else should be reading
+// from rx or writing to tx when this is called.
 func (cl *Client) Close() {
 	close(cl.tx)
 }
 
 // Kill kills this Client. It should be called exactly once. No one else should
-// be reading from rx when this is called.
+// be reading from rx or writing to tx when this is called.
 func (cl *Client) Kill() {
 	cl.conn.Close()
 	for range cl.rx {
