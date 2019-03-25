@@ -1,6 +1,5 @@
 import React from "react";
 import { Send, Client, CID } from "../../types";
-import { getCaptain } from "../../consts";
 import Voter from "../basic/Voter";
 import MemberChooser from "../basic/MemberChooser";
 
@@ -51,7 +50,7 @@ export default ({
     <p>Allegiance: {isSpy ? "Spies" : "Resistance"}</p>
     <p>Resistance points: {resPts}</p>
     <p>Spy points: {spyPts}</p>
-    <p>Captain: {getCaptain(clients, captain)}</p>
+    <p>Captain: {clients.find(({ CID }) => CID === captain)!.Name}</p>
     <p>Members ({typeof members === "number" ? members : members.length}):</p>
     {typeof members === "number" ? (
       me === captain ? (
