@@ -41,7 +41,7 @@ type ToClient =
       SpyPts: number;
       Captain: CID;
       NumMembers: number;
-      Members: Array<CID>;
+      Members: null | Array<CID>;
       Active: boolean;
     }
   | {

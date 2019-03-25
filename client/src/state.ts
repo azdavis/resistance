@@ -68,7 +68,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             resPts: a.ResPts,
             spyPts: a.SpyPts,
             captain: a.Captain,
-            members: a.Members,
+            members: a.Members === null ? a.NumMembers : a.Members,
             active: a.Active,
           }
         : { t: "Fatal", s, a };
