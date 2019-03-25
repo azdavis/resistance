@@ -161,7 +161,9 @@ func runGame(
 			case Close:
 				clients.Rm(cid).Close()
 				// TODO only do this after a timeout?
-				goto out
+				if len(clients.M) == 0 {
+					goto out
+				}
 			case MemberChoose:
 				if state != memberChoosing ||
 					cid != cids[captain] ||
