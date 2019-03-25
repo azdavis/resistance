@@ -39,7 +39,11 @@ func hasCID(xs []CID, y CID) bool {
 }
 
 // NewGame returns a new Game.
-func NewGame(gid GID, clients *ClientMap, tx chan<- ToLobbyMap) Game {
+func NewGame(
+	gid GID,
+	clients *ClientMap,
+	tx chan<- ToLobbyMap,
+) Game {
 	// see NewLobby.
 	rxLobbyMap := make(chan *Client)
 	g := Game{
