@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect, useState } from "react";
 import { Send } from "../types";
 import { reducer, init } from "../state";
+import useTriggerableEffect from "../hooks/useTriggerableEffect";
 import Fatal from "./states/Fatal";
 import Disconnected from "./states/Disconnected";
 import Disbanded from "./states/Disbanded";
@@ -15,7 +16,7 @@ import GameEnded from "./states/GameEnded";
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<Send | null>(null);
-  useEffect(() => {
+  const reconnect = useTriggerableEffect(() => {
     const ws = new WebSocket("ws://localhost:8080/ws");
     const newSend: Send = ({ t, ...P }) => {
       ws.send(JSON.stringify({ T: t, P }));
@@ -35,7 +36,7 @@ export default (): JSX.Element => {
     case "Fatal":
       return <Fatal {...s} />;
     case "Disconnected":
-      return <Disconnected />;
+      return <Disconnected reconnect={reconnect} />;
     case "Disbanded":
       return <Disbanded d={d} />;
     case "Welcome":
