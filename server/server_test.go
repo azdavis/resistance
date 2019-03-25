@@ -191,19 +191,24 @@ func (s *Server) addClient(t *testing.T) *testClient {
 // Tests ///////////////////////////////////////////////////////////////////////
 
 func TestNumGoroutine(t *testing.T) {
-	before := runtime.NumGoroutine()
+	pre := runtime.NumGoroutine()
 	s := NewServer()
-	s.addClient(t)
-	s.addClient(t)
-	during := runtime.NumGoroutine()
+	now := runtime.NumGoroutine()
+	if now != pre+2 {
+		t.Fatal("bad number of goroutines", pre, now)
+	}
+	for i := 1; i < 10; i++ {
+		s.addClient(t)
+		now = runtime.NumGoroutine()
+		if now != pre+2+(i*2) {
+			t.Fatal("bad number of goroutines", pre, now, i)
+		}
+	}
 	s.Close()
 	time.Sleep(500 * time.Millisecond)
-	after := runtime.NumGoroutine()
-	if before > during {
-		t.Fatal("before > during", before, during)
-	}
-	if before != after {
-		t.Fatal("before != after", before, after)
+	now = runtime.NumGoroutine()
+	if pre != now {
+		t.Fatal("pre != now", pre, now)
 	}
 }
 
