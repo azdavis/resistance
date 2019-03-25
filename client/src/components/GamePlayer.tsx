@@ -43,47 +43,45 @@ export default ({
   captain,
   members,
   active,
-}: Props) => {
-  return (
-    <div className="GamePlayer">
-      <h1>Game</h1>
-      <p>Resistance points: {resPts}</p>
-      <p>Spy points: {spyPts}</p>
-      <p>Captain: {getCaptain(clients, captain)}</p>
-      <p>Members: ({typeof members === "number" ? members : members.length})</p>
-      {typeof members === "number" ? (
-        me === captain ? (
-          <MemberChooser {...{ send, me, clients, members }} />
-        ) : (
-          <div>(being chosen by captain)</div>
-        )
+}: Props) => (
+  <div className="GamePlayer">
+    <h1>Game</h1>
+    <p>Resistance points: {resPts}</p>
+    <p>Spy points: {spyPts}</p>
+    <p>Captain: {getCaptain(clients, captain)}</p>
+    <p>Members: ({typeof members === "number" ? members : members.length})</p>
+    {typeof members === "number" ? (
+      me === captain ? (
+        <MemberChooser {...{ send, me, clients, members }} />
       ) : (
-        clients
-          .filter(({ CID }) => members.includes(CID))
-          .map(({ CID, Name }) => (
-            <div key={CID}>
-              {Name}
-              {modifiers(CID, me, captain)}
-            </div>
-          ))
-      )}
-      {typeof members === "number" ? null : active ? (
-        members.includes(me) ? (
-          <Voter
-            prompt="Should the mission succeed?"
-            options={succeedOpts}
-            onVote={Vote => send({ t: "MissionVote", Vote })}
-          />
-        ) : (
-          <div>(being voted on by mission members)</div>
-        )
-      ) : (
+        <div>(being chosen by captain)</div>
+      )
+    ) : (
+      clients
+        .filter(({ CID }) => members.includes(CID))
+        .map(({ CID, Name }) => (
+          <div key={CID}>
+            {Name}
+            {modifiers(CID, me, captain)}
+          </div>
+        ))
+    )}
+    {typeof members === "number" ? null : active ? (
+      members.includes(me) ? (
         <Voter
-          prompt="Should the mission occur?"
-          options={occurOpts}
-          onVote={Vote => send({ t: "MemberVote", Vote })}
+          prompt="Should the mission succeed?"
+          options={succeedOpts}
+          onVote={Vote => send({ t: "MissionVote", Vote })}
         />
-      )}
-    </div>
-  );
-};
+      ) : (
+        <div>(being voted on by mission members)</div>
+      )
+    ) : (
+      <Voter
+        prompt="Should the mission occur?"
+        options={occurOpts}
+        onVote={Vote => send({ t: "MemberVote", Vote })}
+      />
+    )}
+  </div>
+);
