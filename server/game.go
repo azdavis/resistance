@@ -94,8 +94,7 @@ func runGame(
 	captain := 0
 
 	// invariant:
-	// state == missionVoting || state == memberVoting
-	// <=> members != nil
+	// state == missionVoting || state == memberVoting <=> members != nil
 	var members []CID
 
 	// invariant: members == nil <=> votes == nil
