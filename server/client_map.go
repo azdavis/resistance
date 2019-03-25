@@ -75,9 +75,9 @@ func (cm *ClientMap) Clear() []*Client {
 	return ret
 }
 
-// KillAll kills all clients in M and empties M.
-func (cm *ClientMap) KillAll() {
+// CloseAll kills all clients in M and empties M.
+func (cm *ClientMap) CloseAll() {
 	for cid := range cm.M {
-		cm.Rm(cid).Kill()
+		cm.Rm(cid).Close()
 	}
 }

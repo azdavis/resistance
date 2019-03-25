@@ -17,7 +17,7 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client, q <-chan struct{}) {
 	for {
 		select {
 		case <-q:
-			clients.KillAll()
+			clients.CloseAll()
 			return
 		case cl := <-rx:
 			cl.CID = next

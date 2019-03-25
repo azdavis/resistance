@@ -51,7 +51,7 @@ func runLobby(
 	for {
 		select {
 		case <-q:
-			clients.KillAll()
+			clients.CloseAll()
 			return
 		case cl := <-rx:
 			clients.Add(cl)
@@ -74,7 +74,7 @@ func runLobby(
 				for {
 					select {
 					case <-q:
-						clients.KillAll()
+						clients.CloseAll()
 						return
 					case cl := <-rx:
 						clients.Add(cl)
@@ -89,7 +89,7 @@ func runLobby(
 				}
 				select {
 				case <-q:
-					clients.KillAll()
+					clients.CloseAll()
 				case cl := <-rx:
 					clients.Add(cl)
 					// allow leader to re-verify whether the game should be started.
@@ -108,7 +108,7 @@ out:
 		select {
 		case <-q:
 			for _, cl := range cs {
-				cl.Kill()
+				cl.Close()
 			}
 			return
 		case cl := <-rx:

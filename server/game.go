@@ -142,7 +142,7 @@ func runGame(
 	reconnect := func(cl *Client) {
 		_, ok := clients.M[cl.CID]
 		if ok || !hasCID(cids, cl.CID) {
-			cl.Kill()
+			cl.Close()
 		} else {
 			clients.Add(cl)
 			// this client reconnected, so it has no name. but this client was in this
@@ -163,7 +163,7 @@ func runGame(
 	for {
 		select {
 		case <-q:
-			clients.KillAll()
+			clients.CloseAll()
 			return
 		case cl := <-rx:
 			reconnect(cl)
@@ -247,7 +247,7 @@ out:
 		select {
 		case <-q:
 			for _, cl := range cs {
-				cl.Kill()
+				cl.Close()
 			}
 			return
 		case cl := <-rx:

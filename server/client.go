@@ -46,21 +46,14 @@ func NewClient(conn *ws.Conn) *Client {
 	return cl
 }
 
-// Close quits the write goroutine. It should be called exactly once, when a
-// Close{} ToServer is received from this client. No one else should be reading
-// from rx or writing to tx when this is called.
+// Close quits some goroutines. It should be called exactly once. Usually this
+// is called after receiving a Close{} on rx. No one should be listening on
 func (cl *Client) Close() {
-	close(cl.tx)
-	close(cl.q)
-}
-
-// Kill kills this Client. It should be called exactly once. No one else should
-// be reading from rx or writing to tx when this is called.
-func (cl *Client) Kill() {
 	if cl.conn != nil {
 		cl.conn.Close()
 	}
-	cl.Close()
+	close(cl.q)
+	close(cl.tx)
 }
 
 // SendOn updates acCh.
