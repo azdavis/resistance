@@ -38,8 +38,8 @@ type ToClient =
   | { t: "BeginGame"; IsSpy: boolean; Captain: CID; NumMembers: number }
   | {
       t: "CurrentGame";
-      ResWin: number;
-      SpyWin: number;
+      ResPts: number;
+      SpyPts: number;
       Captain: CID;
       NumMembers: number;
       Members: Array<CID>;
@@ -47,13 +47,13 @@ type ToClient =
     }
   | {
       t: "EndGame";
-      ResWin: number;
-      SpyWin: number;
+      ResPts: number;
+      SpyPts: number;
       Lobbies: Array<Lobby>;
     }
   | { t: "MemberPropose"; Members: Array<CID> }
   | { t: "MemberAccept" }
-  | { t: "MemberReject"; Captain: CID; Members: number; SpyWin: boolean }
+  | { t: "MemberReject"; Captain: CID; Members: number; SpyGetPt: boolean }
   | { t: "MissionResult"; Success: boolean; Captain: CID; Members: number };
 
 export type Action = SelfAction | ToClient;
@@ -88,8 +88,8 @@ export type State =
       me: CID;
       gid: GID;
       clients: Array<Client>;
-      resWin: number;
-      spyWin: number;
+      resPts: number;
+      spyPts: number;
       captain: CID;
       members: number | Array<CID>;
       active: boolean;
@@ -97,8 +97,8 @@ export type State =
   | {
       t: "GameEnded";
       me: CID;
-      resWin: number;
-      spyWin: number;
+      resPts: number;
+      spyPts: number;
       lobbies: Array<Lobby>;
     }
   | {
@@ -106,8 +106,8 @@ export type State =
       me: CID;
       gid: GID;
       clients: Array<Client>;
-      resWin: number;
-      spyWin: number;
+      resPts: number;
+      spyPts: number;
       captain: CID;
       members: number;
     }
@@ -116,8 +116,8 @@ export type State =
       me: CID;
       gid: GID;
       clients: Array<Client>;
-      resWin: number;
-      spyWin: number;
+      resPts: number;
+      spyPts: number;
       captain: CID;
       members: Array<CID>;
     }
@@ -126,8 +126,8 @@ export type State =
       me: CID;
       gid: GID;
       clients: Array<Client>;
-      resWin: number;
-      spyWin: number;
+      resPts: number;
+      spyPts: number;
       canVote: boolean;
     }
   | {
@@ -135,8 +135,8 @@ export type State =
       me: CID;
       gid: GID;
       clients: Array<Client>;
-      resWin: number;
-      spyWin: number;
+      resPts: number;
+      spyPts: number;
       success: boolean;
       captain: CID;
       members: number | Array<CID>;

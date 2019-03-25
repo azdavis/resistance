@@ -88,7 +88,7 @@ func runGame(
 	log.Printf("runGame %v spies: %+v", gid, isSpy)
 
 	// current state.
-	// invariant: state == gameOver <=> resWin == MaxWin || spyWin == MaxWin
+	// invariant: state == gameOver <=> resPts == MaxPts || spyPts == MaxPts
 	state := memberChoosing
 
 	// invariant: the client with CID cids[captain] is the current captain.
@@ -102,11 +102,11 @@ func runGame(
 	// invariant: members == nil <=> votes == nil
 	var votes map[CID]bool
 
-	// invariant: 0 <= resWin <= MaxWin
-	resWin := 0
+	// invariant: 0 <= resPts <= MaxPts
+	resPts := 0
 
-	// invariant: 0 <= spyWin <= MaxWin
-	spyWin := 0
+	// invariant: 0 <= spyPts <= MaxPts
+	spyPts := 0
 
 	// invariant: 0 := skip <= MaxSkip
 	skip := 0
@@ -197,20 +197,20 @@ func runGame(
 				} else {
 					newMemberChoosing()
 					skip++
-					spyDidWin := skip == MaxSkip
+					spyGetPt := skip == MaxSkip
 					msg := MemberReject{
-						Captain: cids[captain],
-						Members: nMission,
-						SpyWin:  spyDidWin,
+						Captain:  cids[captain],
+						Members:  nMission,
+						SpyGetPt: spyGetPt,
 					}
 					for _, cl := range clients.M {
 						cl.tx <- msg
 					}
-					if spyDidWin {
-						spyWin++
+					if spyGetPt {
+						spyPts++
 						skip = 0
 					}
-					if spyWin >= MaxWin {
+					if spyPts >= MaxPts {
 						endGame()
 					}
 				}
@@ -228,12 +228,12 @@ func runGame(
 				}
 				success := numTrue(votes) > nMission/2
 				if success {
-					resWin++
+					resPts++
 				} else {
-					spyWin++
+					spyPts++
 				}
 				msg := MissionResult{Success: success}
-				if resWin < MaxWin && spyWin < MaxWin {
+				if resPts < MaxPts && spyPts < MaxPts {
 					newMemberChoosing()
 					msg.Captain = cids[captain]
 					msg.Members = nMission

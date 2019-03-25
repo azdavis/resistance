@@ -149,13 +149,13 @@ type BeginGame struct {
 }
 
 // CurrentGame represents an in-progress game.
-// invariant: 0 <= ResWin < MaxWin
-// invariant: 0 <= SpyWin < MaxWin
+// invariant: 0 <= ResPts < MaxPts
+// invariant: 0 <= SpyPts < MaxPts
 // invariant: Members != nil ==> len(members) == NumMembers
 // invariant: Active ==> Members != nil
 type CurrentGame struct {
-	ResWin     int   // number of wins the resistance has
-	SpyWin     int   // number of wins the spies have
+	ResPts     int   // number of wins the resistance has
+	SpyPts     int   // number of wins the spies have
 	Captain    CID   // captain of the mission
 	NumMembers int   // number of members on this mission
 	Members    []CID // members of this mission
@@ -163,12 +163,12 @@ type CurrentGame struct {
 }
 
 // EndGame represents an ended game.
-// invariant: 0 <= ResWin <= MaxWin
-// invariant: 0 <= SpyWin <= MaxWin
-// invariant: ResWin == MaxWin <=> SpyWin != MaxWin
+// invariant: 0 <= ResPts <= MaxPts
+// invariant: 0 <= SpyPts <= MaxPts
+// invariant: ResPts == MaxPts <=> SpyPts != MaxPts
 type EndGame struct {
-	ResWin  int     // number of wins the resistance has
-	SpyWin  int     // number of wins the spies have
+	ResPts  int     // number of wins the resistance has
+	SpyPts  int     // number of wins the spies have
 	Lobbies []Lobby // available lobbies to join
 }
 
@@ -185,9 +185,9 @@ type MemberAccept struct{}
 // MemberReject notifies the client that the proposed members have been
 // rejected.
 type MemberReject struct {
-	Captain CID  // captain of new mission
-	Members int  // number of members on new mission
-	SpyWin  bool // whether the spies get a point
+	Captain  CID  // captain of new mission
+	Members  int  // number of members on new mission
+	SpyGetPt bool // whether the spies get a point
 }
 
 // MissionResult notifies the client that voting on the mission has concluded.

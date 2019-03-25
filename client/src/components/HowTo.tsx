@@ -1,6 +1,6 @@
 import React from "react";
 import { D } from "../types";
-import { minN, maxN, maxWin } from "../consts";
+import { minN, maxN, maxPts } from "../consts";
 import Button from "./basic/Button";
 
 type Props = {
@@ -15,7 +15,7 @@ export default ({ d }: Props) => (
     </p>
     <p>Some players are spies. The rest are members of the resistance.</p>
     <p>
-      The first of the spies and resistance to get {maxWin} points wins the
+      The first of the spies and resistance to get {maxPts} points wins the
       game.
     </p>
     <p>
