@@ -242,7 +242,9 @@ out:
 	for {
 		select {
 		case <-q:
-			clients.KillAll()
+			for _, cl := range cs {
+				cl.Kill()
+			}
 			return
 		case cl := <-rx:
 			cs = append(cs, cl)
