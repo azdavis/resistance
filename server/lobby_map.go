@@ -15,6 +15,7 @@ func runLobbyMap(rx chan ToLobbyMap) {
 		for _, lb := range lobbies {
 			ret = append(ret, lb)
 		}
+		// TODO bad perf
 		sort.Slice(ret, func(i, j int) bool { return ret[i].GID < ret[j].GID })
 		return ret
 	}

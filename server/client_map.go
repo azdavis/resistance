@@ -66,6 +66,7 @@ func (cm *ClientMap) ToList() []*Client {
 	for _, cl := range cm.M {
 		ret = append(ret, cl)
 	}
+	// TODO bad perf
 	sort.Slice(ret, func(i, j int) bool { return ret[i].CID < ret[j].CID })
 	return ret
 }
