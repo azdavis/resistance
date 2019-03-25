@@ -36,7 +36,7 @@ export type CurrentGame = {
   SpyPts: number;
   Captain: CID;
   NumMembers: number;
-  Members: null | Array<CID>;
+  Members: Array<CID> | null;
   Active: boolean;
 };
 
@@ -61,7 +61,7 @@ export type State =
   | {
       t: "Disconnected";
       me: CID;
-      game: null | { gid: GID; clients: Array<Client> };
+      game: { gid: GID; clients: Array<Client> } | null;
     }
   | { t: "Disbanded"; me: CID; lobbies: Array<Lobby> }
   | { t: "Welcome"; me: CID }
