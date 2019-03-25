@@ -25,7 +25,7 @@ export default ({ d, send, success, resWin, spyWin }: Props) => (
         <Button
           value="Leave"
           onClick={() => {
-            d({ t: "GameLeave" });
+            d({ t: "GoLobbies" });
             send({ t: "GameLeave" });
           }}
         />

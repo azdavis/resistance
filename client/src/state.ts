@@ -21,6 +21,8 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         ? { ...s, t: "LobbyChoosing" }
         : s.t === "LobbyWaiting"
         ? { ...s, didLeave: true }
+        : s.t === "MissionResultViewing"
+        ? { ...s, didLeave: true }
         : { t: "Fatal", s, a };
     case "GoWelcome":
       return s.t === "HowTo" || s.t === "NameChoosing"
@@ -174,10 +176,6 @@ export const reducer: Reducer<State, Action> = (s, a) => {
               captain: s.captain,
               members: s.members,
             }
-        : { t: "Fatal", s, a };
-    case "GameLeave":
-      return s.t === "MissionResultViewing"
-        ? { ...s, didLeave: true }
         : { t: "Fatal", s, a };
   }
 };

@@ -28,8 +28,7 @@ type SelfAction =
   | { t: "GoNameChoose" }
   | { t: "GoHowTo" }
   | { t: "AckRole" }
-  | { t: "AckMissionResult" }
-  | { t: "GameLeave" };
+  | { t: "AckMissionResult" };
 
 type ToClient =
   | { t: "SetMe"; Me: CID }
