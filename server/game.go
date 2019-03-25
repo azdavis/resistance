@@ -111,7 +111,6 @@ func runGame(
 	// invariant: 0 := skip <= MaxSkip
 	skip := 0
 
-	// update captain.
 	newMemberChoosing := func() {
 		state = memberChoosing
 		members = nil
@@ -131,7 +130,6 @@ func runGame(
 	reconnect := func(cl *Client) {
 		_, ok := clients.M[cl.CID]
 		if ok {
-			// oof
 			cl.Kill()
 		} else {
 			clients.Add(cl)
