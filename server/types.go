@@ -153,6 +153,7 @@ type BeginGame struct {
 // invariant: 0 <= SpyPts < MaxPts
 // invariant: Members != nil ==> len(members) == NumMembers
 // invariant: Active ==> Members != nil
+// invariant: Members == nil => !Active
 type CurrentGame struct {
 	ResPts     int   // number of wins the resistance has
 	SpyPts     int   // number of wins the spies have
