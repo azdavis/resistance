@@ -75,14 +75,14 @@ func runGame(
 	const m = 5
 	nMission := len(cids) / m
 
-	// invariant: isSpy[i] <=> the client with CID cids[i] is a spy.
-	isSpy := make([]bool, len(cids))
+	// invariant: isSpy[cid] <=> the client with CID cid is a spy.
+	isSpy := make(map[CID]bool, len(cids))
 	for i := len(cids) / s; i > 0; /* intentionally empty */ {
-		j := rand.Intn(len(cids))
-		if isSpy[j] {
+		cid := cids[rand.Intn(len(cids))]
+		if isSpy[cid] {
 			continue
 		}
-		isSpy[j] = true
+		isSpy[cid] = true
 		i--
 	}
 	log.Printf("runGame %v spies: %+v", gid, isSpy)
@@ -138,9 +138,9 @@ func runGame(
 	}
 
 	msg := BeginGame{Captain: cids[captain], NumMembers: nMission}
-	for i, cid := range cids {
-		msg.IsSpy = isSpy[i]
-		clients.M[cid].tx <- msg
+	for _, cl := range clients.M {
+		msg.IsSpy = isSpy[cl.CID]
+		cl.tx <- msg
 	}
 
 	for {
