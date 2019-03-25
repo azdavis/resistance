@@ -134,7 +134,7 @@ func runGame(
 
 	reconnect := func(cl *Client) {
 		_, ok := clients.M[cl.CID]
-		if ok {
+		if ok || !hasCID(cids, cl.CID) {
 			cl.Kill()
 		} else {
 			clients.Add(cl)
