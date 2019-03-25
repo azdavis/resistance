@@ -73,9 +73,9 @@ export const reducer: Reducer<State, Action> = (s, a) => {
           }
         : { t: "Fatal", s, a };
     case "CurrentGame":
-      return s;
+      return s; // TODO
     case "EndGame":
-      return s;
+      return s; // TODO
     case "AckRole":
       return s.t === "RoleViewing"
         ? typeof s.members === "number"
