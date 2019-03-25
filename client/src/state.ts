@@ -73,7 +73,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
           }
         : { t: "Fatal", s, a };
     case "CurrentGame":
-      return s.t === "RoleViewing" || s.t === "GamePlaying"
+      return s.t === "LobbyWaiting" || s.t === "GamePlaying"
         ? {
             t: "GamePlaying",
             me: s.me,
