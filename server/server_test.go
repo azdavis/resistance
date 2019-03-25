@@ -194,8 +194,8 @@ func TestOneClient(t *testing.T) {
 	c.send(NameChoose{"asdfasdfahsfasfhkaslkdjfhasfkajshfaslkfjhadlkfjahsflkas"})
 	c.recvNameReject(t)
 	c.send(NameChoose{"fella"})
-	ls := c.recvLobbyChoices(t)
-	if len(ls.Lobbies) != 0 {
-		t.Fatal("lobbies not empty")
+	lc := c.recvLobbyChoices(t)
+	if len(lc.Lobbies) != 0 {
+		t.Fatal("lobbies not len 0")
 	}
 }
