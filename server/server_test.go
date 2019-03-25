@@ -143,7 +143,7 @@ func (tc *testClient) recvEndGame(t *testing.T) EndGame {
 	return y
 }
 
-// addClient ///////////////////////////////////////////////////////////////////
+// Extra methods on server /////////////////////////////////////////////////////
 
 func (s *Server) addClient(t *testing.T) *testClient {
 	tc := newTestClient()
@@ -160,14 +160,18 @@ func (s *Server) addClient(t *testing.T) *testClient {
 	return tc
 }
 
+func (s *Server) closeAndWait() {
+	s.Close()
+	time.Sleep(time.Second)
+}
+
 // Tests ///////////////////////////////////////////////////////////////////////
 
 func TestBasicNumGoroutine(t *testing.T) {
 	before := runtime.NumGoroutine()
 	s := NewServer()
 	during := runtime.NumGoroutine()
-	s.Close()
-	time.Sleep(time.Second)
+	s.closeAndWait()
 	after := runtime.NumGoroutine()
 	if before > during {
 		t.Fatal("before > during")
@@ -179,7 +183,7 @@ func TestBasicNumGoroutine(t *testing.T) {
 
 func TestOneClient(t *testing.T) {
 	s := NewServer()
-	defer s.Close()
+	defer s.closeAndWait()
 	c := s.addClient(t)
 	c.send(NameChoose{""})
 	c.recvNameReject(t)
