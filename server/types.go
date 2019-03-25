@@ -112,6 +112,8 @@ func (NameReject) isToClient()    {}
 func (LobbyChoices) isToClient()  {}
 func (CurrentLobby) isToClient()  {}
 func (BeginGame) isToClient()     {}
+func (CurrentGame) isToClient()   {}
+func (EndGame) isToClient()       {}
 func (MemberPropose) isToClient() {}
 func (MemberAccept) isToClient()  {}
 func (MemberReject) isToClient()  {}
@@ -144,6 +146,30 @@ type BeginGame struct {
 	IsSpy      bool // whether the client is a spy
 	Captain    CID  // captain of this mission
 	NumMembers int  // number of members on this mission
+}
+
+// CurrentGame represents an in-progress game.
+// invariant: 0 <= ResWin < MaxWin
+// invariant: 0 <= SpyWin < MaxWin
+// invariant: Members != nil ==> len(members) == NumMembers
+// invariant: Active ==> Members != nil
+type CurrentGame struct {
+	ResWin     int   // number of wins the resistance has
+	SpyWin     int   // number of wins the spies have
+	Captain    CID   // captain of the mission
+	NumMembers int   // number of members on this mission
+	Members    []CID // members of this mission
+	Active     bool  // whether the mission is running
+}
+
+// EndGame represents an ended game.
+// invariant: 0 <= ResWin <= MaxWin
+// invariant: 0 <= SpyWin <= MaxWin
+// invariant: ResWin == MaxWin <=> SpyWin != MaxWin
+type EndGame struct {
+	ResWin  int     // number of wins the resistance has
+	SpyWin  int     // number of wins the spies have
+	Lobbies []Lobby // available lobbies to join
 }
 
 // MemberPropose notifies the client that the captain has selected mission
@@ -316,6 +342,18 @@ func (x CurrentLobby) MarshalJSON() ([]byte, error) {
 func (x BeginGame) MarshalJSON() ([]byte, error) {
 	type alias BeginGame
 	return fromTagMsg("BeginGame", alias(x))
+}
+
+// MarshalJSON makes JSON.
+func (x CurrentGame) MarshalJSON() ([]byte, error) {
+	type alias CurrentGame
+	return fromTagMsg("CurrentGame", alias(x))
+}
+
+// MarshalJSON makes JSON.
+func (x EndGame) MarshalJSON() ([]byte, error) {
+	type alias EndGame
+	return fromTagMsg("EndGame", alias(x))
 }
 
 // MarshalJSON makes JSON.

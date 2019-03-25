@@ -72,6 +72,10 @@ export const reducer: Reducer<State, Action> = (s, a) => {
             members: a.NumMembers,
           }
         : { t: "Fatal", s, a };
+    case "CurrentGame":
+      return s;
+    case "EndGame":
+      return s;
     case "AckRole":
       return s.t === "RoleViewing"
         ? typeof s.members === "number"

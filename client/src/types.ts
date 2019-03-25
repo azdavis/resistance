@@ -36,6 +36,21 @@ type ToClient =
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; GID: GID; Leader: CID; Clients: Array<Client> }
   | { t: "BeginGame"; IsSpy: boolean; Captain: CID; NumMembers: number }
+  | {
+      t: "CurrentGame";
+      ResWin: number;
+      SpyWin: number;
+      Captain: CID;
+      NumMembers: number;
+      Members: Array<CID>;
+      Active: boolean;
+    }
+  | {
+      t: "EndGame";
+      ResWin: number;
+      SpyWin: number;
+      Lobbies: Array<Lobby>;
+    }
   | { t: "MemberPropose"; Members: Array<CID> }
   | { t: "MemberAccept" }
   | { t: "MemberReject"; Captain: CID; Members: number; SpyWin: boolean }
