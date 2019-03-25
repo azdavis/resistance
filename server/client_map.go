@@ -98,6 +98,8 @@ func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, q <-chan struct{}) {
 		case <-q:
 			return
 		case ts := <-ch:
+			// TODO race between pulling a ts out of ch and a call to Rm, which tries
+			// and fails to quit this pipe because we're stuck on sending to C.
 			cm.C <- Action{cid, ts}
 			_, ok := ts.(Close)
 			if ok {
