@@ -1,7 +1,25 @@
 import { Reducer } from "react";
-import { State, Action } from "./types";
+import { State, Action, CID, GID, Client, CurrentGame } from "./types";
 
 export const init: State = { t: "Welcome", me: 0 };
+
+const mkGamePlaying = (
+  me: CID,
+  gid: GID,
+  clients: Array<Client>,
+  a: CurrentGame,
+): State => ({
+  t: "GamePlaying",
+  me,
+  gid,
+  clients,
+  isSpy: a.IsSpy,
+  resPts: a.ResPts,
+  spyPts: a.SpyPts,
+  captain: a.Captain,
+  members: a.Members === null ? a.NumMembers : a.Members,
+  active: a.Active,
+});
 
 export const reducer: Reducer<State, Action> = (s, a) => {
   if (s.t === "Fatal") {
@@ -59,18 +77,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         : { t: "Fatal", s, a };
     case "CurrentGame":
       return s.t === "LobbyWaiting" || s.t === "GamePlaying"
-        ? {
-            t: "GamePlaying",
-            me: s.me,
-            gid: s.gid,
-            clients: s.clients,
-            isSpy: a.IsSpy,
-            resPts: a.ResPts,
-            spyPts: a.SpyPts,
-            captain: a.Captain,
-            members: a.Members === null ? a.NumMembers : a.Members,
-            active: a.Active,
-          }
+        ? mkGamePlaying(s.me, s.gid, s.clients, a)
         : { t: "Fatal", s, a };
     case "EndGame":
       return s.t === "GamePlaying"

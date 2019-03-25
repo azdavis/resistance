@@ -29,21 +29,23 @@ type SelfAction =
   | { t: "GoNameChoose" }
   | { t: "GoHowTo" };
 
+export type CurrentGame = {
+  t: "CurrentGame";
+  IsSpy: boolean;
+  ResPts: number;
+  SpyPts: number;
+  Captain: CID;
+  NumMembers: number;
+  Members: null | Array<CID>;
+  Active: boolean;
+};
+
 type ToClient =
   | { t: "SetMe"; Me: CID }
   | { t: "NameReject" }
   | { t: "LobbyChoices"; Lobbies: Array<Lobby> }
   | { t: "CurrentLobby"; GID: GID; Leader: CID; Clients: Array<Client> }
-  | {
-      t: "CurrentGame";
-      IsSpy: boolean;
-      ResPts: number;
-      SpyPts: number;
-      Captain: CID;
-      NumMembers: number;
-      Members: null | Array<CID>;
-      Active: boolean;
-    }
+  | CurrentGame
   | {
       t: "EndGame";
       ResPts: number;
