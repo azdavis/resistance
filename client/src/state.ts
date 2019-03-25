@@ -12,9 +12,9 @@ export const reducer: Reducer<State, Action> = (s, a) => {
       return { t: "Fatal", s, a };
     case "SetMe":
       return s.t === "Welcome"
-        ? { ...s, me: a.Me }
+        ? { t: "Welcome", me: a.Me }
         : s.t === "HowTo"
-        ? { ...s, me: a.Me }
+        ? { t: "HowTo", me: a.Me }
         : { t: "Fatal", s, a };
     case "GoLobbies":
       return s.t === "Disbanded" || s.t === "GameEnded"
