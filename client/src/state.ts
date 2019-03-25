@@ -27,7 +27,11 @@ export const reducer: Reducer<State, Action> = (s, a) => {
   }
   switch (a.t) {
     case "Close":
-      return { t: "Fatal", s, a };
+      return {
+        t: "Disconnected",
+        me: s.me,
+        game: s.t === "GamePlaying" ? { gid: s.gid, clients: s.clients } : null,
+      };
     case "SetMe":
       return s.t === "Welcome" || s.t === "Disconnected"
         ? { t: "Welcome", me: a.Me }
