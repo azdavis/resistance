@@ -111,7 +111,7 @@ func (SetMe) isToClient()         {}
 func (NameReject) isToClient()    {}
 func (LobbyChoices) isToClient()  {}
 func (CurrentLobby) isToClient()  {}
-func (BeginGame) isToClient()    {}
+func (BeginGame) isToClient()     {}
 func (MemberPropose) isToClient() {}
 func (MemberAccept) isToClient()  {}
 func (MemberReject) isToClient()  {}
