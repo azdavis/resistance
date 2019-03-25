@@ -17,16 +17,18 @@ type Client struct {
 	conn *ws.Conn      // the websocket
 }
 
+// ClientChLen is the channel len for client's channels.
+const ClientChLen = 3
+
 // NewClient returns a new client. It starts goroutines to read from and write
 // to the given websocket connection. The client return will have CID 0, but
 // this should be set to something else immediately.
 func NewClient(conn *ws.Conn) *Client {
-	const chLen = 3
 	cl := &Client{
 		CID:  0,
 		Name: "",
-		tx:   make(chan ToClient, chLen),
-		rx:   make(chan ToServer, chLen),
+		tx:   make(chan ToClient, ClientChLen),
+		rx:   make(chan ToServer, ClientChLen),
 		conn: conn,
 	}
 	go cl.doRx()
