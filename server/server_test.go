@@ -176,3 +176,22 @@ func TestBasicNumGoroutine(t *testing.T) {
 		t.Fatal("before != after")
 	}
 }
+
+func TestOneClient(t *testing.T) {
+	s := NewServer()
+	defer s.Close()
+	c := s.addClient(t)
+	c.send(NameChoose{""})
+	c.recvNameReject(t)
+	c.send(NameChoose{"        "})
+	c.recvNameReject(t)
+	c.send(NameChoose{"   \t\t   \t  "})
+	c.recvNameReject(t)
+	c.send(NameChoose{"asdfasdfahsfasfhkaslkdjfhasfkajshfaslkfjhadlkfjahsflkas"})
+	c.recvNameReject(t)
+	c.send(NameChoose{"fella"})
+	ls := c.recvLobbyChoices(t)
+	if len(ls.Lobbies) != 0 {
+		t.Fatal("lobbies not empty")
+	}
+}
