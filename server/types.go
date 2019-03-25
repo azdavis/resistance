@@ -115,6 +115,7 @@ func (CurrentGame) isToClient()  {}
 func (EndGame) isToClient()      {}
 
 // SetMe sets the client's own CID.
+// invariant: Me != 0
 type SetMe struct {
 	Me CID
 }
@@ -125,13 +126,17 @@ type NameReject struct{}
 
 // LobbyChoices is sent to a client who is choosing their lobby.
 // invariant: Lobbies != nil
+// invariant: for all x in Lobbies, x.GID != 0
 type LobbyChoices struct {
 	Lobbies []Lobby // available lobbies to join
 }
 
 // CurrentLobby is sent to a client who is in a lobby whose game has not yet
 // started.
+// invariant: GID != 0
+// invariant: Leader != 0
 // invariant: Clients != nil
+// invariant: for all x in Clients, x != nil && x.CID != 0
 type CurrentLobby struct {
 	GID               // the GID of this lobby
 	Leader  CID       // the leader of this lobby
@@ -143,6 +148,7 @@ type CurrentLobby struct {
 // invariant: 0 <= SpyPts < MaxPts
 // invariant: Members != nil => len(Members) == NumMembers
 // invariant: Active => Members != nil
+// invariant: for all x in Members, x != 0
 type CurrentGame struct {
 	IsSpy      bool  // whether this player is a spy
 	ResPts     int   // number of wins the resistance has
@@ -157,6 +163,8 @@ type CurrentGame struct {
 // invariant: 0 <= ResPts <= MaxPts
 // invariant: 0 <= SpyPts <= MaxPts
 // invariant: ResPts == MaxPts <=> SpyPts != MaxPts
+// invariant: Lobbies != nil
+// invariant: for all x in Lobbies, x.GID != 0
 type EndGame struct {
 	ResPts  int     // number of wins the resistance has
 	SpyPts  int     // number of wins the spies have

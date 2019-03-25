@@ -6,6 +6,47 @@ import (
 	"time"
 )
 
+// checkers ////////////////////////////////////////////////////////////////////
+
+func checkCID(t *testing.T, cid CID) {
+	if cid == 0 {
+		t.Fatal("cid was 0")
+	}
+}
+
+func checkGID(t *testing.T, gid GID) {
+	if gid == 0 {
+		t.Fatal("gid was 0")
+	}
+}
+
+func checkClients(t *testing.T, xs []*Client) {
+	if xs == nil {
+		t.Fatal("Clients was nil")
+	}
+	for _, x := range xs {
+		if x == nil {
+			t.Fatal("client was nil")
+		}
+		checkCID(t, x.CID)
+	}
+}
+
+func checkLobbies(t *testing.T, xs []Lobby) {
+	if xs == nil {
+		t.Fatal("Lobbies was nil")
+	}
+	for _, x := range xs {
+		checkGID(t, x.GID)
+	}
+}
+
+func checkPts(t *testing.T, pts int) {
+	if !(0 <= pts && pts < MaxPts) {
+		t.Fatal("pts not in range", pts)
+	}
+}
+
 // testClient //////////////////////////////////////////////////////////////////
 
 type testClient struct {
@@ -65,6 +106,7 @@ func (tc *testClient) recvSetMe(t *testing.T) SetMe {
 	if !ok {
 		t.Fatal("response was not SetMe")
 	}
+	checkCID(t, y.Me)
 	return y
 }
 
@@ -83,9 +125,7 @@ func (tc *testClient) recvLobbyChoices(t *testing.T) LobbyChoices {
 	if !ok {
 		t.Fatal("response was not LobbyChoices")
 	}
-	if y.Lobbies == nil {
-		t.Fatal("Lobbies was nil")
-	}
+	checkLobbies(t, y.Lobbies)
 	return y
 }
 
@@ -95,9 +135,9 @@ func (tc *testClient) recvCurrentLobby(t *testing.T) CurrentLobby {
 	if !ok {
 		t.Fatal("response was not CurrentLobby")
 	}
-	if y.Clients == nil {
-		t.Fatal("Clients was nil")
-	}
+	checkGID(t, y.GID)
+	checkCID(t, y.Leader)
+	checkClients(t, y.Clients)
 	return y
 }
 
@@ -107,17 +147,16 @@ func (tc *testClient) recvCurrentGame(t *testing.T) CurrentGame {
 	if !ok {
 		t.Fatal("response was not CurrentGame")
 	}
-	if !(0 <= y.ResPts && y.ResPts < MaxPts) {
-		t.Fatal("ResPts not in range", y.ResPts)
-	}
-	if !(0 <= y.SpyPts && y.SpyPts < MaxPts) {
-		t.Fatal("SpyPts not in range", y.SpyPts)
-	}
+	checkPts(t, y.ResPts)
+	checkPts(t, y.SpyPts)
 	if y.Members != nil && len(y.Members) != y.NumMembers {
 		t.Fatal("number of members differ", len(y.Members), y.NumMembers)
 	}
 	if y.Active && y.Members == nil {
 		t.Fatal("Members nil when active")
+	}
+	for _, x := range y.Members {
+		checkCID(t, x)
 	}
 	return y
 }
@@ -128,12 +167,8 @@ func (tc *testClient) recvEndGame(t *testing.T) EndGame {
 	if !ok {
 		t.Fatal("response was not EndGame")
 	}
-	if !(0 <= y.ResPts && y.ResPts < MaxPts) {
-		t.Fatal("ResPts not in range", y.ResPts)
-	}
-	if !(0 <= y.SpyPts && y.SpyPts < MaxPts) {
-		t.Fatal("SpyPts not in range", y.SpyPts)
-	}
+	checkPts(t, y.ResPts)
+	checkPts(t, y.SpyPts)
 	if y.ResPts == MaxPts && y.SpyPts == MaxPts {
 		t.Fatal("both ResPts and SpyPts are MaxPts")
 	}
