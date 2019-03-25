@@ -64,17 +64,9 @@ func (tc *testClient) doTestTx() {
 	ms := make(map[uint]ToClient)
 	for {
 		select {
+		case <-tc.q:
+			return
 		case m := <-tc.tx:
-			// HACK: on cleaning up a test, we call Kill on all clients. But the doc
-			// for Kill forbids listening on tx or rx when Kill is called. The reason
-			// why Kill forbids this is because Kill (and Close, which Kill calls)
-			// close the tx and rx channels. And we here are listening on tx, so after
-			// tx gets closed, we will immediately receive the zero value for
-			// ToClient, which because ToClient is an interface is nil. So just check
-			// for that, and when it happens just return.
-			if m == nil {
-				return
-			}
 			ms[have] = m
 			have++
 		case <-tc.req:
