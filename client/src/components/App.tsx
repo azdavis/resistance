@@ -10,6 +10,7 @@ import LobbyChooser from "./LobbyChooser";
 import LobbyWaiter from "./LobbyWaiter";
 import RoleViewer from "./RoleViewer";
 import GamePlayer from "./GamePlayer";
+import GameEnd from "./GameEnd";
 import MemberChooser from "./MemberChooser";
 import MemberWaiter from "./MemberWaiter";
 import MemberVoter from "./MemberVoter";
@@ -56,7 +57,7 @@ export default (): JSX.Element => {
     case "GamePlaying":
       return <GamePlayer send={send!} {...s} />;
     case "GameEnded":
-      return <div>TODO</div>;
+      return <GameEnd d={d} {...s} />;
     case "MemberChoosing":
       return s.me === s.captain ? (
         <MemberChooser send={send!} {...s} />
