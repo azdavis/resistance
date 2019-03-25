@@ -6,7 +6,7 @@ export type CID = number;
 
 type ToServer =
   | { t: "Connect" }
-  | { t: "Reconnect"; me: CID; gid: GID }
+  | { t: "Reconnect"; Me: CID; GID: GID }
   | { t: "NameChoose"; Name: string }
   | { t: "LobbyChoose"; GID: GID }
   | { t: "LobbyLeave" }
