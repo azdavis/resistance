@@ -52,7 +52,7 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameCreate:
-				games[m.GID] = NewGame(m.GID, m.Clients, rx)
+				games[m.GID] = NewGame(m.GID, m.Clients, rx, q)
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameClose:
@@ -77,7 +77,7 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 			case LobbyCreate:
 				gid := next
 				next++
-				lobbies[gid] = NewLobby(gid, clients.Rm(cid), rx)
+				lobbies[gid] = NewLobby(gid, clients.Rm(cid), rx, q)
 				broadcastLobbyChoosing()
 			}
 		}

@@ -17,6 +17,7 @@ func NewLobby(
 	gid GID,
 	leader *Client,
 	tx chan<- ToLobbyMap,
+	q <-chan struct{},
 ) Lobby {
 	// if this channel is to be buffered, it must be drained when exiting from
 	// runLobby, and such draining must only occur after we've sent a message to
@@ -27,7 +28,7 @@ func NewLobby(
 		Leader: leader.Name,
 		tx:     rxLobbyMap,
 	}
-	go runLobby(gid, leader, tx, rxLobbyMap)
+	go runLobby(gid, leader, tx, rxLobbyMap, q)
 	return lb
 }
 
@@ -36,8 +37,9 @@ func runLobby(
 	leader *Client,
 	tx chan<- ToLobbyMap,
 	rx <-chan *Client,
+	q <-chan struct{},
 ) {
-	// whenever sending on tx, must also select with rx to prevent deadlock.
+	// whenever sending on tx, must also select on rx and q to prevent deadlock.
 	log.Println("enter runLobby", gid)
 	defer log.Println("exit runLobby", gid)
 
@@ -54,6 +56,9 @@ func runLobby(
 
 	for {
 		select {
+		case <-q:
+			clients.KillAll()
+			return
 		case cl := <-rx:
 			clients.Add(cl)
 			broadcastLobbyWaiting()
@@ -72,6 +77,9 @@ func runLobby(
 				}
 				msg := ClientAdd{clients.Rm(cid)}
 				select {
+				case <-q:
+					clients.KillAll()
+					return
 				case cl := <-rx:
 					clients.Add(cl)
 				case tx <- msg:
@@ -82,6 +90,8 @@ func runLobby(
 					continue
 				}
 				select {
+				case <-q:
+					clients.KillAll()
 				case cl := <-rx:
 					clients.Add(cl)
 					// allow leader to re-verify whether the game should be started.
@@ -98,6 +108,9 @@ out:
 	cs := clients.Clear()
 	for {
 		select {
+		case <-q:
+			clients.KillAll()
+			return
 		case cl := <-rx:
 			cs = append(cs, cl)
 		case tx <- LobbyClose{gid, cs}:

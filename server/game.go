@@ -43,6 +43,7 @@ func NewGame(
 	gid GID,
 	clients *ClientMap,
 	tx chan<- ToLobbyMap,
+	q <-chan struct{},
 ) Game {
 	// see NewLobby.
 	rxLobbyMap := make(chan *Client)
@@ -50,7 +51,7 @@ func NewGame(
 		GID: gid,
 		tx:  rxLobbyMap,
 	}
-	go runGame(gid, clients, tx, rxLobbyMap)
+	go runGame(gid, clients, tx, rxLobbyMap, q)
 	return g
 }
 
@@ -60,8 +61,9 @@ func runGame(
 	clients *ClientMap,
 	tx chan<- ToLobbyMap,
 	rx <-chan *Client,
+	q <-chan struct{},
 ) {
-	// whenever sending on tx, must also select with rx to prevent deadlock.
+	// whenever sending on tx, must also select on rx and q to prevent deadlock.
 	log.Println("enter runGame", gid)
 	defer log.Println("exit runGame", gid)
 
@@ -155,6 +157,9 @@ func runGame(
 
 	for {
 		select {
+		case <-q:
+			clients.KillAll()
+			return
 		case cl := <-rx:
 			reconnect(cl)
 		case ac := <-clients.C:
@@ -236,6 +241,9 @@ out:
 	cs := clients.Clear()
 	for {
 		select {
+		case <-q:
+			clients.KillAll()
+			return
 		case cl := <-rx:
 			cs = append(cs, cl)
 		case tx <- GameClose{gid, cs, EndGame{resPts, spyPts, nil}}:
