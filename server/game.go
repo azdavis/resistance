@@ -73,6 +73,12 @@ func runGame(
 		cids = append(cids, cid)
 	}
 
+	// all the names.
+	names := make(map[CID]string)
+	for cid, cl := range clients.M {
+		names[cid] = cl.Name
+	}
+
 	// len(cids)/s clients will be spies.
 	const s = 4
 
@@ -143,6 +149,7 @@ func runGame(
 			cl.Kill()
 		} else {
 			clients.Add(cl)
+			cl.Name = names[cl.CID]
 			cl.tx <- getCurrentGame(cl.CID)
 		}
 	}
