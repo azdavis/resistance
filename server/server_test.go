@@ -162,7 +162,7 @@ func (s *Server) addClient(t *testing.T) *testClient {
 
 func (s *Server) closeAndWait() {
 	s.Close()
-	time.Sleep(time.Second)
+	time.Sleep(500 * time.Millisecond)
 }
 
 // Tests ///////////////////////////////////////////////////////////////////////
