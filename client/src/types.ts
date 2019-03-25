@@ -56,6 +56,11 @@ export type D = Dispatch<Action>;
 
 export type State =
   | { t: "Fatal"; s: State; a: Action }
+  | {
+      t: "Disconnected";
+      me: CID;
+      game: null | { gid: GID; clients: Array<Client> };
+    }
   | { t: "Disbanded"; me: CID; lobbies: Array<Lobby> }
   | { t: "Welcome"; me: CID }
   | { t: "HowTo"; me: CID }

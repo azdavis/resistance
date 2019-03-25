@@ -2,6 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 import { Send } from "../types";
 import { reducer, init } from "../state";
 import Fatal from "./states/Fatal";
+import Disconnected from "./states/Disconnected";
 import Disbanded from "./states/Disbanded";
 import Welcome from "./states/Welcome";
 import HowTo from "./states/HowTo";
@@ -33,6 +34,8 @@ export default (): JSX.Element => {
   switch (s.t) {
     case "Fatal":
       return <Fatal {...s} />;
+    case "Disconnected":
+      return <Disconnected />;
     case "Disbanded":
       return <Disbanded d={d} />;
     case "Welcome":
