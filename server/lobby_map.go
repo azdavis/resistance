@@ -30,6 +30,7 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 	for {
 		select {
 		case <-q:
+			clients.KillAll()
 			return
 		case m := <-rx:
 			switch m := m.(type) {

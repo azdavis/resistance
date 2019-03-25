@@ -20,6 +20,7 @@ func runWelcomer(
 	for {
 		select {
 		case <-q:
+			clients.KillAll()
 			return
 		case cl := <-rx:
 			clients.Add(cl)

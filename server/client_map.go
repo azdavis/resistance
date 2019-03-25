@@ -81,6 +81,13 @@ func (cm *ClientMap) Clear() []*Client {
 	return ret
 }
 
+// KillAll kills all clients in M and empties M.
+func (cm *ClientMap) KillAll() {
+	for cid := range cm.M {
+		cm.Rm(cid).Kill()
+	}
+}
+
 // pipe pipes messages from the chan ToServer into this ClientMap's C, tagging
 // each action with the CID. pipe quits when q is closed.
 func (cm *ClientMap) pipe(cid CID, ch <-chan ToServer, q <-chan struct{}) {
