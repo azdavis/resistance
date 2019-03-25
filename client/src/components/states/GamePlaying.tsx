@@ -72,6 +72,8 @@ export default ({
     {typeof members === "number" ? null : active ? (
       members.includes(me) ? (
         <Voter
+          // prevent the Voters from interfering with each other
+          key="succeed"
           prompt="Should the mission succeed?"
           options={succeedOpts}
           onVote={Vote => send({ t: "MissionVote", Vote })}
@@ -81,6 +83,8 @@ export default ({
       )
     ) : (
       <Voter
+        // prevent the Voters from interfering with each other
+        key="occur"
         prompt="Should the mission occur?"
         options={occurOpts}
         onVote={Vote => send({ t: "MemberVote", Vote })}
