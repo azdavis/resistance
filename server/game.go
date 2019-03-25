@@ -236,10 +236,10 @@ out:
 	cs := clients.Clear()
 	for {
 		select {
-		case tx <- GameClose{gid, cs, EndGame{resPts, spyPts, nil}}:
-			return
 		case cl := <-rx:
 			cs = append(cs, cl)
+		case tx <- GameClose{gid, cs, EndGame{resPts, spyPts, nil}}:
+			return
 		}
 	}
 }
