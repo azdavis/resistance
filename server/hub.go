@@ -3,26 +3,21 @@ package main
 import (
 	"log"
 	"net/http"
-	"sync"
 
 	ws "github.com/gorilla/websocket"
 )
 
 // Hub is an http.Handler. It creates Clients from HTTP connections.
 type Hub struct {
-	mux  *sync.Mutex    // protect next
-	next CID            // the next Client will have this CID
-	up   ws.Upgrader    // websocket upgrader
-	tx   chan<- *Client // from this to runWelcomer
+	up ws.Upgrader    // websocket upgrader
+	tx chan<- *Client // from this to runWelcomer
 }
 
 // NewHub returns a new Hub.
 func NewHub(tx chan<- *Client) *Hub {
 	h := &Hub{
-		mux:  &sync.Mutex{},
-		next: 1,
-		up:   ws.Upgrader{CheckOrigin: unsafeAllowAny},
-		tx:   tx,
+		up: ws.Upgrader{CheckOrigin: unsafeAllowAny},
+		tx: tx,
 	}
 	return h
 }
@@ -45,9 +40,5 @@ func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		log.Println("err ServeHTTP", err)
 		return
 	}
-	h.mux.Lock()
-	cid := h.next
-	h.next++
-	h.mux.Unlock()
-	h.tx <- NewClient(conn, cid)
+	h.tx <- NewClient(conn)
 }

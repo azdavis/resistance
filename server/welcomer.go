@@ -13,12 +13,15 @@ func validName(s string) bool {
 
 func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client, q <-chan struct{}) {
 	clients := NewClientMap()
+	next := CID(1)
 	for {
 		select {
 		case <-q:
 			clients.KillAll()
 			return
 		case cl := <-rx:
+			cl.CID = next
+			next++
 			clients.Add(cl)
 		case ac := <-clients.C:
 			cid := ac.CID

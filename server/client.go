@@ -18,12 +18,12 @@ type Client struct {
 }
 
 // NewClient returns a new client. It starts goroutines to read from and write
-// to the given websocket connection. The CID should not be in use by any other
-// client. tx should be closed when this Client will no longer be used.
-func NewClient(conn *ws.Conn, cid CID) *Client {
+// to the given websocket connection. The client return will have CID 0, but
+// this should be set to something else immediately.
+func NewClient(conn *ws.Conn) *Client {
 	const chLen = 3
 	cl := &Client{
-		CID:  cid,
+		CID:  0,
 		Name: "",
 		tx:   make(chan ToClient, chLen),
 		rx:   make(chan ToServer, chLen),
