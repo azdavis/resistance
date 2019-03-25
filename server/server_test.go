@@ -205,18 +205,20 @@ func (s *Server) addClient(t *testing.T) *testClient {
 
 // Tests ///////////////////////////////////////////////////////////////////////
 
-func TestBasicNumGoroutine(t *testing.T) {
+func TestNumGoroutine(t *testing.T) {
 	before := runtime.NumGoroutine()
 	s := NewServer()
+	s.addClient(t)
+	s.addClient(t)
 	during := runtime.NumGoroutine()
 	s.Close()
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(1000 * time.Millisecond)
 	after := runtime.NumGoroutine()
 	if before > during {
-		t.Fatal("before > during")
+		t.Fatal("before > during", before, during)
 	}
 	if before != after {
-		t.Fatal("before != after")
+		t.Fatal("before != after", before, after)
 	}
 }
 
