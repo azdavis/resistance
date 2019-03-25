@@ -72,6 +72,9 @@ func (tc *testClient) doTestTx() {
 	for {
 		select {
 		case m := <-tc.tx:
+			if m == nil {
+				return
+			}
 			ms[have] = m
 			have++
 		case <-tc.req:
