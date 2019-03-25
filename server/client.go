@@ -90,8 +90,6 @@ func (cl *Client) manageAcCh() {
 	}
 }
 
-// readFromConn reads from the conn, tries to parse the message, and if
-// successful, sends the ToServer.
 func (cl *Client) readFromConn() {
 	for {
 		mt, bs, err := cl.conn.ReadMessage()
@@ -112,7 +110,6 @@ func (cl *Client) readFromConn() {
 	}
 }
 
-// writeToConn sends every ToClient from tx over the websocket. See NewClient.
 func (cl *Client) writeToConn() {
 	for m := range cl.tx {
 		err := cl.conn.WriteJSON(m)
