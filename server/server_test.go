@@ -184,11 +184,7 @@ func (s *Server) addClient(t *testing.T) *testClient {
 	tc := newTestClient()
 	tc.send(Connect{})
 	s.C <- tc.Client
-	m := tc.recv()
-	sm, ok := m.(SetMe)
-	if !ok {
-		t.Fatal("response was not SetMe")
-	}
+	sm := tc.recvSetMe(t)
 	if sm.Me != tc.CID {
 		t.Fatal("SetMe CIDs differ", sm.Me, tc.CID)
 	}
