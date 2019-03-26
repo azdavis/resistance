@@ -15,18 +15,17 @@ type Dest struct {
 // NullDest is a dest which will never allow sending.
 var NullDest = Dest{0, make(chan<- Action)}
 
-// Client is a player of the game. It contains the CID, name, and the way to
-// communicate with the actual person represented by this Client.
+// Client is a player of the game.
 type Client struct {
-	tx      chan ToClient // over the websocket
-	rx      chan ToServer // over the websocket
+	tx      chan ToClient // requests from the client
+	rx      chan ToServer // orders for the client
 	newDest chan Dest     // what to update the ultimate destination of rx to
-	q       chan struct{} // on close
+	q       chan struct{} // close on Close
 	conn    *ws.Conn      // the websocket
 }
 
 // NewClient returns a new client. It starts goroutines to read from and write
-// to the given websocket connection.
+// to the given websocket connection, if it wasn't nil.
 func NewClient(conn *ws.Conn) Client {
 	cl := Client{
 		tx:      make(chan ToClient, 3),
