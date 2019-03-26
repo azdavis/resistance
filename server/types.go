@@ -72,12 +72,12 @@ type Reconnect struct {
 
 // NameChoose is a request to choose one's name.
 type NameChoose struct {
-	Name string // desired name
+	Name string
 }
 
 // LobbyChoose is a request to choose one's lobby.
 type LobbyChoose struct {
-	GID // desired GID
+	GID
 }
 
 // LobbyLeave is a request to leave the client's current lobby.
@@ -92,18 +92,18 @@ type GameStart struct{}
 // MemberChoose is a request from the captain to use the given CIDs as the
 // members of this mission.
 type MemberChoose struct {
-	Members []CID // the proposed members of the mission
+	Members []CID
 }
 
 // MemberVote is sent by a client to vote for the proposed mission members.
 type MemberVote struct {
-	Vote bool // whether the client approved of the proposed members
+	Vote bool
 }
 
 // MissionVote is sent by a client to vote on whether the mission should succeed
 // or fail.
 type MissionVote struct {
-	Vote bool // whether the client wants the mission to succeed
+	Vote bool
 }
 
 // GameLeave is sent by a client who is leaving the game they are in.
@@ -140,7 +140,7 @@ type NameReject struct{}
 // invariant: Lobbies != nil
 // invariant: for all x in Lobbies, x.GID != 0
 type LobbyChoices struct {
-	Lobbies []Lobby // available lobbies to join
+	Lobbies []Lobby
 }
 
 // CurrentLobby is sent to a client who is in a lobby whose game has not yet
@@ -150,9 +150,9 @@ type LobbyChoices struct {
 // invariant: Clients != nil
 // invariant: for all x in Clients, x.CID != 0
 type CurrentLobby struct {
-	GID                  // the GID of this lobby
-	Leader  CID          // the leader of this lobby
-	Clients []ClientInfo // info about other clients in this lobby
+	GID
+	Leader  CID
+	Clients []ClientInfo
 }
 
 // CurrentGame represents an in-progress game.
@@ -162,13 +162,13 @@ type CurrentLobby struct {
 // invariant: Active => Members != nil
 // invariant: for all x in Members, x != 0
 type CurrentGame struct {
-	IsSpy      bool  // whether this player is a spy
-	ResPts     int   // number of wins the resistance has
-	SpyPts     int   // number of wins the spies have
-	Captain    CID   // captain of the mission
-	NumMembers int   // number of members on this mission
-	Members    []CID // members of this mission
-	Active     bool  // whether the mission is running
+	IsSpy      bool
+	ResPts     int
+	SpyPts     int
+	Captain    CID
+	NumMembers int
+	Members    []CID
+	Active     bool
 }
 
 // EndGame represents an ended game.
@@ -178,9 +178,9 @@ type CurrentGame struct {
 // invariant: Lobbies != nil
 // invariant: for all x in Lobbies, x.GID != 0
 type EndGame struct {
-	ResPts  int     // number of wins the resistance has
-	SpyPts  int     // number of wins the spies have
-	Lobbies []Lobby // available lobbies to join
+	ResPts  int
+	SpyPts  int
+	Lobbies []Lobby
 }
 
 // ToLobbyMap //////////////////////////////////////////////////////////////////
@@ -205,37 +205,37 @@ type ClientAdd struct {
 
 // ClientReconnect signals that a client is trying to reconnect to a game.
 type ClientReconnect struct {
-	CID    // the CID
-	Client // the client that is being added
-	GID    // the game trying to be reconnected to
+	CID
+	Client
+	GID
 }
 
 // LobbyClose signals that a lobby is closing.
 type LobbyClose struct {
-	GID                    // gid of this lobby
-	Clients map[CID]Client // clients coming from this lobby
+	GID
+	Clients map[CID]Client
 }
 
 // GameCreate signals that a lobby is turning into a game.
 type GameCreate struct {
-	GID                    // gid of this lobby
-	Clients *ClientMap     // clients in this lobby
-	Names   map[CID]string // names
+	GID
+	Clients *ClientMap
+	Names   map[CID]string
 }
 
 // GameClose signals that a game is closing.
 // invariant: EndGame.Lobbies == nil when the GameClose is received from a game
 type GameClose struct {
-	GameCreate // info in this game
-	EndGame    // the EndGame to send to the Clients
+	GameCreate
+	EndGame
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
 
 // tagMsg is a JSON-encoded message.
 type tagMsg struct {
-	T string          // type of thing to try to parse
-	P json.RawMessage // json encoding of thing
+	T string
+	P json.RawMessage
 }
 
 // UnmarshalJSONToServer tries to turn a JSON encoding of a tagMsg into a
