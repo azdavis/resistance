@@ -33,6 +33,12 @@ type ClientInfo struct {
 	Name string
 }
 
+// Dest represents a place to put Actions, and what CID to tag them with.
+type Dest struct {
+	CID
+	C chan<- Action
+}
+
 // ToServer ////////////////////////////////////////////////////////////////////
 
 // ToServer is a request from the client to change state. The client "requests"

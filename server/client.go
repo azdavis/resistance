@@ -6,12 +6,6 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// Dest represents a place to put Actions, and what CID to tag them with.
-type Dest struct {
-	CID
-	C chan<- Action
-}
-
 // NullDest is a dest which will never allow sending.
 var NullDest = Dest{0, make(chan<- Action)}
 
