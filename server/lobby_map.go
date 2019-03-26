@@ -90,9 +90,8 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 				}
 				lb.tx <- mkClientAdd(cid)
 			case LobbyCreate:
-				gid := nextGID
+				lobbies[nextGID] = NewLobby(nextGID, mkClientAdd(cid), rx, q)
 				nextGID++
-				lobbies[gid] = NewLobby(gid, mkClientAdd(cid), rx, q)
 				broadcastLobbyChoosing()
 			}
 		}
