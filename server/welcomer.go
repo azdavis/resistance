@@ -1,16 +1,5 @@
 package main
 
-import (
-	"regexp"
-)
-
-var validNameRE = regexp.MustCompile(`[^\s]`)
-
-func validName(s string) bool {
-	const maxLen = 32
-	return s != "" && len(s) <= maxLen && validNameRE.Match([]byte(s))
-}
-
 func runWelcomer(tx chan<- ToLobbyMap, rx <-chan Client, q <-chan struct{}) {
 	clients := NewClientMap()
 	next := CID(1)
@@ -33,7 +22,7 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan Client, q <-chan struct{}) {
 				cl := clients.Rm(cid)
 				tx <- ClientReconnect{ts.Me, cl, ts.GID}
 			case NameChoose:
-				if validName(ts.Name) {
+				if ValidName(ts.Name) {
 					tx <- ClientAdd{cid, clients.Rm(cid), ts.Name}
 				} else {
 					clients.M[cid].tx <- NameReject{}
