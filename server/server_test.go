@@ -187,13 +187,13 @@ func TestNumGoroutine(t *testing.T) {
 	pre := runtime.NumGoroutine()
 	s := NewServer()
 	now := runtime.NumGoroutine()
-	if now != pre+2 {
+	if now != pre+1 {
 		t.Fatal("bad number of goroutines", pre, now)
 	}
 	for i := 1; i < 10; i++ {
 		s.addClient(t)
 		now = runtime.NumGoroutine()
-		if now != pre+2+(i*2) {
+		if now != pre+1+(i*2) {
 			t.Fatal("bad number of goroutines", pre, now, i)
 		}
 	}
