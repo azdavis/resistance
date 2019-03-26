@@ -282,6 +282,10 @@ func (s *Server) addClient(t *testing.T) *testClient {
 
 // Helpers /////////////////////////////////////////////////////////////////////
 
+func mkName(i int) string {
+	return fmt.Sprintf("fella%v", i)
+}
+
 func mkMembers(cs []*testClient, n int) []CID {
 	membersMap := make(map[CID]bool)
 	for i := n; i > 0; /*  */ {
@@ -306,7 +310,7 @@ func mkClients(t *testing.T, s *Server, n int) ([]*testClient, map[CID]int) {
 	toIdx := make(map[CID]int)
 	for i := 0; i < n; i++ {
 		cs[i] = s.addClient(t)
-		cs[i].send(NameChoose{fmt.Sprintf("fella%v", i)})
+		cs[i].send(NameChoose{mkName(i)})
 		cs[i].recvLobbyChoices(t, 0)
 		toIdx[cs[i].CID] = i
 	}
@@ -377,8 +381,8 @@ func TestGameBasic(t *testing.T) {
 		cs[i].send(LobbyChoose{lb.GID})
 		for j := 0; j <= i; j++ {
 			for k, ci := range cs[j].recvCurrentLobby(t, i+1).Clients {
-				if fmt.Sprintf("fella%v", k) != ci.Name {
-					t.Fatal("bad name", fmt.Sprintf("fella%v", k), ci.Name)
+				if mkName(k) != ci.Name {
+					t.Fatal("bad name", mkName(k), ci.Name)
 				}
 			}
 		}
