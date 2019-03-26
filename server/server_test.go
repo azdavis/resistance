@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"runtime"
 	"testing"
@@ -366,7 +367,7 @@ func TestGame(t *testing.T) {
 	toIdx := make(map[CID]int)
 	for i := 0; i < n; i++ {
 		cs[i] = s.addClient(t)
-		cs[i].send(NameChoose{string(i)})
+		cs[i].send(NameChoose{fmt.Sprintf("fella%v", i)})
 		cs[i].recvLobbyChoices(t, 0)
 		toIdx[cs[i].CID] = i
 	}
@@ -376,7 +377,11 @@ func TestGame(t *testing.T) {
 		lb := cs[i].recvLobbyChoices(t, 1).Lobbies[0]
 		cs[i].send(LobbyChoose{lb.GID})
 		for j := 0; j <= i; j++ {
-			cs[j].recvCurrentLobby(t, i+1)
+			for k, ci := range cs[j].recvCurrentLobby(t, i+1).Clients {
+				if fmt.Sprintf("fella%v", k) != ci.Name {
+					t.Fatal("bad name", fmt.Sprintf("fella%v", k), ci.Name)
+				}
+			}
 		}
 	}
 	cs[0].send(GameStart{})
