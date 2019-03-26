@@ -5,7 +5,7 @@ cd "$(git rev-parse --show-toplevel)"
 
 mkdir -p .git/hooks
 rm -f .git/hooks/pre-push
-ln -s ../../bin/check .git/hooks/pre-push
+ln -s ../../scripts/check .git/hooks/pre-push
 
 cd client
 npm install
