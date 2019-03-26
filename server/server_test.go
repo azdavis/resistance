@@ -122,6 +122,11 @@ func newTestClient() *testClient {
 	return tc
 }
 
+// bit of a hack, we can't call Close
+func (tc *testClient) simulateClose() {
+	tc.send(Close{})
+}
+
 func (tc *testClient) doTestTx() {
 	// invariant: for all i, next <= i < have, ms[i] exists
 	next := uint(0)
@@ -278,6 +283,15 @@ func (s *Server) addClient(t *testing.T) *testClient {
 	return tc
 }
 
+func (s *Server) reconnectClient(t *testing.T, cid CID, gid GID) *testClient {
+	tc := newTestClient()
+	s.C <- tc.Client
+	tc.send(Reconnect{cid, gid})
+	tc.CID = cid
+	tc.recvCurrentGame(t)
+	return tc
+}
+
 // Helpers /////////////////////////////////////////////////////////////////////
 
 func mkName(i int) string {
@@ -383,6 +397,11 @@ func runGameTest(t *testing.T, n int, disconnect bool) {
 			cl.send(MemberVote{true})
 		}
 		cg = getCurrentGame(t, cs)
+		if disconnect {
+			i := rand.Intn(len(cs))
+			cs[i].simulateClose()
+			cs[i] = s.reconnectClient(t, cs[i].CID, gid)
+		}
 		for _, cid := range ms {
 			cs[toIdx[cid]].send(MissionVote{true})
 		}
@@ -399,4 +418,12 @@ func TestGameFewNoDisconnect(t *testing.T) {
 
 func TestGameManyNoDisconnect(t *testing.T) {
 	runGameTest(t, MaxN, false)
+}
+
+func TestGameFewYesDisconnect(t *testing.T) {
+	runGameTest(t, MinN, true)
+}
+
+func TestGameManyYesDisconnect(t *testing.T) {
+	runGameTest(t, MaxN, true)
 }
