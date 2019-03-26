@@ -121,9 +121,12 @@ func newTestClient() *testClient {
 	return tc
 }
 
-// bit of a hack, we can't call Close
-func (tc *testClient) simulateClose() {
+func (tc *testClient) closeAndWait() {
+	// bit of a hack, we can't call Close, so we ask our owner to call Close for
+	// us by sending a Close{}.
 	tc.send(Close{})
+	// once our owner calls Close, receives from q immediately succeed
+	<-tc.q
 }
 
 func (tc *testClient) send(m ToServer) {
@@ -372,7 +375,7 @@ func runGameTest(t *testing.T, n int, disconnect bool) {
 		cg = getCurrentGame(t, cs)
 		if disconnect {
 			i := rand.Intn(len(cs))
-			cs[i].simulateClose()
+			cs[i].closeAndWait()
 			cs[i] = s.reconnectClient(t, cs[i].CID, gid)
 		}
 		for _, cid := range ms {
