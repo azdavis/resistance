@@ -1,10 +1,69 @@
 package main
 
 import (
+	"math/rand"
 	"runtime"
 	"testing"
 	"time"
 )
+
+// Equality ////////////////////////////////////////////////////////////////////
+
+func eqLobby(lhs Lobby, rhs Lobby) bool {
+	return lhs.GID == rhs.GID && lhs.Leader == rhs.Leader
+}
+
+func eqCIDSlice(lhs []CID, rhs []CID) bool {
+	if lhs == nil && rhs == nil {
+		return true
+	}
+	if lhs == nil || rhs == nil {
+		return false
+	}
+	if len(lhs) != len(rhs) {
+		return false
+	}
+	for i := 0; i < len(lhs); i++ {
+		if lhs[i] != rhs[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func eqLobbySlice(lhs []Lobby, rhs []Lobby) bool {
+	if lhs == nil && rhs == nil {
+		return true
+	}
+	if lhs == nil || rhs == nil {
+		return false
+	}
+	if len(lhs) != len(rhs) {
+		return false
+	}
+	for i := 0; i < len(lhs); i++ {
+		if eqLobby(lhs[i], rhs[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+// ignore isSpy
+func eqCurrentGame(lhs CurrentGame, rhs CurrentGame) bool {
+	return lhs.ResPts == rhs.ResPts &&
+		lhs.SpyPts == rhs.SpyPts &&
+		lhs.Captain == rhs.Captain &&
+		lhs.NumMembers == rhs.NumMembers &&
+		eqCIDSlice(lhs.Members, rhs.Members) &&
+		lhs.Active == rhs.Active
+}
+
+func eqEndGame(lhs EndGame, rhs EndGame) bool {
+	return lhs.ResPts == rhs.ResPts &&
+		lhs.SpyPts == rhs.SpyPts &&
+		eqLobbySlice(lhs.Lobbies, rhs.Lobbies)
+}
 
 // Checkers ////////////////////////////////////////////////////////////////////
 
@@ -186,6 +245,30 @@ func (tc *testClient) recvEndGame(t *testing.T) EndGame {
 	return y
 }
 
+// Getters /////////////////////////////////////////////////////////////////////
+
+func getCurrentGame(t *testing.T, cs []*testClient) CurrentGame {
+	lhs := cs[0].recvCurrentGame(t)
+	for i := 1; i < len(cs); i++ {
+		rhs := cs[i].recvCurrentGame(t)
+		if !eqCurrentGame(lhs, rhs) {
+			t.Fatal("bad CurrentGame", lhs, rhs)
+		}
+	}
+	return lhs
+}
+
+func getEndGame(t *testing.T, cs []*testClient) EndGame {
+	lhs := cs[0].recvEndGame(t)
+	for i := 1; i < len(cs); i++ {
+		rhs := cs[i].recvEndGame(t)
+		if !eqEndGame(lhs, rhs) {
+			t.Fatal("bad EndGame", lhs, rhs)
+		}
+	}
+	return lhs
+}
+
 // Extra methods on server /////////////////////////////////////////////////////
 
 func (s *Server) addClient(t *testing.T) *testClient {
@@ -194,6 +277,27 @@ func (s *Server) addClient(t *testing.T) *testClient {
 	s.C <- tc.Client
 	tc.CID = tc.recvSetMe(t).Me
 	return tc
+}
+
+// Helpers /////////////////////////////////////////////////////////////////////
+
+func mkMembers(cs []*testClient, n int) []CID {
+	membersMap := make(map[CID]bool)
+	for i := n; i > 0; /*  */ {
+		cid := cs[rand.Intn(len(cs))].CID
+		if membersMap[cid] {
+			continue
+		}
+		membersMap[cid] = true
+		i--
+	}
+	members := make([]CID, 0, n)
+	for cid, add := range membersMap {
+		if add {
+			members = append(members, cid)
+		}
+	}
+	return members
 }
 
 // Tests ///////////////////////////////////////////////////////////////////////
@@ -252,4 +356,55 @@ func TestTwoClients(t *testing.T) {
 	c2.send(LobbyChoose{l1.GID})
 	c1.recvCurrentLobby(t, 2)
 	c2.recvCurrentLobby(t, 2)
+}
+
+func TestGame(t *testing.T) {
+	const n = 5
+	s := NewServer()
+	defer s.Close()
+	cs := make([]*testClient, n)
+	toIdx := make(map[CID]int)
+	for i := 0; i < n; i++ {
+		cs[i] = s.addClient(t)
+		cs[i].send(NameChoose{string(i)})
+		cs[i].recvLobbyChoices(t, 0)
+		toIdx[cs[i].CID] = i
+	}
+	cs[0].send(LobbyCreate{})
+	cs[0].recvCurrentLobby(t, 1)
+	for i := 1; i < n; i++ {
+		lb := cs[i].recvLobbyChoices(t, 1).Lobbies[0]
+		cs[i].send(LobbyChoose{lb.GID})
+		for j := 0; j <= i; j++ {
+			cs[j].recvCurrentLobby(t, i+1)
+		}
+	}
+	cs[0].send(GameStart{})
+	var cg CurrentGame
+	for i := 0; i < MaxPts; i++ {
+		cg = getCurrentGame(t, cs)
+		if cg.SpyPts != 0 {
+			t.Fatal("bad SpyPts", cg.SpyPts)
+		}
+		if cg.ResPts != i {
+			t.Fatal("bad ResPts", cg.ResPts)
+		}
+		ms := mkMembers(cs, cg.NumMembers)
+		cs[toIdx[cg.Captain]].send(MemberChoose{ms})
+		cg = getCurrentGame(t, cs)
+		if !eqCIDSlice(ms, cg.Members) {
+			t.Fatal("bad members", ms, cg.Members)
+		}
+		for _, cl := range cs {
+			cl.send(MemberVote{true})
+		}
+		cg = getCurrentGame(t, cs)
+		for _, cid := range ms {
+			cs[toIdx[cid]].send(MissionVote{true})
+		}
+	}
+	eg := getEndGame(t, cs)
+	if !eqEndGame(eg, EndGame{ResPts: 3, SpyPts: 0, Lobbies: []Lobby{}}) {
+		t.Fatal("bad EndGame", eg)
+	}
 }
