@@ -20,18 +20,24 @@ func checkGID(t *testing.T, gid GID) {
 	}
 }
 
-func checkClients(t *testing.T, xs []ClientInfo) {
+func checkClients(t *testing.T, xs []ClientInfo, n int) {
 	if xs == nil {
 		t.Fatal("Clients was nil")
+	}
+	if n != len(xs) {
+		t.Fatal("bad Clients len", n, len(xs))
 	}
 	for _, x := range xs {
 		checkCID(t, x.CID)
 	}
 }
 
-func checkLobbies(t *testing.T, xs []Lobby) {
+func checkLobbies(t *testing.T, xs []Lobby, n int) {
 	if xs == nil {
 		t.Fatal("Lobbies was nil")
+	}
+	if n != len(xs) {
+		t.Fatal("bad Lobbies len", n, len(xs))
 	}
 	for _, x := range xs {
 		checkGID(t, x.GID)
@@ -41,13 +47,19 @@ func checkLobbies(t *testing.T, xs []Lobby) {
 // testClient //////////////////////////////////////////////////////////////////
 
 type testClient struct {
+	CID
 	Client
 	req chan struct{}
 	res chan ToClient
 }
 
 func newTestClient() *testClient {
-	tc := &testClient{NewClient(nil), make(chan struct{}), make(chan ToClient)}
+	tc := &testClient{
+		CID:    0,
+		Client: NewClient(nil),
+		req:    make(chan struct{}),
+		res:    make(chan ToClient),
+	}
 	go tc.doTestTx()
 	return tc
 }
@@ -105,17 +117,17 @@ func (tc *testClient) recvNameReject(t *testing.T) NameReject {
 	return y
 }
 
-func (tc *testClient) recvLobbyChoices(t *testing.T) LobbyChoices {
+func (tc *testClient) recvLobbyChoices(t *testing.T, n int) LobbyChoices {
 	x := tc.recv()
 	y, ok := x.(LobbyChoices)
 	if !ok {
 		t.Fatal("response was not LobbyChoices")
 	}
-	checkLobbies(t, y.Lobbies)
+	checkLobbies(t, y.Lobbies, n)
 	return y
 }
 
-func (tc *testClient) recvCurrentLobby(t *testing.T) CurrentLobby {
+func (tc *testClient) recvCurrentLobby(t *testing.T, n int) CurrentLobby {
 	x := tc.recv()
 	y, ok := x.(CurrentLobby)
 	if !ok {
@@ -123,11 +135,11 @@ func (tc *testClient) recvCurrentLobby(t *testing.T) CurrentLobby {
 	}
 	checkGID(t, y.GID)
 	checkCID(t, y.Leader)
-	checkClients(t, y.Clients)
+	checkClients(t, y.Clients, n)
 	return y
 }
 
-func (tc *testClient) recvCurrentGame(t *testing.T) CurrentGame {
+func (tc *testClient) recvCurrentGame(t *testing.T, n int) CurrentGame {
 	x := tc.recv()
 	y, ok := x.(CurrentGame)
 	if !ok {
@@ -140,13 +152,18 @@ func (tc *testClient) recvCurrentGame(t *testing.T) CurrentGame {
 		t.Fatal("SpyPts not in range", y.SpyPts)
 	}
 	if y.Members != nil && len(y.Members) != y.NumMembers {
-		t.Fatal("number of members differ", len(y.Members), y.NumMembers)
+		t.Fatal("Members and NumMembers differ", len(y.Members), y.NumMembers)
 	}
 	if y.Active && y.Members == nil {
 		t.Fatal("Members nil when active")
 	}
-	for _, x := range y.Members {
-		checkCID(t, x)
+	if n != len(y.Members) {
+		t.Fatal("bad Members len", n, len(y.Members))
+	}
+	if y.Members != nil {
+		for _, x := range y.Members {
+			checkCID(t, x)
+		}
 	}
 	return y
 }
@@ -174,11 +191,12 @@ func (tc *testClient) recvEndGame(t *testing.T) EndGame {
 
 // Extra methods on server /////////////////////////////////////////////////////
 
-func (s *Server) addClient(t *testing.T) (CID, *testClient) {
+func (s *Server) addClient(t *testing.T) *testClient {
 	tc := newTestClient()
 	tc.send(Connect{})
 	s.C <- tc.Client
-	return tc.recvSetMe(t).Me, tc
+	tc.CID = tc.recvSetMe(t).Me
+	return tc
 }
 
 // Tests ///////////////////////////////////////////////////////////////////////
@@ -208,7 +226,7 @@ func TestNumGoroutine(t *testing.T) {
 func TestOneClient(t *testing.T) {
 	s := NewServer()
 	defer s.Close()
-	_, c := s.addClient(t)
+	c := s.addClient(t)
 	c.send(NameChoose{""})
 	c.recvNameReject(t)
 	c.send(NameChoose{"        "})
@@ -218,38 +236,23 @@ func TestOneClient(t *testing.T) {
 	c.send(NameChoose{"asdfasdfahsfasfhkaslkdjfhasfkajshfaslkfjhadlkfjahsflkas"})
 	c.recvNameReject(t)
 	c.send(NameChoose{"fella"})
-	lc := c.recvLobbyChoices(t)
-	if len(lc.Lobbies) != 0 {
-		t.Fatal("lobbies not len 0")
-	}
+	c.recvLobbyChoices(t, 0)
 }
 
 func TestTwoClients(t *testing.T) {
 	s := NewServer()
 	defer s.Close()
-	_, c1 := s.addClient(t)
-	_, c2 := s.addClient(t)
+	c1 := s.addClient(t)
+	c2 := s.addClient(t)
 	c1.send(NameChoose{"c1"})
 	c2.send(NameChoose{"c2"})
-	c1.recvLobbyChoices(t)
-	c2.recvLobbyChoices(t)
+	c1.recvLobbyChoices(t, 0)
+	c2.recvLobbyChoices(t, 0)
 	c1.send(LobbyCreate{})
-	cl := c1.recvCurrentLobby(t)
-	if len(cl.Clients) != 1 {
-		t.Fatal("Clients not len 1")
-	}
-	lc := c2.recvLobbyChoices(t)
-	if len(lc.Lobbies) != 1 {
-		t.Fatal("Lobbies not len 1")
-	}
+	c1.recvCurrentLobby(t, 1)
+	lc := c2.recvLobbyChoices(t, 1)
 	l1 := lc.Lobbies[0]
 	c2.send(LobbyChoose{l1.GID})
-	cl = c1.recvCurrentLobby(t)
-	if len(cl.Clients) != 2 {
-		t.Fatal("Clients not len 2")
-	}
-	cl = c2.recvCurrentLobby(t)
-	if len(cl.Clients) != 2 {
-		t.Fatal("Clients not len 2")
-	}
+	c1.recvCurrentLobby(t, 2)
+	c2.recvCurrentLobby(t, 2)
 }
