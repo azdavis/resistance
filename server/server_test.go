@@ -346,13 +346,12 @@ func TestTwoClients(t *testing.T) {
 }
 
 func TestGameBasic(t *testing.T) {
-	const n = 5
 	s := NewServer()
 	defer s.Close()
-	cs, toIdx := mkClients(t, s, n)
+	cs, toIdx := mkClients(t, s, MinN)
 	cs[0].send(LobbyCreate{})
 	cs[0].recvCurrentLobby(t, 1)
-	for i := 1; i < n; i++ {
+	for i := 1; i < MinN; i++ {
 		lb := cs[i].recvLobbyChoices(t, 1).Lobbies[0]
 		cs[i].send(LobbyChoose{lb.GID})
 		for j := 0; j <= i; j++ {
