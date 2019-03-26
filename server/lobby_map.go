@@ -82,6 +82,7 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 			switch ts := ac.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
+				delete(names, cid)
 			case LobbyChoose:
 				lb, ok := lobbies[ts.GID]
 				if !ok {

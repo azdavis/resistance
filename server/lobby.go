@@ -58,12 +58,14 @@ func runLobby(
 			return
 		case cl := <-rx:
 			clients.Add(cl.CID, cl.Client)
+			names[cl.CID] = cl.Name
 			broadcastLobbyWaiting()
 		case ac := <-clients.C:
 			cid := ac.CID
 			switch ac.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
+				delete(names, cid)
 				if cid == leader.CID {
 					goto out
 				}
@@ -73,6 +75,7 @@ func runLobby(
 					goto out
 				}
 				msg := ClientAdd{cid, clients.Rm(cid), names[cid]}
+				delete(names, cid)
 			inner:
 				for {
 					select {
@@ -83,7 +86,6 @@ func runLobby(
 						clients.Add(cl.CID, cl.Client)
 						names[cl.CID] = cl.Name
 					case tx <- msg:
-						delete(names, cid)
 						break inner
 					}
 				}
@@ -97,6 +99,7 @@ func runLobby(
 					clients.CloseAll()
 				case cl := <-rx:
 					clients.Add(cl.CID, cl.Client)
+					names[cl.CID] = cl.Name
 					// allow leader to re-verify whether the game should be started.
 					broadcastLobbyWaiting()
 					continue
@@ -116,6 +119,7 @@ out:
 			return
 		case cl := <-rx:
 			clients.AddNoSend(cl.CID, cl.Client)
+			names[cl.CID] = cl.Name
 		case tx <- LobbyClose{false, gid, clients, names}:
 			return
 		}
