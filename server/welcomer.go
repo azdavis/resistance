@@ -34,7 +34,7 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan Client, q <-chan struct{}) {
 				tx <- ClientReconnect{ts.Me, cl, ts.GID}
 			case NameChoose:
 				if validName(ts.Name) {
-					tx <- ClientAdd{cid, clients.Rm(cid)}
+					tx <- ClientAdd{cid, clients.Rm(cid), ts.Name}
 				} else {
 					clients.M[cid].tx <- NameReject{}
 				}

@@ -6,8 +6,7 @@ import (
 
 // Game is a group of clients playing a game together.
 type Game struct {
-	GID                  // unique
-	tx  chan<- CIDClient // from runLobbyMap to this
+	tx chan<- CIDClient // from runLobbyMap to this
 }
 
 type state uint
@@ -39,44 +38,33 @@ func hasCID(xs []CID, y CID) bool {
 
 // NewGame returns a new Game.
 func NewGame(
-	gid GID,
-	clients *ClientMap,
+	gc GameCreate,
 	tx chan<- ToLobbyMap,
 	q <-chan struct{},
 ) Game {
 	// see NewLobby.
 	rxLobbyMap := make(chan CIDClient)
 	g := Game{
-		GID: gid,
-		tx:  rxLobbyMap,
+		tx: rxLobbyMap,
 	}
-	go runGame(gid, clients, tx, rxLobbyMap, q)
+	go runGame(gc, tx, rxLobbyMap, q)
 	return g
 }
 
 // TODO improve numbers for mission size / fails required to fail mission?
 func runGame(
-	gid GID,
-	clients *ClientMap,
+	gc GameCreate,
 	tx chan<- ToLobbyMap,
 	rx <-chan CIDClient,
 	q <-chan struct{},
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
 
+	clients := gc.Clients
 	// all the cids, in a stable order.
 	cids := make([]CID, 0, len(clients.M))
 	for cid := range clients.M {
 		cids = append(cids, cid)
-	}
-
-	// all the names.
-	// TODO race with unnamed reconnecting player making their way to game, and
-	// game closing. It's possible to have an un-named player infiltrate the lobby
-	// map.
-	names := make(map[CID]string)
-	for cid := range clients.M {
-		names[cid] = string(cid)
 	}
 
 	// len(cids)/s clients will be spies.
@@ -257,7 +245,7 @@ out:
 			} else {
 				clients.AddNoSend(cl.CID, cl.Client)
 			}
-		case tx <- GameClose{gid, clients.M, EndGame{resPts, spyPts, nil}}:
+		case tx <- GameClose{gc, EndGame{resPts, spyPts, nil}}:
 			return
 		}
 	}

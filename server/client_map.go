@@ -61,10 +61,10 @@ func (cm *ClientMap) Rm(cid CID) Client {
 
 // ToList converts the ClientMap to a list. The order is sorted in
 // increasing-CID order.
-func (cm *ClientMap) ToList() []ClientInfo {
+func (cm *ClientMap) ToList(names map[CID]string) []ClientInfo {
 	ret := make([]ClientInfo, 0, len(cm.M))
 	for cid := range cm.M {
-		ret = append(ret, ClientInfo{cid, string(cid)})
+		ret = append(ret, ClientInfo{cid, names[cid]})
 	}
 	// TODO bad perf
 	sort.Slice(ret, func(i, j int) bool { return ret[i].CID < ret[j].CID })

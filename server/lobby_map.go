@@ -8,6 +8,7 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 	clients := NewClientMap()
 	lobbies := make(map[GID]Lobby)
 	games := make(map[GID]Game)
+	names := make(map[CID]string)
 	next := GID(1)
 
 	lobbiesList := func() []Lobby {
@@ -18,6 +19,12 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 		// TODO bad perf
 		sort.Slice(ret, func(i, j int) bool { return ret[i].GID < ret[j].GID })
 		return ret
+	}
+
+	mkClientAdd := func(cid CID) ClientAdd {
+		ca := ClientAdd{cid, clients.Rm(cid), names[cid]}
+		delete(names, cid)
+		return ca
 	}
 
 	broadcastLobbyChoosing := func() {
@@ -36,6 +43,7 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 			switch m := m.(type) {
 			case ClientAdd:
 				clients.Add(m.CID, m.Client)
+				names[m.CID] = m.Name
 				m.Client.tx <- LobbyChoices{lobbiesList()}
 			case ClientReconnect:
 				g, ok := games[m.GID]
@@ -52,15 +60,18 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameCreate:
-				games[m.GID] = NewGame(m.GID, m.Clients, rx, q)
+				games[m.GID] = NewGame(m, rx, q)
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameClose:
 				delete(games, m.GID)
 				m.EndGame.Lobbies = lobbiesList()
-				for cid, cl := range m.Clients {
+				for cid, cl := range m.GameCreate.Clients.M {
 					clients.Add(cid, cl)
 					cl.tx <- m.EndGame
+				}
+				for cid, name := range m.GameCreate.Names {
+					names[cid] = name
 				}
 			}
 		case ac := <-clients.C:
@@ -73,11 +84,11 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 				if !ok {
 					continue
 				}
-				lb.tx <- CIDClient{cid, clients.Rm(cid)}
+				lb.tx <- mkClientAdd(cid)
 			case LobbyCreate:
 				gid := next
 				next++
-				lobbies[gid] = NewLobby(gid, CIDClient{cid, clients.Rm(cid)}, rx, q)
+				lobbies[gid] = NewLobby(gid, mkClientAdd(cid), rx, q)
 				broadcastLobbyChoosing()
 			}
 		}

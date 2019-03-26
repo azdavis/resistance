@@ -5,23 +5,23 @@ package main
 type Lobby struct {
 	GID                     // unique
 	Leader string           // leader name
-	tx     chan<- CIDClient // from runLobbyMap to this
+	tx     chan<- ClientAdd // from runLobbyMap to this
 }
 
 // NewLobby returns a new Lobby.
 func NewLobby(
 	gid GID,
-	leader CIDClient,
+	leader ClientAdd,
 	tx chan<- ToLobbyMap,
 	q <-chan struct{},
 ) Lobby {
 	// if this channel is to be buffered, it must be drained when exiting from
 	// runLobby, and such draining must only occur after we've sent a message to
 	// runLobbyMap that will ensure no further messages get sent on this channel.
-	rxLobbyMap := make(chan CIDClient)
+	rxLobbyMap := make(chan ClientAdd)
 	lb := Lobby{
 		GID:    gid,
-		Leader: "",
+		Leader: leader.Name,
 		tx:     rxLobbyMap,
 	}
 	go runLobby(gid, leader, tx, rxLobbyMap, q)
@@ -30,9 +30,9 @@ func NewLobby(
 
 func runLobby(
 	gid GID,
-	leader CIDClient,
+	leader ClientAdd,
 	tx chan<- ToLobbyMap,
-	rx <-chan CIDClient,
+	rx <-chan ClientAdd,
 	q <-chan struct{},
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
@@ -40,8 +40,11 @@ func runLobby(
 	clients := NewClientMap()
 	clients.Add(leader.CID, leader.Client)
 
+	names := make(map[CID]string)
+	names[leader.CID] = leader.Name
+
 	broadcastLobbyWaiting := func() {
-		cs := clients.ToList()
+		cs := clients.ToList(names)
 		for _, cl := range clients.M {
 			cl.tx <- CurrentLobby{gid, leader.CID, cs}
 		}
@@ -69,7 +72,7 @@ func runLobby(
 				if cid == leader.CID {
 					goto out
 				}
-				msg := ClientAdd{cid, clients.Rm(cid)}
+				msg := ClientAdd{cid, clients.Rm(cid), names[cid]}
 			inner:
 				for {
 					select {
@@ -78,7 +81,9 @@ func runLobby(
 						return
 					case cl := <-rx:
 						clients.Add(cl.CID, cl.Client)
+						names[cl.CID] = cl.Name
 					case tx <- msg:
+						delete(names, cid)
 						break inner
 					}
 				}
@@ -95,7 +100,7 @@ func runLobby(
 					// allow leader to re-verify whether the game should be started.
 					broadcastLobbyWaiting()
 					continue
-				case tx <- GameCreate{gid, clients}:
+				case tx <- GameCreate{gid, clients, names}:
 				}
 				return
 			}
