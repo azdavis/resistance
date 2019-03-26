@@ -118,7 +118,6 @@ func newTestClient() *testClient {
 		req:    make(chan struct{}),
 		res:    make(chan ToClient),
 	}
-	go tc.doTestTx()
 	return tc
 }
 
@@ -127,38 +126,12 @@ func (tc *testClient) simulateClose() {
 	tc.send(Close{})
 }
 
-func (tc *testClient) doTestTx() {
-	// invariant: for all i, next <= i < have, ms[i] exists
-	next := uint(0)
-	have := uint(0)
-	// invariant: for all i, i < want, ms[i] was requested
-	want := uint(0)
-	ms := make(map[uint]ToClient)
-	for {
-		select {
-		case <-tc.q:
-			return
-		case m := <-tc.tx:
-			ms[have] = m
-			have++
-		case <-tc.req:
-			want++
-		}
-		for next < have && next < want {
-			tc.res <- ms[next]
-			delete(ms, next)
-			next++
-		}
-	}
-}
-
 func (tc *testClient) send(m ToServer) {
 	tc.rx <- m
 }
 
 func (tc *testClient) recv() ToClient {
-	tc.req <- struct{}{}
-	return <-tc.res
+	return <-tc.tx
 }
 
 func (tc *testClient) recvSetMe(t *testing.T) SetMe {
