@@ -122,7 +122,7 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 			case Reconnect:
 				g, ok := games[m.GID]
 				if ok {
-					g.tx <- CIDClient{m.Me, unnamed.Rm(m.Me)}
+					g.tx <- CIDClient{m.Me, unnamed.Rm(cid)}
 				} else {
 					unnamed.M[cid].tx <- SetMe{cid}
 				}
