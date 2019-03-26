@@ -139,7 +139,7 @@ func (tc *testClient) recvCurrentLobby(t *testing.T, n int) CurrentLobby {
 	return y
 }
 
-func (tc *testClient) recvCurrentGame(t *testing.T, n int) CurrentGame {
+func (tc *testClient) recvCurrentGame(t *testing.T) CurrentGame {
 	x := tc.recv()
 	y, ok := x.(CurrentGame)
 	if !ok {
@@ -156,9 +156,6 @@ func (tc *testClient) recvCurrentGame(t *testing.T, n int) CurrentGame {
 	}
 	if y.Active && y.Members == nil {
 		t.Fatal("Members nil when active")
-	}
-	if n != len(y.Members) {
-		t.Fatal("bad Members len", n, len(y.Members))
 	}
 	if y.Members != nil {
 		for _, x := range y.Members {
