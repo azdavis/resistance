@@ -26,8 +26,7 @@ type Client struct {
 }
 
 // NewClient returns a new client. It starts goroutines to read from and write
-// to the given websocket connection. The client return will have CID 0, but
-// this should be set to something else immediately.
+// to the given websocket connection.
 func NewClient(conn *ws.Conn) Client {
 	cl := Client{
 		tx:      make(chan ToClient, 3),
