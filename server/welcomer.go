@@ -2,15 +2,15 @@ package main
 
 func runWelcomer(tx chan<- ToLobbyMap, rx <-chan Client, q <-chan struct{}) {
 	clients := NewClientMap()
-	next := CID(1)
+	nextCID := CID(1)
 	for {
 		select {
 		case <-q:
 			clients.CloseAll()
 			return
 		case cl := <-rx:
-			clients.Add(next, cl)
-			next++
+			clients.Add(nextCID, cl)
+			nextCID++
 		case ac := <-clients.C:
 			cid := ac.CID
 			switch ts := ac.ToServer.(type) {
