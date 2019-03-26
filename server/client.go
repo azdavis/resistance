@@ -37,7 +37,8 @@ func NewClient(conn *ws.Conn) Client {
 }
 
 // Close quits all goroutines started with NewClient. It should be called
-// exactly once. Usually this is called after receiving a Close{} on rx.
+// exactly once. Usually this is called after receiving a Close{} on rx. No one
+// may be listening on tx when this is called.
 func (cl Client) Close() {
 	if cl.conn != nil {
 		cl.conn.Close()
