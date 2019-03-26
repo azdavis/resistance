@@ -6,39 +6,37 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// SendBlocks allows neither sending nor receiving.
-var SendBlocks = make(chan<- Action)
+// Dest represents a place to put Actions, and what CID to tag them with.
+type Dest struct {
+	CID
+	C chan<- Action
+}
+
+// NullDest is a dest which will never allow sending.
+var NullDest = Dest{0, make(chan<- Action)}
 
 // Client is a player of the game. It contains the CID, name, and the way to
 // communicate with the actual person represented by this Client.
 type Client struct {
-	CID                        // unique, never 0
-	Name    string             // if "", no name
-	tx      chan ToClient      // over the websocket
-	rx      chan ToServer      // over the websocket
-	acCh    chan<- Action      // everything from rx gets piped here
-	newAcCh chan chan<- Action // what to update acCh to
-	ackAcCh chan struct{}      // after updating acCh
-	q       chan struct{}      // on close
-	conn    *ws.Conn           // the websocket
+	tx      chan ToClient // over the websocket
+	rx      chan ToServer // over the websocket
+	newDest chan Dest     // what to update the ultimate destination of rx to
+	q       chan struct{} // on close
+	conn    *ws.Conn      // the websocket
 }
 
 // NewClient returns a new client. It starts goroutines to read from and write
 // to the given websocket connection. The client return will have CID 0, but
 // this should be set to something else immediately.
-func NewClient(conn *ws.Conn) *Client {
-	cl := &Client{
-		CID:     0,
-		Name:    "",
+func NewClient(conn *ws.Conn) Client {
+	cl := Client{
 		tx:      make(chan ToClient, 3),
 		rx:      make(chan ToServer, 3),
-		acCh:    SendBlocks,
-		newAcCh: make(chan chan<- Action),
-		ackAcCh: make(chan struct{}),
+		newDest: make(chan Dest),
 		q:       make(chan struct{}),
 		conn:    conn,
 	}
-	go cl.manageAcCh()
+	go cl.manageDest()
 	if conn != nil {
 		go cl.readFromConn()
 		go cl.writeToConn()
@@ -48,7 +46,7 @@ func NewClient(conn *ws.Conn) *Client {
 
 // Close quits all goroutines started with NewClient. It should be called
 // exactly once. Usually this is called after receiving a Close{} on rx.
-func (cl *Client) Close() {
+func (cl Client) Close() {
 	if cl.conn != nil {
 		cl.conn.Close()
 	}
@@ -56,45 +54,41 @@ func (cl *Client) Close() {
 	close(cl.tx)
 }
 
-// SendOn updates acCh. It returns only once acCh has been updated.
-func (cl *Client) SendOn(acCh chan<- Action) {
-	cl.newAcCh <- acCh
-	<-cl.ackAcCh
+// SendOn updates dest. It returns only once dest has been updated.
+func (cl Client) SendOn(dest Dest) {
+	cl.newDest <- dest
 }
 
-func (cl *Client) send(ts ToServer) {
+func (cl Client) manageDest() {
+	dest := NullDest
+	var ts ToServer
+recv:
 	for {
 		select {
 		case <-cl.q:
 			return
-		case acCh := <-cl.newAcCh:
-			cl.acCh = acCh
-			cl.ackAcCh <- struct{}{}
-		case cl.acCh <- Action{cl.CID, ts}:
-			return
+		case dest = <-cl.newDest:
+		case ts = <-cl.rx:
+			goto send
 		}
 	}
-}
-
-func (cl *Client) manageAcCh() {
+send:
 	for {
 		select {
 		case <-cl.q:
 			return
-		case acCh := <-cl.newAcCh:
-			cl.acCh = acCh
-			cl.ackAcCh <- struct{}{}
-		case ts := <-cl.rx:
-			cl.send(ts)
+		case dest = <-cl.newDest:
+		case dest.C <- Action{dest.CID, ts}:
+			goto recv
 		}
 	}
 }
 
-func (cl *Client) readFromConn() {
+func (cl Client) readFromConn() {
 	for {
 		mt, bs, err := cl.conn.ReadMessage()
 		if err != nil {
-			log.Println("err readFromConn", cl.CID, err)
+			log.Println("err readFromConn", err)
 			cl.rx <- Close{}
 			cl.conn.Close()
 			return
@@ -110,11 +104,11 @@ func (cl *Client) readFromConn() {
 	}
 }
 
-func (cl *Client) writeToConn() {
+func (cl Client) writeToConn() {
 	for m := range cl.tx {
 		err := cl.conn.WriteJSON(m)
 		if err != nil {
-			log.Println("err writeToConn", cl.CID, err)
+			log.Println("err writeToConn", err)
 		}
 	}
 }

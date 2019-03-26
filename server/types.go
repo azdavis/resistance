@@ -21,6 +21,18 @@ type Action struct {
 	ToServer
 }
 
+// CIDClient is a CID + Client.
+type CIDClient struct {
+	CID
+	Client
+}
+
+// ClientInfo represents info about a Client.
+type ClientInfo struct {
+	CID
+	Name string
+}
+
 // ToServer ////////////////////////////////////////////////////////////////////
 
 // ToServer is a request from the client to change state. The client "requests"
@@ -136,11 +148,11 @@ type LobbyChoices struct {
 // invariant: GID != 0
 // invariant: Leader != 0
 // invariant: Clients != nil
-// invariant: for all x in Clients, x != nil && x.CID != 0
+// invariant: for all x in Clients, x.CID != 0
 type CurrentLobby struct {
-	GID               // the GID of this lobby
-	Leader  CID       // the leader of this lobby
-	Clients []*Client // info about other clients in this lobby
+	GID                  // the GID of this lobby
+	Leader  CID          // the leader of this lobby
+	Clients []ClientInfo // info about other clients in this lobby
 }
 
 // CurrentGame represents an in-progress game.
@@ -186,19 +198,19 @@ func (GameClose) isToLobbyMap()       {}
 
 // ClientAdd signals that a client is being added to the lobby map.
 type ClientAdd struct {
-	*Client // the client that is being added
+	CIDClient // the client that is being added
 }
 
 // ClientReconnect signals that a client is trying to reconnect to a game.
 type ClientReconnect struct {
-	*Client // the client that is being added
-	GID     // the game trying to be reconnected to
+	CIDClient // the client that is being added
+	GID       // the game trying to be reconnected to
 }
 
 // LobbyClose signals that a lobby is closing.
 type LobbyClose struct {
-	GID               // gid of this lobby
-	Clients []*Client // clients coming from this lobby
+	GID                    // gid of this lobby
+	Clients map[CID]Client // clients coming from this lobby
 }
 
 // GameCreate signals that a lobby is turning into a game.
@@ -210,9 +222,9 @@ type GameCreate struct {
 // GameClose signals that a game is closing.
 // invariant: EndGame.Lobbies == nil when the GameClose is received from a game
 type GameClose struct {
-	GID               // gid of this game
-	Clients []*Client // clients coming from this game
-	EndGame           // the EndGame to send to the Clients
+	GID                    // gid of this game
+	Clients map[CID]Client // clients coming from this game
+	EndGame                // the EndGame to send to the Clients
 }
 
 // Helper functions ////////////////////////////////////////////////////////////

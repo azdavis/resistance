@@ -20,14 +20,11 @@ func checkGID(t *testing.T, gid GID) {
 	}
 }
 
-func checkClients(t *testing.T, xs []*Client) {
+func checkClients(t *testing.T, xs []ClientInfo) {
 	if xs == nil {
 		t.Fatal("Clients was nil")
 	}
 	for _, x := range xs {
-		if x == nil {
-			t.Fatal("client was nil")
-		}
 		checkCID(t, x.CID)
 	}
 }
@@ -44,7 +41,7 @@ func checkLobbies(t *testing.T, xs []Lobby) {
 // testClient //////////////////////////////////////////////////////////////////
 
 type testClient struct {
-	*Client
+	Client
 	req chan struct{}
 	res chan ToClient
 }
@@ -177,15 +174,11 @@ func (tc *testClient) recvEndGame(t *testing.T) EndGame {
 
 // Extra methods on server /////////////////////////////////////////////////////
 
-func (s *Server) addClient(t *testing.T) *testClient {
+func (s *Server) addClient(t *testing.T) (CID, *testClient) {
 	tc := newTestClient()
 	tc.send(Connect{})
 	s.C <- tc.Client
-	sm := tc.recvSetMe(t)
-	if sm.Me != tc.CID {
-		t.Fatal("SetMe CIDs differ", sm.Me, tc.CID)
-	}
-	return tc
+	return tc.recvSetMe(t).Me, tc
 }
 
 // Tests ///////////////////////////////////////////////////////////////////////
@@ -215,7 +208,7 @@ func TestNumGoroutine(t *testing.T) {
 func TestOneClient(t *testing.T) {
 	s := NewServer()
 	defer s.Close()
-	c := s.addClient(t)
+	_, c := s.addClient(t)
 	c.send(NameChoose{""})
 	c.recvNameReject(t)
 	c.send(NameChoose{"        "})
@@ -234,17 +227,14 @@ func TestOneClient(t *testing.T) {
 func TestTwoClients(t *testing.T) {
 	s := NewServer()
 	defer s.Close()
-	c1 := s.addClient(t)
-	c2 := s.addClient(t)
+	_, c1 := s.addClient(t)
+	_, c2 := s.addClient(t)
 	c1.send(NameChoose{"c1"})
 	c2.send(NameChoose{"c2"})
 	c1.recvLobbyChoices(t)
 	c2.recvLobbyChoices(t)
 	c1.send(LobbyCreate{})
 	cl := c1.recvCurrentLobby(t)
-	if c1.CID != cl.Leader {
-		t.Fatal("leader differ", c1.CID, cl.Leader)
-	}
 	if len(cl.Clients) != 1 {
 		t.Fatal("Clients not len 1")
 	}
@@ -253,9 +243,6 @@ func TestTwoClients(t *testing.T) {
 		t.Fatal("Lobbies not len 1")
 	}
 	l1 := lc.Lobbies[0]
-	if c1.Name != l1.Leader {
-		t.Fatal("leader differ", c1.Name, l1.Leader)
-	}
 	c2.send(LobbyChoose{l1.GID})
 	cl = c1.recvCurrentLobby(t)
 	if len(cl.Clients) != 2 {

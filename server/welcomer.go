@@ -11,7 +11,7 @@ func validName(s string) bool {
 	return s != "" && len(s) <= maxLen && validNameRE.Match([]byte(s))
 }
 
-func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client, q <-chan struct{}) {
+func runWelcomer(tx chan<- ToLobbyMap, rx <-chan Client, q <-chan struct{}) {
 	clients := NewClientMap()
 	next := CID(1)
 	for {
@@ -20,9 +20,8 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client, q <-chan struct{}) {
 			clients.CloseAll()
 			return
 		case cl := <-rx:
-			cl.CID = next
+			clients.Add(CIDClient{next, cl})
 			next++
-			clients.Add(cl)
 		case ac := <-clients.C:
 			cid := ac.CID
 			switch ts := ac.ToServer.(type) {
@@ -32,13 +31,10 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan *Client, q <-chan struct{}) {
 				clients.M[cid].tx <- SetMe{cid}
 			case Reconnect:
 				cl := clients.Rm(cid)
-				cl.CID = ts.Me
-				tx <- ClientReconnect{cl, ts.GID}
+				tx <- ClientReconnect{CIDClient{ts.Me, cl}, ts.GID}
 			case NameChoose:
 				if validName(ts.Name) {
-					cl := clients.Rm(cid)
-					cl.Name = ts.Name
-					tx <- ClientAdd{cl}
+					tx <- ClientAdd{CIDClient{cid, clients.Rm(cid)}}
 				} else {
 					clients.M[cid].tx <- NameReject{}
 				}

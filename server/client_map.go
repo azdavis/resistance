@@ -15,64 +15,68 @@ import (
 //
 // Only one goroutine may access a ClientMap at a time.
 type ClientMap struct {
-	C chan Action     // messages from the Clients in M
-	M map[CID]*Client // if M[x] = c, c.CID = x
+	C chan Action    // messages from the Clients in M
+	M map[CID]Client // clients
 }
 
 // NewClientMap returns a new ClientMap.
 func NewClientMap() *ClientMap {
 	cm := &ClientMap{
 		C: make(chan Action),
-		M: make(map[CID]*Client),
+		M: make(map[CID]Client),
 	}
 	return cm
 }
 
-// Add adds the given Client to the map. It starts a goroutine to pipe messages
-// from the given Client to this ClientMap's C. Another Client with the same CID
+// Add adds the given Client to the map. Another Client with the same CID
 // must not exist in this ClientMap.
-func (cm *ClientMap) Add(cl *Client) {
+func (cm *ClientMap) Add(cl CIDClient) {
+	cm.AddNoSend(cl)
+	cl.SendOn(Dest{cl.CID, cm.C})
+}
+
+// AddNoSend adds the given Client to the map, but does not direct it to begin
+// sending on C. Another Client with the same CID must not exist in this
+// ClientMap.
+func (cm *ClientMap) AddNoSend(cl CIDClient) {
 	_, ok := cm.M[cl.CID]
 	if ok {
 		panic("already present")
 	}
-	cm.M[cl.CID] = cl
-	cl.SendOn(cm.C)
+	cm.M[cl.CID] = cl.Client
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see
 // Add). It does not close the client itself. In fact, it returns the Client
 // that was removed. A Client with the given CID must exist in the ClientMap.
-func (cm *ClientMap) Rm(cid CID) *Client {
+func (cm *ClientMap) Rm(cid CID) Client {
 	cl, ok := cm.M[cid]
 	if !ok {
 		panic("not present")
 	}
 	delete(cm.M, cid)
-	cl.SendOn(SendBlocks)
+	cl.SendOn(NullDest)
 	return cl
 }
 
 // ToList converts the ClientMap to a list. The order is sorted in
 // increasing-CID order.
-func (cm *ClientMap) ToList() []*Client {
-	ret := make([]*Client, 0, len(cm.M))
-	for _, cl := range cm.M {
-		ret = append(ret, cl)
+func (cm *ClientMap) ToList() []ClientInfo {
+	ret := make([]ClientInfo, 0, len(cm.M))
+	for cid := range cm.M {
+		ret = append(ret, ClientInfo{cid, string(cid)})
 	}
 	// TODO bad perf
 	sort.Slice(ret, func(i, j int) bool { return ret[i].CID < ret[j].CID })
 	return ret
 }
 
-// Clear removes all clients from M. It returns ToList (which was calculated
-// before removing all the clients).
-func (cm *ClientMap) Clear() []*Client {
-	ret := cm.ToList()
-	for cid := range cm.M {
-		cm.Rm(cid)
+// DisconnectAll turns off the C.
+func (cm *ClientMap) DisconnectAll() {
+	for _, cl := range cm.M {
+		cl.SendOn(NullDest)
 	}
-	return ret
+	close(cm.C)
 }
 
 // CloseAll kills all clients in M and empties M.

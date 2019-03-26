@@ -3,25 +3,25 @@ package main
 // Lobby represents a group of clients all waiting for the same game to
 // start.
 type Lobby struct {
-	GID                   // unique
-	Leader string         // leader name
-	tx     chan<- *Client // from runLobbyMap to this
+	GID                     // unique
+	Leader string           // leader name
+	tx     chan<- CIDClient // from runLobbyMap to this
 }
 
 // NewLobby returns a new Lobby.
 func NewLobby(
 	gid GID,
-	leader *Client,
+	leader CIDClient,
 	tx chan<- ToLobbyMap,
 	q <-chan struct{},
 ) Lobby {
 	// if this channel is to be buffered, it must be drained when exiting from
 	// runLobby, and such draining must only occur after we've sent a message to
 	// runLobbyMap that will ensure no further messages get sent on this channel.
-	rxLobbyMap := make(chan *Client)
+	rxLobbyMap := make(chan CIDClient)
 	lb := Lobby{
 		GID:    gid,
-		Leader: leader.Name,
+		Leader: "",
 		tx:     rxLobbyMap,
 	}
 	go runLobby(gid, leader, tx, rxLobbyMap, q)
@@ -30,9 +30,9 @@ func NewLobby(
 
 func runLobby(
 	gid GID,
-	leader *Client,
+	leader CIDClient,
 	tx chan<- ToLobbyMap,
-	rx <-chan *Client,
+	rx <-chan CIDClient,
 	q <-chan struct{},
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
@@ -69,7 +69,7 @@ func runLobby(
 				if cid == leader.CID {
 					goto out
 				}
-				msg := ClientAdd{clients.Rm(cid)}
+				msg := ClientAdd{CIDClient{cid, clients.Rm(cid)}}
 			inner:
 				for {
 					select {
@@ -103,17 +103,15 @@ func runLobby(
 	}
 
 out:
-	cs := clients.Clear()
+	clients.DisconnectAll()
 	for {
 		select {
 		case <-q:
-			for _, cl := range cs {
-				cl.Close()
-			}
+			clients.CloseAll()
 			return
 		case cl := <-rx:
-			cs = append(cs, cl)
-		case tx <- LobbyClose{gid, cs}:
+			clients.AddNoSend(cl)
+		case tx <- LobbyClose{gid, clients.M}:
 			return
 		}
 	}

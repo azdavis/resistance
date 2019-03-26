@@ -6,8 +6,8 @@ import (
 
 // Game is a group of clients playing a game together.
 type Game struct {
-	GID                // unique
-	tx  chan<- *Client // from runLobbyMap to this
+	GID                  // unique
+	tx  chan<- CIDClient // from runLobbyMap to this
 }
 
 type state uint
@@ -45,7 +45,7 @@ func NewGame(
 	q <-chan struct{},
 ) Game {
 	// see NewLobby.
-	rxLobbyMap := make(chan *Client)
+	rxLobbyMap := make(chan CIDClient)
 	g := Game{
 		GID: gid,
 		tx:  rxLobbyMap,
@@ -59,7 +59,7 @@ func runGame(
 	gid GID,
 	clients *ClientMap,
 	tx chan<- ToLobbyMap,
-	rx <-chan *Client,
+	rx <-chan CIDClient,
 	q <-chan struct{},
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
@@ -75,8 +75,8 @@ func runGame(
 	// game closing. It's possible to have an un-named player infiltrate the lobby
 	// map.
 	names := make(map[CID]string)
-	for cid, cl := range clients.M {
-		names[cid] = cl.Name
+	for cid := range clients.M {
+		names[cid] = string(cid)
 	}
 
 	// len(cids)/s clients will be spies.
@@ -142,7 +142,7 @@ func runGame(
 		}
 	}
 
-	reconnect := func(cl *Client) {
+	reconnect := func(cl CIDClient) {
 		_, ok := clients.M[cl.CID]
 		if ok || !hasCID(cids, cl.CID) {
 			cl.Close()
@@ -150,14 +150,13 @@ func runGame(
 			clients.Add(cl)
 			// this client reconnected, so it has no name. but this client was in this
 			// game before, so we stored its name.
-			cl.Name = names[cl.CID]
 			cl.tx <- getCurrentGame(cl.CID)
 		}
 	}
 
 	broadcast := func() {
-		for _, cl := range clients.M {
-			cl.tx <- getCurrentGame(cl.CID)
+		for cid, cl := range clients.M {
+			cl.tx <- getCurrentGame(cid)
 		}
 	}
 
@@ -245,17 +244,20 @@ func runGame(
 	}
 
 out:
-	cs := clients.Clear()
+	clients.DisconnectAll()
 	for {
 		select {
 		case <-q:
-			for _, cl := range cs {
-				cl.Close()
-			}
+			clients.CloseAll()
 			return
 		case cl := <-rx:
-			cs = append(cs, cl)
-		case tx <- GameClose{gid, cs, EndGame{resPts, spyPts, nil}}:
+			_, ok := clients.M[cl.CID]
+			if ok || !hasCID(cids, cl.CID) {
+				cl.Close()
+			} else {
+				clients.AddNoSend(cl)
+			}
+		case tx <- GameClose{gid, clients.M, EndGame{resPts, spyPts, nil}}:
 			return
 		}
 	}
