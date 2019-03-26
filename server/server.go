@@ -1,23 +1,141 @@
 package main
 
+import (
+	"sort"
+)
+
 // Server is the server.
 type Server struct {
-	C chan<- Client
+	C chan<- SrvMsg
 	q chan<- struct{}
 }
 
 // NewServer returns a new Server.
 func NewServer() *Server {
-	txLobbyMap := make(chan ToLobbyMap, 3)
-	txWelcomer := make(chan Client, 3)
+	C := make(chan SrvMsg, 3)
 	q := make(chan struct{})
-	go runLobbyMap(txLobbyMap, q)
-	go runWelcomer(txLobbyMap, txWelcomer, q)
-	s := &Server{txWelcomer, q}
+	go runServer(C, q)
+	s := &Server{C, q}
 	return s
 }
 
 // Close shuts down the Server. It should only be called once.
 func (s *Server) Close() {
 	close(s.q)
+}
+
+func runServer(rx chan SrvMsg, q <-chan struct{}) {
+	named := NewClientMap()
+	unnamed := NewClientMap()
+	lobbies := make(map[GID]Lobby)
+	games := make(map[GID]Game)
+	names := make(map[CID]string)
+	nextGID := GID(1)
+	nextCID := CID(1)
+
+	lobbiesList := func() []Lobby {
+		ret := make([]Lobby, 0, len(lobbies))
+		for _, lb := range lobbies {
+			ret = append(ret, lb)
+		}
+		// TODO bad perf
+		sort.Slice(ret, func(i, j int) bool { return ret[i].GID < ret[j].GID })
+		return ret
+	}
+
+	mkClientAdd := func(cid CID) ClientAdd {
+		ca := ClientAdd{cid, named.Rm(cid), names[cid]}
+		delete(names, cid)
+		return ca
+	}
+
+	broadcastLobbyChoosing := func() {
+		msg := LobbyChoices{lobbiesList()}
+		for _, cl := range named.M {
+			cl.tx <- msg
+		}
+	}
+
+	for {
+		select {
+		case <-q:
+			named.CloseAll()
+			unnamed.CloseAll()
+			return
+		case m := <-rx:
+			switch m := m.(type) {
+			case Client:
+				unnamed.Add(nextCID, m)
+				nextCID++
+			case ClientAdd:
+				named.Add(m.CID, m.Client)
+				names[m.CID] = m.Name
+				m.Client.tx <- LobbyChoices{lobbiesList()}
+			case LobbyClose:
+				if m.MakeGame {
+					games[m.GID] = NewGame(m.GID, m.Clients, m.Names, rx, q)
+				} else {
+					for cid, cl := range m.Clients.M {
+						named.Add(cid, cl)
+					}
+					for cid, name := range m.Names {
+						names[cid] = name
+					}
+				}
+				delete(lobbies, m.GID)
+				broadcastLobbyChoosing()
+			case GameClose:
+				m.EndGame.Lobbies = lobbiesList()
+				for cid, cl := range m.Clients.M {
+					named.Add(cid, cl)
+					cl.tx <- m.EndGame
+				}
+				for cid, name := range m.Names {
+					names[cid] = name
+				}
+				delete(games, m.GID)
+			}
+		case ac := <-named.C:
+			cid := ac.CID
+			switch ts := ac.ToServer.(type) {
+			case Close:
+				named.Rm(cid).Close()
+				delete(names, cid)
+			case LobbyChoose:
+				lb, ok := lobbies[ts.GID]
+				if !ok {
+					continue
+				}
+				lb.tx <- mkClientAdd(cid)
+			case LobbyCreate:
+				lobbies[nextGID] = NewLobby(nextGID, mkClientAdd(cid), rx, q)
+				nextGID++
+				broadcastLobbyChoosing()
+			}
+		case ac := <-unnamed.C:
+			cid := ac.CID
+			switch ts := ac.ToServer.(type) {
+			case Close:
+				unnamed.Rm(cid).Close()
+			case Connect:
+				unnamed.M[cid].tx <- SetMe{cid}
+			case Reconnect:
+				g, ok := games[ts.GID]
+				if ok {
+					g.tx <- CIDClient{ts.Me, unnamed.Rm(ts.Me)}
+				} else {
+					unnamed.M[cid].tx <- SetMe{cid}
+				}
+			case NameChoose:
+				if ValidName(ts.Name) {
+					cl := unnamed.Rm(cid)
+					named.Add(cid, cl)
+					names[cid] = ts.Name
+					cl.tx <- LobbyChoices{lobbiesList()}
+				} else {
+					unnamed.M[cid].tx <- NameReject{}
+				}
+			}
+		}
+	}
 }

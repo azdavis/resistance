@@ -41,7 +41,7 @@ func NewGame(
 	gid GID,
 	clients *ClientMap,
 	names map[CID]string,
-	tx chan<- ToLobbyMap,
+	tx chan<- SrvMsg,
 	q <-chan struct{},
 ) Game {
 	// see NewLobby.
@@ -58,7 +58,7 @@ func runGame(
 	gid GID,
 	clients *ClientMap,
 	names map[CID]string,
-	tx chan<- ToLobbyMap,
+	tx chan<- SrvMsg,
 	rx <-chan CIDClient,
 	q <-chan struct{},
 ) {

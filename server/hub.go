@@ -10,11 +10,11 @@ import (
 // Hub is an http.Handler. It creates Clients from HTTP connections.
 type Hub struct {
 	up ws.Upgrader   // websocket upgrader
-	tx chan<- Client // from this to runWelcomer
+	tx chan<- SrvMsg // from this to runServer
 }
 
 // NewHub returns a new Hub.
-func NewHub(tx chan<- Client) *Hub {
+func NewHub(tx chan<- SrvMsg) *Hub {
 	h := &Hub{
 		up: ws.Upgrader{CheckOrigin: unsafeAllowAny},
 		tx: tx,

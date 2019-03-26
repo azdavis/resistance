@@ -12,7 +12,7 @@ type Lobby struct {
 func NewLobby(
 	gid GID,
 	leader ClientAdd,
-	tx chan<- ToLobbyMap,
+	tx chan<- SrvMsg,
 	q <-chan struct{},
 ) Lobby {
 	// if this channel is to be buffered, it must be drained when exiting from
@@ -31,7 +31,7 @@ func NewLobby(
 func runLobby(
 	gid GID,
 	leader ClientAdd,
-	tx chan<- ToLobbyMap,
+	tx chan<- SrvMsg,
 	rx <-chan ClientAdd,
 	q <-chan struct{},
 ) {

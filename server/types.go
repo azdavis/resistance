@@ -183,17 +183,18 @@ type EndGame struct {
 	Lobbies []Lobby
 }
 
-// ToLobbyMap //////////////////////////////////////////////////////////////////
+// SrvMsg //////////////////////////////////////////////////////////////////////
 
-// ToLobbyMap is a message to the lobby map.
-type ToLobbyMap interface {
-	isToLobbyMap()
+// SrvMsg is a message to runServer.
+type SrvMsg interface {
+	isSrvMsg()
 }
 
-func (ClientAdd) isToLobbyMap()       {}
-func (ClientReconnect) isToLobbyMap() {}
-func (LobbyClose) isToLobbyMap()      {}
-func (GameClose) isToLobbyMap()       {}
+func (Client) isSrvMsg()          {}
+func (ClientAdd) isSrvMsg()       {}
+func (ClientReconnect) isSrvMsg() {}
+func (LobbyClose) isSrvMsg()      {}
+func (GameClose) isSrvMsg()       {}
 
 // ClientAdd signals that a client is being added to the lobby map.
 type ClientAdd struct {
