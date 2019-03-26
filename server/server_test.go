@@ -350,10 +350,12 @@ func TestGameBasic(t *testing.T) {
 	defer s.Close()
 	cs, toIdx := mkClients(t, s, MinN)
 	cs[0].send(LobbyCreate{})
-	cs[0].recvCurrentLobby(t, 1)
+	gid := cs[0].recvCurrentLobby(t, 1).GID
 	for i := 1; i < MinN; i++ {
-		lb := cs[i].recvLobbyChoices(t, 1).Lobbies[0]
-		cs[i].send(LobbyChoose{lb.GID})
+		if gid != cs[i].recvLobbyChoices(t, 1).Lobbies[0].GID {
+			t.Fatal("bad GID, want", gid)
+		}
+		cs[i].send(LobbyChoose{gid})
 		for j := 0; j <= i; j++ {
 			for k, ci := range cs[j].recvCurrentLobby(t, i+1).Clients {
 				if mkName(k) != ci.Name {
