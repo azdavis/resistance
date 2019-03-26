@@ -195,7 +195,7 @@ func (ClientAdd) isSrvMsg()  {}
 func (LobbyClose) isSrvMsg() {}
 func (GameClose) isSrvMsg()  {}
 
-// ClientAdd signals that a client is being added to the lobby map.
+// ClientAdd signals that a client is being added to the server.
 type ClientAdd struct {
 	CID
 	Client
