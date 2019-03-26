@@ -67,7 +67,6 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
 			case GameClose:
-				delete(games, m.GID)
 				m.EndGame.Lobbies = lobbiesList()
 				for cid, cl := range m.Clients.M {
 					clients.Add(cid, cl)
@@ -76,6 +75,7 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 				for cid, name := range m.Names {
 					names[cid] = name
 				}
+				delete(games, m.GID)
 			}
 		case ac := <-clients.C:
 			cid := ac.CID
