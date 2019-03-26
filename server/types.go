@@ -213,7 +213,8 @@ type ClientReconnect struct {
 // LobbyClose signals that a lobby is closing.
 type LobbyClose struct {
 	GID
-	Clients map[CID]Client
+	Clients *ClientMap
+	Names   map[CID]string
 }
 
 // GameCreate signals that a lobby is turning into a game.

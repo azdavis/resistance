@@ -116,7 +116,7 @@ out:
 			return
 		case cl := <-rx:
 			clients.AddNoSend(cl.CID, cl.Client)
-		case tx <- LobbyClose{gid, clients.M}:
+		case tx <- LobbyClose{gid, clients, names}:
 			return
 		}
 	}
