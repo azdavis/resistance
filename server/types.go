@@ -190,24 +190,16 @@ type SrvMsg interface {
 	isSrvMsg()
 }
 
-func (Client) isSrvMsg()          {}
-func (ClientAdd) isSrvMsg()       {}
-func (ClientReconnect) isSrvMsg() {}
-func (LobbyClose) isSrvMsg()      {}
-func (GameClose) isSrvMsg()       {}
+func (Client) isSrvMsg()     {}
+func (ClientAdd) isSrvMsg()  {}
+func (LobbyClose) isSrvMsg() {}
+func (GameClose) isSrvMsg()  {}
 
 // ClientAdd signals that a client is being added to the lobby map.
 type ClientAdd struct {
 	CID
 	Client
 	Name string
-}
-
-// ClientReconnect signals that a client is trying to reconnect to a game.
-type ClientReconnect struct {
-	CID
-	Client
-	GID
 }
 
 // LobbyClose signals that a lobby is closing.
