@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"runtime"
 	"testing"
-	"time"
 )
 
 // Equality ////////////////////////////////////////////////////////////////////
@@ -318,28 +316,6 @@ func mkClients(t *testing.T, s *Server, n int) ([]*testClient, map[CID]int) {
 }
 
 // Tests ///////////////////////////////////////////////////////////////////////
-
-func TestNumGoroutine(t *testing.T) {
-	pre := runtime.NumGoroutine()
-	s := NewServer()
-	now := runtime.NumGoroutine()
-	if now != pre+1 {
-		t.Fatal("bad number of goroutines", pre, now)
-	}
-	for i := 1; i < 10; i++ {
-		s.addClient(t)
-		now = runtime.NumGoroutine()
-		if now != pre+1+(i*2) {
-			t.Fatal("bad number of goroutines", pre, now, i)
-		}
-	}
-	s.Close()
-	time.Sleep(500 * time.Millisecond)
-	now = runtime.NumGoroutine()
-	if pre != now {
-		t.Fatal("pre != now", pre, now)
-	}
-}
 
 func TestNameReject(t *testing.T) {
 	s := NewServer()
