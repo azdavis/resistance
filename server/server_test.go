@@ -301,6 +301,18 @@ func mkMembers(cs []*testClient, n int) []CID {
 	return members
 }
 
+func mkClients(t *testing.T, s *Server, n int) ([]*testClient, map[CID]int) {
+	cs := make([]*testClient, n)
+	toIdx := make(map[CID]int)
+	for i := 0; i < n; i++ {
+		cs[i] = s.addClient(t)
+		cs[i].send(NameChoose{fmt.Sprintf("fella%v", i)})
+		cs[i].recvLobbyChoices(t, 0)
+		toIdx[cs[i].CID] = i
+	}
+	return cs, toIdx
+}
+
 // Tests ///////////////////////////////////////////////////////////////////////
 
 func TestNumGoroutine(t *testing.T) {
@@ -325,7 +337,7 @@ func TestNumGoroutine(t *testing.T) {
 	}
 }
 
-func TestOneClient(t *testing.T) {
+func TestNameReject(t *testing.T) {
 	s := NewServer()
 	defer s.Close()
 	c := s.addClient(t)
@@ -344,33 +356,20 @@ func TestOneClient(t *testing.T) {
 func TestTwoClients(t *testing.T) {
 	s := NewServer()
 	defer s.Close()
-	c1 := s.addClient(t)
-	c2 := s.addClient(t)
-	c1.send(NameChoose{"c1"})
-	c2.send(NameChoose{"c2"})
-	c1.recvLobbyChoices(t, 0)
-	c2.recvLobbyChoices(t, 0)
-	c1.send(LobbyCreate{})
-	c1.recvCurrentLobby(t, 1)
-	lc := c2.recvLobbyChoices(t, 1)
-	l1 := lc.Lobbies[0]
-	c2.send(LobbyChoose{l1.GID})
-	c1.recvCurrentLobby(t, 2)
-	c2.recvCurrentLobby(t, 2)
+	cs, _ := mkClients(t, s, 2)
+	cs[0].send(LobbyCreate{})
+	cs[0].recvCurrentLobby(t, 1)
+	lb := cs[1].recvLobbyChoices(t, 1).Lobbies[0]
+	cs[1].send(LobbyChoose{lb.GID})
+	cs[0].recvCurrentLobby(t, 2)
+	cs[1].recvCurrentLobby(t, 2)
 }
 
-func TestGame(t *testing.T) {
+func TestGameBasic(t *testing.T) {
 	const n = 5
 	s := NewServer()
 	defer s.Close()
-	cs := make([]*testClient, n)
-	toIdx := make(map[CID]int)
-	for i := 0; i < n; i++ {
-		cs[i] = s.addClient(t)
-		cs[i].send(NameChoose{fmt.Sprintf("fella%v", i)})
-		cs[i].recvLobbyChoices(t, 0)
-		toIdx[cs[i].CID] = i
-	}
+	cs, toIdx := mkClients(t, s, n)
 	cs[0].send(LobbyCreate{})
 	cs[0].recvCurrentLobby(t, 1)
 	for i := 1; i < n; i++ {
