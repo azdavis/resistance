@@ -345,13 +345,13 @@ func TestTwoClients(t *testing.T) {
 	cs[1].recvCurrentLobby(t, 2)
 }
 
-func TestGameBasic(t *testing.T) {
+func runGameTest(t *testing.T, n int, disconnect bool) {
 	s := NewServer()
 	defer s.Close()
-	cs, toIdx := mkClients(t, s, MinN)
+	cs, toIdx := mkClients(t, s, n)
 	cs[0].send(LobbyCreate{})
 	gid := cs[0].recvCurrentLobby(t, 1).GID
-	for i := 1; i < MinN; i++ {
+	for i := 1; i < n; i++ {
 		if gid != cs[i].recvLobbyChoices(t, 1).Lobbies[0].GID {
 			t.Fatal("bad GID, want", gid)
 		}
@@ -391,4 +391,12 @@ func TestGameBasic(t *testing.T) {
 	if !eqEndGame(eg, EndGame{ResPts: 3, SpyPts: 0, Lobbies: []Lobby{}}) {
 		t.Fatal("bad EndGame", eg)
 	}
+}
+
+func TestGameFewNoDisconnect(t *testing.T) {
+	runGameTest(t, MinN, false)
+}
+
+func TestGameManyNoDisconnect(t *testing.T) {
+	runGameTest(t, MaxN, false)
 }
