@@ -38,7 +38,9 @@ func hasCID(xs []CID, y CID) bool {
 
 // NewGame returns a new Game.
 func NewGame(
-	gc GameCreate,
+	gid GID,
+	clients *ClientMap,
+	names map[CID]string,
 	tx chan<- ToLobbyMap,
 	q <-chan struct{},
 ) Game {
@@ -47,20 +49,21 @@ func NewGame(
 	g := Game{
 		tx: rxLobbyMap,
 	}
-	go runGame(gc, tx, rxLobbyMap, q)
+	go runGame(gid, clients, names, tx, rxLobbyMap, q)
 	return g
 }
 
 // TODO improve numbers for mission size / fails required to fail mission?
 func runGame(
-	gc GameCreate,
+	gid GID,
+	clients *ClientMap,
+	names map[CID]string,
 	tx chan<- ToLobbyMap,
 	rx <-chan CIDClient,
 	q <-chan struct{},
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
 
-	clients := gc.Clients
 	// all the cids, in a stable order.
 	cids := make([]CID, 0, len(clients.M))
 	for cid := range clients.M {
@@ -245,7 +248,7 @@ out:
 			} else {
 				clients.AddNoSend(cl.CID, cl.Client)
 			}
-		case tx <- GameClose{gc, EndGame{resPts, spyPts, nil}}:
+		case tx <- GameClose{gid, clients, names, EndGame{resPts, spyPts, nil}}:
 			return
 		}
 	}

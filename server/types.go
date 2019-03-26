@@ -193,7 +193,6 @@ type ToLobbyMap interface {
 func (ClientAdd) isToLobbyMap()       {}
 func (ClientReconnect) isToLobbyMap() {}
 func (LobbyClose) isToLobbyMap()      {}
-func (GameCreate) isToLobbyMap()      {}
 func (GameClose) isToLobbyMap()       {}
 
 // ClientAdd signals that a client is being added to the lobby map.
@@ -212,13 +211,7 @@ type ClientReconnect struct {
 
 // LobbyClose signals that a lobby is closing.
 type LobbyClose struct {
-	GID
-	Clients *ClientMap
-	Names   map[CID]string
-}
-
-// GameCreate signals that a lobby is turning into a game.
-type GameCreate struct {
+	MakeGame bool
 	GID
 	Clients *ClientMap
 	Names   map[CID]string
@@ -227,7 +220,9 @@ type GameCreate struct {
 // GameClose signals that a game is closing.
 // invariant: EndGame.Lobbies == nil when the GameClose is received from a game
 type GameClose struct {
-	GameCreate
+	GID
+	Clients *ClientMap
+	Names   map[CID]string
 	EndGame
 }
 

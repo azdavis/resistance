@@ -100,7 +100,7 @@ func runLobby(
 					// allow leader to re-verify whether the game should be started.
 					broadcastLobbyWaiting()
 					continue
-				case tx <- GameCreate{gid, clients, names}:
+				case tx <- LobbyClose{true, gid, clients, names}:
 				}
 				return
 			}
@@ -116,7 +116,7 @@ out:
 			return
 		case cl := <-rx:
 			clients.AddNoSend(cl.CID, cl.Client)
-		case tx <- LobbyClose{gid, clients, names}:
+		case tx <- LobbyClose{false, gid, clients, names}:
 			return
 		}
 	}
