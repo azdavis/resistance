@@ -61,14 +61,14 @@ func (cl Client) SendOn(dest Dest) {
 
 func (cl Client) manageDest() {
 	dest := NullDest
-	var ts ToServer
+	var m ToServer
 recv:
 	for {
 		select {
 		case <-cl.q:
 			return
 		case dest = <-cl.newDest:
-		case ts = <-cl.rx:
+		case m = <-cl.rx:
 			goto send
 		}
 	}
@@ -78,7 +78,7 @@ send:
 		case <-cl.q:
 			return
 		case dest = <-cl.newDest:
-		case dest.C <- Action{dest.CID, ts}:
+		case dest.C <- Action{dest.CID, m}:
 			goto recv
 		}
 	}
@@ -96,11 +96,11 @@ func (cl Client) readFromConn() {
 		if mt != ws.TextMessage {
 			continue
 		}
-		ts, err := UnmarshalJSONToServer(bs)
+		m, err := UnmarshalJSONToServer(bs)
 		if err != nil {
 			continue
 		}
-		cl.rx <- ts
+		cl.rx <- m
 	}
 }
 

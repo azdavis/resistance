@@ -60,9 +60,9 @@ func runLobby(
 			clients.Add(cl.CID, cl.Client)
 			names[cl.CID] = cl.Name
 			broadcastLobbyWaiting()
-		case ac := <-clients.C:
-			cid := ac.CID
-			switch ac.ToServer.(type) {
+		case m := <-clients.C:
+			cid := m.CID
+			switch m.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
 				delete(names, cid)

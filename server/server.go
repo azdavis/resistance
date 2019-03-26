@@ -49,7 +49,7 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 		return ca
 	}
 
-	broadcastLobbyChoosing := func() {
+	broadcastLobbies := func() {
 		msg := LobbyChoices{lobbiesList()}
 		for _, cl := range named.M {
 			cl.tx <- msg
@@ -83,7 +83,7 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 					}
 				}
 				delete(lobbies, m.GID)
-				broadcastLobbyChoosing()
+				broadcastLobbies()
 			case GameClose:
 				m.EndGame.Lobbies = lobbiesList()
 				for cid, cl := range m.Clients.M {
@@ -95,14 +95,14 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 				}
 				delete(games, m.GID)
 			}
-		case ac := <-named.C:
-			cid := ac.CID
-			switch ts := ac.ToServer.(type) {
+		case m := <-named.C:
+			cid := m.CID
+			switch m := m.ToServer.(type) {
 			case Close:
 				named.Rm(cid).Close()
 				delete(names, cid)
 			case LobbyChoose:
-				lb, ok := lobbies[ts.GID]
+				lb, ok := lobbies[m.GID]
 				if !ok {
 					continue
 				}
@@ -110,27 +110,27 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 			case LobbyCreate:
 				lobbies[nextGID] = NewLobby(nextGID, mkClientAdd(cid), rx, q)
 				nextGID++
-				broadcastLobbyChoosing()
+				broadcastLobbies()
 			}
-		case ac := <-unnamed.C:
-			cid := ac.CID
-			switch ts := ac.ToServer.(type) {
+		case m := <-unnamed.C:
+			cid := m.CID
+			switch m := m.ToServer.(type) {
 			case Close:
 				unnamed.Rm(cid).Close()
 			case Connect:
 				unnamed.M[cid].tx <- SetMe{cid}
 			case Reconnect:
-				g, ok := games[ts.GID]
+				g, ok := games[m.GID]
 				if ok {
-					g.tx <- CIDClient{ts.Me, unnamed.Rm(ts.Me)}
+					g.tx <- CIDClient{m.Me, unnamed.Rm(m.Me)}
 				} else {
 					unnamed.M[cid].tx <- SetMe{cid}
 				}
 			case NameChoose:
-				if ValidName(ts.Name) {
+				if ValidName(m.Name) {
 					cl := unnamed.Rm(cid)
 					named.Add(cid, cl)
-					names[cid] = ts.Name
+					names[cid] = m.Name
 					cl.tx <- LobbyChoices{lobbiesList()}
 				} else {
 					unnamed.M[cid].tx <- NameReject{}

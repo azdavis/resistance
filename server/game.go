@@ -160,9 +160,9 @@ func runGame(
 			return
 		case cl := <-rx:
 			reconnect(cl)
-		case ac := <-clients.C:
-			cid := ac.CID
-			switch ts := ac.ToServer.(type) {
+		case m := <-clients.C:
+			cid := m.CID
+			switch ts := m.ToServer.(type) {
 			case Close:
 				clients.Rm(cid).Close()
 				// TODO only do this after a timeout?
