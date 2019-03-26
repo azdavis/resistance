@@ -272,8 +272,8 @@ func getEndGame(t *testing.T, cs []*testClient) EndGame {
 
 func (s *Server) addClient(t *testing.T) *testClient {
 	tc := newTestClient()
-	tc.send(Connect{})
 	s.C <- tc.Client
+	tc.send(Connect{})
 	tc.CID = tc.recvSetMe(t).Me
 	return tc
 }
