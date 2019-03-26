@@ -46,9 +46,7 @@ func NewGame(
 ) Game {
 	// see NewLobby.
 	rxLobbyMap := make(chan CIDClient)
-	g := Game{
-		tx: rxLobbyMap,
-	}
+	g := Game{rxLobbyMap}
 	go runGame(gid, clients, names, tx, rxLobbyMap, q)
 	return g
 }
