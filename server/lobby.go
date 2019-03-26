@@ -38,7 +38,7 @@ func runLobby(
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
 
 	clients := NewClientMap()
-	clients.Add(leader)
+	clients.Add(leader.CID, leader.Client)
 
 	broadcastLobbyWaiting := func() {
 		cs := clients.ToList()
@@ -54,7 +54,7 @@ func runLobby(
 			clients.CloseAll()
 			return
 		case cl := <-rx:
-			clients.Add(cl)
+			clients.Add(cl.CID, cl.Client)
 			broadcastLobbyWaiting()
 		case ac := <-clients.C:
 			cid := ac.CID
@@ -69,7 +69,7 @@ func runLobby(
 				if cid == leader.CID {
 					goto out
 				}
-				msg := ClientAdd{CIDClient{cid, clients.Rm(cid)}}
+				msg := ClientAdd{cid, clients.Rm(cid)}
 			inner:
 				for {
 					select {
@@ -77,7 +77,7 @@ func runLobby(
 						clients.CloseAll()
 						return
 					case cl := <-rx:
-						clients.Add(cl)
+						clients.Add(cl.CID, cl.Client)
 					case tx <- msg:
 						break inner
 					}
@@ -91,7 +91,7 @@ func runLobby(
 				case <-q:
 					clients.CloseAll()
 				case cl := <-rx:
-					clients.Add(cl)
+					clients.Add(cl.CID, cl.Client)
 					// allow leader to re-verify whether the game should be started.
 					broadcastLobbyWaiting()
 					continue
@@ -110,7 +110,7 @@ out:
 			clients.CloseAll()
 			return
 		case cl := <-rx:
-			clients.AddNoSend(cl)
+			clients.AddNoSend(cl.CID, cl.Client)
 		case tx <- LobbyClose{gid, clients.M}:
 			return
 		}

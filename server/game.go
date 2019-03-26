@@ -147,7 +147,7 @@ func runGame(
 		if ok || !hasCID(cids, cl.CID) {
 			cl.Close()
 		} else {
-			clients.Add(cl)
+			clients.Add(cl.CID, cl.Client)
 			// this client reconnected, so it has no name. but this client was in this
 			// game before, so we stored its name.
 			cl.tx <- getCurrentGame(cl.CID)
@@ -255,7 +255,7 @@ out:
 			if ok || !hasCID(cids, cl.CID) {
 				cl.Close()
 			} else {
-				clients.AddNoSend(cl)
+				clients.AddNoSend(cl.CID, cl.Client)
 			}
 		case tx <- GameClose{gid, clients.M, EndGame{resPts, spyPts, nil}}:
 			return

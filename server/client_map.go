@@ -30,20 +30,20 @@ func NewClientMap() *ClientMap {
 
 // Add adds the given Client to the map. Another Client with the same CID
 // must not exist in this ClientMap.
-func (cm *ClientMap) Add(cl CIDClient) {
-	cm.AddNoSend(cl)
-	cl.SendOn(Dest{cl.CID, cm.C})
+func (cm *ClientMap) Add(cid CID, cl Client) {
+	cm.AddNoSend(cid, cl)
+	cl.SendOn(Dest{cid, cm.C})
 }
 
 // AddNoSend adds the given Client to the map, but does not direct it to begin
 // sending on C. Another Client with the same CID must not exist in this
 // ClientMap.
-func (cm *ClientMap) AddNoSend(cl CIDClient) {
-	_, ok := cm.M[cl.CID]
+func (cm *ClientMap) AddNoSend(cid CID, cl Client) {
+	_, ok := cm.M[cid]
 	if ok {
 		panic("already present")
 	}
-	cm.M[cl.CID] = cl.Client
+	cm.M[cid] = cl
 }
 
 // Rm removes the Client with the given CID. It stops the piping goroutine (see

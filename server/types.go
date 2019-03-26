@@ -198,13 +198,15 @@ func (GameClose) isToLobbyMap()       {}
 
 // ClientAdd signals that a client is being added to the lobby map.
 type ClientAdd struct {
-	CIDClient // the client that is being added
+	CID    // the CID
+	Client // the client that is being added
 }
 
 // ClientReconnect signals that a client is trying to reconnect to a game.
 type ClientReconnect struct {
-	CIDClient // the client that is being added
-	GID       // the game trying to be reconnected to
+	CID    // the CID
+	Client // the client that is being added
+	GID    // the game trying to be reconnected to
 }
 
 // LobbyClose signals that a lobby is closing.

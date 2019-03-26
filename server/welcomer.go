@@ -20,7 +20,7 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan Client, q <-chan struct{}) {
 			clients.CloseAll()
 			return
 		case cl := <-rx:
-			clients.Add(CIDClient{next, cl})
+			clients.Add(next, cl)
 			next++
 		case ac := <-clients.C:
 			cid := ac.CID
@@ -31,10 +31,10 @@ func runWelcomer(tx chan<- ToLobbyMap, rx <-chan Client, q <-chan struct{}) {
 				clients.M[cid].tx <- SetMe{cid}
 			case Reconnect:
 				cl := clients.Rm(cid)
-				tx <- ClientReconnect{CIDClient{ts.Me, cl}, ts.GID}
+				tx <- ClientReconnect{ts.Me, cl, ts.GID}
 			case NameChoose:
 				if validName(ts.Name) {
-					tx <- ClientAdd{CIDClient{cid, clients.Rm(cid)}}
+					tx <- ClientAdd{cid, clients.Rm(cid)}
 				} else {
 					clients.M[cid].tx <- NameReject{}
 				}

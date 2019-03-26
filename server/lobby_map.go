@@ -35,19 +35,19 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 		case m := <-rx:
 			switch m := m.(type) {
 			case ClientAdd:
-				clients.Add(m.CIDClient)
+				clients.Add(m.CID, m.Client)
 				m.Client.tx <- LobbyChoices{lobbiesList()}
 			case ClientReconnect:
 				g, ok := games[m.GID]
 				if ok {
-					g.tx <- m.CIDClient
+					g.tx <- CIDClient{m.CID, m.Client}
 				} else {
-					clients.Add(m.CIDClient)
+					clients.Add(m.CID, m.Client)
 					m.Client.tx <- LobbyChoices{lobbiesList()}
 				}
 			case LobbyClose:
 				for cid, cl := range m.Clients {
-					clients.Add(CIDClient{cid, cl})
+					clients.Add(cid, cl)
 				}
 				delete(lobbies, m.GID)
 				broadcastLobbyChoosing()
@@ -59,7 +59,7 @@ func runLobbyMap(rx chan ToLobbyMap, q <-chan struct{}) {
 				delete(games, m.GID)
 				m.EndGame.Lobbies = lobbiesList()
 				for cid, cl := range m.Clients {
-					clients.Add(CIDClient{cid, cl})
+					clients.Add(cid, cl)
 					cl.tx <- m.EndGame
 				}
 			}
