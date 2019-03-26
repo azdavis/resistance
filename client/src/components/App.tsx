@@ -26,7 +26,7 @@ export default (): JSX.Element => {
     };
     ws.onopen = () => {
       newSend(
-        s.t === "Disconnected" && s.game !== null
+        s.t === "Disconnected" && s.me !== 0 && s.game !== null
           ? { t: "Reconnect", Me: s.me, GID: s.game.gid }
           : { t: "Connect" },
       );
