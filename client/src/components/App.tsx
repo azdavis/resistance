@@ -1,6 +1,7 @@
-import React, { Reducer, useReducer, useEffect, useState } from "react";
+import React, { useReducer, useState } from "react";
 import { Send } from "../types";
 import { reducer, init } from "../state";
+import useTriggerEffect from "../hooks/useTriggerEffect";
 import Fatal from "./states/Fatal";
 import Disconnected from "./states/Disconnected";
 import Disbanded from "./states/Disbanded";
@@ -12,14 +13,10 @@ import LobbyWaiting from "./states/LobbyWaiting";
 import GamePlaying from "./states/GamePlaying";
 import GameEnded from "./states/GameEnded";
 
-const flip: Reducer<boolean, void> = (s, _) => !s;
-
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<Send | null>(null);
-  // HACK to get the effect to re-run when we want to.
-  const [doReconnect, reconnect] = useReducer(flip, true);
-  useEffect(() => {
+  const reconnect = useTriggerEffect(() => {
     const ws = new WebSocket("ws://localhost:8080/ws");
     const newSend: Send = ({ t, ...P }) => {
       ws.send(JSON.stringify({ T: t, P }));
@@ -38,14 +35,12 @@ export default (): JSX.Element => {
     };
     ws.onclose = () => d({ t: "Close" });
     return ws.close.bind(ws);
-  }, [doReconnect]);
+  }, []);
   switch (s.t) {
     case "Fatal":
       return <Fatal {...s} />;
     case "Disconnected":
-      // HACK there's no need to explicitly pass `undefined` to reconnect, so we
-      // can lie to the type system.
-      return <Disconnected reconnect={(reconnect as any) as () => void} />;
+      return <Disconnected reconnect={reconnect} />;
     case "Disbanded":
       return <Disbanded d={d} />;
     case "Welcome":
