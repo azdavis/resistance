@@ -98,15 +98,16 @@ func (cl Client) readFromConn() {
 }
 
 func (cl Client) writeToConn() {
+	var err error
 	for {
 		select {
 		case <-cl.q:
 			return
 		case m := <-cl.tx:
-			err := cl.conn.WriteJSON(m)
-			if err != nil {
-				log.Println("err writeToConn", err)
-			}
+			err = cl.conn.WriteJSON(m)
+		}
+		if err != nil {
+			log.Println("err writeToConn", err)
 		}
 	}
 }
