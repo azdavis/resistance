@@ -2,12 +2,16 @@ package main
 
 import (
 	"log"
+	"time"
 
 	ws "github.com/gorilla/websocket"
 )
 
 // NullDest is a dest which will never allow sending.
 var NullDest = Dest{0, make(chan<- Action)}
+
+// PingPeriod is the frequency with which pings are sent.
+const PingPeriod = 40 * time.Second
 
 // Client is a player of the game.
 type Client struct {
@@ -98,13 +102,17 @@ func (cl Client) readFromConn() {
 }
 
 func (cl Client) writeToConn() {
+	ticker := time.NewTicker(PingPeriod)
 	var err error
 	for {
 		select {
 		case <-cl.q:
+			ticker.Stop()
 			return
 		case m := <-cl.tx:
 			err = cl.conn.WriteJSON(m)
+		case <-ticker.C:
+			err = cl.conn.WriteMessage(ws.PingMessage, []byte{})
 		}
 		if err != nil {
 			log.Println("err writeToConn", err)
