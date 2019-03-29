@@ -43,8 +43,8 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 		return ret
 	}
 
-	mkClientAdd := func(cid CID) ClientAdd {
-		ca := ClientAdd{cid, named.Rm(cid), names[cid]}
+	mkNamedClient := func(cid CID) NamedClient {
+		ca := NamedClient{cid, named.Rm(cid), names[cid]}
 		delete(names, cid)
 		return ca
 	}
@@ -67,7 +67,7 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 			case Client:
 				unnamed.Add(nextCID, m)
 				nextCID++
-			case ClientAdd:
+			case NamedClient:
 				named.Add(m.CID, m.Client)
 				names[m.CID] = m.Name
 				m.Client.tx <- LobbyChoices{lobbiesList()}
@@ -106,9 +106,9 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 				if !ok {
 					continue
 				}
-				lb.tx <- mkClientAdd(cid)
+				lb.tx <- mkNamedClient(cid)
 			case LobbyCreate:
-				lobbies[nextGID] = NewLobby(nextGID, mkClientAdd(cid), rx, q)
+				lobbies[nextGID] = NewLobby(nextGID, mkNamedClient(cid), rx, q)
 				nextGID++
 				broadcastLobbies()
 			}

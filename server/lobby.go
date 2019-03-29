@@ -3,22 +3,22 @@ package main
 // Lobby represents a group of clients all waiting for the same game to
 // start.
 type Lobby struct {
-	GID                     // unique
-	Leader string           // leader name
-	tx     chan<- ClientAdd // from runLobbyMap to this
+	GID                       // unique
+	Leader string             // leader name
+	tx     chan<- NamedClient // from runLobbyMap to this
 }
 
 // NewLobby returns a new Lobby.
 func NewLobby(
 	gid GID,
-	leader ClientAdd,
+	leader NamedClient,
 	tx chan<- SrvMsg,
 	q <-chan struct{},
 ) Lobby {
 	// if this channel is to be buffered, it must be drained when exiting from
 	// runLobby, and such draining must only occur after we've sent a message to
 	// runLobbyMap that will ensure no further messages get sent on this channel.
-	rxLobbyMap := make(chan ClientAdd)
+	rxLobbyMap := make(chan NamedClient)
 	lb := Lobby{
 		GID:    gid,
 		Leader: leader.Name,
@@ -30,9 +30,9 @@ func NewLobby(
 
 func runLobby(
 	gid GID,
-	leader ClientAdd,
+	leader NamedClient,
 	tx chan<- SrvMsg,
-	rx <-chan ClientAdd,
+	rx <-chan NamedClient,
 	q <-chan struct{},
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
@@ -74,7 +74,7 @@ func runLobby(
 				if cid == leader.CID {
 					goto out
 				}
-				msg := ClientAdd{cid, clients.Rm(cid), names[cid]}
+				msg := NamedClient{cid, clients.Rm(cid), names[cid]}
 				delete(names, cid)
 			inner:
 				for {

@@ -196,13 +196,13 @@ type SrvMsg interface {
 	isSrvMsg()
 }
 
-func (Client) isSrvMsg()     {}
-func (ClientAdd) isSrvMsg()  {}
-func (LobbyClose) isSrvMsg() {}
-func (GameClose) isSrvMsg()  {}
+func (Client) isSrvMsg()      {}
+func (NamedClient) isSrvMsg() {}
+func (LobbyClose) isSrvMsg()  {}
+func (GameClose) isSrvMsg()   {}
 
-// ClientAdd signals that a client is being added to the server.
-type ClientAdd struct {
+// NamedClient signals that a client with a name is being added to the server.
+type NamedClient struct {
 	CID
 	Client
 	Name string
