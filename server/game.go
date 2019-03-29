@@ -87,7 +87,6 @@ func runGame(
 	}
 
 	// current state.
-	// invariant: state == gameOver <=> resPts == MaxPts || spyPts == MaxPts
 	state := memberChoosing
 
 	// invariant: the client with CID cids[captain] is the current captain.
