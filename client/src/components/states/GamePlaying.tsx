@@ -47,11 +47,13 @@ export default ({
 }: Props) => (
   <div className="GamePlaying">
     <h1>Game</h1>
-    <p>Allegiance: {isSpy ? "Spies" : "Resistance"}</p>
-    <p>Resistance points: {resPts}</p>
-    <p>Spy points: {spyPts}</p>
-    <p>Captain: {clients.find(({ CID }) => CID === captain)!.Name}</p>
-    <p>Members ({typeof members === "number" ? members : members.length}):</p>
+    <div>Allegiance: {isSpy ? "Spies" : "Resistance"}</div>
+    <div>Resistance points: {resPts}</div>
+    <div>Spy points: {spyPts}</div>
+    <div>Captain: {clients.find(({ CID }) => CID === captain)!.Name}</div>
+    <div>
+      Members ({typeof members === "number" ? members : members.length}):
+    </div>
     {typeof members === "number" ? (
       me === captain ? (
         <MemberChooser {...{ send, me, clients, members }} />
