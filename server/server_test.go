@@ -404,35 +404,11 @@ func runGameTest(
 		t.Fatal("bad EndGame", eg)
 	}
 }
-
-func TestGameMinNFalseFalse(t *testing.T) {
-	runGameTest(t, MinN, false, false)
-}
-
-func TestGameMaxNFalseFalse(t *testing.T) {
-	runGameTest(t, MaxN, false, false)
-}
-
-func TestGameMinNTrueFalse(t *testing.T) {
-	runGameTest(t, MinN, true, false)
-}
-
-func TestGameMaxNTrueFalse(t *testing.T) {
-	runGameTest(t, MaxN, true, false)
-}
-
-func TestGameMinNFalseTrue(t *testing.T) {
-	runGameTest(t, MinN, false, true)
-}
-
-func TestGameMaxNFalseTrue(t *testing.T) {
-	runGameTest(t, MaxN, false, true)
-}
-
-func TestGameMinNTrueTrue(t *testing.T) {
-	runGameTest(t, MinN, true, true)
-}
-
-func TestGameMaxNTrueTrue(t *testing.T) {
-	runGameTest(t, MaxN, true, true)
-}
+func TestGameMinNFalseFalse(t *testing.T) { runGameTest(t, MinN, false, false) }
+func TestGameMaxNFalseFalse(t *testing.T) { runGameTest(t, MaxN, false, false) }
+func TestGameMinNTrueFalse(t *testing.T)  { runGameTest(t, MinN, true, false) }
+func TestGameMaxNTrueFalse(t *testing.T)  { runGameTest(t, MaxN, true, false) }
+func TestGameMinNFalseTrue(t *testing.T)  { runGameTest(t, MinN, false, true) }
+func TestGameMaxNFalseTrue(t *testing.T)  { runGameTest(t, MaxN, false, true) }
+func TestGameMinNTrueTrue(t *testing.T)   { runGameTest(t, MinN, true, true) }
+func TestGameMaxNTrueTrue(t *testing.T)   { runGameTest(t, MaxN, true, true) }
