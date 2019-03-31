@@ -414,3 +414,11 @@ func TestGame05(t *testing.T) { testGame(t, MinN, false, true, false) }
 func TestGame06(t *testing.T) { testGame(t, MaxN, false, true, false) }
 func TestGame07(t *testing.T) { testGame(t, MinN, true, true, false) }
 func TestGame08(t *testing.T) { testGame(t, MaxN, true, true, false) }
+func TestGame09(t *testing.T) { testGame(t, MinN, false, false, true) }
+func TestGame10(t *testing.T) { testGame(t, MaxN, false, false, true) }
+func TestGame11(t *testing.T) { testGame(t, MinN, true, false, true) }
+func TestGame12(t *testing.T) { testGame(t, MaxN, true, false, true) }
+func TestGame13(t *testing.T) { testGame(t, MinN, false, true, true) }
+func TestGame14(t *testing.T) { testGame(t, MaxN, false, true, true) }
+func TestGame15(t *testing.T) { testGame(t, MinN, true, true, true) }
+func TestGame16(t *testing.T) { testGame(t, MaxN, true, true, true) }
