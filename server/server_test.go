@@ -339,6 +339,7 @@ func testGame(
 	n int,
 	disconnectAfterMemberVote bool,
 	disconnectAfterMemberChoose bool,
+	disconnectAtRoundStart bool,
 ) {
 	s := NewServer()
 	defer s.Close()
@@ -377,6 +378,9 @@ func testGame(
 		if cg.ResPts != i {
 			t.Fatal("bad ResPts", cg.ResPts)
 		}
+		if disconnectAtRoundStart {
+			disconnectReconnect()
+		}
 		ms := mkMembers(cs, cg.NumMembers)
 		cs[toIdx[cg.Captain]].send(MemberChoose{ms})
 		cg = getCurrentGame(t, cs)
@@ -402,11 +406,11 @@ func testGame(
 		t.Fatal("bad EndGame", eg)
 	}
 }
-func TestGame1(t *testing.T) { testGame(t, MinN, false, false) }
-func TestGame2(t *testing.T) { testGame(t, MaxN, false, false) }
-func TestGame3(t *testing.T) { testGame(t, MinN, true, false) }
-func TestGame4(t *testing.T) { testGame(t, MaxN, true, false) }
-func TestGame5(t *testing.T) { testGame(t, MinN, false, true) }
-func TestGame6(t *testing.T) { testGame(t, MaxN, false, true) }
-func TestGame7(t *testing.T) { testGame(t, MinN, true, true) }
-func TestGame8(t *testing.T) { testGame(t, MaxN, true, true) }
+func TestGame1(t *testing.T) { testGame(t, MinN, false, false, false) }
+func TestGame2(t *testing.T) { testGame(t, MaxN, false, false, false) }
+func TestGame3(t *testing.T) { testGame(t, MinN, true, false, false) }
+func TestGame4(t *testing.T) { testGame(t, MaxN, true, false, false) }
+func TestGame5(t *testing.T) { testGame(t, MinN, false, true, false) }
+func TestGame6(t *testing.T) { testGame(t, MaxN, false, true, false) }
+func TestGame7(t *testing.T) { testGame(t, MinN, true, true, false) }
+func TestGame8(t *testing.T) { testGame(t, MaxN, true, true, false) }
