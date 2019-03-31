@@ -406,11 +406,11 @@ func testGame(
 		t.Fatal("bad EndGame", eg)
 	}
 }
-func TestGame1(t *testing.T) { testGame(t, MinN, false, false, false) }
-func TestGame2(t *testing.T) { testGame(t, MaxN, false, false, false) }
-func TestGame3(t *testing.T) { testGame(t, MinN, true, false, false) }
-func TestGame4(t *testing.T) { testGame(t, MaxN, true, false, false) }
-func TestGame5(t *testing.T) { testGame(t, MinN, false, true, false) }
-func TestGame6(t *testing.T) { testGame(t, MaxN, false, true, false) }
-func TestGame7(t *testing.T) { testGame(t, MinN, true, true, false) }
-func TestGame8(t *testing.T) { testGame(t, MaxN, true, true, false) }
+func TestGame01(t *testing.T) { testGame(t, MinN, false, false, false) }
+func TestGame02(t *testing.T) { testGame(t, MaxN, false, false, false) }
+func TestGame03(t *testing.T) { testGame(t, MinN, true, false, false) }
+func TestGame04(t *testing.T) { testGame(t, MaxN, true, false, false) }
+func TestGame05(t *testing.T) { testGame(t, MinN, false, true, false) }
+func TestGame06(t *testing.T) { testGame(t, MaxN, false, true, false) }
+func TestGame07(t *testing.T) { testGame(t, MinN, true, true, false) }
+func TestGame08(t *testing.T) { testGame(t, MaxN, true, true, false) }
