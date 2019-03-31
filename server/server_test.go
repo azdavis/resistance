@@ -264,7 +264,6 @@ func (s *Server) reconnectClient(t *testing.T, cid CID, gid GID) *testClient {
 	s.C <- tc.Client
 	tc.send(Reconnect{cid, gid})
 	tc.CID = cid
-	tc.recvCurrentGame(t)
 	return tc
 }
 
@@ -377,6 +376,10 @@ func runGameTest(t *testing.T, n int, disconnect bool) {
 			i := rand.Intn(len(cs))
 			cs[i].closeAndWait()
 			cs[i] = s.reconnectClient(t, cs[i].CID, gid)
+			rhs := cs[i].recvCurrentGame(t)
+			if !eqCurrentGame(cg, rhs) {
+				t.Fatal("bad cg", rhs)
+			}
 		}
 		for _, cid := range ms {
 			cs[toIdx[cid]].send(MissionVote{true})
