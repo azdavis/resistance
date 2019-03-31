@@ -34,6 +34,8 @@ const occurOpts: Array<[string, boolean]> = [
   ["Not occur", false],
 ];
 
+const isNum = (x: any): x is number => typeof x == "number";
+
 export default ({
   send,
   me,
@@ -51,10 +53,8 @@ export default ({
     <div>Resistance points: {resPts}</div>
     <div>Spy points: {spyPts}</div>
     <div>Captain: {clients.find(({ CID }) => CID === captain)!.Name}</div>
-    <div>
-      Members ({typeof members === "number" ? members : members.length}):
-    </div>
-    {typeof members === "number" ? (
+    <div>Members ({isNum(members) ? members : members.length}):</div>
+    {isNum(members) ? (
       me === captain ? (
         <MemberChooser {...{ send, me, clients, members }} />
       ) : (
@@ -70,7 +70,7 @@ export default ({
           </div>
         ))
     )}
-    {typeof members === "number" ? null : active ? (
+    {isNum(members) ? null : active ? (
       members.includes(me) ? (
         <Voter
           // the `key`s must differ
