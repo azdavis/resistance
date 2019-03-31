@@ -50,8 +50,9 @@ export default ({
   <div className="GamePlaying">
     <h1>Game</h1>
     <div>Allegiance: {isSpy ? "Spies" : "Resistance"}</div>
-    <div>Resistance points: {resPts}</div>
-    <div>Spy points: {spyPts}</div>
+    <div>
+      Score: Resistance {resPts}, Spies {spyPts}
+    </div>
     <div>Captain: {clients.find(({ CID }) => CID === captain)!.Name}</div>
     <div>Members ({isNum(members) ? members : members.length}):</div>
     {isNum(members) ? (
