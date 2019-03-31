@@ -334,7 +334,7 @@ func TestTwoClients(t *testing.T) {
 	cs[1].recvCurrentLobby(t, 2)
 }
 
-func runGameTest(t *testing.T, n int, disconnect bool) {
+func runGameTest(t *testing.T, n int, disconnectAfterMemberVote bool) {
 	s := NewServer()
 	defer s.Close()
 	cs, toIdx := mkClients(t, s, n)
@@ -372,7 +372,7 @@ func runGameTest(t *testing.T, n int, disconnect bool) {
 			cl.send(MemberVote{true})
 		}
 		cg = getCurrentGame(t, cs)
-		if disconnect {
+		if disconnectAfterMemberVote {
 			i := rand.Intn(len(cs))
 			cs[i].closeAndWait()
 			cs[i] = s.reconnectClient(t, cs[i].CID, gid)
