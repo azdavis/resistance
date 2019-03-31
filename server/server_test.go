@@ -359,8 +359,9 @@ func testGame(
 		}
 	}
 	cs[0].send(GameStart{})
+	var cg CurrentGame
 	for i := 0; i < MaxPts; i++ {
-		cg := getCurrentGame(t, cs)
+		cg = getCurrentGame(t, cs)
 		if cg.SpyPts != 0 {
 			t.Fatal("bad SpyPts", cg.SpyPts)
 		}
