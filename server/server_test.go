@@ -391,18 +391,18 @@ func runGameTest(t *testing.T, n int, disconnectAfterMemberVote bool) {
 	}
 }
 
-func TestGameFewNoDisconnect(t *testing.T) {
+func TestGameMinNFalse(t *testing.T) {
 	runGameTest(t, MinN, false)
 }
 
-func TestGameManyNoDisconnect(t *testing.T) {
+func TestGameMaxNFalse(t *testing.T) {
 	runGameTest(t, MaxN, false)
 }
 
-func TestGameFewYesDisconnect(t *testing.T) {
+func TestGameMinNTrue(t *testing.T) {
 	runGameTest(t, MinN, true)
 }
 
-func TestGameManyYesDisconnect(t *testing.T) {
+func TestGameMaxNTrue(t *testing.T) {
 	runGameTest(t, MaxN, true)
 }
