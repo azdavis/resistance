@@ -59,7 +59,7 @@ export default ({
       me === captain ? (
         <MemberChooser {...{ send, me, clients, members }} />
       ) : (
-        <div>(being chosen by captain)</div>
+        <div>(being chosen)</div>
       )
     ) : (
       clients
@@ -81,7 +81,7 @@ export default ({
           onVote={Vote => send({ t: "MissionVote", Vote })}
         />
       ) : (
-        <div>(being voted on by mission members)</div>
+        <div>(being voted on)</div>
       )
     ) : (
       <Voter
