@@ -360,6 +360,15 @@ func testGame(
 	}
 	cs[0].send(GameStart{})
 	var cg CurrentGame
+	disconnectReconnect := func() {
+		i := rand.Intn(len(cs))
+		cs[i].closeAndWait()
+		cs[i] = s.reconnectClient(t, cs[i].CID, gid)
+		rhs := cs[i].recvCurrentGame(t)
+		if !eqCurrentGame(cg, rhs) {
+			t.Fatal("bad cg", rhs)
+		}
+	}
 	for i := 0; i < MaxPts; i++ {
 		cg = getCurrentGame(t, cs)
 		if cg.SpyPts != 0 {
@@ -372,13 +381,7 @@ func testGame(
 		cs[toIdx[cg.Captain]].send(MemberChoose{ms})
 		cg = getCurrentGame(t, cs)
 		if disconnectAfterMemberChoose {
-			i := rand.Intn(len(cs))
-			cs[i].closeAndWait()
-			cs[i] = s.reconnectClient(t, cs[i].CID, gid)
-			rhs := cs[i].recvCurrentGame(t)
-			if !eqCurrentGame(cg, rhs) {
-				t.Fatal("bad cg", rhs)
-			}
+			disconnectReconnect()
 		}
 		if !eqCIDSlice(ms, cg.Members) {
 			t.Fatal("bad members", ms, cg.Members)
@@ -388,13 +391,7 @@ func testGame(
 		}
 		cg = getCurrentGame(t, cs)
 		if disconnectAfterMemberVote {
-			i := rand.Intn(len(cs))
-			cs[i].closeAndWait()
-			cs[i] = s.reconnectClient(t, cs[i].CID, gid)
-			rhs := cs[i].recvCurrentGame(t)
-			if !eqCurrentGame(cg, rhs) {
-				t.Fatal("bad cg", rhs)
-			}
+			disconnectReconnect()
 		}
 		for _, cid := range ms {
 			cs[toIdx[cid]].send(MissionVote{true})
