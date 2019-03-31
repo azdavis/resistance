@@ -383,7 +383,7 @@ func runGameTest(t *testing.T, n int, disconnect bool) {
 		}
 	}
 	eg := getEndGame(t, cs)
-	if !eqEndGame(eg, EndGame{ResPts: 3, SpyPts: 0, Lobbies: []Lobby{}}) {
+	if !eqEndGame(EndGame{ResPts: 3, SpyPts: 0, Lobbies: []Lobby{}}, eg) {
 		t.Fatal("bad EndGame", eg)
 	}
 }
