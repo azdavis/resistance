@@ -338,6 +338,7 @@ func runGameTest(
 	t *testing.T,
 	n int,
 	disconnectAfterMemberVote bool,
+	disconnectAfterMemberChoose bool,
 ) {
 	s := NewServer()
 	defer s.Close()
@@ -369,6 +370,15 @@ func runGameTest(
 		ms := mkMembers(cs, cg.NumMembers)
 		cs[toIdx[cg.Captain]].send(MemberChoose{ms})
 		cg = getCurrentGame(t, cs)
+		if disconnectAfterMemberChoose {
+			i := rand.Intn(len(cs))
+			cs[i].closeAndWait()
+			cs[i] = s.reconnectClient(t, cs[i].CID, gid)
+			rhs := cs[i].recvCurrentGame(t)
+			if !eqCurrentGame(cg, rhs) {
+				t.Fatal("bad cg", rhs)
+			}
+		}
 		if !eqCIDSlice(ms, cg.Members) {
 			t.Fatal("bad members", ms, cg.Members)
 		}
@@ -395,18 +405,34 @@ func runGameTest(
 	}
 }
 
-func TestGameMinNFalse(t *testing.T) {
-	runGameTest(t, MinN, false)
+func TestGameMinNFalseFalse(t *testing.T) {
+	runGameTest(t, MinN, false, false)
 }
 
-func TestGameMaxNFalse(t *testing.T) {
-	runGameTest(t, MaxN, false)
+func TestGameMaxNFalseFalse(t *testing.T) {
+	runGameTest(t, MaxN, false, false)
 }
 
-func TestGameMinNTrue(t *testing.T) {
-	runGameTest(t, MinN, true)
+func TestGameMinNTrueFalse(t *testing.T) {
+	runGameTest(t, MinN, true, false)
 }
 
-func TestGameMaxNTrue(t *testing.T) {
-	runGameTest(t, MaxN, true)
+func TestGameMaxNTrueFalse(t *testing.T) {
+	runGameTest(t, MaxN, true, false)
+}
+
+func TestGameMinNFalseTrue(t *testing.T) {
+	runGameTest(t, MinN, false, true)
+}
+
+func TestGameMaxNFalseTrue(t *testing.T) {
+	runGameTest(t, MaxN, false, true)
+}
+
+func TestGameMinNTrueTrue(t *testing.T) {
+	runGameTest(t, MinN, true, true)
+}
+
+func TestGameMaxNTrueTrue(t *testing.T) {
+	runGameTest(t, MaxN, true, true)
 }
