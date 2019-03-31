@@ -334,7 +334,11 @@ func TestTwoClients(t *testing.T) {
 	cs[1].recvCurrentLobby(t, 2)
 }
 
-func runGameTest(t *testing.T, n int, disconnectAfterMemberVote bool) {
+func runGameTest(
+	t *testing.T,
+	n int,
+	disconnectAfterMemberVote bool,
+) {
 	s := NewServer()
 	defer s.Close()
 	cs, toIdx := mkClients(t, s, n)
