@@ -334,7 +334,7 @@ func TestTwoClients(t *testing.T) {
 	cs[1].recvCurrentLobby(t, 2)
 }
 
-func runGameTest(
+func testGame(
 	t *testing.T,
 	n int,
 	disconnectAfterMemberVote bool,
@@ -404,11 +404,11 @@ func runGameTest(
 		t.Fatal("bad EndGame", eg)
 	}
 }
-func TestGame1(t *testing.T) { runGameTest(t, MinN, false, false) }
-func TestGame2(t *testing.T) { runGameTest(t, MaxN, false, false) }
-func TestGame3(t *testing.T) { runGameTest(t, MinN, true, false) }
-func TestGame4(t *testing.T) { runGameTest(t, MaxN, true, false) }
-func TestGame5(t *testing.T) { runGameTest(t, MinN, false, true) }
-func TestGame6(t *testing.T) { runGameTest(t, MaxN, false, true) }
-func TestGame7(t *testing.T) { runGameTest(t, MinN, true, true) }
-func TestGame8(t *testing.T) { runGameTest(t, MaxN, true, true) }
+func TestGame1(t *testing.T) { testGame(t, MinN, false, false) }
+func TestGame2(t *testing.T) { testGame(t, MaxN, false, false) }
+func TestGame3(t *testing.T) { testGame(t, MinN, true, false) }
+func TestGame4(t *testing.T) { testGame(t, MaxN, true, false) }
+func TestGame5(t *testing.T) { testGame(t, MinN, false, true) }
+func TestGame6(t *testing.T) { testGame(t, MaxN, false, true) }
+func TestGame7(t *testing.T) { testGame(t, MinN, true, true) }
+func TestGame8(t *testing.T) { testGame(t, MaxN, true, true) }
