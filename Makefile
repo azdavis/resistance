@@ -12,6 +12,9 @@ check: ## check whether the repository is in a good state
 setup: ## do first-time setup
 	mkdir -p .git/hooks
 	rm -f .git/hooks/pre-push
-	ln -s ../../scripts/check .git/hooks/pre-push
+	touch .git/hooks/pre-push
+	chmod +x .git/hooks/pre-push
+	echo '#!/bin/sh' >> .git/hooks/pre-push
+	echo 'exec make check' >> .git/hooks/pre-push
 	cd client && npm install
 	cd server && go install
