@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	ws "github.com/gorilla/websocket"
 )
@@ -11,13 +13,19 @@ import (
 type Hub struct {
 	up ws.Upgrader   // websocket upgrader
 	tx chan<- SrvMsg // from this to runServer
+	fs http.Handler
 }
 
 // NewHub returns a new Hub.
 func NewHub(tx chan<- SrvMsg) *Hub {
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
 	h := &Hub{
 		up: ws.Upgrader{CheckOrigin: unsafeAllowAny},
 		tx: tx,
+		fs: http.FileServer(http.Dir(filepath.Dir(ex))),
 	}
 	return h
 }
@@ -32,7 +40,7 @@ func unsafeAllowAny(r *http.Request) bool {
 // tx.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/ws" {
-		http.Error(w, "Not found", http.StatusNotFound)
+		h.fs.ServeHTTP(w, r)
 		return
 	}
 	conn, err := h.up.Upgrade(w, r, nil)
