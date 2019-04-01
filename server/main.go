@@ -1,13 +1,13 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"time"
 )
 
 func main() {
-	log.Println("start")
+	fmt.Println("start")
 	s := NewServer()
 	hs := &http.Server{
 		Handler:      NewHub(s.C),
@@ -15,5 +15,5 @@ func main() {
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
-	log.Fatal(hs.ListenAndServe())
+	fmt.Println("err main:", hs.ListenAndServe())
 }

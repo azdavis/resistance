@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"time"
 
 	ws "github.com/gorilla/websocket"
@@ -85,7 +85,7 @@ func (cl Client) readFromConn() {
 	for {
 		mt, bs, err := cl.conn.ReadMessage()
 		if err != nil {
-			log.Println("err readFromConn:", err)
+			fmt.Println("err readFromConn:", err)
 			cl.rx <- Close{}
 			cl.conn.Close()
 			return
@@ -115,7 +115,7 @@ func (cl Client) writeToConn() {
 			err = cl.conn.WriteMessage(ws.PingMessage, []byte{})
 		}
 		if err != nil {
-			log.Println("err writeToConn:", err)
+			fmt.Println("err writeToConn:", err)
 		}
 	}
 }
