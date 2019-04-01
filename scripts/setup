@@ -9,6 +9,7 @@ ln -s ../../scripts/check .git/hooks/pre-push
 
 cd client
 npm install
+cd ..
 
-cd ../server
+cd server
 go install
