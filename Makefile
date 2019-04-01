@@ -19,5 +19,5 @@ setup: client/node_modules .git/hooks/pre-push ## do first-time setup
 	echo '#!/bin/sh' >> $@
 	echo 'exec make check' >> $@
 
-client/node_modules: ## client deps
-	cd client && npm install
+client/node_modules: ## the client deps
+	cd $(dir $@) && npm install
