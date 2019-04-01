@@ -12,12 +12,12 @@ check: ## check whether the repository is in a good state
 setup: client/node_modules .git/hooks/pre-push ## do first-time setup
 	cd server && go install
 
-.git/hooks/pre-push:
+.git/hooks/pre-push: ## a git hook to execute `make check`
 	mkdir -p $(dir $@)
 	touch $@
 	chmod +x $@
 	echo '#!/bin/sh' >> $@
 	echo 'exec make check' >> $@
 
-client/node_modules:
+client/node_modules: ## client deps
 	cd client && npm install
