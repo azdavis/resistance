@@ -13,11 +13,11 @@ setup: client/node_modules .git/hooks/pre-push ## do first-time setup
 	cd server && go install
 
 .git/hooks/pre-push:
-	mkdir -p .git/hooks
-	touch .git/hooks/pre-push
-	chmod +x .git/hooks/pre-push
-	echo '#!/bin/sh' >> .git/hooks/pre-push
-	echo 'exec make check' >> .git/hooks/pre-push
+	mkdir -p $(dir $@)
+	touch $@
+	chmod +x $@
+	echo '#!/bin/sh' >> $@
+	echo 'exec make check' >> $@
 
 client/node_modules:
 	cd client && npm install
