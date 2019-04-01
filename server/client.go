@@ -51,8 +51,8 @@ func (cl Client) Close() {
 	close(cl.tx)
 }
 
-// SendOn updates dest. It returns only once dest has been updated.
-func (cl Client) SendOn(dest Dest) {
+// RecvTo updates dest. It returns only once dest has been updated.
+func (cl Client) RecvTo(dest Dest) {
 	cl.newDest <- dest
 }
 

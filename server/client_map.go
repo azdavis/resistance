@@ -32,7 +32,7 @@ func NewClientMap() *ClientMap {
 // must not exist in this ClientMap.
 func (cm *ClientMap) Add(cid CID, cl Client) {
 	cm.AddNoSend(cid, cl)
-	cl.SendOn(Dest{cid, cm.C})
+	cl.RecvTo(Dest{cid, cm.C})
 }
 
 // AddNoSend adds the given Client to the map, but does not direct it to begin
@@ -55,7 +55,7 @@ func (cm *ClientMap) Rm(cid CID) Client {
 		panic("not present")
 	}
 	delete(cm.M, cid)
-	cl.SendOn(NullDest)
+	cl.RecvTo(NullDest)
 	return cl
 }
 
@@ -74,7 +74,7 @@ func (cm *ClientMap) ToList(names map[CID]string) []ClientInfo {
 // DisconnectAll turns off the C.
 func (cm *ClientMap) DisconnectAll() {
 	for _, cl := range cm.M {
-		cl.SendOn(NullDest)
+		cl.RecvTo(NullDest)
 	}
 	close(cm.C)
 }
