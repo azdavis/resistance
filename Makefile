@@ -9,12 +9,15 @@ check: ## check whether the repository is in a good state
 	! git status --porcelain -unormal | grep .
 	cd server && go vet && go build && go test -race
 
-setup: ## do first-time setup
+setup: client/node_modules .git/hooks/pre-push ## do first-time setup
+	cd server && go install
+
+.git/hooks/pre-push:
 	mkdir -p .git/hooks
-	rm -f .git/hooks/pre-push
 	touch .git/hooks/pre-push
 	chmod +x .git/hooks/pre-push
 	echo '#!/bin/sh' >> .git/hooks/pre-push
 	echo 'exec make check' >> .git/hooks/pre-push
+
+client/node_modules:
 	cd client && npm install
-	cd server && go install
