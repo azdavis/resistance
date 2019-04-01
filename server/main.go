@@ -8,9 +8,8 @@ import (
 
 func main() {
 	fmt.Println("start")
-	s := NewServer()
 	hs := &http.Server{
-		Handler:      NewHub(s.C),
+		Handler:      NewHub(NewServer().C),
 		Addr:         ":8080",
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
