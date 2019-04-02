@@ -47,13 +47,9 @@ export default ({
         <div>(being chosen)</div>
       )
     ) : (
-      <ul>
-        {clients
-          .filter(({ CID }) => members.includes(CID))
-          .map(({ CID, Name }) => (
-            <li key={CID}>{Name}</li>
-          ))}
-      </ul>
+      clients
+        .filter(({ CID }) => members.includes(CID))
+        .map(({ CID, Name }) => <div key={CID}>{Name}</div>)
     )}
     {isNum(members) ? null : active ? (
       members.includes(me) ? (
