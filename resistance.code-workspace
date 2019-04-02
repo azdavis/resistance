@@ -6,9 +6,13 @@
   ],
   "settings": {
     "files.exclude": {
+      "build": true,
+      "build-heroku": true,
       "client/build": true,
       "client/node_modules": true,
-      "server/resistance": true
+      "server/heroku": true,
+      "server/local": true,
+      "thoughts.md": true
     },
     "cSpell.words": ["cids"]
   }
