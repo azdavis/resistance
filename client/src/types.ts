@@ -53,7 +53,9 @@ type ToClient =
       Lobbies: Array<Lobby>;
     };
 
+type Lang = "en";
 export type Action = SelfAction | ToClient;
+export type LangAction = Action | { t: "SetLang"; lang: Lang };
 export type D = Dispatch<Action>;
 
 export type State =
@@ -95,3 +97,5 @@ export type State =
       spyPts: number;
       lobbies: Array<Lobby>;
     };
+
+export type LangState = { lang: Lang } & State;
