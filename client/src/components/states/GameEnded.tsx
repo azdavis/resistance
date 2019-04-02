@@ -14,11 +14,6 @@ export default ({ d, resPts, spyPts }: Props) => (
     <p>Resistance points: {resPts}</p>
     <p>Spy points: {spyPts}</p>
     <p>Winner: {resPts > spyPts ? "Resistance" : "Spies"}</p>
-    <Button
-      value="Leave"
-      onClick={() => {
-        d({ t: "GoLobbies" });
-      }}
-    />
+    <Button value="Leave" onClick={() => d({ t: "GoLobbies" })} />
   </div>
 );
