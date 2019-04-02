@@ -13,7 +13,7 @@ export default ({ d, resPts, spyPts }: Props) => (
     <h1>Game over</h1>
     <p>Resistance points: {resPts}</p>
     <p>Spy points: {spyPts}</p>
-    <p>Winner: {resPts > spyPts ? "resistance" : "spies"}</p>
+    <p>Winner: {resPts > spyPts ? "Resistance" : "Spies"}</p>
     <Button
       value="Leave"
       onClick={() => {
