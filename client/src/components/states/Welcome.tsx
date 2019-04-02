@@ -19,6 +19,9 @@ const text = {
   learnHow: {
     en: "Learn how to play",
   },
+  setLang: {
+    en: "Set language",
+  },
   viewCode: {
     en: "View source code",
   },
@@ -34,6 +37,10 @@ export default ({ lang, d, loading }: Props) => {
         disabled={loading}
       />
       <Button value={text.learnHow[lang]} onClick={() => d({ t: "GoHowTo" })} />
+      {/* <Button
+        value={text.setLang[lang]}
+        onClick={() => d({ t: "GoLangChoose" })}
+      /> */}
       <ButtonLink
         value={text.viewCode[lang]}
         href="https://github.com/azdavis/resistance"
