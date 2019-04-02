@@ -2,6 +2,7 @@ import React from "react";
 import { Send, Client, CID } from "../../types";
 import Voter from "../basic/Voter";
 import MemberChooser from "../basic/MemberChooser";
+import ButtonSpoiler from "../basic/ButtonSpoiler";
 
 type Props = {
   send: Send;
@@ -39,7 +40,10 @@ export default ({
 }: Props) => (
   <div className="GamePlaying">
     <h1>Game</h1>
-    <div>Allegiance: {isSpy ? "Spies" : "Resistance"}</div>
+    <ButtonSpoiler
+      view="View allegiance"
+      spoil={isSpy ? "Spies" : "Resistance"}
+    />
     <div>
       Score: Resistance {resPts}, Spies {spyPts}
     </div>
