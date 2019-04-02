@@ -1,5 +1,6 @@
 import React from "react";
 import { Send, Client, CID } from "../../types";
+import Scoreboard from "../basic/Scoreboard";
 import Voter from "../basic/Voter";
 import MemberChooser from "../basic/MemberChooser";
 import ButtonSpoiler from "../basic/ButtonSpoiler";
@@ -39,14 +40,11 @@ export default ({
   active,
 }: Props) => (
   <div className="GamePlaying">
-    <h1>Game</h1>
+    <Scoreboard resPts={resPts} spyPts={spyPts} />
     <ButtonSpoiler
       view="View allegiance"
       spoil={isSpy ? "Spies" : "Resistance"}
     />
-    <div>
-      Score: Resistance {resPts}, Spies {spyPts}
-    </div>
     <div>Captain: {clients.find(({ CID }) => CID === captain)!.Name}</div>
     <div>Members ({isNum(members) ? members : members.length}):</div>
     {isNum(members) ? (
