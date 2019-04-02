@@ -16,6 +16,10 @@
   cursor: inherit;
 }
 
+.Toggle input[type="checkbox"]:not(:checked)::after {
+  content: "☐";
+}
+
 .Toggle input[type="checkbox"]:checked::after {
-  content: "✓";
+  content: "☑";
 }
