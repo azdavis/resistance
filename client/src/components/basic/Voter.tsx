@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "./Button";
+import Toggle from "./Toggle";
 
 type Props<T> = {
   prompt: string;
@@ -12,12 +12,13 @@ export default function<T>({ prompt, options, onVote }: Props<T>) {
   const didVote = vote !== null;
   return (
     <div className="Voter">
-      <p>{didVote ? `You voted: ${vote}` : prompt}</p>
+      <p>{prompt}</p>
       {options.map(([k, v]) => (
-        <Button
+        <Toggle
           key={k}
           value={k}
-          onClick={() => {
+          checked={vote === k}
+          onChange={() => {
             setVote(k);
             onVote(v);
           }}
