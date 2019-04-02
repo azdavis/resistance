@@ -1,4 +1,5 @@
 import React from "react";
+import Checkbox from "./Checkbox";
 import "./Button.css";
 import "./Truncated.css";
 import "./Toggle.css";
@@ -12,7 +13,7 @@ type Props = {
 
 export default ({ value, ...rest }: Props) => (
   <label className="Button Toggle">
-    <input type="checkbox" {...rest} />
+    <Checkbox {...rest} />
     <div className="Truncated">{value}</div>
   </label>
 );

@@ -1,0 +1,33 @@
+.Checkbox {
+  display: block;
+  position: relative;
+  appearance: none;
+  width: 1.5em;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  cursor: inherit;
+}
+
+.Checkbox::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  border: 1px solid currentColor;
+}
+
+.Checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  background-color: currentColor;
+}
