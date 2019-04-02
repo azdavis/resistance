@@ -1,7 +1,16 @@
 import { Reducer } from "react";
-import { State, Action, CID, GID, Client, CurrentGame } from "./types";
+import {
+  State,
+  Action,
+  CID,
+  GID,
+  Client,
+  CurrentGame,
+  LangState,
+  LangAction,
+} from "./types";
 
-export const init: State = { t: "Welcome", me: 0 };
+export const init: LangState = { lang: "en", t: "Welcome", me: 0 };
 
 const mkGamePlaying = (
   me: CID,
@@ -21,7 +30,7 @@ const mkGamePlaying = (
   active: a.Active,
 });
 
-export const reducer: Reducer<State, Action> = (s, a) => {
+const inner: Reducer<State, Action> = (s, a) => {
   if (s.t === "Fatal") {
     return s;
   }
@@ -96,4 +105,12 @@ export const reducer: Reducer<State, Action> = (s, a) => {
           }
         : { t: "Fatal", s, a };
   }
+};
+
+export const reducer: Reducer<LangState, LangAction> = (s, a) => {
+  const { lang, ...rest } = s;
+  if (a.t === "SetLang") {
+    return { lang: a.lang, ...rest };
+  }
+  return { lang, ...inner(rest, a) };
 };
