@@ -12,7 +12,7 @@
   cursor: pointer;
 }
 
-.Button:not(:disabled):active {
+.Button--enabled:active {
   border-color: var(--dark-gray);
   background-color: var(--dark-gray);
 }
@@ -25,7 +25,7 @@
   border-color: var(--blue);
 }
 
-.Button:disabled {
+.Button--disabled {
   opacity: 0.6;
   cursor: initial;
 }

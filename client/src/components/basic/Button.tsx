@@ -10,5 +10,11 @@ type Props = {
 };
 
 export default ({ type = "button", ...rest }: Props) => (
-  <input type={type} className="Button Truncated" {...rest} />
+  <input
+    type={type}
+    className={`Button Button--${
+      rest.disabled ? "disabled" : "enabled"
+    } Truncated`}
+    {...rest}
+  />
 );
