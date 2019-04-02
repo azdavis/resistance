@@ -1,6 +1,7 @@
 import React from "react";
 import { Lang, D } from "../../types";
 import { minN, maxN, maxPts } from "../../consts";
+import { back } from "../../text";
 import Button from "../basic/Button";
 
 type Props = {
@@ -68,9 +69,6 @@ const text = {
   fail: {
     en: <p>If the mission fails, the spies get 1 point.</p>,
   },
-  back: {
-    en: "Back",
-  },
 };
 
 export default ({ lang, d }: Props) => (
@@ -86,6 +84,6 @@ export default ({ lang, d }: Props) => (
     {text.yesOccur[lang]}
     {text.succeed[lang]}
     {text.fail[lang]}
-    <Button value={text.back[lang]} onClick={() => d({ t: "GoWelcome" })} />
+    <Button value={back[lang]} onClick={() => d({ t: "GoWelcome" })} />
   </div>
 );

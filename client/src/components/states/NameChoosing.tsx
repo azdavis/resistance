@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Lang, D, Send } from "../../types";
+import { submit, back } from "../../text";
 import Button from "../basic/Button";
 import TextInput from "../basic/TextInput";
 
@@ -17,12 +18,6 @@ const text = {
   invalid: {
     en: "Invalid",
   },
-  submit: {
-    en: "Submit",
-  },
-  back: {
-    en: "Back",
-  },
 };
 
 export default ({ lang, d, send, valid }: Props) => {
@@ -39,9 +34,9 @@ export default ({ lang, d, send, valid }: Props) => {
       >
         <TextInput ref={nameRef} />
         {valid ? null : text.invalid[lang]}
-        <Button type="submit" value={text.submit[lang]} />
+        <Button type="submit" value={submit[lang]} />
       </form>
-      <Button value={text.back[lang]} onClick={() => d({ t: "GoWelcome" })} />
+      <Button value={back[lang]} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };
