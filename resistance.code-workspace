@@ -10,9 +10,6 @@
       "client/node_modules": true,
       "server/resistance": true
     },
-    "cSpell.words": [
-      "cids",
-      "triggerable"
-    ]
+    "cSpell.words": ["cids"]
   }
 }
