@@ -1,4 +1,4 @@
-.PHONY: all help check setup test
+.PHONY: all help check setup test clean
 
 all: help ## same as `help`
 
@@ -14,6 +14,9 @@ setup: client/node_modules .git/hooks/pre-push ## do first-time setup
 
 test: ## run tests
 	cd server && go test -race
+
+clean: ## rm generated files
+	rm -rf build-heroku build client/build server/heroku server/local
 
 .git/hooks/pre-push: ## a git hook to execute `make check`
 	mkdir -p .git/hooks
