@@ -12,7 +12,7 @@ export default function<T>({ prompt, options, onVote }: Props<T>) {
   const didVote = vote !== null;
   return (
     <div className="Voter">
-      <p>{prompt}</p>
+      <div>{prompt}</div>
       {options.map(([k, v]) => (
         <Toggle
           key={k}
