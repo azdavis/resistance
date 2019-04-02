@@ -21,3 +21,22 @@ setup: client/node_modules .git/hooks/pre-push ## do first-time setup
 
 client/node_modules: ## the client deps
 	cd client && npm install
+
+build: client/build server/local ## the entire project
+	rm -rf build
+	cp -R client/build build
+	cp server/local build
+
+build-heroku: client/build server/heroku ## the entire project, for heroku
+	rm -rf build-heroku
+	cp -R client/build build-heroku
+	cp server/heroku build-heroku
+
+client/build: ## the optimized client build
+	cd client && npm run build
+
+server/local: server/*.go ## the local server program
+	cd server && go build -o local
+
+server/heroku: server/*.go ## the heroku server program
+	cd server && GOARCH=arm GOOS=linux go build -o heroku
