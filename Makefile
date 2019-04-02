@@ -7,7 +7,7 @@ help: ## show this help
 
 check: ## check whether the repository is in a good state
 	! git status --porcelain -unormal | grep .
-	cd server && go vet && go build && go test -race
+	cd server && go vet && go test -race
 
 setup: client/node_modules .git/hooks/pre-push ## do first-time setup
 	cd server && go install
