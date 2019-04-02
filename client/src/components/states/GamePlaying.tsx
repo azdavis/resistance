@@ -24,16 +24,6 @@ const modifiers = (cid: CID, me: CID, captain: CID): string =>
     ? " (captain)"
     : "";
 
-const succeedOpts: Array<[string, boolean]> = [
-  ["Succeed", true],
-  ["Fail", false],
-];
-
-const occurOpts: Array<[string, boolean]> = [
-  ["Occur", true],
-  ["Not occur", false],
-];
-
 const isNum = (x: any): x is number => typeof x == "number";
 
 export default ({
@@ -77,7 +67,7 @@ export default ({
           // the `key`s must differ
           key="succeed"
           prompt="Should the mission succeed?"
-          options={succeedOpts}
+          options={[["Succeed", true], ["Fail", false]]}
           onVote={Vote => send({ t: "MissionVote", Vote })}
         />
       ) : (
@@ -88,7 +78,7 @@ export default ({
         // the `key`s must differ
         key="occur"
         prompt="Should the mission occur?"
-        options={occurOpts}
+        options={[["Occur", true], ["Not occur", false]]}
         onVote={Vote => send({ t: "MemberVote", Vote })}
       />
     )}
