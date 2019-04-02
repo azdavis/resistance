@@ -12,15 +12,6 @@ type Props = {
   clients: Array<Client>;
 };
 
-const modifiers = (cid: CID, me: CID, leader: CID): string =>
-  cid === me && cid === leader
-    ? " (you, leader)"
-    : cid === me
-    ? " (you)"
-    : cid === leader
-    ? " (leader)"
-    : "";
-
 export default ({ d, send, me, leader, clients }: Props) => (
   <div className="LobbyWaiting">
     <h1>Lobby</h1>
@@ -28,7 +19,6 @@ export default ({ d, send, me, leader, clients }: Props) => (
     {clients.map(({ CID, Name }) => (
       <div className="Truncated" key={CID}>
         {Name}
-        {modifiers(CID, me, leader)}
       </div>
     ))}
     <h2>Actions</h2>

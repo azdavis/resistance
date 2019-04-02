@@ -18,15 +18,6 @@ type Props = {
   active: boolean;
 };
 
-const modifiers = (cid: CID, me: CID, captain: CID): string =>
-  cid === me && cid === captain
-    ? " (you, captain)"
-    : cid === me
-    ? " (you)"
-    : cid === captain
-    ? " (captain)"
-    : "";
-
 const isNum = (x: any): x is number => typeof x == "number";
 
 export default ({
@@ -60,10 +51,7 @@ export default ({
         {clients
           .filter(({ CID }) => members.includes(CID))
           .map(({ CID, Name }) => (
-            <li key={CID}>
-              {Name}
-              {modifiers(CID, me, captain)}
-            </li>
+            <li key={CID}>{Name}</li>
           ))}
       </ul>
     )}
