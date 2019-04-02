@@ -12,7 +12,11 @@ type Props = {
 };
 
 export default ({ value, ...rest }: Props) => (
-  <label className="Button Toggle">
+  <label
+    className={`Button Button--${
+      rest.disabled ? "disabled" : "enabled"
+    } Toggle`}
+  >
     <Checkbox {...rest} />
     <div className="Truncated">{value}</div>
   </label>
