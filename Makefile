@@ -1,4 +1,4 @@
-.PHONY: all help check setup
+.PHONY: all help check setup test
 
 all: help ## same as `help`
 
@@ -11,6 +11,9 @@ check: ## check whether the repository is in a good state
 
 setup: client/node_modules .git/hooks/pre-push ## do first-time setup
 	cd server && go install
+
+test: ## run tests
+	cd server && go test -race
 
 .git/hooks/pre-push: ## a git hook to execute `make check`
 	mkdir -p .git/hooks
