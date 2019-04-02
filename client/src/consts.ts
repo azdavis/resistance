@@ -1,5 +1,4 @@
 // These should be kept in sync with consts.go.
-import { Client, CID } from "./types";
 
 export const minN = 5;
 export const maxN = 7;
