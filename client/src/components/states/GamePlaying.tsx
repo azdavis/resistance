@@ -42,7 +42,7 @@ export default ({
   active,
 }: Props) => (
   <div className="GamePlaying">
-    <Scoreboard lang={lang} resPts={resPts} spyPts={spyPts} />
+    <Scoreboard {...{ lang, resPts, spyPts }} />
     <ButtonSpoiler
       view="View allegiance"
       spoil={isSpy ? "Spies" : "Resistance"}
