@@ -1,9 +1,9 @@
 import React from "react";
 import { Send, Client, CID } from "../../types";
+import ButtonSpoiler from "../basic/ButtonSpoiler";
+import MemberChooser from "../basic/MemberChooser";
 import Scoreboard from "../basic/Scoreboard";
 import Voter from "../basic/Voter";
-import MemberChooser from "../basic/MemberChooser";
-import ButtonSpoiler from "../basic/ButtonSpoiler";
 
 type Props = {
   send: Send;

@@ -1,7 +1,7 @@
 import React from "react";
-import Scoreboard from "../basic/Scoreboard";
-import Button from "../basic/Button";
 import { Lang, D } from "../../types";
+import Button from "../basic/Button";
+import Scoreboard from "../basic/Scoreboard";
 
 type Props = {
   lang: Lang;
