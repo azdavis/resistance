@@ -7,6 +7,7 @@ import Disconnected from "./states/Disconnected";
 import Disbanded from "./states/Disbanded";
 import Welcome from "./states/Welcome";
 import HowTo from "./states/HowTo";
+import LangChoosing from "./states/LangChoosing";
 import NameChoosing from "./states/NameChoosing";
 import LobbyChoosing from "./states/LobbyChoosing";
 import LobbyWaiting from "./states/LobbyWaiting";
@@ -49,6 +50,8 @@ export default (): JSX.Element => {
       );
     case "HowTo":
       return <HowTo lang={s.lang} d={d} />;
+    case "LangChoosing":
+      return <LangChoosing d={d} lang={s.lang} />;
     case "NameChoosing":
       return <NameChoosing d={d} send={send!} {...s} />;
     case "LobbyChoosing":

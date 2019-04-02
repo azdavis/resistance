@@ -27,6 +27,7 @@ type SelfAction =
   | { t: "GoLobbies" }
   | { t: "GoWelcome" }
   | { t: "GoNameChoose" }
+  | { t: "GoLangChoose" }
   | { t: "GoHowTo" };
 
 export type CurrentGame = {
@@ -68,6 +69,7 @@ export type State =
   | { t: "Disbanded"; me: CID; lobbies: Array<Lobby> }
   | { t: "Welcome"; me: CID }
   | { t: "HowTo"; me: CID }
+  | { t: "LangChoosing"; me: CID }
   | { t: "NameChoosing"; me: CID; valid: boolean }
   | { t: "LobbyChoosing"; me: CID; lobbies: Array<Lobby> }
   | {
