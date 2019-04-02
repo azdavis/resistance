@@ -1,11 +1,12 @@
 import React from "react";
-import { Send, Client, CID } from "../../types";
+import { Lang, Send, Client, CID } from "../../types";
 import ButtonSpoiler from "../basic/ButtonSpoiler";
 import MemberChooser from "../basic/MemberChooser";
 import Scoreboard from "../basic/Scoreboard";
 import Voter from "../basic/Voter";
 
 type Props = {
+  lang: Lang;
   send: Send;
   me: CID;
   clients: Array<Client>;
@@ -29,6 +30,7 @@ const modifiers = (cid: CID, me: CID, captain: CID): string =>
 const isNum = (x: any): x is number => typeof x == "number";
 
 export default ({
+  lang,
   send,
   me,
   clients,
@@ -40,7 +42,7 @@ export default ({
   active,
 }: Props) => (
   <div className="GamePlaying">
-    <Scoreboard resPts={resPts} spyPts={spyPts} />
+    <Scoreboard lang={lang} resPts={resPts} spyPts={spyPts} />
     <ButtonSpoiler
       view="View allegiance"
       spoil={isSpy ? "Spies" : "Resistance"}
@@ -49,7 +51,7 @@ export default ({
     <div>Members ({isNum(members) ? members : members.length}):</div>
     {isNum(members) ? (
       me === captain ? (
-        <MemberChooser {...{ send, me, clients, members }} />
+        <MemberChooser {...{ lang, send, me, clients, members }} />
       ) : (
         <div>(being chosen)</div>
       )

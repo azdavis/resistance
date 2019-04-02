@@ -1,16 +1,19 @@
 import React from "react";
+import { Lang } from "../../types";
 import { maxPts } from "../../consts";
+import { resName, spyName } from "../../text";
 import Checkbox from "./Checkbox";
 import "./Scoreboard.css";
 
 type Props = {
+  lang: Lang;
   resPts: number;
   spyPts: number;
 };
 
 const points = Array.from(Array(maxPts), (_, i) => i + 1);
 
-export default ({ resPts, spyPts }: Props) => (
+export default ({ lang, resPts, spyPts }: Props) => (
   <table className="Scoreboard">
     <tbody>
       <tr>
@@ -20,7 +23,7 @@ export default ({ resPts, spyPts }: Props) => (
           ))}
         </td>
         <td>
-          <b>Resistance</b>
+          <b>{resName[lang]}</b>
         </td>
       </tr>
     </tbody>
@@ -31,7 +34,7 @@ export default ({ resPts, spyPts }: Props) => (
         ))}
       </td>
       <td>
-        <b>Spies</b>
+        <b>{spyName[lang]}</b>
       </td>
     </tr>
   </table>

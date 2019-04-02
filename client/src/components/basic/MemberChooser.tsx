@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Send, CID, Client } from "../../types";
+import { Lang, Send, CID, Client } from "../../types";
+import { submit } from "../../text";
 import Toggle from "./Toggle";
 import Button from "./Button";
 
 type Props = {
+  lang: Lang;
   send: Send;
   me: CID;
   clients: Array<Client>;
@@ -14,7 +16,7 @@ function id<T>(x: T): T {
   return x;
 }
 
-export default ({ send, me, clients, members }: Props) => {
+export default ({ lang, send, me, clients, members }: Props) => {
   const [checked, setChecked] = useState(() =>
     clients.map(({ CID }) => CID === me),
   );
@@ -30,7 +32,7 @@ export default ({ send, me, clients, members }: Props) => {
       ))}
       <Button
         type="submit"
-        value="Submit"
+        value={submit[lang]}
         onClick={() => {
           const Members: Array<CID> = [];
           for (let i = 0; i < clients.length; i++) {

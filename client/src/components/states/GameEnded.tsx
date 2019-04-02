@@ -13,7 +13,7 @@ type Props = {
 
 export default ({ lang, d, resPts, spyPts }: Props) => (
   <div className="GameEnded">
-    <Scoreboard resPts={resPts} spyPts={spyPts} />
+    <Scoreboard lang={lang} resPts={resPts} spyPts={spyPts} />
     <Button value={leave[lang]} onClick={() => d({ t: "GoLobbies" })} />
   </div>
 );
