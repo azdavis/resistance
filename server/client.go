@@ -106,10 +106,11 @@ func (cl Client) writeToConn() {
 	var err error
 	for {
 		select {
-		case <-cl.q:
-			ticker.Stop()
-			return
-		case m := <-cl.tx:
+		case m, ok := <-cl.tx:
+			if !ok {
+				ticker.Stop()
+				return
+			}
 			err = cl.conn.WriteJSON(m)
 		case <-ticker.C:
 			err = cl.conn.WriteMessage(ws.PingMessage, []byte{})
