@@ -56,7 +56,7 @@ type ToClient =
 export type Lang = "en";
 export type Action = SelfAction | ToClient;
 export type LangAction = Action | { t: "SetLang"; lang: Lang };
-export type D = Dispatch<Action>;
+export type D = Dispatch<LangAction>;
 
 export type State =
   | { t: "Fatal"; s: State; a: Action }
