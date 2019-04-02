@@ -4,6 +4,7 @@ import ButtonSpoiler from "../basic/ButtonSpoiler";
 import MemberChooser from "../basic/MemberChooser";
 import Scoreboard from "../basic/Scoreboard";
 import Voter from "../basic/Voter";
+import "../basic/Truncated.css";
 
 type Props = {
   lang: Lang;
@@ -49,7 +50,11 @@ export default ({
     ) : (
       clients
         .filter(({ CID }) => members.includes(CID))
-        .map(({ CID, Name }) => <div key={CID}>{Name}</div>)
+        .map(({ CID, Name }) => (
+          <div key={CID} className="Truncated">
+            {Name}
+          </div>
+        ))
     )}
     {isNum(members) ? null : active ? (
       members.includes(me) ? (
