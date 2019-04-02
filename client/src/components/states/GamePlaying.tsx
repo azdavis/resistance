@@ -1,5 +1,6 @@
 import React from "react";
 import { Lang, Send, Client, CID } from "../../types";
+import { resName, spyName } from "../../text";
 import ButtonSpoiler from "../basic/ButtonSpoiler";
 import MemberChooser from "../basic/MemberChooser";
 import Scoreboard from "../basic/Scoreboard";
@@ -19,6 +20,42 @@ type Props = {
   active: boolean;
 };
 
+const text = {
+  viewAllegiance: {
+    en: "View allegiance",
+  },
+  captain: {
+    en: (x: string) => <div>Captain: {x}</div>,
+  },
+  members: {
+    en: (n: number) => <div>Members ({n}):</div>,
+  },
+  beingChosen: {
+    en: <div>(being chosen)</div>,
+  },
+  succeedPrompt: {
+    en: "Should the mission succeed?",
+  },
+  succeed: {
+    en: "Succeed",
+  },
+  fail: {
+    en: "Fail",
+  },
+  beingVotedOn: {
+    en: <div>(being voted on)</div>,
+  },
+  occurPrompt: {
+    en: "Should the mission occur?",
+  },
+  occur: {
+    en: "Occur",
+  },
+  notOccur: {
+    en: "Not occur",
+  },
+};
+
 const isNum = (x: any): x is number => typeof x == "number";
 
 export default ({
@@ -36,16 +73,16 @@ export default ({
   <div className="GamePlaying">
     <Scoreboard {...{ lang, resPts, spyPts }} />
     <ButtonSpoiler
-      view="View allegiance"
-      spoil={isSpy ? "Spies" : "Resistance"}
+      view={text.viewAllegiance[lang]}
+      spoil={(isSpy ? resName : spyName)[lang]}
     />
-    <div>Captain: {clients.find(({ CID }) => CID === captain)!.Name}</div>
-    <div>Members ({isNum(members) ? members : members.length}):</div>
+    {text.captain[lang](clients.find(({ CID }) => CID === captain)!.Name)}
+    {text.members[lang](isNum(members) ? members : members.length)}
     {isNum(members) ? (
       me === captain ? (
         <MemberChooser {...{ lang, send, me, clients, members }} />
       ) : (
-        <div>(being chosen)</div>
+        text.beingChosen[lang]
       )
     ) : (
       clients
@@ -61,19 +98,19 @@ export default ({
         <Voter
           // the `key`s must differ
           key="succeed"
-          prompt="Should the mission succeed?"
-          options={[["Succeed", true], ["Fail", false]]}
+          prompt={text.succeedPrompt[lang]}
+          options={[[text.succeed[lang], true], [text.fail[lang], false]]}
           onVote={Vote => send({ t: "MissionVote", Vote })}
         />
       ) : (
-        <div>(being voted on)</div>
+        text.beingVotedOn[lang]
       )
     ) : (
       <Voter
         // the `key`s must differ
         key="occur"
-        prompt="Should the mission occur?"
-        options={[["Occur", true], ["Not occur", false]]}
+        prompt={text.occurPrompt[lang]}
+        options={[[text.occur[lang], true], [text.notOccur[lang], false]]}
         onVote={Vote => send({ t: "MemberVote", Vote })}
       />
     )}

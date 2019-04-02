@@ -1,10 +1,12 @@
 import React from "react";
-import { D, Send, CID, Client } from "../../types";
+import { Lang, D, Send, CID, Client } from "../../types";
 import { okGameSize } from "../../consts";
+import { leave } from "../../text";
 import Button from "../basic/Button";
 import "../basic/Truncated.css";
 
 type Props = {
+  lang: Lang;
   d: D;
   send: Send;
   me: CID;
@@ -12,25 +14,40 @@ type Props = {
   clients: Array<Client>;
 };
 
-export default ({ d, send, me, leader, clients }: Props) => (
+const text = {
+  title: {
+    en: <h1>Lobby</h1>,
+  },
+  members: {
+    en: (n: number) => <h2>Members ({n})</h2>,
+  },
+  actions: {
+    en: <h2>Actions</h2>,
+  },
+  start: {
+    en: "Start",
+  },
+};
+
+export default ({ lang, d, send, me, leader, clients }: Props) => (
   <div className="LobbyWaiting">
-    <h1>Lobby</h1>
-    <h2>Members ({clients.length})</h2>
+    {text.title[lang]}
+    {text.members[lang](clients.length)}
     {clients.map(({ CID, Name }) => (
       <div className="Truncated" key={CID}>
         {Name}
       </div>
     ))}
-    <h2>Actions</h2>
+    {text.actions[lang]}
     <Button
-      value="Leave"
+      value={leave[lang]}
       onClick={() => {
         d({ t: "GoLobbies" });
         send({ t: "LobbyLeave" });
       }}
     />
     <Button
-      value="Start"
+      value={text.start[lang]}
       onClick={() => send({ t: "GameStart" })}
       disabled={me !== leader || !okGameSize(clients.length)}
     />
