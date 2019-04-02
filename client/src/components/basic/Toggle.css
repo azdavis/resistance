@@ -2,3 +2,7 @@
   display: flex;
   user-select: none;
 }
+
+.Toggle .Checkbox {
+  flex-shrink: 0;
+}
