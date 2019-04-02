@@ -40,13 +40,15 @@ export default (): JSX.Element => {
     case "Fatal":
       return <Fatal {...s} />;
     case "Disconnected":
-      return <Disconnected reconnect={reconnect} />;
+      return <Disconnected lang={s.lang} reconnect={reconnect} />;
     case "Disbanded":
-      return <Disbanded d={d} />;
+      return <Disbanded lang={s.lang} d={d} />;
     case "Welcome":
-      return <Welcome d={d} loading={send === null || s.me === 0} />;
+      return (
+        <Welcome lang={s.lang} d={d} loading={send === null || s.me === 0} />
+      );
     case "HowTo":
-      return <HowTo d={d} />;
+      return <HowTo lang={s.lang} d={d} />;
     case "NameChoosing":
       return <NameChoosing d={d} send={send!} {...s} />;
     case "LobbyChoosing":

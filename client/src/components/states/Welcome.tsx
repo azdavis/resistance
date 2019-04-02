@@ -1,25 +1,41 @@
 import React from "react";
-import { D } from "../../types";
+import { Lang, D } from "../../types";
 import Button from "../basic/Button";
 import ButtonLink from "../basic/ButtonLink";
 
 type Props = {
+  lang: Lang;
   d: D;
   loading: boolean;
 };
 
-export default ({ d, loading }: Props) => {
+const text = {
+  title: {
+    en: <h1>Resistance</h1>,
+  },
+  play: {
+    en: "Play",
+  },
+  learnHow: {
+    en: "Learn how to play",
+  },
+  viewCode: {
+    en: "View source code",
+  },
+};
+
+export default ({ lang, d, loading }: Props) => {
   return (
     <div className="Welcome">
-      <h1>Resistance</h1>
+      {text.title[lang]}
       <Button
-        value="Play"
+        value={text.play[lang]}
         onClick={() => d({ t: "GoNameChoose" })}
         disabled={loading}
       />
-      <Button value="Learn how to play" onClick={() => d({ t: "GoHowTo" })} />
+      <Button value={text.learnHow[lang]} onClick={() => d({ t: "GoHowTo" })} />
       <ButtonLink
-        value="View source code"
+        value={text.viewCode[lang]}
         href="https://github.com/azdavis/resistance"
       />
     </div>

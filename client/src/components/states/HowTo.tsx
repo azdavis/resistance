@@ -1,39 +1,91 @@
 import React from "react";
-import { D } from "../../types";
+import { Lang, D } from "../../types";
 import { minN, maxN, maxPts } from "../../consts";
 import Button from "../basic/Button";
 
 type Props = {
+  lang: Lang;
   d: D;
 };
 
-export default ({ d }: Props) => (
+const text = {
+  title: {
+    en: <h1>How to play</h1>,
+  },
+  groupSize: {
+    en: (
+      <p>
+        Groups of at least {minN} and at most {maxN} players may play.
+      </p>
+    ),
+  },
+  groupNames: {
+    en: <p>Some players are spies. The rest are members of the resistance.</p>,
+  },
+  decideWinner: {
+    en: (
+      <p>
+        The first of the spies and resistance to get {maxPts} points wins the
+        game.
+      </p>
+    ),
+  },
+  captain: {
+    en: (
+      <p>
+        The game is played in rounds. In every round of the game, a captain is
+        chosen. The captain chooses some players to participate in a mission.
+      </p>
+    ),
+  },
+  occurVote: {
+    en: (
+      <p>
+        When the captain has finished choosing, all players vote on whether the
+        mission occurs.
+      </p>
+    ),
+  },
+  noOccur: {
+    en: <p>If the mission does not occur, the next round is started.</p>,
+  },
+  tooManyNoOccur: {
+    en: (
+      <p>If too many missions do not occur in a row, the spies get 1 point.</p>
+    ),
+  },
+  yesOccur: {
+    en: (
+      <p>
+        If the mission does occur, the members of the mission vote on whether
+        the mission succeeds.
+      </p>
+    ),
+  },
+  succeed: {
+    en: <p>If the mission succeeds, the resistance gets 1 point.</p>,
+  },
+  fail: {
+    en: <p>If the mission fails, the spies get 1 point.</p>,
+  },
+  back: {
+    en: "Back",
+  },
+};
+
+export default ({ lang, d }: Props) => (
   <div className="HowTo">
-    <h1>How to play</h1>
-    <p>
-      Groups of at least {minN} and at most {maxN} players may play.
-    </p>
-    <p>Some players are spies. The rest are members of the resistance.</p>
-    <p>
-      The first of the spies and resistance to get {maxPts} points wins the
-      game.
-    </p>
-    <p>
-      The game is played in rounds. In every round of the game, a captain is
-      chosen. The captain chooses some players to participate in a mission.
-    </p>
-    <p>
-      When the captain has finished choosing, all players vote on whether the
-      mission occurs.
-    </p>
-    <p>If the mission does not occur, the next round is started.</p>
-    <p>If too many missions do not occur in a row, the spies get 1 point.</p>
-    <p>
-      If the mission does occur, the members of the mission vote on whether the
-      mission succeeds.
-    </p>
-    <p>If the mission succeeds, the resistance gets 1 point.</p>
-    <p>If the mission fails, the spies get 1 point.</p>
-    <Button value="Back" onClick={() => d({ t: "GoWelcome" })} />
+    {text.title[lang]}
+    {text.groupSize[lang]}
+    {text.groupNames[lang]}
+    {text.decideWinner[lang]}
+    {text.captain[lang]}
+    {text.occurVote[lang]}
+    {text.noOccur[lang]}
+    {text.tooManyNoOccur[lang]}
+    {text.yesOccur[lang]}
+    {text.succeed[lang]}
+    {text.fail[lang]}
+    <Button value={text.back[lang]} onClick={() => d({ t: "GoWelcome" })} />
   </div>
 );

@@ -1,15 +1,28 @@
 import React from "react";
-import { D } from "../../types";
+import { Lang, D } from "../../types";
 import Button from "../basic/Button";
 
 type Props = {
+  lang: Lang;
   d: D;
 };
 
-export default ({ d }: Props) => (
+const text = {
+  title: {
+    en: <h1>Disbanded</h1>,
+  },
+  body: {
+    en: <p>The game or lobby you were in was disbanded.</p>,
+  },
+  leave: {
+    en: "Leave",
+  },
+};
+
+export default ({ lang, d }: Props) => (
   <div className="Disbanded">
-    <h1>Disbanded</h1>
-    <p>The game or lobby you were in was disbanded.</p>
-    <Button value="Leave" onClick={() => d({ t: "GoLobbies" })} />
+    {text.title[lang]}
+    {text.body[lang]}
+    <Button value={text.leave[lang]} onClick={() => d({ t: "GoLobbies" })} />
   </div>
 );

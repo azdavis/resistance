@@ -1,17 +1,28 @@
 import React, { useState } from "react";
+import { Lang } from "../../types";
 import Button from "../basic/Button";
 
 type Props = {
+  lang: Lang;
   reconnect: () => void;
 };
 
-export default ({ reconnect }: Props) => {
+const text = {
+  title: {
+    en: <h1>Disconnected</h1>,
+  },
+  reconnect: {
+    en: "Reconnect",
+  },
+};
+
+export default ({ lang, reconnect }: Props) => {
   const [disabled, setDisabled] = useState(false);
   return (
     <div className="Disconnected">
-      <h1>Disconnected</h1>
+      {text.title[lang]}
       <Button
-        value="Reconnect"
+        value={text.reconnect[lang]}
         onClick={() => {
           setDisabled(true);
           reconnect();

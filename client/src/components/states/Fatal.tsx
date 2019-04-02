@@ -1,15 +1,25 @@
 import React from "react";
-import { State, Action } from "../../types";
+import { Lang, State, Action } from "../../types";
 
 type Props = {
+  lang: Lang;
   s: State;
   a: Action;
 };
 
-export default ({ s, a }: Props) => (
+const text = {
+  title: {
+    en: <h1>Fatal error</h1>,
+  },
+  body: {
+    en: <p>An error occurred from which the application cannot recover.</p>,
+  },
+};
+
+export default ({ lang, s, a }: Props) => (
   <div className="Fatal">
-    <h1>Fatal error</h1>
-    <p>An error occurred from which the application cannot recover.</p>
+    {text.title[lang]}
+    {text.body[lang]}
     <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
   </div>
 );
