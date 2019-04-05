@@ -2,6 +2,7 @@ import React from "react";
 import { Lang, D } from "../../types";
 import { back } from "../../text";
 import Button from "../basic/Button";
+import Toggle from "../basic/Toggle";
 
 type Props = {
   lang: Lang;
@@ -23,10 +24,11 @@ export default ({ lang, d }: Props) => (
   <div className="LangChoosing">
     {text.title[lang]}
     {langs.map(x => (
-      <Button
+      <Toggle
         key={x}
         value={text.langNames[x]}
-        onClick={() => d({ t: "SetLang", lang: x })}
+        checked={lang === x}
+        onChange={() => d({ t: "SetLang", lang: x })}
       />
     ))}
     <Button value={back[lang]} onClick={() => d({ t: "GoWelcome" })} />
