@@ -56,7 +56,7 @@ const inner: Reducer<State, Action> = (s, a) => {
         ? { ...s, didLeave: true }
         : { t: "Fatal", s, a };
     case "GoWelcome":
-      return s.t === "HowTo" || s.t === "NameChoosing"
+      return s.t === "HowTo" || s.t === "NameChoosing" || s.t === "LangChoosing"
         ? { t: "Welcome", me: s.me }
         : { t: "Fatal", s, a };
     case "GoNameChoose":
