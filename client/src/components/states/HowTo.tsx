@@ -1,6 +1,6 @@
 import React from "react";
 import { Lang, D } from "../../types";
-import { minN, maxN, maxPts } from "../../consts";
+import { minN, maxN, maxPts } from "../../shared";
 import { back } from "../../text";
 import Button from "../basic/Button";
 

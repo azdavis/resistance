@@ -1,6 +1,6 @@
 import React from "react";
 import { Lang } from "../../types";
-import { maxPts } from "../../consts";
+import { maxPts } from "../../shared";
 import { resName, spyName } from "../../text";
 import Checkbox from "./Checkbox";
 import "./Scoreboard.css";

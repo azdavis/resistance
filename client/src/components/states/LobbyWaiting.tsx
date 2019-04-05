@@ -1,6 +1,6 @@
 import React from "react";
 import { Lang, D, Send, CID, Client } from "../../types";
-import { okGameSize } from "../../consts";
+import { okGameSize } from "../../shared";
 import { leave } from "../../text";
 import Button from "../basic/Button";
 import "../basic/Truncated.css";
