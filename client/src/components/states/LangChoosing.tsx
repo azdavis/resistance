@@ -22,11 +22,11 @@ const langs: Array<Lang> = ["en"];
 export default ({ lang, d }: Props) => (
   <div className="LangChoosing">
     {text.title[lang]}
-    {langs.map(lang => (
+    {langs.map(x => (
       <Button
-        key={lang}
-        value={text.langNames[lang]}
-        onClick={() => d({ t: "SetLang", lang })}
+        key={x}
+        value={text.langNames[x]}
+        onClick={() => d({ t: "SetLang", lang: x })}
       />
     ))}
     <Button value={back[lang]} onClick={() => d({ t: "GoWelcome" })} />
