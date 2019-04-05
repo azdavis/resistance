@@ -1,4 +1,4 @@
-// These should be kept in sync with consts.go.
+// This should be kept in sync with consts.go.
 
 export const minN = 5;
 export const maxN = 7;
