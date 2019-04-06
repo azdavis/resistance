@@ -1,7 +1,4 @@
-/build
-/build-heroku
 /client/build
 /client/node_modules
-/server/heroku
-/server/local
+/server/resistance
 thoughts.md
