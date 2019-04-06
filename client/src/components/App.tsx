@@ -39,6 +39,7 @@ export default (): JSX.Element => {
     return ws.close.bind(ws);
   }, []);
   useEffect(() => {
+    document.documentElement.lang = s.lang;
     setLang(s.lang);
   }, [s.lang]);
   switch (s.t) {
