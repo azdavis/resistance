@@ -86,7 +86,7 @@ export default ({
     <Scoreboard {...{ lang, resPts, spyPts }} />
     <ButtonSpoiler
       view={text.viewAllegiance[lang]}
-      spoil={(isSpy ? resName : spyName)[lang]}
+      spoil={(isSpy ? spyName : resName)[lang]}
     />
     {text.captain[lang](clients.find(({ CID }) => CID === captain)!.Name)}
     {text.members[lang](isNum(members) ? members : members.length)}
