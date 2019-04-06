@@ -9,7 +9,9 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// Hub is an http.Handler. It creates Clients from HTTP connections.
+// Hub is an http.Handler. When "/ws" is requested, it tries to turn the HTTP
+// connection into a Client. When anything else is requested, it tried to serve
+// a file with the given filename from the filesystem next to the executable.
 type Hub struct {
 	up ws.Upgrader   // websocket upgrader
 	tx chan<- SrvMsg // from this to runServer
