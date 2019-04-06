@@ -1,6 +1,7 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import { Send } from "../types";
 import { reducer, init } from "../state";
+import { setLang } from "../storage";
 import useTriggerEffect from "../hooks/useTriggerEffect";
 import Fatal from "./states/Fatal";
 import Disconnected from "./states/Disconnected";
@@ -37,6 +38,7 @@ export default (): JSX.Element => {
     ws.onclose = () => d({ t: "Close" });
     return ws.close.bind(ws);
   }, []);
+  useEffect(() => setLang(s.lang), [s.lang]);
   switch (s.t) {
     case "Fatal":
       return <Fatal {...s} />;

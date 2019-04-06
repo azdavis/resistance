@@ -9,9 +9,10 @@ import {
   LangState,
   LangAction,
 } from "./types";
+import { getLang } from "./storage";
 
 export const init: LangState = {
-  lang: "en",
+  lang: getLang() || "en",
   t: "Welcome",
   me: 0,
 };
