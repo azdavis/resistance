@@ -38,7 +38,9 @@ export default (): JSX.Element => {
     ws.onclose = () => d({ t: "Close" });
     return ws.close.bind(ws);
   }, []);
-  useEffect(() => setLang(s.lang), [s.lang]);
+  useEffect(() => {
+    setLang(s.lang);
+  }, [s.lang]);
   switch (s.t) {
     case "Fatal":
       return <Fatal {...s} />;
