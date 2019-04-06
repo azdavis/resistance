@@ -1,5 +1,6 @@
 import React from "react";
 import { Lang, D } from "../../types";
+import { resName } from "../../text";
 import Button from "../basic/Button";
 import ButtonLink from "../basic/ButtonLink";
 
@@ -10,9 +11,6 @@ type Props = {
 };
 
 const text = {
-  title: {
-    en: <h1>Resistance</h1>,
-  },
   play: {
     en: "Play",
   },
@@ -30,7 +28,7 @@ const text = {
 export default ({ lang, d, loading }: Props) => {
   return (
     <div className="Welcome">
-      {text.title[lang]}
+      <h1>{resName[lang]}</h1>
       <Button
         value={text.play[lang]}
         onClick={() => d({ t: "GoNameChoose" })}
