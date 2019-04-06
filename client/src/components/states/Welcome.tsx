@@ -39,10 +39,10 @@ export default ({ lang, d, loading }: Props) => {
         disabled={loading}
       />
       <Button value={text.learnHow[lang]} onClick={() => d({ t: "GoHowTo" })} />
-      {/* <Button
+      <Button
         value={text.setLang[lang]}
         onClick={() => d({ t: "GoLangChoose" })}
-      /> */}
+      />
       <ButtonLink
         value={text.viewCode[lang]}
         href="https://github.com/azdavis/resistance"
