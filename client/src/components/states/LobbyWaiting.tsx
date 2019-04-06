@@ -16,13 +16,7 @@ type Props = {
 
 const text = {
   title: {
-    en: <h1>Lobby</h1>,
-  },
-  members: {
-    en: (n: number) => <h2>Members ({n})</h2>,
-  },
-  actions: {
-    en: <h2>Actions</h2>,
+    en: (n: number) => <h1>Lobby ({n})</h1>,
   },
   start: {
     en: "Start",
@@ -31,14 +25,12 @@ const text = {
 
 export default ({ lang, d, send, me, leader, clients }: Props) => (
   <div className="LobbyWaiting">
-    {text.title[lang]}
-    {text.members[lang](clients.length)}
+    {text.title[lang](clients.length)}
     {clients.map(({ CID, Name }) => (
       <div className="Truncated" key={CID}>
         {Name}
       </div>
     ))}
-    {text.actions[lang]}
     <Button
       value={leave[lang]}
       onClick={() => {
