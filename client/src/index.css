@@ -13,6 +13,16 @@ html {
   --dark-gray: #e0e0e0;
 }
 
+@media (prefers-color-scheme: dark) {
+  html {
+    color: #eee;
+    background-color: #333;
+    --blue: #88e;
+    --light-gray: #484848;
+    --dark-gray: #404040;
+  }
+}
+
 body {
   max-width: 50ch;
   margin: 0 auto;
