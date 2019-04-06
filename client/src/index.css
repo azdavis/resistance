@@ -26,9 +26,8 @@ pre {
 
 @media (prefers-color-scheme: dark) {
   html {
-    color: #eee;
+    color: #ddd;
     background-color: #333;
-    --blue: #88e;
     --light-gray: #484848;
     --dark-gray: #404040;
   }
