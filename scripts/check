@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+
+if git status --porcelain -unormal | grep .; then
+  echo "there are uncommited changes"
+  exit 1
+fi
+
+cd server
+go vet
+go test -race
+cd ..

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+
+mkdir -p .git/hooks
+rm -rf .git/hooks/pre-push
+ln -s ../../scripts/check .git/hooks/pre-push
+
+cd client
+npm install
+cd ..
+
+cd server
+go install
+cd ..
