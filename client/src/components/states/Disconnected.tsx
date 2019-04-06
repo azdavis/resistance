@@ -10,9 +10,11 @@ type Props = {
 const text = {
   title: {
     en: <h1>Disconnected</h1>,
+    ja: <h1>接続が切られた</h1>,
   },
   reconnect: {
     en: "Reconnect",
+    ja: "再接続する",
   },
 };
 

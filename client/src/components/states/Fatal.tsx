@@ -10,9 +10,11 @@ type Props = {
 const text = {
   title: {
     en: <h1>Fatal error</h1>,
+    ja: <h1>致命的謝り</h1>,
   },
   body: {
     en: <p>An error occurred from which the application cannot recover.</p>,
+    ja: <p>アプリが復活できぬ謝りが起きた。</p>,
   },
 };
 

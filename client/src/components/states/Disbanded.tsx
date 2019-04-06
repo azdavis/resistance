@@ -11,9 +11,11 @@ type Props = {
 const text = {
   title: {
     en: <h1>Disbanded</h1>,
+    ja: <h1>解散</h1>,
   },
   body: {
     en: <p>The game or lobby you were in was disbanded.</p>,
+    ja: <p>あなたのいたゲームまたはロビーは解散された。</p>,
   },
 };
 

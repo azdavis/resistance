@@ -1,6 +1,7 @@
 import React from "react";
 import { Lang, Send, Client, CID } from "../../types";
 import { resName, spyName } from "../../text";
+import fullWidth from "../../fullWidth";
 import ButtonSpoiler from "../basic/ButtonSpoiler";
 import MemberChooser from "../basic/MemberChooser";
 import Scoreboard from "../basic/Scoreboard";
@@ -23,36 +24,47 @@ type Props = {
 const text = {
   viewAllegiance: {
     en: "View allegiance",
+    ja: "忠誠を見る",
   },
   captain: {
     en: (x: string) => <div>Captain: {x}</div>,
+    ja: (x: string) => <div>主将：{x}</div>,
   },
   members: {
     en: (n: number) => <div>Members ({n}):</div>,
+    ja: (n: number) => <div>使命員（{fullWidth(n)}）：</div>,
   },
   beingChosen: {
     en: <div>(being chosen)</div>,
+    ja: <div>（選択中）</div>,
   },
   succeedPrompt: {
     en: "Should the mission succeed?",
+    ja: "使命は成功するか？",
   },
   succeed: {
     en: "Succeed",
+    ja: "成功",
   },
   fail: {
     en: "Fail",
+    ja: "失敗",
   },
   beingVotedOn: {
     en: <div>(being voted on)</div>,
+    ja: <div>（投票中）</div>,
   },
   occurPrompt: {
     en: "Should the mission occur?",
+    ja: "使命は起こるか？",
   },
   occur: {
     en: "Occur",
+    ja: "起こる",
   },
   notOccur: {
     en: "Not occur",
+    ja: "起こらない",
   },
 };
 

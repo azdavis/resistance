@@ -13,15 +13,19 @@ type Props = {
 const text = {
   play: {
     en: "Play",
+    ja: "遊ぶ",
   },
   learnHow: {
     en: "Learn how to play",
+    ja: "遊び方を知る",
   },
   setLang: {
     en: "Set language",
+    ja: "言語を設定する",
   },
   viewCode: {
     en: "View source code",
+    ja: "コードを見る",
   },
 };
 

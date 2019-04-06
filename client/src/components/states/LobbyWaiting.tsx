@@ -2,6 +2,7 @@ import React from "react";
 import { Lang, D, Send, CID, Client } from "../../types";
 import { okGameSize } from "../../shared";
 import { leave } from "../../text";
+import fullWidth from "../../fullWidth";
 import Button from "../basic/Button";
 import "../basic/Truncated.css";
 
@@ -17,9 +18,11 @@ type Props = {
 const text = {
   title: {
     en: (n: number) => <h1>Lobby ({n})</h1>,
+    ja: (n: number) => <h1>ロビー（{fullWidth(n)}）</h1>,
   },
   start: {
     en: "Start",
+    ja: "始める",
   },
 };
 

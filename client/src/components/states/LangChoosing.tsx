@@ -12,13 +12,15 @@ type Props = {
 const text = {
   title: {
     en: <h1>Set language</h1>,
+    ja: <h1>言語の設定</h1>,
   },
   langNames: {
     en: "English",
+    ja: "日本語",
   },
 };
 
-const langs: Array<Lang> = ["en"];
+const langs: Array<Lang> = ["en", "ja"];
 
 export default ({ lang, d }: Props) => (
   <div className="LangChoosing">

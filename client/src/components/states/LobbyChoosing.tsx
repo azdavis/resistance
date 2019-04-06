@@ -1,5 +1,6 @@
 import React from "react";
 import { Lang, Send, Lobby } from "../../types";
+import fullWidth from "../../fullWidth";
 import Button from "../basic/Button";
 
 type Props = {
@@ -11,12 +12,15 @@ type Props = {
 const text = {
   title: {
     en: <h1>Lobbies</h1>,
+    ja: <h1>ロビー</h1>,
   },
   create: {
     en: "Create new",
+    ja: "新たなのを作成する",
   },
   existing: {
     en: (n: number) => <h2>Existing lobbies ({n})</h2>,
+    ja: (n: number) => <h2>存在するロビー（{fullWidth(n)}）</h2>,
   },
 };
 

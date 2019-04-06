@@ -14,9 +14,11 @@ type Props = {
 const text = {
   title: {
     en: <h1>Player name</h1>,
+    ja: <h1>プレイヤー名</h1>,
   },
   invalid: {
     en: "Invalid",
+    ja: "無効",
   },
 };
 

@@ -54,7 +54,7 @@ type ToClient =
       Lobbies: Array<Lobby>;
     };
 
-export type Lang = "en";
+export type Lang = "en" | "ja";
 export type Action = SelfAction | ToClient;
 export type LangAction = Action | { t: "SetLang"; lang: Lang };
 export type D = Dispatch<LangAction>;
