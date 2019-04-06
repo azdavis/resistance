@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, D } from "../../types";
+import { Lang, D, langs } from "../../types";
 import { back } from "../../text";
 import Button from "../basic/Button";
 import Toggle from "../basic/Toggle";
@@ -19,8 +19,6 @@ const text = {
     ja: "日本語",
   },
 };
-
-const langs: Array<Lang> = ["en", "ja"];
 
 export default ({ lang, d }: Props) => (
   <div className="LangChoosing">
