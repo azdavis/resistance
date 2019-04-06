@@ -35,7 +35,7 @@ const text = {
     en: (
       <p>
         The game is played in rounds. In every round of the game, a captain is
-        chosen. The captain chooses some players to participate in a mission.
+        chosen. The captain chooses the mission members for this round.
       </p>
     ),
   },
