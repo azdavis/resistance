@@ -10,7 +10,11 @@ import {
   LangAction,
 } from "./types";
 
-export const init: LangState = { lang: "en", t: "Welcome", me: 0 };
+export const init: LangState = {
+  lang: "en",
+  t: "Welcome",
+  me: 0,
+};
 
 const mkGamePlaying = (
   me: CID,
