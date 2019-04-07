@@ -31,7 +31,7 @@ func unsafeAllowAny(r *http.Request) bool {
 // is successful, it makes a new Client with a fresh CID and sends it along
 // tx.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/ws" {
+	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}

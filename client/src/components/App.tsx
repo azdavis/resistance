@@ -19,7 +19,7 @@ export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<Send | null>(null);
   const reconnect = useTriggerEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080/ws");
+    const ws = new WebSocket("ws://localhost:8080");
     const newSend: Send = ({ t, ...P }) => {
       ws.send(JSON.stringify({ T: t, P }));
     };
