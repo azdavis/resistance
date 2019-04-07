@@ -3,31 +3,21 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
-	"path/filepath"
 
 	ws "github.com/gorilla/websocket"
 )
 
-// Hub is an http.Handler. When "/ws" is requested, it tries to turn the HTTP
-// connection into a Client. When anything else is requested, it tried to serve
-// a file with the given filename from the filesystem next to the executable.
+// Hub turns HTTP connections into Clients.
 type Hub struct {
 	up ws.Upgrader   // websocket upgrader
 	tx chan<- SrvMsg // from this to runServer
-	fs http.Handler
 }
 
 // NewHub returns a new Hub.
 func NewHub(tx chan<- SrvMsg) *Hub {
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
 	h := &Hub{
 		up: ws.Upgrader{CheckOrigin: unsafeAllowAny},
 		tx: tx,
-		fs: http.FileServer(http.Dir(filepath.Dir(ex))),
 	}
 	return h
 }
@@ -42,7 +32,7 @@ func unsafeAllowAny(r *http.Request) bool {
 // tx.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/ws" {
-		h.fs.ServeHTTP(w, r)
+		http.NotFound(w, r)
 		return
 	}
 	conn, err := h.up.Upgrade(w, r, nil)
