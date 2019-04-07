@@ -16,9 +16,9 @@ export default ({ view, spoil, delay = 1000 }: Props) => {
       onClick={() => {
         setVisible(true);
         if (id.current !== null) {
-          clearInterval(id.current);
+          clearTimeout(id.current);
         }
-        id.current = setInterval(() => setVisible(false), delay);
+        id.current = setTimeout(() => setVisible(false), delay);
       }}
     />
   );
