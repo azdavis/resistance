@@ -66,19 +66,19 @@ func eqEndGame(lhs EndGame, rhs EndGame) bool {
 
 // Checkers ////////////////////////////////////////////////////////////////////
 
-func checkCID(t *testing.T, cid CID) {
+func ckCID(t *testing.T, cid CID) {
 	if cid == 0 {
 		t.Fatal("cid was 0")
 	}
 }
 
-func checkGID(t *testing.T, gid GID) {
+func ckGID(t *testing.T, gid GID) {
 	if gid == 0 {
 		t.Fatal("gid was 0")
 	}
 }
 
-func checkClients(t *testing.T, xs []ClientInfo, n int) {
+func ckClients(t *testing.T, xs []ClientInfo, n int) {
 	if xs == nil {
 		t.Fatal("Clients was nil")
 	}
@@ -86,11 +86,11 @@ func checkClients(t *testing.T, xs []ClientInfo, n int) {
 		t.Fatal("bad Clients len", n, len(xs))
 	}
 	for _, x := range xs {
-		checkCID(t, x.CID)
+		ckCID(t, x.CID)
 	}
 }
 
-func checkLobbies(t *testing.T, xs []Lobby, n int) {
+func ckLobbies(t *testing.T, xs []Lobby, n int) {
 	if xs == nil {
 		t.Fatal("Lobbies was nil")
 	}
@@ -98,7 +98,7 @@ func checkLobbies(t *testing.T, xs []Lobby, n int) {
 		t.Fatal("bad Lobbies len", n, len(xs))
 	}
 	for _, x := range xs {
-		checkGID(t, x.GID)
+		ckGID(t, x.GID)
 	}
 }
 
@@ -143,7 +143,7 @@ func (tc *testClient) recvSetMe(t *testing.T) SetMe {
 	if !ok {
 		t.Fatal("response was not SetMe")
 	}
-	checkCID(t, y.Me)
+	ckCID(t, y.Me)
 	return y
 }
 
@@ -162,7 +162,7 @@ func (tc *testClient) recvLobbyChoices(t *testing.T, n int) LobbyChoices {
 	if !ok {
 		t.Fatal("response was not LobbyChoices")
 	}
-	checkLobbies(t, y.Lobbies, n)
+	ckLobbies(t, y.Lobbies, n)
 	return y
 }
 
@@ -172,9 +172,9 @@ func (tc *testClient) recvCurrentLobby(t *testing.T, n int) CurrentLobby {
 	if !ok {
 		t.Fatal("response was not CurrentLobby")
 	}
-	checkGID(t, y.GID)
-	checkCID(t, y.Leader)
-	checkClients(t, y.Clients, n)
+	ckGID(t, y.GID)
+	ckCID(t, y.Leader)
+	ckClients(t, y.Clients, n)
 	return y
 }
 
@@ -198,7 +198,7 @@ func (tc *testClient) recvCurrentGame(t *testing.T) CurrentGame {
 	}
 	if y.Members != nil {
 		for _, x := range y.Members {
-			checkCID(t, x)
+			ckCID(t, x)
 		}
 	}
 	return y
