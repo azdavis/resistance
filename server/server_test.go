@@ -275,7 +275,7 @@ func mkName(i int) string {
 
 func mkMembers(cs []*testClient, n int) []CID {
 	membersMap := make(map[CID]bool)
-	for i := n; i > 0; /*  */ {
+	for i := n; i > 0; /* empty */ {
 		cid := cs[rand.Intn(len(cs))].CID
 		if membersMap[cid] {
 			continue
