@@ -28,13 +28,12 @@ func NewClient(conn *ws.Conn) Client {
 	rx := make(chan ToServer, 3)
 	d := make(chan Dest)
 	q := make(chan struct{})
-	cl := Client{tx, rx, d, q, conn}
 	go manageDest(q, d, rx)
 	if conn != nil {
 		go readFromConn(conn, rx)
 		go writeToConn(conn, tx)
 	}
-	return cl
+	return Client{tx, rx, d, q, conn}
 }
 
 // Close cleans up resources for this Client. It should be called exactly once.
