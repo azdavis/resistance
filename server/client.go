@@ -7,7 +7,7 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
-// NullDest is a dest which will never allow sending.
+// NullDest is a Dest which will never allow sending.
 var NullDest = Dest{0, make(chan<- Action)}
 
 // PingPeriod is the frequency with which pings are sent.
