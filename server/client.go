@@ -24,13 +24,11 @@ type Client struct {
 
 // NewClient returns a new Client.
 func NewClient(conn *ws.Conn) Client {
-	cl := Client{
-		tx:   make(chan ToClient, 3),
-		rx:   make(chan ToServer, 3),
-		d:    make(chan Dest),
-		q:    make(chan struct{}),
-		conn: conn,
-	}
+	tx := make(chan ToClient, 3)
+	rx := make(chan ToServer, 3)
+	d := make(chan Dest)
+	q := make(chan struct{})
+	cl := Client{tx, rx, d, q, conn}
 	go cl.manageDest()
 	if conn != nil {
 		go cl.readFromConn()
