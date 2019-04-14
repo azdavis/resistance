@@ -29,10 +29,10 @@ func NewClient(conn *ws.Conn) Client {
 	d := make(chan Dest)
 	q := make(chan struct{})
 	cl := Client{tx, rx, d, q, conn}
-	go cl.manageDest()
+	go manageDest(q, d, rx)
 	if conn != nil {
-		go cl.readFromConn()
-		go cl.writeToConn()
+		go readFromConn(conn, rx)
+		go writeToConn(conn, tx)
 	}
 	return cl
 }
@@ -52,38 +52,38 @@ func (cl Client) RecvTo(dest Dest) {
 	cl.d <- dest
 }
 
-func (cl Client) manageDest() {
+func manageDest(q <-chan struct{}, d <-chan Dest, rx <-chan ToServer) {
 	dest := NullDest
 	var m ToServer
 recv:
 	for {
 		select {
-		case <-cl.q:
+		case <-q:
 			return
-		case dest = <-cl.d:
-		case m = <-cl.rx:
+		case dest = <-d:
+		case m = <-rx:
 			goto send
 		}
 	}
 send:
 	for {
 		select {
-		case <-cl.q:
+		case <-q:
 			return
-		case dest = <-cl.d:
+		case dest = <-d:
 		case dest.C <- Action{dest.CID, m}:
 			goto recv
 		}
 	}
 }
 
-func (cl Client) readFromConn() {
+func readFromConn(conn *ws.Conn, rx chan<- ToServer) {
 	for {
-		mt, bs, err := cl.conn.ReadMessage()
+		mt, bs, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println("err readFromConn:", err)
-			cl.rx <- Close{}
-			cl.conn.Close()
+			rx <- Close{}
+			conn.Close()
 			return
 		}
 		if mt != ws.TextMessage {
@@ -93,23 +93,23 @@ func (cl Client) readFromConn() {
 		if err != nil {
 			continue
 		}
-		cl.rx <- m
+		rx <- m
 	}
 }
 
-func (cl Client) writeToConn() {
+func writeToConn(conn *ws.Conn, tx <-chan ToClient) {
 	ticker := time.NewTicker(PingPeriod)
 	var err error
 	for {
 		select {
-		case m, ok := <-cl.tx:
+		case m, ok := <-tx:
 			if !ok {
 				ticker.Stop()
 				return
 			}
-			err = cl.conn.WriteJSON(m)
+			err = conn.WriteJSON(m)
 		case <-ticker.C:
-			err = cl.conn.WriteMessage(ws.PingMessage, []byte{})
+			err = conn.WriteMessage(ws.PingMessage, []byte{})
 		}
 		if err != nil {
 			fmt.Println("err writeToConn:", err)
