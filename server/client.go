@@ -15,8 +15,8 @@ const PingPeriod = 40 * time.Second
 
 // Client is a player of the game.
 type Client struct {
-	tx      chan ToClient // requests from the client
-	rx      chan ToServer // orders for the client
+	tx      chan ToClient // orders for the client
+	rx      chan ToServer // requests from the client
 	newDest chan Dest     // what to update the ultimate destination of rx to
 	q       chan struct{} // close on Close
 	conn    *ws.Conn      // the websocket
