@@ -22,8 +22,7 @@ type Client struct {
 	conn    *ws.Conn      // the websocket
 }
 
-// NewClient returns a new client. It starts goroutines to read from and write
-// to the given websocket connection, if it wasn't nil.
+// NewClient returns a new Client.
 func NewClient(conn *ws.Conn) Client {
 	cl := Client{
 		tx:      make(chan ToClient, 3),
@@ -40,8 +39,8 @@ func NewClient(conn *ws.Conn) Client {
 	return cl
 }
 
-// Close quits all goroutines started with NewClient. It should be called
-// exactly once. Usually this is called after receiving a Close{} on rx.
+// Close cleans up resources for this Client. It should be called exactly once.
+// Usually this is called after receiving a Close{} on rx.
 func (cl Client) Close() {
 	if cl.conn != nil {
 		cl.conn.Close()
