@@ -11,7 +11,7 @@ import (
 // 1. M, a mapping from Client IDs to Clients.
 //
 // 2. C, a channel on which messages from all the clients stored in M are sent,
-// with associated CID information attached (see Action).
+// with associated CID information attached.
 //
 // Only one goroutine may access a ClientMap at a time.
 type ClientMap struct {
