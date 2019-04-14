@@ -39,9 +39,6 @@ func NewClient(conn *ws.Conn) Client {
 // Close cleans up resources for this Client. It should be called exactly once.
 // Usually this is called after receiving a Close{} on rx.
 func (cl Client) Close() {
-	if cl.conn != nil {
-		cl.conn.Close()
-	}
 	close(cl.q)
 	close(cl.tx)
 }
@@ -103,6 +100,7 @@ func writeToConn(conn *ws.Conn, tx <-chan ToClient) {
 		select {
 		case m, ok := <-tx:
 			if !ok {
+				conn.Close()
 				ticker.Stop()
 				return
 			}
