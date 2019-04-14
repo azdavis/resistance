@@ -15,21 +15,21 @@ const PingPeriod = 40 * time.Second
 
 // Client is a player of the game.
 type Client struct {
-	tx      chan ToClient // orders for the client
-	rx      chan ToServer // requests from the client
-	newDest chan Dest     // what to update the ultimate destination of rx to
-	q       chan struct{} // close on Close
-	conn    *ws.Conn      // the websocket
+	tx   chan ToClient // orders for the client
+	rx   chan ToServer // requests from the client
+	d    chan Dest     // what to update the ultimate destination of rx to
+	q    chan struct{} // close on Close
+	conn *ws.Conn      // the websocket
 }
 
 // NewClient returns a new Client.
 func NewClient(conn *ws.Conn) Client {
 	cl := Client{
-		tx:      make(chan ToClient, 3),
-		rx:      make(chan ToServer, 3),
-		newDest: make(chan Dest),
-		q:       make(chan struct{}),
-		conn:    conn,
+		tx:   make(chan ToClient, 3),
+		rx:   make(chan ToServer, 3),
+		d:    make(chan Dest),
+		q:    make(chan struct{}),
+		conn: conn,
 	}
 	go cl.manageDest()
 	if conn != nil {
@@ -51,7 +51,7 @@ func (cl Client) Close() {
 
 // RecvTo updates dest. It returns only once dest has been updated.
 func (cl Client) RecvTo(dest Dest) {
-	cl.newDest <- dest
+	cl.d <- dest
 }
 
 func (cl Client) manageDest() {
@@ -62,7 +62,7 @@ recv:
 		select {
 		case <-cl.q:
 			return
-		case dest = <-cl.newDest:
+		case dest = <-cl.d:
 		case m = <-cl.rx:
 			goto send
 		}
@@ -72,7 +72,7 @@ send:
 		select {
 		case <-cl.q:
 			return
-		case dest = <-cl.newDest:
+		case dest = <-cl.d:
 		case dest.C <- Action{dest.CID, m}:
 			goto recv
 		}
