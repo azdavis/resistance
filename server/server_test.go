@@ -112,13 +112,12 @@ type testClient struct {
 }
 
 func newTestClient() *testClient {
-	tc := &testClient{
+	return &testClient{
 		CID:    0,
 		Client: NewClient(nil),
 		req:    make(chan struct{}),
 		res:    make(chan ToClient),
 	}
-	return tc
 }
 
 func (tc *testClient) closeAndWait() {

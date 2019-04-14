@@ -15,8 +15,7 @@ func NewServer() *Server {
 	C := make(chan SrvMsg, 3)
 	q := make(chan struct{})
 	go runServer(C, q)
-	s := &Server{C, q}
-	return s
+	return &Server{C, q}
 }
 
 // Close shuts down the Server. It should only be called once.
