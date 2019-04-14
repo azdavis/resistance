@@ -104,16 +104,12 @@ func ckLobbies(t *testing.T, xs []Lobby, n int) {
 type testClient struct {
 	CID
 	Client
-	req chan struct{}
-	res chan ToClient
 }
 
 func newTestClient() *testClient {
 	return &testClient{
 		CID:    0,
 		Client: NewClient(nil),
-		req:    make(chan struct{}),
-		res:    make(chan ToClient),
 	}
 }
 
