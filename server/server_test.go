@@ -38,7 +38,7 @@ func eqLobbySlice(lhs []Lobby, rhs []Lobby) bool {
 		return false
 	}
 	for i := 0; i < len(lhs); i++ {
-		if eqLobby(lhs[i], rhs[i]) {
+		if !eqLobby(lhs[i], rhs[i]) {
 			return false
 		}
 	}
