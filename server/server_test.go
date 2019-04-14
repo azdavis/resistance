@@ -31,10 +31,7 @@ func eqLobbySlice(lhs []Lobby, rhs []Lobby) bool {
 	if lhs == nil && rhs == nil {
 		return true
 	}
-	if lhs == nil || rhs == nil {
-		return false
-	}
-	if len(lhs) != len(rhs) {
+	if lhs == nil || rhs == nil || len(lhs) != len(rhs) {
 		return false
 	}
 	for i := 0; i < len(lhs); i++ {
