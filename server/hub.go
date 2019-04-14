@@ -15,11 +15,10 @@ type Hub struct {
 
 // NewHub returns a new Hub.
 func NewHub(tx chan<- SrvMsg) *Hub {
-	h := &Hub{
+	return &Hub{
 		up: ws.Upgrader{CheckOrigin: unsafeAllowAny},
 		tx: tx,
 	}
-	return h
 }
 
 // unsafeAllowAny permits any *http.Request to be upgraded by a ws.Upgrader.

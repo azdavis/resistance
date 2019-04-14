@@ -46,9 +46,8 @@ func NewGame(
 ) Game {
 	// see NewLobby.
 	rxLobbyMap := make(chan CIDClient)
-	g := Game{rxLobbyMap}
 	go runGame(gid, clients, names, tx, rxLobbyMap, q)
-	return g
+	return Game{rxLobbyMap}
 }
 
 // TODO improve numbers for mission size / fails required to fail mission?

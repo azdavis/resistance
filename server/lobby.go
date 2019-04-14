@@ -19,13 +19,12 @@ func NewLobby(
 	// runLobby, and such draining must only occur after we've sent a message to
 	// runLobbyMap that will ensure no further messages get sent on this channel.
 	rxLobbyMap := make(chan NamedClient)
-	lb := Lobby{
+	go runLobby(gid, leader, tx, rxLobbyMap, q)
+	return Lobby{
 		GID:    gid,
 		Leader: leader.Name,
 		tx:     rxLobbyMap,
 	}
-	go runLobby(gid, leader, tx, rxLobbyMap, q)
-	return lb
 }
 
 func runLobby(

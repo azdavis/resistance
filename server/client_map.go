@@ -21,11 +21,10 @@ type ClientMap struct {
 
 // NewClientMap returns a new ClientMap.
 func NewClientMap() *ClientMap {
-	cm := &ClientMap{
+	return &ClientMap{
 		C: make(chan Action),
 		M: make(map[CID]Client),
 	}
-	return cm
 }
 
 // Add adds the given Client to the map. Another Client with the same CID
