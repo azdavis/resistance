@@ -20,11 +20,7 @@ func NewLobby(
 	// runLobbyMap that will ensure no further messages get sent on this channel.
 	rxLobbyMap := make(chan NamedClient)
 	go runLobby(gid, leader, tx, rxLobbyMap, q)
-	return Lobby{
-		GID:    gid,
-		Leader: leader.Name,
-		tx:     rxLobbyMap,
-	}
+	return Lobby{gid, leader.Name, rxLobbyMap}
 }
 
 func runLobby(
