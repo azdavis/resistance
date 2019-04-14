@@ -27,7 +27,7 @@ func NewClient(conn *ws.Conn) Client {
 	rx := make(chan ToServer, 3)
 	d := make(chan Dest)
 	q := make(chan struct{})
-	go manageDest(q, d, rx)
+	go runClient(q, d, rx)
 	if conn != nil {
 		go readFromConn(conn, rx)
 		go writeToConn(conn, tx)
@@ -47,7 +47,7 @@ func (cl Client) RecvTo(dest Dest) {
 	cl.d <- dest
 }
 
-func manageDest(q <-chan struct{}, d <-chan Dest, rx <-chan ToServer) {
+func runClient(q <-chan struct{}, d <-chan Dest, rx <-chan ToServer) {
 	dest := NullDest
 	var m ToServer
 recv:
