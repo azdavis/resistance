@@ -15,11 +15,10 @@ const PingPeriod = 40 * time.Second
 
 // Client is a player of the game.
 type Client struct {
-	tx   chan ToClient   // orders for the client
-	rx   chan<- ToServer // requests from the client
-	d    chan<- Dest     // what to update the ultimate destination of rx to
-	q    chan struct{}   // close on Close
-	conn *ws.Conn        // the websocket
+	tx chan ToClient   // orders for the client
+	rx chan<- ToServer // requests from the client
+	d  chan<- Dest     // what to update the ultimate destination of rx to
+	q  chan struct{}   // close on Close
 }
 
 // NewClient returns a new Client.
@@ -33,7 +32,7 @@ func NewClient(conn *ws.Conn) Client {
 		go readFromConn(conn, rx)
 		go writeToConn(conn, tx)
 	}
-	return Client{tx, rx, d, q, conn}
+	return Client{tx, rx, d, q}
 }
 
 // Close cleans up resources for this Client. It should be called exactly once.
