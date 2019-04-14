@@ -107,10 +107,7 @@ type testClient struct {
 }
 
 func newTestClient() *testClient {
-	return &testClient{
-		CID:    0,
-		Client: NewClient(nil),
-	}
+	return &testClient{0, NewClient(nil)}
 }
 
 func (tc *testClient) closeAndWait() {
