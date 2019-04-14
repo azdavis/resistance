@@ -15,13 +15,13 @@ import (
 //
 // Only one goroutine may access a ClientMap at a time.
 type ClientMap struct {
-	C chan Action    // messages from the Clients in M
-	M map[CID]Client // clients
+	C chan CIDToServer // messages from the Clients in M
+	M map[CID]Client   // clients
 }
 
 // NewClientMap returns a new ClientMap.
 func NewClientMap() *ClientMap {
-	return &ClientMap{make(chan Action), make(map[CID]Client)}
+	return &ClientMap{make(chan CIDToServer), make(map[CID]Client)}
 }
 
 // Add adds the given Client to the map. Another Client with the same CID

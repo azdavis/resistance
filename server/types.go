@@ -15,8 +15,8 @@ type CID uint64
 // 0 means 'no GID'.
 type GID uint64
 
-// Action is a CID + ToServer.
-type Action struct {
+// CIDToServer is a CID + ToServer.
+type CIDToServer struct {
 	CID
 	ToServer
 }
@@ -36,7 +36,7 @@ type ClientInfo struct {
 // Dest represents a place to put Actions, and what CID to tag them with.
 type Dest struct {
 	CID
-	C chan<- Action
+	C chan<- CIDToServer
 }
 
 // ToServer ////////////////////////////////////////////////////////////////////

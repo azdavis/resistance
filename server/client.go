@@ -8,7 +8,7 @@ import (
 )
 
 // NullDest is a Dest which will never allow sending.
-var NullDest = Dest{0, make(chan<- Action)}
+var NullDest = Dest{0, make(chan<- CIDToServer)}
 
 // PingPeriod is the frequency with which pings are sent.
 const PingPeriod = 40 * time.Second
@@ -66,7 +66,7 @@ send:
 		case <-q:
 			return
 		case dest = <-d:
-		case dest.C <- Action{dest.CID, m}:
+		case dest.C <- CIDToServer{dest.CID, m}:
 			goto recv
 		}
 	}
