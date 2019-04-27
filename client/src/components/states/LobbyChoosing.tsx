@@ -1,5 +1,6 @@
 import React from "react";
-import { Lang, Send, Lobby } from "../../shared";
+import { Lobby } from "../../shared";
+import { Lang, Send } from "../../etc";
 import fullWidth from "../../fullWidth";
 import Button from "../basic/Button";
 

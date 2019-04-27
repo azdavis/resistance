@@ -1,5 +1,6 @@
 import { Reducer } from "react";
-import { State, Action, CID, GID, Client, CurrentGame, Lang } from "./shared";
+import { CID, GID, Client, CurrentGame } from "./shared";
+import { State, Action, Lang } from "./etc";
 import { getLang } from "./storage";
 
 export const init: State = {

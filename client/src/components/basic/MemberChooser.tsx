@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Lang, Send, CID, Client } from "../../shared";
+import { CID, Client } from "../../shared";
+import { Lang, Send } from "../../etc";
 import { submit } from "../../text";
 import Toggle from "./Toggle";
 import Button from "./Button";

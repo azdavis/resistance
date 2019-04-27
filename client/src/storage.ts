@@ -1,4 +1,4 @@
-import { Lang, langs } from "./shared";
+import { Lang, langs } from "./etc";
 
 const langKey = "lang";
 

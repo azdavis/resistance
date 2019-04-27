@@ -1,6 +1,6 @@
 import React from "react";
-import { Lang } from "../../shared";
 import { maxPts } from "../../shared";
+import { Lang } from "../../etc";
 import { resName, spyName } from "../../text";
 import Checkbox from "./Checkbox";
 import "./Scoreboard.css";

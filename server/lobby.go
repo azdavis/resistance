@@ -1,13 +1,5 @@
 package main
 
-// Lobby represents a group of clients all waiting for the same game to
-// start.
-type Lobby struct {
-	GID                       // unique
-	Leader string             // leader name
-	tx     chan<- NamedClient // from runLobbyMap to this
-}
-
 // NewLobby returns a new Lobby.
 func NewLobby(
 	gid GID,

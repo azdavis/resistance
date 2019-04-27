@@ -1,6 +1,6 @@
 import React from "react";
-import { Lang, D } from "../../shared";
 import { minN, maxN, maxPts } from "../../shared";
+import { Lang, D } from "../../etc";
 import { back } from "../../text";
 import fullWidth from "../../fullWidth";
 import Button from "../basic/Button";

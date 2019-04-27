@@ -1,6 +1,6 @@
 import React from "react";
-import { Lang, D, Send, CID, Client } from "../../shared";
-import { okGameSize } from "../../shared";
+import { CID, Client, okGameSize } from "../../shared";
+import { Lang, D, Send } from "../../etc";
 import { leave } from "../../text";
 import fullWidth from "../../fullWidth";
 import Button from "../basic/Button";

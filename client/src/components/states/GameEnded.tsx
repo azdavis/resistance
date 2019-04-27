@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, D } from "../../shared";
+import { Lang, D } from "../../etc";
 import { leave } from "../../text";
 import Button from "../basic/Button";
 import Scoreboard from "../basic/Scoreboard";

@@ -1,5 +1,6 @@
 import React from "react";
-import { Lang, Send, Client, CID } from "../../shared";
+import { Client, CID } from "../../shared";
+import { Lang, Send } from "../../etc";
 import { resName, spyName } from "../../text";
 import fullWidth from "../../fullWidth";
 import ButtonSpoiler from "../basic/ButtonSpoiler";

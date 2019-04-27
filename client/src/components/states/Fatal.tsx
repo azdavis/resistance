@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, State, Action } from "../../shared";
+import { Lang, State, Action } from "../../etc";
 
 type Props = {
   lang: Lang;
