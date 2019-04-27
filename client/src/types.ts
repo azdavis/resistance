@@ -19,9 +19,6 @@ type ToServer =
 
 export type Send = Dispatch<ToServer>;
 
-export type Lobby = { GID: GID; Leader: string };
-export type Client = { CID: CID; Name: string };
-
 export type Lang = "en" | "ja";
 export const langs: Array<Lang> = ["en", "ja"];
 
@@ -44,6 +41,9 @@ export type CurrentGame = {
   Members: Array<CID> | null;
   Active: boolean;
 };
+
+export type Lobby = { GID: GID; Leader: string };
+export type Client = { CID: CID; Name: string };
 
 type ToClient =
   | { t: "SetMe"; Me: CID }
