@@ -1,4 +1,4 @@
-// This should be kept in sync with server/consts.go.
+// This should be kept in sync with server/shared.go.
 
 export const minN = 5;
 export const maxN = 7;
