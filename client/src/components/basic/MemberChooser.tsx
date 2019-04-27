@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { CID, Client } from "../../shared";
-import { Lang, Send } from "../../etc";
+import { Lang, S } from "../../etc";
 import { submit } from "../../text";
 import Toggle from "./Toggle";
 import Button from "./Button";
 
 type Props = {
   lang: Lang;
-  send: Send;
+  send: S;
   me: CID;
   clients: Array<Client>;
   members: number;

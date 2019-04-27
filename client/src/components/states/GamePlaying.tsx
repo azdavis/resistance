@@ -1,6 +1,6 @@
 import React from "react";
 import { Client, CID } from "../../shared";
-import { Lang, Send } from "../../etc";
+import { Lang, S } from "../../etc";
 import { resName, spyName } from "../../text";
 import fullWidth from "../../fullWidth";
 import ButtonSpoiler from "../basic/ButtonSpoiler";
@@ -11,7 +11,7 @@ import "../basic/Truncated.css";
 
 type Props = {
   lang: Lang;
-  send: Send;
+  send: S;
   me: CID;
   clients: Array<Client>;
   isSpy: boolean;

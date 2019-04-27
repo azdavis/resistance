@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 import { CID, GID, Client, Lobby, ToServer, ToClient } from "./shared";
 
-export type Send = Dispatch<ToServer>;
+export type S = Dispatch<ToServer>;
 
 export type Lang = "en" | "ja";
 export const langs: Array<Lang> = ["en", "ja"];

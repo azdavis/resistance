@@ -1,12 +1,12 @@
 import React from "react";
 import { Lobby } from "../../shared";
-import { Lang, Send } from "../../etc";
+import { Lang, S } from "../../etc";
 import fullWidth from "../../fullWidth";
 import Button from "../basic/Button";
 
 type Props = {
   lang: Lang;
-  send: Send;
+  send: S;
   lobbies: Array<Lobby>;
 };
 

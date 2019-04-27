@@ -1,6 +1,6 @@
 import React from "react";
 import { CID, Client, okGameSize } from "../../shared";
-import { Lang, D, Send } from "../../etc";
+import { Lang, D, S } from "../../etc";
 import { leave } from "../../text";
 import fullWidth from "../../fullWidth";
 import Button from "../basic/Button";
@@ -9,7 +9,7 @@ import "../basic/Truncated.css";
 type Props = {
   lang: Lang;
   d: D;
-  send: Send;
+  send: S;
   me: CID;
   leader: CID;
   clients: Array<Client>;

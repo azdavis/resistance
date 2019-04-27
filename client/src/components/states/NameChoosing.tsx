@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Lang, D, Send } from "../../etc";
+import { Lang, D, S } from "../../etc";
 import { submit, back } from "../../text";
 import Button from "../basic/Button";
 import TextInput from "../basic/TextInput";
@@ -7,7 +7,7 @@ import TextInput from "../basic/TextInput";
 type Props = {
   lang: Lang;
   d: D;
-  send: Send;
+  send: S;
   valid: boolean;
 };
 

@@ -1,5 +1,5 @@
 import React, { useReducer, useState, useEffect } from "react";
-import { Send } from "../etc";
+import { S } from "../etc";
 import { reducer, init } from "../state";
 import { setLang } from "../storage";
 import useTriggerEffect from "../hooks/useTriggerEffect";
@@ -17,10 +17,10 @@ import GameEnded from "./states/GameEnded";
 
 export default (): JSX.Element => {
   const [s, d] = useReducer(reducer, init);
-  const [send, setSend] = useState<Send | null>(null);
+  const [send, setSend] = useState<S | null>(null);
   const reconnect = useTriggerEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    const newSend: Send = ({ t, ...P }) => {
+    const newSend: S = ({ t, ...P }) => {
       ws.send(JSON.stringify({ T: t, P }));
     };
     ws.onopen = () => {
