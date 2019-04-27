@@ -302,36 +302,36 @@ func fromTagMsg(t string, p interface{}) ([]byte, error) {
 
 // MarshalJSON makes JSON.
 func (x SetMe) MarshalJSON() ([]byte, error) {
-	type alias SetMe
-	return fromTagMsg("SetMe", alias(x))
+	type t SetMe
+	return fromTagMsg("SetMe", t(x))
 }
 
 // MarshalJSON makes JSON.
 func (x NameReject) MarshalJSON() ([]byte, error) {
-	type alias NameReject
-	return fromTagMsg("NameReject", alias(x))
+	type t NameReject
+	return fromTagMsg("NameReject", t(x))
 }
 
 // MarshalJSON makes JSON.
 func (x LobbyChoices) MarshalJSON() ([]byte, error) {
-	type alias LobbyChoices
-	return fromTagMsg("LobbyChoices", alias(x))
+	type t LobbyChoices
+	return fromTagMsg("LobbyChoices", t(x))
 }
 
 // MarshalJSON makes JSON.
 func (x CurrentLobby) MarshalJSON() ([]byte, error) {
-	type alias CurrentLobby
-	return fromTagMsg("CurrentLobby", alias(x))
+	type t CurrentLobby
+	return fromTagMsg("CurrentLobby", t(x))
 }
 
 // MarshalJSON makes JSON.
 func (x CurrentGame) MarshalJSON() ([]byte, error) {
-	type alias CurrentGame
-	return fromTagMsg("CurrentGame", alias(x))
+	type t CurrentGame
+	return fromTagMsg("CurrentGame", t(x))
 }
 
 // MarshalJSON makes JSON.
 func (x EndGame) MarshalJSON() ([]byte, error) {
-	type alias EndGame
-	return fromTagMsg("EndGame", alias(x))
+	type t EndGame
+	return fromTagMsg("EndGame", t(x))
 }
