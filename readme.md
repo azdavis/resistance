@@ -2,6 +2,15 @@
 
 A game
 
+## Setup
+
+```sh
+$ cd server
+$ go get
+$ cd ../client
+$ npm install
+```
+
 ## Development
 
 In one terminal:
