@@ -1,4 +1,4 @@
-// These should be kept in sync with types.go.
+// These should be kept in sync with server/types.go.
 import { Dispatch } from "react";
 
 export type GID = number;

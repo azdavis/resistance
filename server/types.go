@@ -1,4 +1,4 @@
-// These should be kept in sync with types.ts.
+// These should be kept in sync with client/src/types.ts.
 package main
 
 import (
