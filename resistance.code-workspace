@@ -11,6 +11,7 @@
       "server/resistance": true,
       "thoughts.md": true
     },
-    "cSpell.words": ["cids"]
+    "cSpell.words": ["cids"],
+    "go.formatTool": "goimports"
   }
 }
