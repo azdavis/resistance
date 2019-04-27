@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, D } from "../../types";
+import { Lang, D } from "../../shared";
 import { minN, maxN, maxPts } from "../../shared";
 import { back } from "../../text";
 import fullWidth from "../../fullWidth";

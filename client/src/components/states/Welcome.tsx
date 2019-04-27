@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, D } from "../../types";
+import { Lang, D } from "../../shared";
 import { resName } from "../../text";
 import Button from "../basic/Button";
 import ButtonLink from "../basic/ButtonLink";

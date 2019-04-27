@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, Send, Lobby } from "../../types";
+import { Lang, Send, Lobby } from "../../shared";
 import fullWidth from "../../fullWidth";
 import Button from "../basic/Button";
 

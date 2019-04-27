@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, D, langs } from "../../types";
+import { Lang, D, langs } from "../../shared";
 import { back } from "../../text";
 import Button from "../basic/Button";
 import Toggle from "../basic/Toggle";

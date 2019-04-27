@@ -1,4 +1,4 @@
-import { Lang, langs } from "./types";
+import { Lang, langs } from "./shared";
 
 const langKey = "lang";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, D, Send, CID, Client } from "../../types";
+import { Lang, D, Send, CID, Client } from "../../shared";
 import { okGameSize } from "../../shared";
 import { leave } from "../../text";
 import fullWidth from "../../fullWidth";

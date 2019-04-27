@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang } from "../../types";
+import { Lang } from "../../shared";
 import { maxPts } from "../../shared";
 import { resName, spyName } from "../../text";
 import Checkbox from "./Checkbox";

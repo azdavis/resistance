@@ -1,5 +1,5 @@
 import React, { useReducer, useState, useEffect } from "react";
-import { Send } from "../types";
+import { Send } from "../shared";
 import { reducer, init } from "../state";
 import { setLang } from "../storage";
 import useTriggerEffect from "../hooks/useTriggerEffect";

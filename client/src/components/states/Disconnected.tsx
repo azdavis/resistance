@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Lang } from "../../types";
+import { Lang } from "../../shared";
 import Button from "../basic/Button";
 
 type Props = {

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Lang, D, Send } from "../../types";
+import { Lang, D, Send } from "../../shared";
 import { submit, back } from "../../text";
 import Button from "../basic/Button";
 import TextInput from "../basic/TextInput";
