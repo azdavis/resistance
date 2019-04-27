@@ -1,29 +1,22 @@
 import { Reducer } from "react";
-import {
-  State,
-  Action,
-  CID,
-  GID,
-  Client,
-  CurrentGame,
-  LangState,
-  LangAction,
-} from "./types";
+import { State, Action, CID, GID, Client, CurrentGame, Lang } from "./types";
 import { getLang } from "./storage";
 
-export const init: LangState = {
+export const init: State = {
   lang: getLang() || "en",
   t: "Welcome",
   me: 0,
 };
 
 const mkGamePlaying = (
+  lang: Lang,
   me: CID,
   gid: GID,
   clients: Array<Client>,
   a: CurrentGame,
 ): State => ({
   t: "GamePlaying",
+  lang,
   me,
   gid,
   clients,
@@ -35,93 +28,91 @@ const mkGamePlaying = (
   active: a.Active,
 });
 
-const inner: Reducer<State, Action> = (s, a) => {
+export const reducer: Reducer<State, Action> = (s, a) => {
   if (s.t === "Fatal") {
     return s;
+  }
+  if (a.t === "SetLang") {
+    return { ...s, lang: a.lang };
   }
   switch (a.t) {
     case "Close":
       return {
         t: "Disconnected",
+        lang: s.lang,
         me: s.me,
         game: s.t === "GamePlaying" ? { gid: s.gid, clients: s.clients } : null,
       };
     case "SetMe":
       return s.t === "Welcome" || s.t === "Disconnected"
-        ? { t: "Welcome", me: a.Me }
+        ? { t: "Welcome", lang: s.lang, me: a.Me }
         : s.t === "HowTo"
-        ? { t: "HowTo", me: a.Me }
+        ? { t: "HowTo", lang: s.lang, me: a.Me }
         : s.t === "LangChoosing"
-        ? { t: "LangChoosing", me: a.Me }
-        : { t: "Fatal", s, a };
+        ? { t: "LangChoosing", lang: s.lang, me: a.Me }
+        : { t: "Fatal", lang: s.lang, s, a };
     case "GoLobbies":
       return s.t === "Disbanded" || s.t === "GameEnded"
-        ? { ...s, t: "LobbyChoosing" }
+        ? { ...s, t: "LobbyChoosing", lang: s.lang }
         : s.t === "LobbyWaiting"
         ? { ...s, didLeave: true }
-        : { t: "Fatal", s, a };
+        : { t: "Fatal", lang: s.lang, s, a };
     case "GoWelcome":
       return s.t === "HowTo" || s.t === "NameChoosing" || s.t === "LangChoosing"
-        ? { t: "Welcome", me: s.me }
-        : { t: "Fatal", s, a };
+        ? { t: "Welcome", lang: s.lang, me: s.me }
+        : { t: "Fatal", lang: s.lang, s, a };
     case "GoNameChoose":
       return s.t === "Welcome" && s.me !== 0
-        ? { t: "NameChoosing", me: s.me, valid: true }
-        : { t: "Fatal", s, a };
+        ? { t: "NameChoosing", lang: s.lang, me: s.me, valid: true }
+        : { t: "Fatal", lang: s.lang, s, a };
     case "GoLangChoose":
       return s.t === "Welcome"
-        ? { t: "LangChoosing", me: s.me }
-        : { t: "Fatal", s, a };
+        ? { t: "LangChoosing", lang: s.lang, me: s.me }
+        : { t: "Fatal", lang: s.lang, s, a };
     case "GoHowTo":
       return s.t === "Welcome"
-        ? { t: "HowTo", me: s.me }
-        : { t: "Fatal", s, a };
+        ? { t: "HowTo", lang: s.lang, me: s.me }
+        : { t: "Fatal", lang: s.lang, s, a };
     case "NameReject":
       return s.t === "NameChoosing"
         ? { ...s, valid: false }
-        : { t: "Fatal", s, a };
+        : { t: "Fatal", lang: s.lang, s, a };
     case "LobbyChoices":
       return s.t === "LobbyChoosing" ||
         s.t === "NameChoosing" ||
         (s.t === "LobbyWaiting" && s.didLeave)
-        ? { t: "LobbyChoosing", me: s.me, lobbies: a.Lobbies }
+        ? { t: "LobbyChoosing", lang: s.lang, me: s.me, lobbies: a.Lobbies }
         : s.me === 0
-        ? { t: "Fatal", s, a }
-        : { t: "Disbanded", me: s.me, lobbies: a.Lobbies };
+        ? { t: "Fatal", lang: s.lang, s, a }
+        : { t: "Disbanded", lang: s.lang, me: s.me, lobbies: a.Lobbies };
     case "CurrentLobby":
       return s.t === "LobbyChoosing" || s.t === "LobbyWaiting"
         ? {
             t: "LobbyWaiting",
+            lang: s.lang,
             me: s.me,
             gid: a.GID,
             clients: a.Clients,
             leader: a.Leader,
             didLeave: false,
           }
-        : { t: "Fatal", s, a };
+        : { t: "Fatal", lang: s.lang, s, a };
     case "CurrentGame":
       return s.t === "LobbyWaiting" || s.t === "GamePlaying"
-        ? mkGamePlaying(s.me, s.gid, s.clients, a)
+        ? mkGamePlaying(s.lang, s.me, s.gid, s.clients, a)
         : s.t === "Disconnected" && s.game !== null
-        ? mkGamePlaying(s.me, s.game.gid, s.game.clients, a)
-        : { t: "Fatal", s, a };
+        ? mkGamePlaying(s.lang, s.me, s.game.gid, s.game.clients, a)
+        : { t: "Fatal", lang: s.lang, s, a };
     case "EndGame":
       return s.t === "GamePlaying"
         ? {
             t: "GameEnded",
+            lang: s.lang,
             me: s.me,
             resPts: a.ResPts,
             spyPts: a.SpyPts,
             lobbies: a.Lobbies,
           }
-        : { t: "Fatal", s, a };
+        : { t: "Fatal", lang: s.lang, s, a };
   }
-};
-
-export const reducer: Reducer<LangState, LangAction> = (s, a) => {
-  const { lang, ...rest } = s;
-  if (a.t === "SetLang") {
-    return { lang: a.lang, ...rest };
-  }
-  return { lang, ...inner(rest, a) };
 };

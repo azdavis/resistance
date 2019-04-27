@@ -22,13 +22,17 @@ export type Send = Dispatch<ToServer>;
 export type Lobby = { GID: GID; Leader: string };
 export type Client = { CID: CID; Name: string };
 
+export type Lang = "en" | "ja";
+export const langs: Array<Lang> = ["en", "ja"];
+
 type SelfAction =
   | { t: "Close" }
   | { t: "GoLobbies" }
   | { t: "GoWelcome" }
   | { t: "GoNameChoose" }
   | { t: "GoLangChoose" }
-  | { t: "GoHowTo" };
+  | { t: "GoHowTo" }
+  | { t: "SetLang"; lang: Lang };
 
 export type CurrentGame = {
   t: "CurrentGame";
@@ -54,13 +58,10 @@ type ToClient =
       Lobbies: Array<Lobby>;
     };
 
-export type Lang = "en" | "ja";
-export const langs: Array<Lang> = ["en", "ja"];
 export type Action = SelfAction | ToClient;
-export type LangAction = Action | { t: "SetLang"; lang: Lang };
-export type D = Dispatch<LangAction>;
+export type D = Dispatch<Action>;
 
-export type State =
+type StateNoLang =
   | { t: "Fatal"; s: State; a: Action }
   | {
       t: "Disconnected";
@@ -101,4 +102,4 @@ export type State =
       lobbies: Array<Lobby>;
     };
 
-export type LangState = { lang: Lang } & State;
+export type State = { lang: Lang } & StateNoLang;
