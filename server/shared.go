@@ -12,9 +12,7 @@ const MinN = 5
 const MaxN = 7
 
 // OkGameSize returns whether n is an acceptable number of players for the game.
-func OkGameSize(n int) bool {
-	return MinN <= n && n <= MaxN
-}
+func OkGameSize(n int) bool { return MinN <= n && n <= MaxN }
 
 // MaxPts is the number of wins either side must accumulate before the game is
 // over.
