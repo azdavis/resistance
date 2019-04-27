@@ -25,8 +25,6 @@ const MaxPts = 3
 // spies automatically get a point.
 const MaxSkip = 3
 
-// Helper types ////////////////////////////////////////////////////////////////
-
 // CID is a unique identifier for a Client. 0 means 'no CID'.
 type CID uint64
 
@@ -57,8 +55,6 @@ type Dest struct {
 	CID
 	C chan<- CIDToServer
 }
-
-// ToServer ////////////////////////////////////////////////////////////////////
 
 // ToServer is a request from the client to change state. The client "requests"
 // a Close by closing itself.
@@ -134,8 +130,6 @@ type MissionVote struct {
 // GameLeave is sent by a client who is leaving the game they are in.
 type GameLeave struct{}
 
-// ToClient ////////////////////////////////////////////////////////////////////
-
 // ToClient is sent to the client to change the client's state. It may be sent
 // in direct reply to a client's ToServer, or it may be sent because the client
 // was transitively affected by another client's ToServer.
@@ -208,8 +202,6 @@ type EndGame struct {
 	Lobbies []Lobby
 }
 
-// SrvMsg //////////////////////////////////////////////////////////////////////
-
 // SrvMsg is a message to runServer.
 type SrvMsg interface {
 	isSrvMsg()
@@ -243,8 +235,6 @@ type GameClose struct {
 	Names   map[CID]string
 	EndGame
 }
-
-// Helper functions ////////////////////////////////////////////////////////////
 
 // tagMsg is a JSON-encoded message.
 type tagMsg struct {
