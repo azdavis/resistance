@@ -43,7 +43,7 @@ export default ({ lang, send, me, clients, members }: Props) => {
           }
           send({ t: "MemberChoose", Members });
         }}
-        disabled={checked.filter(id).length != members}
+        disabled={checked.filter(id).length !== members}
       />
     </div>
   );
