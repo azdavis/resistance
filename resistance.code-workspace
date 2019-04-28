@@ -12,6 +12,10 @@
       "thoughts.md": true
     },
     "cSpell.words": ["cids"],
+    "eslint.validate": [
+      { "language": "typescript", "autoFix": true },
+      { "language": "typescriptreact", "autoFix": true }
+    ],
     "go.formatTool": "goimports"
   }
 }
