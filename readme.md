@@ -5,7 +5,8 @@ A game
 ## Setup
 
 ```sh
-$ cd server
+$ git clone https://github.com/azdavis/resistance.git
+$ cd resistance/server
 $ go get
 $ cd ../client
 $ npm install
