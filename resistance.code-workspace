@@ -4,6 +4,13 @@
       "path": "."
     }
   ],
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "ms-vscode.go",
+      "esbenp.prettier-vscode"
+    ]
+  },
   "settings": {
     "files.exclude": {
       "client/build": true,
