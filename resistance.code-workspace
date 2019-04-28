@@ -5,11 +5,7 @@
     }
   ],
   "extensions": {
-    "recommendations": [
-      "dbaeumer.vscode-eslint",
-      "ms-vscode.go",
-      "esbenp.prettier-vscode"
-    ]
+    "recommendations": ["ms-vscode.go", "esbenp.prettier-vscode"]
   },
   "settings": {
     "files.exclude": {
@@ -19,10 +15,6 @@
       "thoughts.md": true
     },
     "cSpell.words": ["cids"],
-    "eslint.validate": [
-      { "language": "typescript", "autoFix": true },
-      { "language": "typescriptreact", "autoFix": true }
-    ],
     "go.formatTool": "goimports"
   }
 }
