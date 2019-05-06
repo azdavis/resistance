@@ -81,18 +81,11 @@ func readFromConn(conn *ws.Conn, rx chan<- ToServer) {
 }
 
 func writeToConn(conn *ws.Conn, tx <-chan ToClient) {
-	var err error
-	for {
-		select {
-		case m, ok := <-tx:
-			if !ok {
-				conn.Close()
-				return
-			}
-			err = conn.WriteJSON(m)
-		}
+	for m := range tx {
+		err := conn.WriteJSON(m)
 		if err != nil {
 			fmt.Println("err writeToConn:", err)
 		}
 	}
+	conn.Close()
 }
