@@ -17,12 +17,6 @@ type CIDClient struct {
 	Client
 }
 
-// ClientInfo represents info about a Client.
-type ClientInfo struct {
-	CID
-	Name string
-}
-
 // Dest represents a place to put Actions, and what CID to tag them with.
 type Dest struct {
 	CID

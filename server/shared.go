@@ -29,20 +29,18 @@ type CID uint64
 // 0 means 'no GID'.
 type GID uint64
 
+// ClientInfo represents info about a Client.
+type ClientInfo struct {
+	CID
+	Name string
+}
+
 // Lobby represents a group of clients all waiting for the same game to
 // start.
 type Lobby struct {
 	GID                       // unique
 	Leader string             // leader name
 	tx     chan<- NamedClient // from runLobbyMap to this
-}
-
-// Client is a player of the game.
-type Client struct {
-	tx chan ToClient   // orders for the client
-	rx chan<- ToServer // requests from the client
-	d  chan<- Dest     // what to update the ultimate destination of rx to
-	q  chan struct{}   // close on Close
 }
 
 // ToServer is a request from the client to change state. The client "requests"

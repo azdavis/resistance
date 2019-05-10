@@ -6,6 +6,14 @@ import (
 	ws "github.com/gorilla/websocket"
 )
 
+// Client is a player of the game.
+type Client struct {
+	tx chan ToClient   // orders for the client
+	rx chan<- ToServer // requests from the client
+	d  chan<- Dest     // what to update the ultimate destination of rx to
+	q  chan struct{}   // close on Close
+}
+
 // NullDest is a Dest which will never allow sending.
 var NullDest = Dest{0, make(chan<- CIDToServer)}
 
