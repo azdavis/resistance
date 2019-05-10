@@ -392,6 +392,7 @@ func testGame(
 		t.Fatal("bad EndGame", eg)
 	}
 }
+
 func TestGame01(t *testing.T) { testGame(t, MinN, false, false, false) }
 func TestGame02(t *testing.T) { testGame(t, MaxN, false, false, false) }
 func TestGame03(t *testing.T) { testGame(t, MinN, true, false, false) }
