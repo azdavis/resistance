@@ -29,7 +29,8 @@ type CID uint64
 // 0 means 'no GID'.
 type GID uint64
 
-// ClientInfo represents info about a Client.
+// ClientInfo represents info about a Client. This is simply called 'Client' in
+// /client.
 type ClientInfo struct {
 	CID
 	Name string
