@@ -55,7 +55,7 @@ type LobbyClose struct {
 }
 
 // GameClose signals that a game is closing.
-// invariant: EndGame.Lobbies == nil when the GameClose is received from a game
+// invariant: EndGame.Lobbies == nil when the GameClose is received from a game.
 type GameClose struct {
 	GID
 	Clients *ClientMap

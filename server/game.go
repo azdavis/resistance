@@ -92,19 +92,19 @@ func runGame(
 	captain := 0
 
 	// invariant:
-	// state == missionVoting || state == memberVoting <=> members != nil
+	// state == missionVoting || state == memberVoting <=> members != nil.
 	var members []CID
 
-	// invariant: members == nil <=> votes == nil
+	// invariant: members == nil <=> votes == nil.
 	var votes map[CID]bool
 
-	// invariant: 0 <= resPts <= MaxPts
+	// invariant: 0 <= resPts <= MaxPts.
 	resPts := 0
 
-	// invariant: 0 <= spyPts <= MaxPts
+	// invariant: 0 <= spyPts <= MaxPts.
 	spyPts := 0
 
-	// invariant: 0 := skip <= MaxSkip
+	// invariant: 0 := skip <= MaxSkip.
 	skip := 0
 
 	newMemberChoosing := func() {

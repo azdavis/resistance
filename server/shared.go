@@ -135,7 +135,7 @@ func (CurrentGame) isToClient()  {}
 func (EndGame) isToClient()      {}
 
 // SetMe sets the client's own CID.
-// invariant: Me != 0
+// invariant: Me != 0.
 type SetMe struct {
 	Me CID
 }
@@ -145,18 +145,18 @@ type SetMe struct {
 type NameReject struct{}
 
 // LobbyChoices is sent to a client who is choosing their lobby.
-// invariant: Lobbies != nil
-// invariant: for all x in Lobbies, x.GID != 0
+// invariant: Lobbies != nil.
+// invariant: for all x in Lobbies, x.GID != 0.
 type LobbyChoices struct {
 	Lobbies []Lobby
 }
 
 // CurrentLobby is sent to a client who is in a lobby whose game has not yet
 // started.
-// invariant: GID != 0
-// invariant: Leader != 0
-// invariant: Clients != nil
-// invariant: for all x in Clients, x.CID != 0
+// invariant: GID != 0.
+// invariant: Leader != 0.
+// invariant: Clients != nil.
+// invariant: for all x in Clients, x.CID != 0.
 type CurrentLobby struct {
 	GID
 	Leader  CID
@@ -164,11 +164,11 @@ type CurrentLobby struct {
 }
 
 // CurrentGame represents an in-progress game.
-// invariant: 0 <= ResPts < MaxPts
-// invariant: 0 <= SpyPts < MaxPts
-// invariant: Members != nil => len(Members) == NumMembers
-// invariant: Active => Members != nil
-// invariant: for all x in Members, x != 0
+// invariant: 0 <= ResPts < MaxPts.
+// invariant: 0 <= SpyPts < MaxPts.
+// invariant: Members != nil => len(Members) == NumMembers.
+// invariant: Active => Members != nil.
+// invariant: for all x in Members, x != 0.
 type CurrentGame struct {
 	IsSpy      bool
 	ResPts     int
@@ -180,11 +180,11 @@ type CurrentGame struct {
 }
 
 // EndGame represents an ended game.
-// invariant: 0 <= ResPts <= MaxPts
-// invariant: 0 <= SpyPts <= MaxPts
-// invariant: ResPts == MaxPts <=> SpyPts != MaxPts
-// invariant: Lobbies != nil
-// invariant: for all x in Lobbies, x.GID != 0
+// invariant: 0 <= ResPts <= MaxPts.
+// invariant: 0 <= SpyPts <= MaxPts.
+// invariant: ResPts == MaxPts <=> SpyPts != MaxPts.
+// invariant: Lobbies != nil.
+// invariant: for all x in Lobbies, x.GID != 0.
 type EndGame struct {
 	ResPts  int
 	SpyPts  int
