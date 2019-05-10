@@ -1,4 +1,4 @@
-// This should be kept in sync with client/src/shared.ts.
+// This should be kept in sync with /client/src/shared.ts.
 package main
 
 import (
