@@ -33,10 +33,9 @@ export const reducer: Reducer<State, Action> = (s, a) => {
   if (s.t === "Fatal") {
     return s;
   }
-  if (a.t === "SetLang") {
-    return { ...s, lang: a.lang };
-  }
   switch (a.t) {
+    case "SetLang":
+      return { ...s, lang: a.lang };
     case "Close":
       return {
         t: "Disconnected",
