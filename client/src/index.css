@@ -9,8 +9,8 @@ html {
   font-family: Verdana, sans-serif;
   line-height: 1.5;
   --blue: #88e;
-  --light-gray: #e8e8e8;
-  --dark-gray: #e0e0e0;
+  --gray-primary: #e8e8e8;
+  --gray-secondary: #e0e0e0;
 }
 
 body {
@@ -28,7 +28,7 @@ pre {
   html {
     color: #ddd;
     background-color: #333;
-    --light-gray: #484848;
-    --dark-gray: #404040;
+    --gray-primary: #484848;
+    --gray-secondary: #404040;
   }
 }

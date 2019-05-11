@@ -3,18 +3,18 @@
   appearance: none;
   margin: 0.2em 0;
   padding: 0.2em;
-  border: 1px solid var(--light-gray);
+  border: 1px solid var(--gray-primary);
   border-radius: 0;
   font: inherit;
   color: inherit;
-  background-color: var(--light-gray);
+  background-color: var(--gray-primary);
   text-align: left;
   cursor: pointer;
 }
 
 .Button--enabled:active {
-  border-color: var(--dark-gray);
-  background-color: var(--dark-gray);
+  border-color: var(--gray-secondary);
+  background-color: var(--gray-secondary);
 }
 
 .Button:focus {
