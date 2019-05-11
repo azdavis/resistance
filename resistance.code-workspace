@@ -11,8 +11,7 @@
     "files.exclude": {
       "client/build": true,
       "client/node_modules": true,
-      "server/resistance": true,
-      "thoughts.md": true
+      "server/resistance": true
     },
     "cSpell.words": ["cids", "esbenp", "esnext", "goimports", "interop"],
     "go.formatTool": "goimports"
