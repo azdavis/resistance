@@ -14,7 +14,7 @@
       "server/resistance": true,
       "thoughts.md": true
     },
-    "cSpell.words": ["cids"],
+    "cSpell.words": ["cids", "esbenp", "esnext", "goimports", "interop"],
     "go.formatTool": "goimports"
   }
 }
