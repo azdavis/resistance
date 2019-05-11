@@ -42,7 +42,6 @@ export default (): JSX.Element => {
     document.documentElement.lang = s.lang;
     setLang(s.lang);
   }, [s.lang]);
-  // eslint-disable-next-line
   switch (s.t) {
     case "Fatal":
       return <Fatal {...s} />;

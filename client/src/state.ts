@@ -36,7 +36,6 @@ export const reducer: Reducer<State, Action> = (s, a) => {
   if (a.t === "SetLang") {
     return { ...s, lang: a.lang };
   }
-  // eslint-disable-next-line
   switch (a.t) {
     case "Close":
       return {
