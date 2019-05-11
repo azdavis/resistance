@@ -26,7 +26,6 @@ const fullWidthDigit = (x: string): string => {
 };
 
 export default (n: number): string =>
-  String(n)
-    .split("")
+  Array.from(String(n))
     .map(fullWidthDigit)
     .join("");
