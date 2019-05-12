@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default ({ value, href }: Props) => (
-  <a href={href} className="ButtonLink Button Truncated">
+  <a href={href} className="ButtonLink Button Button--enabled Truncated">
     {value}
   </a>
 );
