@@ -3,6 +3,7 @@ import { minN, maxN, maxPts } from "../shared";
 import fullWidth from "../fullWidth";
 
 export default {
+  langName: "日本語",
   resName: "抵抗勢力",
   spyName: "スパイ",
   submit: "送信する",
@@ -66,7 +67,6 @@ export default {
   },
   LangChoosing: {
     title: <h1>言語の設定</h1>,
-    langNames: "日本語",
   },
   LobbyChoosing: {
     title: <h1>ロビー</h1>,

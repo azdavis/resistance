@@ -2,6 +2,7 @@ import React from "react";
 import { minN, maxN, maxPts } from "../shared";
 
 export default {
+  langName: "English",
   resName: "Resistance",
   spyName: "Spies",
   submit: "Submit",
@@ -75,7 +76,6 @@ export default {
   },
   LangChoosing: {
     title: <h1>Set language</h1>,
-    langNames: "English",
   },
   LobbyChoosing: {
     title: <h1>Lobbies</h1>,

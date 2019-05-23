@@ -15,7 +15,7 @@ export default ({ lang, d }: Props) => (
     {langs.map(x => (
       <Toggle
         key={x}
-        value={t8ns[x].LangChoosing.langNames}
+        value={t8ns[x].langName}
         checked={lang === x}
         onChange={() => d({ t: "SetLang", lang: x })}
       />
