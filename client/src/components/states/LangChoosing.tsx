@@ -9,19 +9,17 @@ type Props = {
   setLang: React.Dispatch<React.SetStateAction<Lang>>;
 };
 
-export default ({ t, d, setLang }: Props) => {
-  return (
-    <div className="LangChoosing">
-      <h1>{t.LangChoosing.title}</h1>
-      {langs.map(x => (
-        <Toggle
-          key={x}
-          value={langNames[x]}
-          checked={t.code === x}
-          onChange={() => setLang(x)}
-        />
-      ))}
-      <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
-    </div>
-  );
-};
+export default ({ t, d, setLang }: Props) => (
+  <div className="LangChoosing">
+    <h1>{t.LangChoosing.title}</h1>
+    {langs.map(x => (
+      <Toggle
+        key={x}
+        value={langNames[x]}
+        checked={t.code === x}
+        onChange={() => setLang(x)}
+      />
+    ))}
+    <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
+  </div>
+);
