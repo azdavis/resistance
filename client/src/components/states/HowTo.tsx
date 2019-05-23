@@ -9,20 +9,21 @@ type Props = {
 };
 
 export default ({ lang, d }: Props) => {
+  const { HowTo: t8n, back } = t8ns[lang];
   return (
     <div className="HowTo">
-      {t8ns[lang].HowTo.title}
-      {t8ns[lang].HowTo.groupSize}
-      {t8ns[lang].HowTo.groupNames}
-      {t8ns[lang].HowTo.decideWinner}
-      {t8ns[lang].HowTo.captain}
-      {t8ns[lang].HowTo.occurVote}
-      {t8ns[lang].HowTo.noOccur}
-      {t8ns[lang].HowTo.tooManyNoOccur}
-      {t8ns[lang].HowTo.yesOccur}
-      {t8ns[lang].HowTo.succeed}
-      {t8ns[lang].HowTo.fail}
-      <Button value={t8ns[lang].back} onClick={() => d({ t: "GoWelcome" })} />
+      {t8n.title}
+      {t8n.groupSize}
+      {t8n.groupNames}
+      {t8n.decideWinner}
+      {t8n.captain}
+      {t8n.occurVote}
+      {t8n.noOccur}
+      {t8n.tooManyNoOccur}
+      {t8n.yesOccur}
+      {t8n.succeed}
+      {t8n.fail}
+      <Button value={back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };

@@ -15,23 +15,24 @@ type Props = {
 };
 
 export default ({ lang, d, send, me, leader, clients }: Props) => {
+  const { LobbyWaiting: t8n, leave } = t8ns[lang];
   return (
     <div className="LobbyWaiting">
-      {t8ns[lang].LobbyWaiting.title(clients.length)}
+      {t8n.title(clients.length)}
       {clients.map(({ CID, Name }) => (
         <div className="Truncated" key={CID}>
           {Name}
         </div>
       ))}
       <Button
-        value={t8ns[lang].leave}
+        value={leave}
         onClick={() => {
           d({ t: "GoLobbies" });
           send({ t: "LobbyLeave" });
         }}
       />
       <Button
-        value={t8ns[lang].LobbyWaiting.start}
+        value={t8n.start}
         onClick={() => send({ t: "GameStart" })}
         disabled={me !== leader || !okGameSize(clients.length)}
       />

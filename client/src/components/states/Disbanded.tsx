@@ -9,11 +9,12 @@ type Props = {
 };
 
 export default ({ lang, d }: Props) => {
+  const { Disbanded: t8n, leave } = t8ns[lang];
   return (
     <div className="Disbanded">
-      {t8ns[lang].Disbanded.title}
-      {t8ns[lang].Disbanded.body}
-      <Button value={t8ns[lang].leave} onClick={() => d({ t: "GoLobbies" })} />
+      {t8n.title}
+      {t8n.body}
+      <Button value={leave} onClick={() => d({ t: "GoLobbies" })} />
     </div>
   );
 };

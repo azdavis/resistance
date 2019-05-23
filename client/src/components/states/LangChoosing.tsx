@@ -10,9 +10,10 @@ type Props = {
 };
 
 export default ({ lang, d }: Props) => {
+  const { LangChoosing: t8n, back } = t8ns[lang];
   return (
     <div className="LangChoosing">
-      {t8ns[lang].LangChoosing.title}
+      {t8n.title}
       {langs.map(x => (
         <Toggle
           key={x}
@@ -21,7 +22,7 @@ export default ({ lang, d }: Props) => {
           onChange={() => d({ t: "SetLang", lang: x })}
         />
       ))}
-      <Button value={t8ns[lang].back} onClick={() => d({ t: "GoWelcome" })} />
+      <Button value={back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };

@@ -11,24 +11,19 @@ type Props = {
 };
 
 export default ({ lang, d, loading }: Props) => {
+  const { Welcome: t8n, resName } = t8ns[lang];
   return (
     <div className="Welcome">
-      <h1>{t8ns[lang].resName}</h1>
+      <h1>{resName}</h1>
       <Button
-        value={t8ns[lang].Welcome.play}
+        value={t8n.play}
         onClick={() => d({ t: "GoNameChoose" })}
         disabled={loading}
       />
-      <Button
-        value={t8ns[lang].Welcome.learnHow}
-        onClick={() => d({ t: "GoHowTo" })}
-      />
-      <Button
-        value={t8ns[lang].Welcome.setLang}
-        onClick={() => d({ t: "GoLangChoose" })}
-      />
+      <Button value={t8n.learnHow} onClick={() => d({ t: "GoHowTo" })} />
+      <Button value={t8n.setLang} onClick={() => d({ t: "GoLangChoose" })} />
       <ButtonLink
-        value={t8ns[lang].Welcome.viewCode}
+        value={t8n.viewCode}
         href="https://github.com/azdavis/resistance"
       />
     </div>

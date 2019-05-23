@@ -13,10 +13,11 @@ type Props = {
 
 export default ({ lang, d, send, valid }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
+  const { NameChoosing: t8n, submit, back } = t8ns[lang];
   useEffect(() => nameRef.current!.focus(), []);
   return (
     <div className="NameChoosing">
-      {t8ns[lang].NameChoosing.title}
+      {t8n.title}
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -24,10 +25,10 @@ export default ({ lang, d, send, valid }: Props) => {
         }}
       >
         <TextInput ref={nameRef} />
-        {valid ? null : t8ns[lang].NameChoosing.invalid}
-        <Button type="submit" value={t8ns[lang].submit} />
+        {valid ? null : t8n.invalid}
+        <Button type="submit" value={submit} />
       </form>
-      <Button value={t8ns[lang].back} onClick={() => d({ t: "GoWelcome" })} />
+      <Button value={back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };
