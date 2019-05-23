@@ -1,11 +1,10 @@
 import React from "react";
-import t8ns from "../../translations";
-import { Lang, D } from "../../etc";
+import { Translation, D } from "../../etc";
 import Button from "../basic/Button";
 import Scoreboard from "../basic/Scoreboard";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   d: D;
   resPts: number;
   spyPts: number;
@@ -14,9 +13,6 @@ type Props = {
 export default ({ d, ...rest }: Props) => (
   <div className="GameEnded">
     <Scoreboard {...rest} />
-    <Button
-      value={t8ns[rest.lang].leave}
-      onClick={() => d({ t: "GoLobbies" })}
-    />
+    <Button value={rest.t.leave} onClick={() => d({ t: "GoLobbies" })} />
   </div>
 );

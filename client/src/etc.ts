@@ -5,6 +5,10 @@ export type S = Dispatch<ToServer>;
 
 export type Lang = "en" | "ja";
 export const langs: Array<Lang> = ["en", "ja"];
+export const langNames: { [L in Lang]: string } = {
+  en: "English",
+  ja: "日本語",
+};
 
 type SelfAction =
   | { t: "Close" }
@@ -12,13 +16,12 @@ type SelfAction =
   | { t: "GoWelcome" }
   | { t: "GoNameChoose" }
   | { t: "GoLangChoose" }
-  | { t: "GoHowTo" }
-  | { t: "SetLang"; lang: Lang };
+  | { t: "GoHowTo" };
 
 export type Action = SelfAction | ToClient;
 export type D = Dispatch<Action>;
 
-type StateNoLang =
+export type State =
   | { t: "Fatal"; s: State; a: Action }
   | {
       t: "Disconnected";
@@ -59,11 +62,8 @@ type StateNoLang =
       lobbies: Array<Lobby>;
     };
 
-export type State = { lang: Lang } & StateNoLang;
-
 export type Translation = {
   code: string;
-  langName: string;
   resName: string;
   spyName: string;
   submit: string;

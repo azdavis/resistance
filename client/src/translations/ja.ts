@@ -4,7 +4,6 @@ import fullWidth from "../fullWidth";
 
 const ja: Translation = {
   code: "ja",
-  langName: "日本語",
   resName: "抵抗勢力",
   spyName: "スパイ",
   submit: "送信する",

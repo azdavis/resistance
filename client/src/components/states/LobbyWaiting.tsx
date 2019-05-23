@@ -1,12 +1,11 @@
 import React from "react";
-import t8ns from "../../translations";
 import { CID, Client, okGameSize } from "../../shared";
-import { Lang, D, S } from "../../etc";
+import { Translation, D, S } from "../../etc";
 import Button from "../basic/Button";
 import "../basic/Truncated.css";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   d: D;
   send: S;
   me: CID;
@@ -14,11 +13,11 @@ type Props = {
   clients: Array<Client>;
 };
 
-export default ({ lang, d, send, me, leader, clients }: Props) => {
-  const { LobbyWaiting: t8n, leave } = t8ns[lang];
+export default ({ t, d, send, me, leader, clients }: Props) => {
+  const { LobbyWaiting: LW, leave } = t;
   return (
     <div className="LobbyWaiting">
-      <h1>{t8n.title(clients.length)}</h1>
+      <h1>{LW.title(clients.length)}</h1>
       {clients.map(({ CID, Name }) => (
         <div className="Truncated" key={CID}>
           {Name}
@@ -32,7 +31,7 @@ export default ({ lang, d, send, me, leader, clients }: Props) => {
         }}
       />
       <Button
-        value={t8n.start}
+        value={LW.start}
         onClick={() => send({ t: "GameStart" })}
         disabled={me !== leader || !okGameSize(clients.length)}
       />

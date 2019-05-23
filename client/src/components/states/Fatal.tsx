@@ -1,19 +1,18 @@
 import React from "react";
-import t8ns from "../../translations";
-import { Lang, State, Action } from "../../etc";
+import { Translation, State, Action } from "../../etc";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   s: State;
   a: Action;
 };
 
-export default ({ lang, s, a }: Props) => {
-  const t8n = t8ns[lang].Fatal;
+export default ({ t, s, a }: Props) => {
+  const F = t.Fatal;
   return (
     <div className="Fatal">
-      <h1>{t8n.title}</h1>
-      <p>{t8n.body}</p>
+      <h1>{F.title}</h1>
+      <p>{F.body}</p>
       <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
     </div>
   );

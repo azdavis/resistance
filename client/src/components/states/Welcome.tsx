@@ -1,29 +1,28 @@
 import React from "react";
-import t8ns from "../../translations";
-import { Lang, D } from "../../etc";
+import { Translation, D } from "../../etc";
 import Button from "../basic/Button";
 import ButtonLink from "../basic/ButtonLink";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   d: D;
   loading: boolean;
 };
 
-export default ({ lang, d, loading }: Props) => {
-  const { Welcome: t8n, resName } = t8ns[lang];
+export default ({ t, d, loading }: Props) => {
+  const { Welcome: W, resName } = t;
   return (
     <div className="Welcome">
       <h1>{resName}</h1>
       <Button
-        value={t8n.play}
+        value={W.play}
         onClick={() => d({ t: "GoNameChoose" })}
         disabled={loading}
       />
-      <Button value={t8n.learnHow} onClick={() => d({ t: "GoHowTo" })} />
-      <Button value={t8n.setLang} onClick={() => d({ t: "GoLangChoose" })} />
+      <Button value={W.learnHow} onClick={() => d({ t: "GoHowTo" })} />
+      <Button value={W.setLang} onClick={() => d({ t: "GoLangChoose" })} />
       <ButtonLink
-        value={t8n.viewCode}
+        value={W.viewCode}
         href="https://github.com/azdavis/resistance"
       />
     </div>

@@ -3,7 +3,6 @@ import { minN, maxN, maxPts } from "../shared";
 
 const en: Translation = {
   code: "en",
-  langName: "English",
   resName: "Resistance",
   spyName: "Spies",
   submit: "Submit",

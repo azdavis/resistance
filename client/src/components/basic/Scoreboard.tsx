@@ -1,19 +1,18 @@
 import React from "react";
-import t8ns from "../../translations";
 import { maxPts } from "../../shared";
-import { Lang } from "../../etc";
+import { Translation } from "../../etc";
 import Checkbox from "./Checkbox";
 import "./Scoreboard.css";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   resPts: number;
   spyPts: number;
 };
 
 const points = Array.from(Array(maxPts), (_, i) => i + 1);
 
-export default ({ lang, resPts, spyPts }: Props) => (
+export default ({ t, resPts, spyPts }: Props) => (
   <table className="Scoreboard">
     <tbody>
       <tr>
@@ -23,7 +22,7 @@ export default ({ lang, resPts, spyPts }: Props) => (
           ))}
         </td>
         <td>
-          <b>{t8ns[lang].resName}</b>
+          <b>{t.resName}</b>
         </td>
       </tr>
     </tbody>
@@ -34,7 +33,7 @@ export default ({ lang, resPts, spyPts }: Props) => (
         ))}
       </td>
       <td>
-        <b>{t8ns[lang].spyName}</b>
+        <b>{t.spyName}</b>
       </td>
     </tr>
   </table>

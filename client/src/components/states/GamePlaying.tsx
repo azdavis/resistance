@@ -1,7 +1,6 @@
 import React from "react";
-import t8ns from "../../translations";
 import { Client, CID } from "../../shared";
-import { Lang, S } from "../../etc";
+import { Translation, S } from "../../etc";
 import ButtonSpoiler from "../basic/ButtonSpoiler";
 import MemberChooser from "../basic/MemberChooser";
 import Scoreboard from "../basic/Scoreboard";
@@ -9,7 +8,7 @@ import Voter from "../basic/Voter";
 import "../basic/Truncated.css";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   send: S;
   me: CID;
   clients: Array<Client>;
@@ -24,7 +23,7 @@ type Props = {
 const isNum = (x: any): x is number => typeof x == "number";
 
 export default ({
-  lang,
+  t,
   send,
   me,
   clients,
@@ -35,21 +34,21 @@ export default ({
   members,
   active,
 }: Props) => {
-  const t8n = t8ns[lang].GamePlaying;
+  const GP = t.GamePlaying;
   return (
     <div className="GamePlaying">
-      <Scoreboard {...{ lang, resPts, spyPts }} />
+      <Scoreboard {...{ t, resPts, spyPts }} />
       <ButtonSpoiler
-        view={t8n.viewAllegiance}
-        spoil={isSpy ? t8ns[lang].spyName : t8ns[lang].resName}
+        view={GP.viewAllegiance}
+        spoil={isSpy ? t.spyName : t.resName}
       />
-      <div>{t8n.captain(clients.find(({ CID }) => CID === captain)!.Name)}</div>
-      <div>{t8n.members(isNum(members) ? members : members.length)}</div>
+      <div>{GP.captain(clients.find(({ CID }) => CID === captain)!.Name)}</div>
+      <div>{GP.members(isNum(members) ? members : members.length)}</div>
       {isNum(members) ? (
         me === captain ? (
-          <MemberChooser {...{ lang, send, me, clients, members }} />
+          <MemberChooser {...{ t, send, me, clients, members }} />
         ) : (
-          t8n.beingChosen
+          GP.beingChosen
         )
       ) : (
         clients
@@ -65,19 +64,19 @@ export default ({
           <Voter
             // the `key`s must differ
             key="succeed"
-            prompt={t8n.succeedPrompt}
-            options={[[t8n.succeed, true], [t8n.fail, false]]}
+            prompt={GP.succeedPrompt}
+            options={[[GP.succeed, true], [GP.fail, false]]}
             onVote={Vote => send({ t: "MissionVote", Vote })}
           />
         ) : (
-          t8n.beingVotedOn
+          GP.beingVotedOn
         )
       ) : (
         <Voter
           // the `key`s must differ
           key="occur"
-          prompt={t8n.occurPrompt}
-          options={[[t8n.occur, true], [t8n.notOccur, false]]}
+          prompt={GP.occurPrompt}
+          options={[[GP.occur, true], [GP.notOccur, false]]}
           onVote={Vote => send({ t: "MemberVote", Vote })}
         />
       )}

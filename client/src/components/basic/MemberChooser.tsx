@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import t8ns from "../../translations";
 import { CID, Client } from "../../shared";
-import { Lang, S } from "../../etc";
+import { Translation, S } from "../../etc";
 import Toggle from "./Toggle";
 import Button from "./Button";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   send: S;
   me: CID;
   clients: Array<Client>;
@@ -17,7 +16,7 @@ function id<T>(x: T): T {
   return x;
 }
 
-export default ({ lang, send, me, clients, members }: Props) => {
+export default ({ t, send, me, clients, members }: Props) => {
   const [checked, setChecked] = useState(() =>
     clients.map(({ CID }) => CID === me),
   );
@@ -33,7 +32,7 @@ export default ({ lang, send, me, clients, members }: Props) => {
       ))}
       <Button
         type="submit"
-        value={t8ns[lang].submit}
+        value={t.submit}
         onClick={() => {
           const Members: Array<CID> = [];
           for (let i = 0; i < clients.length; i++) {

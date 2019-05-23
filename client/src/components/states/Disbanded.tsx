@@ -1,19 +1,18 @@
 import React from "react";
-import t8ns from "../../translations";
-import { Lang, D } from "../../etc";
+import { Translation, D } from "../../etc";
 import Button from "../basic/Button";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   d: D;
 };
 
-export default ({ lang, d }: Props) => {
-  const { Disbanded: t8n, leave } = t8ns[lang];
+export default ({ t, d }: Props) => {
+  const { Disbanded: D, leave } = t;
   return (
     <div className="Disbanded">
-      <h1>{t8n.title}</h1>
-      <p>{t8n.body}</p>
+      <h1>{D.title}</h1>
+      <p>{D.body}</p>
       <Button value={leave} onClick={() => d({ t: "GoLobbies" })} />
     </div>
   );

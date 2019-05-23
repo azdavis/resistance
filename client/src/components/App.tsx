@@ -1,5 +1,5 @@
 import React, { useReducer, useState, useEffect } from "react";
-import { S } from "../etc";
+import { S, Lang, Translation } from "../etc";
 import { reducer, init } from "../state";
 import Storage from "../storage";
 import useTriggerEffect from "../hooks/useTriggerEffect";
@@ -15,7 +15,9 @@ import LobbyWaiting from "./states/LobbyWaiting";
 import GamePlaying from "./states/GamePlaying";
 import GameEnded from "./states/GameEnded";
 
-export default (): JSX.Element => {
+const defaultLang = Storage.getLang() || "en";
+
+export default (): JSX.Element | null => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<S | null>(null);
   const reconnect = useTriggerEffect(() => {
@@ -38,34 +40,62 @@ export default (): JSX.Element => {
     ws.onclose = () => d({ t: "Close" });
     return ws.close.bind(ws);
   }, []);
+  const [lang, setLang] = useState<Lang>(defaultLang);
+  const [t, setTrans] = useState<Translation | null>(null);
   useEffect(() => {
-    document.documentElement.lang = s.lang;
-    Storage.setLang(s.lang);
-  }, [s.lang]);
+    import(`../translations/${lang}`).then(res => {
+      document.documentElement.lang = lang;
+      Storage.setLang(lang);
+      setTrans(res.default);
+    });
+  }, [lang]);
+  if (t === null) {
+    return null;
+  }
   switch (s.t) {
     case "Fatal":
-      return <Fatal {...s} />;
+      return <Fatal t={t} s={s.s} a={s.a} />;
     case "Disconnected":
-      return <Disconnected lang={s.lang} reconnect={reconnect} />;
+      return <Disconnected t={t} reconnect={reconnect} />;
     case "Disbanded":
-      return <Disbanded lang={s.lang} d={d} />;
+      return <Disbanded t={t} d={d} />;
     case "Welcome":
-      return (
-        <Welcome lang={s.lang} d={d} loading={send === null || s.me === 0} />
-      );
+      return <Welcome t={t} d={d} loading={send === null || s.me === 0} />;
     case "HowTo":
-      return <HowTo lang={s.lang} d={d} />;
+      return <HowTo t={t} d={d} />;
     case "LangChoosing":
-      return <LangChoosing d={d} lang={s.lang} />;
+      return <LangChoosing t={t} setLang={setLang} d={d} />;
     case "NameChoosing":
-      return <NameChoosing d={d} send={send!} {...s} />;
+      return <NameChoosing t={t} d={d} send={send!} valid={s.valid} />;
     case "LobbyChoosing":
-      return <LobbyChoosing send={send!} {...s} />;
+      return <LobbyChoosing t={t} send={send!} lobbies={s.lobbies} />;
     case "LobbyWaiting":
-      return <LobbyWaiting d={d} send={send!} {...s} />;
+      return (
+        <LobbyWaiting
+          t={t}
+          d={d}
+          send={send!}
+          me={s.me}
+          leader={s.leader}
+          clients={s.clients}
+        />
+      );
     case "GamePlaying":
-      return <GamePlaying send={send!} {...s} />;
+      return (
+        <GamePlaying
+          t={t}
+          send={send!}
+          me={s.me}
+          clients={s.clients}
+          isSpy={s.isSpy}
+          resPts={s.resPts}
+          spyPts={s.spyPts}
+          captain={s.captain}
+          members={s.members}
+          active={s.active}
+        />
+      );
     case "GameEnded":
-      return <GameEnded d={d} {...s} />;
+      return <GameEnded t={t} d={d} resPts={s.resPts} spyPts={s.spyPts} />;
   }
 };

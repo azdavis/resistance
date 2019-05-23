@@ -1,23 +1,22 @@
 import React, { useRef, useEffect } from "react";
-import t8ns from "../../translations";
-import { Lang, D, S } from "../../etc";
+import { Translation, D, S } from "../../etc";
 import Button from "../basic/Button";
 import TextInput from "../basic/TextInput";
 
 type Props = {
-  lang: Lang;
+  t: Translation;
   d: D;
   send: S;
   valid: boolean;
 };
 
-export default ({ lang, d, send, valid }: Props) => {
+export default ({ t, d, send, valid }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
-  const { NameChoosing: t8n, submit, back } = t8ns[lang];
+  const { NameChoosing: NC, submit, back } = t;
   useEffect(() => nameRef.current!.focus(), []);
   return (
     <div className="NameChoosing">
-      <h1>{t8n.title}</h1>
+      <h1>{NC.title}</h1>
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -25,7 +24,7 @@ export default ({ lang, d, send, valid }: Props) => {
         }}
       >
         <TextInput ref={nameRef} />
-        {valid ? null : t8n.invalid}
+        {valid ? null : NC.invalid}
         <Button type="submit" value={submit} />
       </form>
       <Button value={back} onClick={() => d({ t: "GoWelcome" })} />
