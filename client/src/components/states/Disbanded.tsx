@@ -8,10 +8,12 @@ type Props = {
   d: D;
 };
 
-export default ({ lang, d }: Props) => (
-  <div className="Disbanded">
-    {t8ns[lang].Disbanded.title}
-    {t8ns[lang].Disbanded.body}
-    <Button value={t8ns[lang].leave} onClick={() => d({ t: "GoLobbies" })} />
-  </div>
-);
+export default ({ lang, d }: Props) => {
+  return (
+    <div className="Disbanded">
+      {t8ns[lang].Disbanded.title}
+      {t8ns[lang].Disbanded.body}
+      <Button value={t8ns[lang].leave} onClick={() => d({ t: "GoLobbies" })} />
+    </div>
+  );
+};

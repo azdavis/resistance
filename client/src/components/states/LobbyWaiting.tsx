@@ -14,25 +14,27 @@ type Props = {
   clients: Array<Client>;
 };
 
-export default ({ lang, d, send, me, leader, clients }: Props) => (
-  <div className="LobbyWaiting">
-    {t8ns[lang].LobbyWaiting.title(clients.length)}
-    {clients.map(({ CID, Name }) => (
-      <div className="Truncated" key={CID}>
-        {Name}
-      </div>
-    ))}
-    <Button
-      value={t8ns[lang].leave}
-      onClick={() => {
-        d({ t: "GoLobbies" });
-        send({ t: "LobbyLeave" });
-      }}
-    />
-    <Button
-      value={t8ns[lang].LobbyWaiting.start}
-      onClick={() => send({ t: "GameStart" })}
-      disabled={me !== leader || !okGameSize(clients.length)}
-    />
-  </div>
-);
+export default ({ lang, d, send, me, leader, clients }: Props) => {
+  return (
+    <div className="LobbyWaiting">
+      {t8ns[lang].LobbyWaiting.title(clients.length)}
+      {clients.map(({ CID, Name }) => (
+        <div className="Truncated" key={CID}>
+          {Name}
+        </div>
+      ))}
+      <Button
+        value={t8ns[lang].leave}
+        onClick={() => {
+          d({ t: "GoLobbies" });
+          send({ t: "LobbyLeave" });
+        }}
+      />
+      <Button
+        value={t8ns[lang].LobbyWaiting.start}
+        onClick={() => send({ t: "GameStart" })}
+        disabled={me !== leader || !okGameSize(clients.length)}
+      />
+    </div>
+  );
+};

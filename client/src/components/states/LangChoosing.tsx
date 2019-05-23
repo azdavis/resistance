@@ -9,17 +9,19 @@ type Props = {
   d: D;
 };
 
-export default ({ lang, d }: Props) => (
-  <div className="LangChoosing">
-    {t8ns[lang].LangChoosing.title}
-    {langs.map(x => (
-      <Toggle
-        key={x}
-        value={t8ns[x].langName}
-        checked={lang === x}
-        onChange={() => d({ t: "SetLang", lang: x })}
-      />
-    ))}
-    <Button value={t8ns[lang].back} onClick={() => d({ t: "GoWelcome" })} />
-  </div>
-);
+export default ({ lang, d }: Props) => {
+  return (
+    <div className="LangChoosing">
+      {t8ns[lang].LangChoosing.title}
+      {langs.map(x => (
+        <Toggle
+          key={x}
+          value={t8ns[x].langName}
+          checked={lang === x}
+          onChange={() => d({ t: "SetLang", lang: x })}
+        />
+      ))}
+      <Button value={t8ns[lang].back} onClick={() => d({ t: "GoWelcome" })} />
+    </div>
+  );
+};

@@ -34,58 +34,62 @@ export default ({
   captain,
   members,
   active,
-}: Props) => (
-  <div className="GamePlaying">
-    <Scoreboard {...{ lang, resPts, spyPts }} />
-    <ButtonSpoiler
-      view={t8ns[lang].GamePlaying.viewAllegiance}
-      spoil={isSpy ? t8ns[lang].spyName : t8ns[lang].resName}
-    />
-    {t8ns[lang].GamePlaying.captain(
-      clients.find(({ CID }) => CID === captain)!.Name,
-    )}
-    {t8ns[lang].GamePlaying.members(isNum(members) ? members : members.length)}
-    {isNum(members) ? (
-      me === captain ? (
-        <MemberChooser {...{ lang, send, me, clients, members }} />
+}: Props) => {
+  return (
+    <div className="GamePlaying">
+      <Scoreboard {...{ lang, resPts, spyPts }} />
+      <ButtonSpoiler
+        view={t8ns[lang].GamePlaying.viewAllegiance}
+        spoil={isSpy ? t8ns[lang].spyName : t8ns[lang].resName}
+      />
+      {t8ns[lang].GamePlaying.captain(
+        clients.find(({ CID }) => CID === captain)!.Name,
+      )}
+      {t8ns[lang].GamePlaying.members(
+        isNum(members) ? members : members.length,
+      )}
+      {isNum(members) ? (
+        me === captain ? (
+          <MemberChooser {...{ lang, send, me, clients, members }} />
+        ) : (
+          t8ns[lang].GamePlaying.beingChosen
+        )
       ) : (
-        t8ns[lang].GamePlaying.beingChosen
-      )
-    ) : (
-      clients
-        .filter(({ CID }) => members.includes(CID))
-        .map(({ CID, Name }) => (
-          <div key={CID} className="Truncated">
-            {Name}
-          </div>
-        ))
-    )}
-    {isNum(members) ? null : active ? (
-      members.includes(me) ? (
+        clients
+          .filter(({ CID }) => members.includes(CID))
+          .map(({ CID, Name }) => (
+            <div key={CID} className="Truncated">
+              {Name}
+            </div>
+          ))
+      )}
+      {isNum(members) ? null : active ? (
+        members.includes(me) ? (
+          <Voter
+            // the `key`s must differ
+            key="succeed"
+            prompt={t8ns[lang].GamePlaying.succeedPrompt}
+            options={[
+              [t8ns[lang].GamePlaying.succeed, true],
+              [t8ns[lang].GamePlaying.fail, false],
+            ]}
+            onVote={Vote => send({ t: "MissionVote", Vote })}
+          />
+        ) : (
+          t8ns[lang].GamePlaying.beingVotedOn
+        )
+      ) : (
         <Voter
           // the `key`s must differ
-          key="succeed"
-          prompt={t8ns[lang].GamePlaying.succeedPrompt}
+          key="occur"
+          prompt={t8ns[lang].GamePlaying.occurPrompt}
           options={[
-            [t8ns[lang].GamePlaying.succeed, true],
-            [t8ns[lang].GamePlaying.fail, false],
+            [t8ns[lang].GamePlaying.occur, true],
+            [t8ns[lang].GamePlaying.notOccur, false],
           ]}
-          onVote={Vote => send({ t: "MissionVote", Vote })}
+          onVote={Vote => send({ t: "MemberVote", Vote })}
         />
-      ) : (
-        t8ns[lang].GamePlaying.beingVotedOn
-      )
-    ) : (
-      <Voter
-        // the `key`s must differ
-        key="occur"
-        prompt={t8ns[lang].GamePlaying.occurPrompt}
-        options={[
-          [t8ns[lang].GamePlaying.occur, true],
-          [t8ns[lang].GamePlaying.notOccur, false],
-        ]}
-        onVote={Vote => send({ t: "MemberVote", Vote })}
-      />
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
+};

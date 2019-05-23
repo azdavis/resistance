@@ -8,10 +8,12 @@ type Props = {
   a: Action;
 };
 
-export default ({ lang, s, a }: Props) => (
-  <div className="Fatal">
-    {t8ns[lang].Fatal.title}
-    {t8ns[lang].Fatal.body}
-    <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
-  </div>
-);
+export default ({ lang, s, a }: Props) => {
+  return (
+    <div className="Fatal">
+      {t8ns[lang].Fatal.title}
+      {t8ns[lang].Fatal.body}
+      <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
+    </div>
+  );
+};

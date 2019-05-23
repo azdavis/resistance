@@ -10,20 +10,22 @@ type Props = {
   lobbies: Array<Lobby>;
 };
 
-export default ({ lang, send, lobbies }: Props) => (
-  <div className="LobbyChoosing">
-    {t8ns[lang].LobbyChoosing.title}
-    <Button
-      value={t8ns[lang].LobbyChoosing.create}
-      onClick={() => send({ t: "LobbyCreate" })}
-    />
-    {t8ns[lang].LobbyChoosing.existing(lobbies.length)}
-    {lobbies.map(({ GID, Leader }) => (
+export default ({ lang, send, lobbies }: Props) => {
+  return (
+    <div className="LobbyChoosing">
+      {t8ns[lang].LobbyChoosing.title}
       <Button
-        key={GID}
-        value={Leader}
-        onClick={() => send({ t: "LobbyChoose", GID })}
+        value={t8ns[lang].LobbyChoosing.create}
+        onClick={() => send({ t: "LobbyCreate" })}
       />
-    ))}
-  </div>
-);
+      {t8ns[lang].LobbyChoosing.existing(lobbies.length)}
+      {lobbies.map(({ GID, Leader }) => (
+        <Button
+          key={GID}
+          value={Leader}
+          onClick={() => send({ t: "LobbyChoose", GID })}
+        />
+      ))}
+    </div>
+  );
+};
