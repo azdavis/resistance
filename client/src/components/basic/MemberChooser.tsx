@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import t8ns from "../../translations";
 import { CID, Client } from "../../shared";
 import { Lang, S } from "../../etc";
-import { submit } from "../../text";
 import Toggle from "./Toggle";
 import Button from "./Button";
 
@@ -33,7 +33,7 @@ export default ({ lang, send, me, clients, members }: Props) => {
       ))}
       <Button
         type="submit"
-        value={submit[lang]}
+        value={t8ns[lang].submit}
         onClick={() => {
           const Members: Array<CID> = [];
           for (let i = 0; i < clients.length; i++) {

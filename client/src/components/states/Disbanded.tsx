@@ -1,6 +1,6 @@
 import React from "react";
+import t8ns from "../../translations";
 import { Lang, D } from "../../etc";
-import { leave } from "../../text";
 import Button from "../basic/Button";
 
 type Props = {
@@ -8,21 +8,10 @@ type Props = {
   d: D;
 };
 
-const text = {
-  title: {
-    en: <h1>Disbanded</h1>,
-    ja: <h1>解散</h1>,
-  },
-  body: {
-    en: <p>The game or lobby you were in was disbanded.</p>,
-    ja: <p>あなたのいたゲームまたはロビーは解散された。</p>,
-  },
-};
-
 export default ({ lang, d }: Props) => (
   <div className="Disbanded">
-    {text.title[lang]}
-    {text.body[lang]}
-    <Button value={leave[lang]} onClick={() => d({ t: "GoLobbies" })} />
+    {t8ns[lang].Disbanded.title}
+    {t8ns[lang].Disbanded.body}
+    <Button value={t8ns[lang].leave} onClick={() => d({ t: "GoLobbies" })} />
   </div>
 );

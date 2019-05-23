@@ -1,7 +1,7 @@
 import React from "react";
+import t8ns from "../../translations";
 import { maxPts } from "../../shared";
 import { Lang } from "../../etc";
-import { resName, spyName } from "../../text";
 import Checkbox from "./Checkbox";
 import "./Scoreboard.css";
 
@@ -23,7 +23,7 @@ export default ({ lang, resPts, spyPts }: Props) => (
           ))}
         </td>
         <td>
-          <b>{resName[lang]}</b>
+          <b>{t8ns[lang].resName}</b>
         </td>
       </tr>
     </tbody>
@@ -34,7 +34,7 @@ export default ({ lang, resPts, spyPts }: Props) => (
         ))}
       </td>
       <td>
-        <b>{spyName[lang]}</b>
+        <b>{t8ns[lang].spyName}</b>
       </td>
     </tr>
   </table>

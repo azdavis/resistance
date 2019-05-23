@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
+import t8ns from "../../translations";
 import { Lang, D, S } from "../../etc";
-import { submit, back } from "../../text";
 import Button from "../basic/Button";
 import TextInput from "../basic/TextInput";
 
@@ -11,23 +11,12 @@ type Props = {
   valid: boolean;
 };
 
-const text = {
-  title: {
-    en: <h1>Player name</h1>,
-    ja: <h1>プレイヤー名</h1>,
-  },
-  invalid: {
-    en: "Invalid",
-    ja: "無効",
-  },
-};
-
 export default ({ lang, d, send, valid }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
   useEffect(() => nameRef.current!.focus(), []);
   return (
     <div className="NameChoosing">
-      {text.title[lang]}
+      {t8ns[lang].NameChoosing.title}
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -35,10 +24,10 @@ export default ({ lang, d, send, valid }: Props) => {
         }}
       >
         <TextInput ref={nameRef} />
-        {valid ? null : text.invalid[lang]}
-        <Button type="submit" value={submit[lang]} />
+        {valid ? null : t8ns[lang].NameChoosing.invalid}
+        <Button type="submit" value={t8ns[lang].submit} />
       </form>
-      <Button value={back[lang]} onClick={() => d({ t: "GoWelcome" })} />
+      <Button value={t8ns[lang].back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };

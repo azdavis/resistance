@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import t8ns from "../../translations";
 import { Lang } from "../../etc";
 import Button from "../basic/Button";
 
@@ -7,24 +8,13 @@ type Props = {
   reconnect: () => void;
 };
 
-const text = {
-  title: {
-    en: <h1>Disconnected</h1>,
-    ja: <h1>接続が切られた</h1>,
-  },
-  reconnect: {
-    en: "Reconnect",
-    ja: "再接続する",
-  },
-};
-
 export default ({ lang, reconnect }: Props) => {
   const [disabled, setDisabled] = useState(false);
   return (
     <div className="Disconnected">
-      {text.title[lang]}
+      {t8ns[lang].Disconnected.title}
       <Button
-        value={text.reconnect[lang]}
+        value={t8ns[lang].Disconnected.reconnect}
         onClick={() => {
           setDisabled(true);
           reconnect();
