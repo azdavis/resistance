@@ -2,6 +2,7 @@ import { minN, maxN, maxPts } from "../shared";
 import fullWidth from "../fullWidth";
 
 export default {
+  code: "ja",
   langName: "日本語",
   resName: "抵抗勢力",
   spyName: "スパイ",

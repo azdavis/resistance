@@ -1,6 +1,7 @@
 import { minN, maxN, maxPts } from "../shared";
 
 export default {
+  code: "en",
   langName: "English",
   resName: "Resistance",
   spyName: "Spies",
