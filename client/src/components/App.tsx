@@ -43,6 +43,7 @@ export default (): JSX.Element | null => {
   const [lang, setLang] = useState<Lang>(defaultLang);
   const [t, setTrans] = useState<Translation | null>(null);
   useEffect(() => {
+    // TODO catch
     import(`../translations/${lang}`).then(res => {
       document.documentElement.lang = lang;
       Storage.setLang(lang);
