@@ -1,7 +1,8 @@
+import { Translation } from "../etc";
 import { minN, maxN, maxPts } from "../shared";
 import fullWidth from "../fullWidth";
 
-const ja = {
+const ja: Translation = {
   code: "ja",
   langName: "日本語",
   resName: "抵抗勢力",

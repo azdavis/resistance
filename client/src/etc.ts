@@ -60,3 +60,73 @@ type StateNoLang =
     };
 
 export type State = { lang: Lang } & StateNoLang;
+
+export type Translation = {
+  code: string;
+  langName: string;
+  resName: string;
+  spyName: string;
+  submit: string;
+  leave: string;
+  back: string;
+  Disbanded: {
+    title: string;
+    body: string;
+  };
+  Disconnected: {
+    title: string;
+    reconnect: string;
+  };
+  Fatal: {
+    title: string;
+    body: string;
+  };
+  GamePlaying: {
+    viewAllegiance: string;
+    captain: (x: string) => string;
+    members: (n: number) => string;
+    beingChosen: string;
+    succeedPrompt: string;
+    succeed: string;
+    fail: string;
+    beingVotedOn: string;
+    occurPrompt: string;
+    occur: string;
+    notOccur: string;
+  };
+  HowTo: {
+    title: string;
+    groupSize: string;
+    groupNames: string;
+    decideWinner: string;
+    captain: string;
+    occurVote: string;
+    noOccur: string;
+    tooManyNoOccur: string;
+    yesOccur: string;
+    succeed: string;
+    fail: string;
+  };
+  LangChoosing: {
+    title: string;
+  };
+  LobbyChoosing: {
+    title: string;
+    create: string;
+    existing: (n: number) => string;
+  };
+  LobbyWaiting: {
+    title: (n: number) => string;
+    start: string;
+  };
+  NameChoosing: {
+    title: string;
+    invalid: string;
+  };
+  Welcome: {
+    play: string;
+    learnHow: string;
+    setLang: string;
+    viewCode: string;
+  };
+};

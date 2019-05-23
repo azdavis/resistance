@@ -1,6 +1,7 @@
+import { Translation } from "../etc";
 import { minN, maxN, maxPts } from "../shared";
 
-const en = {
+const en: Translation = {
   code: "en",
   langName: "English",
   resName: "Resistance",
