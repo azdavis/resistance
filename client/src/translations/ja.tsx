@@ -1,3 +1,4 @@
+import React from "react";
 import { minN, maxN, maxPts } from "../shared";
 import fullWidth from "../fullWidth";
 
