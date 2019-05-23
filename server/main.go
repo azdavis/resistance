@@ -16,7 +16,6 @@ func getPort() string {
 }
 
 func main() {
-	fmt.Println("start")
 	hs := &http.Server{
 		Handler:      NewHub(NewServer().C),
 		Addr:         ":" + getPort(),
