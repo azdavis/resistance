@@ -1,7 +1,7 @@
 import { minN, maxN, maxPts } from "../shared";
 import fullWidth from "../fullWidth";
 
-export default {
+const ja = {
   code: "ja",
   langName: "日本語",
   resName: "抵抗勢力",
@@ -81,3 +81,5 @@ export default {
     viewCode: "コードを見る",
   },
 };
+
+export default ja;

@@ -1,6 +1,6 @@
 import { minN, maxN, maxPts } from "../shared";
 
-export default {
+const en = {
   code: "en",
   langName: "English",
   resName: "Resistance",
@@ -86,3 +86,5 @@ export default {
     viewCode: "View source code",
   },
 };
+
+export default en;
