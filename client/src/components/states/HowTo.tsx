@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default ({ t, d }: Props) => {
-  const { HowTo: HT, back } = t;
+  const HT = t.HowTo;
   return (
     <div className="HowTo">
       <h1>{HT.title}</h1>
@@ -22,7 +22,7 @@ export default ({ t, d }: Props) => {
       <p>{HT.yesOccur}</p>
       <p>{HT.succeed}</p>
       <p>{HT.fail}</p>
-      <Button value={back} onClick={() => d({ t: "GoWelcome" })} />
+      <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };

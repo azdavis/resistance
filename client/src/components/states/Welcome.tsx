@@ -10,10 +10,10 @@ type Props = {
 };
 
 export default ({ t, d, loading }: Props) => {
-  const { Welcome: W, resName } = t;
+  const W = t.Welcome;
   return (
     <div className="Welcome">
-      <h1>{resName}</h1>
+      <h1>{t.resName}</h1>
       <Button
         value={W.play}
         onClick={() => d({ t: "GoNameChoose" })}

@@ -12,7 +12,7 @@ type Props = {
 
 export default ({ t, d, send, valid }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
-  const { NameChoosing: NC, submit, back } = t;
+  const NC = t.NameChoosing;
   useEffect(() => nameRef.current!.focus(), []);
   return (
     <div className="NameChoosing">
@@ -25,9 +25,9 @@ export default ({ t, d, send, valid }: Props) => {
       >
         <TextInput ref={nameRef} />
         {valid ? null : NC.invalid}
-        <Button type="submit" value={submit} />
+        <Button type="submit" value={t.submit} />
       </form>
-      <Button value={back} onClick={() => d({ t: "GoWelcome" })} />
+      <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };

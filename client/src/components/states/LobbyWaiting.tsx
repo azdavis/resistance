@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default ({ t, d, send, me, leader, clients }: Props) => {
-  const { LobbyWaiting: LW, leave } = t;
+  const LW = t.LobbyWaiting;
   return (
     <div className="LobbyWaiting">
       <h1>{LW.title(clients.length)}</h1>
@@ -24,7 +24,7 @@ export default ({ t, d, send, me, leader, clients }: Props) => {
         </div>
       ))}
       <Button
-        value={leave}
+        value={t.leave}
         onClick={() => {
           d({ t: "GoLobbies" });
           send({ t: "LobbyLeave" });

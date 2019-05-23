@@ -8,12 +8,11 @@ type Props = {
 };
 
 export default ({ t, d }: Props) => {
-  const { Disbanded: D, leave } = t;
   return (
     <div className="Disbanded">
-      <h1>{D.title}</h1>
-      <p>{D.body}</p>
-      <Button value={leave} onClick={() => d({ t: "GoLobbies" })} />
+      <h1>{t.Disbanded.title}</h1>
+      <p>{t.Disbanded.body}</p>
+      <Button value={t.leave} onClick={() => d({ t: "GoLobbies" })} />
     </div>
   );
 };

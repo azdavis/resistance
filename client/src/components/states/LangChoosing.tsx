@@ -10,10 +10,9 @@ type Props = {
 };
 
 export default ({ t, d, setLang }: Props) => {
-  const { LangChoosing: LC, back } = t;
   return (
     <div className="LangChoosing">
-      <h1>{LC.title}</h1>
+      <h1>{t.LangChoosing.title}</h1>
       {langs.map(x => (
         <Toggle
           key={x}
@@ -22,7 +21,7 @@ export default ({ t, d, setLang }: Props) => {
           onChange={() => setLang(x)}
         />
       ))}
-      <Button value={back} onClick={() => d({ t: "GoWelcome" })} />
+      <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };
