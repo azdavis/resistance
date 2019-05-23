@@ -65,7 +65,7 @@ export type State =
     };
 
 export type Translation = {
-  code: Lang;
+  lang: Lang;
   resName: string;
   spyName: string;
   submit: string;

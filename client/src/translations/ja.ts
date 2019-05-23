@@ -3,7 +3,7 @@ import { minN, maxN, maxPts } from "../shared";
 import fullWidth from "../fullWidth";
 
 const ja: Translation = {
-  code: "ja",
+  lang: "ja",
   resName: "抵抗勢力",
   spyName: "スパイ",
   submit: "送信する",

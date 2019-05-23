@@ -16,7 +16,7 @@ export default ({ t, d, setLang }: Props) => (
       <Toggle
         key={x}
         value={langNames[x]}
-        checked={t.code === x}
+        checked={t.lang === x}
         onChange={() => setLang(x)}
       />
     ))}

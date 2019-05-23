@@ -2,7 +2,7 @@ import { Translation } from "../etc";
 import { minN, maxN, maxPts } from "../shared";
 
 const en: Translation = {
-  code: "en",
+  lang: "en",
   resName: "Resistance",
   spyName: "Spies",
   submit: "Submit",
