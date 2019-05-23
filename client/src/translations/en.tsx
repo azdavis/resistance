@@ -9,85 +9,62 @@ export default {
   leave: "Leave",
   back: "Back",
   Disbanded: {
-    title: <h1>Disbanded</h1>,
-    body: <p>The game or lobby you were in was disbanded.</p>,
+    title: "Disbanded",
+    body: "The game or lobby you were in was disbanded.",
   },
   Disconnected: {
-    title: <h1>Disconnected</h1>,
+    title: "Disconnected",
     reconnect: "Reconnect",
   },
   Fatal: {
-    title: <h1>Fatal error</h1>,
-    body: <p>An error occurred from which the application cannot recover.</p>,
+    title: "Fatal error",
+    body: "An error occurred from which the application cannot recover.",
   },
   GamePlaying: {
     viewAllegiance: "View allegiance",
-    captain: (x: string) => <div>Captain: {x}</div>,
-    members: (n: number) => <div>Members ({n}):</div>,
-    beingChosen: <div>(being chosen)</div>,
+    captain: (x: string) => `Captain: ${x}`,
+    members: (n: number) => `Members (${n}):`,
+    beingChosen: "(being chosen)",
     succeedPrompt: "Should the mission succeed?",
     succeed: "Succeed",
     fail: "Fail",
-    beingVotedOn: <div>(being voted on)</div>,
+    beingVotedOn: "(being voted on)",
     occurPrompt: "Should the mission occur?",
     occur: "Occur",
     notOccur: "Not occur",
   },
   HowTo: {
-    title: <h1>How to play</h1>,
-    groupSize: (
-      <p>
-        Groups of at least {minN} and at most {maxN} players may play.
-      </p>
-    ),
-    groupNames: (
-      <p>Some players are spies. The rest are members of the resistance.</p>
-    ),
-    decideWinner: (
-      <p>
-        The first of the spies and resistance to get {maxPts} points wins the
-        game.
-      </p>
-    ),
-    captain: (
-      <p>
-        The game is played in rounds. In every round of the game, a captain is
-        chosen. The captain chooses the mission members for this round.
-      </p>
-    ),
-    occurVote: (
-      <p>
-        When the captain has finished choosing, all players vote on whether the
-        mission occurs.
-      </p>
-    ),
-    noOccur: <p>If the mission does not occur, the next round is started.</p>,
-    tooManyNoOccur: (
-      <p>If too many missions do not occur in a row, the spies get 1 point.</p>
-    ),
-    yesOccur: (
-      <p>
-        If the mission does occur, the members of the mission vote on whether
-        the mission succeeds.
-      </p>
-    ),
-    succeed: <p>If the mission succeeds, the resistance gets 1 point.</p>,
-    fail: <p>If the mission fails, the spies get 1 point.</p>,
+    title: "How to play",
+    groupSize: `Groups of at least ${minN} and at most ${maxN} players may play.`,
+    groupNames:
+      "Some players are spies. The rest are members of the resistance.",
+    decideWinner: `The first of the spies and resistance to get ${maxPts} points wins the game.`,
+    captain:
+      "The game is played in rounds. In every round of the game, a captain is chosen. The captain chooses the mission members for this round.",
+    occurVote:
+      "When the captain has finished choosing, all players vote on whether the mission occurs.",
+    noOccur: "If the mission does not occur, the next round is started.",
+    tooManyNoOccur:
+      "If too many missions do not occur in a row, the spies get 1 point.",
+    yesOccur:
+      "If the mission does occur, the members of the mission vote on whether the mission succeeds.",
+    succeed: "If the mission succeeds, the resistance gets 1 point.",
+    fail: "If the mission fails, the spies get 1 point.",
   },
   LangChoosing: {
-    title: <h1>Set language</h1>,
+    title: "Set language",
   },
   LobbyChoosing: {
-    title: <h1>Lobbies</h1>,
+    title: "Lobbies",
     create: "Create new",
-    existing: (n: number) => <h2>Existing lobbies ({n})</h2>,
+    existing: (n: number) => `Existing lobbies (${n})`,
   },
   LobbyWaiting: {
-    title: (n: number) => <h1>Lobby ({n})</h1>,
+    title: (n: number) => `Lobby (${n})`,
     start: "Start",
   },
   NameChoosing: {
-    title: <h1>Player name</h1>,
+    title: "Player name",
     invalid: "Invalid",
   },
   Welcome: {

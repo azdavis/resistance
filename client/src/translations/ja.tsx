@@ -10,75 +10,64 @@ export default {
   leave: "去る",
   back: "戻る",
   Disbanded: {
-    title: <h1>解散</h1>,
-    body: <p>あなたのいたゲームまたはロビーは解散された。</p>,
+    title: "解散",
+    body: "あなたのいたゲームまたはロビーは解散された。",
   },
   Disconnected: {
-    title: <h1>接続が切られた</h1>,
+    title: "接続が切られた",
     reconnect: "再接続する",
   },
   Fatal: {
-    title: <h1>致命的謝り</h1>,
-    body: <p>アプリが復活できぬ謝りが起きた。</p>,
+    title: "致命的謝り",
+    body: "アプリが復活できぬ謝りが起きた。",
   },
   GamePlaying: {
     viewAllegiance: "忠誠を見る",
-    captain: (x: string) => <div>主将：{x}</div>,
-    members: (n: number) => <div>使命員（{fullWidth(n)}）：</div>,
-    beingChosen: <div>（選択中）</div>,
+    captain: (x: string) => `主将：${x}`,
+    members: (n: number) => `使命員（${fullWidth(n)}）：`,
+    beingChosen: "（選択中）",
     succeedPrompt: "使命は成功するか？",
     succeed: "成功",
     fail: "失敗",
-    beingVotedOn: <div>（投票中）</div>,
+    beingVotedOn: "（投票中）",
     occurPrompt: "使命は起こるか？",
     occur: "起こる",
     notOccur: "起こらない",
   },
   HowTo: {
-    title: <h1>遊び方</h1>,
-    groupSize: (
-      <p>
-        最低{fullWidth(minN)}人、最高{fullWidth(maxN)}人のグループは遊べる。
-      </p>
-    ),
-    groupNames: <p>あるプレイヤーはスパイ。他のプレイヤーは抵抗勢力員。</p>,
-    decideWinner: (
-      <p>
-        スパイと抵抗勢力のどちらかが先に{fullWidth(maxPts)}点を取る方が勝利。
-      </p>
-    ),
-    captain: (
-      <p>
-        ゲームはラウンドで行う。ラウンドごとに、主将は選ばれる。主将はラウンドの使命員を選ぶ。
-      </p>
-    ),
-    occurVote: (
-      <p>
-        主将が選び終わった際、プレイヤー全員が使命が起こるかどうか投票する。
-      </p>
-    ),
-    noOccur: <p>使命が起こらなければ、次のラウンドが始まる。</p>,
-    tooManyNoOccur: (
-      <p>あまりにも多くの使命が連続して起こらなければ、スパイが１点を取る。</p>
-    ),
-    yesOccur: <p>使命が起これば、使命員が成功するかどうか投票する。</p>,
-    succeed: <p>使命が成功すれば、抵抗勢力が１点を取る。</p>,
-    fail: <p>使命が失敗すれば、スパイが１点を取る。</p>,
+    title: "遊び方",
+    groupSize: `最低${fullWidth(minN)}人、最高${fullWidth(
+      maxN,
+    )}人のグループは遊べる。`,
+    groupNames: "あるプレイヤーはスパイ。他のプレイヤーは抵抗勢力員。",
+    decideWinner: `スパイと抵抗勢力のどちらかが先に${fullWidth(
+      maxPts,
+    )}点を取る方が勝利。`,
+    captain:
+      "ゲームはラウンドで行う。ラウンドごとに、主将は選ばれる。主将はラウンドの使命員を選ぶ。",
+    occurVote:
+      "主将が選び終わった際、プレイヤー全員が使命が起こるかどうか投票する。",
+    noOccur: "使命が起こらなければ、次のラウンドが始まる。",
+    tooManyNoOccur:
+      "あまりにも多くの使命が連続して起こらなければ、スパイが１点を取る。",
+    yesOccur: "使命が起これば、使命員が成功するかどうか投票する。",
+    succeed: "使命が成功すれば、抵抗勢力が１点を取る。",
+    fail: "使命が失敗すれば、スパイが１点を取る。",
   },
   LangChoosing: {
-    title: <h1>言語の設定</h1>,
+    title: "言語の設定",
   },
   LobbyChoosing: {
-    title: <h1>ロビー</h1>,
+    title: "ロビー",
     create: "新たなのを作成する",
-    existing: (n: number) => <h2>存在するロビー（{fullWidth(n)}）</h2>,
+    existing: (n: number) => `存在するロビー（${fullWidth(n)}）`,
   },
   LobbyWaiting: {
-    title: (n: number) => <h1>ロビー（{fullWidth(n)}）</h1>,
+    title: (n: number) => `ロビー（${fullWidth(n)}）`,
     start: "始める",
   },
   NameChoosing: {
-    title: <h1>プレイヤー名</h1>,
+    title: "プレイヤー名",
     invalid: "無効",
   },
   Welcome: {

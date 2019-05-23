@@ -12,17 +12,17 @@ export default ({ lang, d }: Props) => {
   const { HowTo: t8n, back } = t8ns[lang];
   return (
     <div className="HowTo">
-      {t8n.title}
-      {t8n.groupSize}
-      {t8n.groupNames}
-      {t8n.decideWinner}
-      {t8n.captain}
-      {t8n.occurVote}
-      {t8n.noOccur}
-      {t8n.tooManyNoOccur}
-      {t8n.yesOccur}
-      {t8n.succeed}
-      {t8n.fail}
+      <h1>{t8n.title}</h1>
+      <p>{t8n.groupSize}</p>
+      <p>{t8n.groupNames}</p>
+      <p>{t8n.decideWinner}</p>
+      <p>{t8n.captain}</p>
+      <p>{t8n.occurVote}</p>
+      <p>{t8n.noOccur}</p>
+      <p>{t8n.tooManyNoOccur}</p>
+      <p>{t8n.yesOccur}</p>
+      <p>{t8n.succeed}</p>
+      <p>{t8n.fail}</p>
       <Button value={back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );

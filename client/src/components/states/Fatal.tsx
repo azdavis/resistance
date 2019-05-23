@@ -12,8 +12,8 @@ export default ({ lang, s, a }: Props) => {
   const t8n = t8ns[lang].Fatal;
   return (
     <div className="Fatal">
-      {t8n.title}
-      {t8n.body}
+      <h1>{t8n.title}</h1>
+      <p>{t8n.body}</p>
       <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
     </div>
   );

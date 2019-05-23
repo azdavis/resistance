@@ -13,7 +13,7 @@ export default ({ lang, d }: Props) => {
   const { LangChoosing: t8n, back } = t8ns[lang];
   return (
     <div className="LangChoosing">
-      {t8n.title}
+      <h1>{t8n.title}</h1>
       {langs.map(x => (
         <Toggle
           key={x}

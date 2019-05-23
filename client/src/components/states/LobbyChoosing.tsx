@@ -14,9 +14,9 @@ export default ({ lang, send, lobbies }: Props) => {
   const t8n = t8ns[lang].LobbyChoosing;
   return (
     <div className="LobbyChoosing">
-      {t8n.title}
+      <h1>{t8n.title}</h1>
       <Button value={t8n.create} onClick={() => send({ t: "LobbyCreate" })} />
-      {t8n.existing(lobbies.length)}
+      <h2>{t8n.existing(lobbies.length)}</h2>
       {lobbies.map(({ GID, Leader }) => (
         <Button
           key={GID}

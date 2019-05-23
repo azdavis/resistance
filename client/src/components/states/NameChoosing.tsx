@@ -17,7 +17,7 @@ export default ({ lang, d, send, valid }: Props) => {
   useEffect(() => nameRef.current!.focus(), []);
   return (
     <div className="NameChoosing">
-      {t8n.title}
+      <h1>{t8n.title}</h1>
       <form
         onSubmit={e => {
           e.preventDefault();

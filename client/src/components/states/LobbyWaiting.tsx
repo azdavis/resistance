@@ -18,7 +18,7 @@ export default ({ lang, d, send, me, leader, clients }: Props) => {
   const { LobbyWaiting: t8n, leave } = t8ns[lang];
   return (
     <div className="LobbyWaiting">
-      {t8n.title(clients.length)}
+      <h1>{t8n.title(clients.length)}</h1>
       {clients.map(({ CID, Name }) => (
         <div className="Truncated" key={CID}>
           {Name}

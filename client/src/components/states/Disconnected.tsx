@@ -13,7 +13,7 @@ export default ({ lang, reconnect }: Props) => {
   const [disabled, setDisabled] = useState(false);
   return (
     <div className="Disconnected">
-      {t8n.title}
+      <h1>{t8n.title}</h1>
       <Button
         value={t8n.reconnect}
         onClick={() => {

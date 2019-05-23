@@ -43,8 +43,8 @@ export default ({
         view={t8n.viewAllegiance}
         spoil={isSpy ? t8ns[lang].spyName : t8ns[lang].resName}
       />
-      {t8n.captain(clients.find(({ CID }) => CID === captain)!.Name)}
-      {t8n.members(isNum(members) ? members : members.length)}
+      <div>{t8n.captain(clients.find(({ CID }) => CID === captain)!.Name)}</div>
+      <div>{t8n.members(isNum(members) ? members : members.length)}</div>
       {isNum(members) ? (
         me === captain ? (
           <MemberChooser {...{ lang, send, me, clients, members }} />
