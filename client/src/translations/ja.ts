@@ -11,6 +11,7 @@ const ja: Translation = {
   back: "戻る",
   Disbanded: {
     title: "解散",
+    // spellchecker: disable-next-line
     body: "あなたのいたゲームまたはロビーは解散された。",
   },
   Disconnected: {
