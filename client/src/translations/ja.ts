@@ -17,9 +17,9 @@ const ja: Translation = {
     title: "接続が切られた",
     reconnect: "再接続する",
   },
-  Fatal: {
-    title: "致命的謝り",
-    body: "アプリが復活できぬ謝りが起きた。",
+  Invalid: {
+    title: "無効",
+    body: "無効な状態の推移が起きた。",
   },
   GamePlaying: {
     viewAllegiance: "忠誠を見る",

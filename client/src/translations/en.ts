@@ -16,9 +16,9 @@ const en: Translation = {
     title: "Disconnected",
     reconnect: "Reconnect",
   },
-  Fatal: {
-    title: "Fatal error",
-    body: "An error occurred from which the application cannot recover.",
+  Invalid: {
+    title: "Invalid",
+    body: "An invalid state transition occurred.",
   },
   GamePlaying: {
     viewAllegiance: "View allegiance",

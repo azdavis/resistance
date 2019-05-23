@@ -3,7 +3,7 @@ import { S, Lang, Translation } from "../etc";
 import { reducer, init } from "../state";
 import Storage from "../storage";
 import useTriggerEffect from "../hooks/useTriggerEffect";
-import Fatal from "./states/Fatal";
+import Invalid from "./states/Invalid";
 import Disconnected from "./states/Disconnected";
 import Disbanded from "./states/Disbanded";
 import Welcome from "./states/Welcome";
@@ -54,8 +54,8 @@ export default (): JSX.Element | null => {
     return null;
   }
   switch (s.t) {
-    case "Fatal":
-      return <Fatal t={t} s={s.s} a={s.a} />;
+    case "Invalid":
+      return <Invalid t={t} s={s.s} a={s.a} />;
     case "Disconnected":
       return <Disconnected t={t} reconnect={reconnect} />;
     case "Disbanded":

@@ -22,7 +22,7 @@ export type Action = SelfAction | ToClient;
 export type D = Dispatch<Action>;
 
 export type State =
-  | { t: "Fatal"; s: State; a: Action }
+  | { t: "Invalid"; s: State; a: Action }
   | {
       t: "Disconnected";
       me: CID;
@@ -77,7 +77,7 @@ export type Translation = {
     title: string;
     reconnect: string;
   };
-  Fatal: {
+  Invalid: {
     title: string;
     body: string;
   };
