@@ -1,7 +1,7 @@
 import React, { useReducer, useState, useEffect } from "react";
 import { S } from "../etc";
 import { reducer, init } from "../state";
-import { setLang } from "../storage";
+import Storage from "../storage";
 import useTriggerEffect from "../hooks/useTriggerEffect";
 import Fatal from "./states/Fatal";
 import Disconnected from "./states/Disconnected";
@@ -40,7 +40,7 @@ export default (): JSX.Element => {
   }, []);
   useEffect(() => {
     document.documentElement.lang = s.lang;
-    setLang(s.lang);
+    Storage.setLang(s.lang);
   }, [s.lang]);
   switch (s.t) {
     case "Fatal":

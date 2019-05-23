@@ -1,10 +1,10 @@
 import { Reducer } from "react";
 import { CID, GID, Client, CurrentGame } from "./shared";
 import { State, Action, Lang } from "./etc";
-import { getLang } from "./storage";
+import Storage from "./storage";
 
 export const init: State = {
-  lang: getLang() || "en",
+  lang: Storage.getLang() || "en",
   t: "Welcome",
   me: 0,
 };
