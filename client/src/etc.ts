@@ -12,6 +12,7 @@ export const langNames: { [L in Lang]: string } = {
 
 type SelfAction =
   | { t: "Close" }
+  | { t: "GoSetLangFail"; msg: string }
   | { t: "GoLobbies" }
   | { t: "GoWelcome" }
   | { t: "GoNameChoose" }
@@ -23,6 +24,7 @@ export type D = Dispatch<Action>;
 
 export type State =
   | { t: "Invalid"; s: State; a: Action }
+  | { t: "SetLangFail"; msg: string }
   | {
       t: "Disconnected";
       me: CID;

@@ -4,6 +4,7 @@ import { reducer, init } from "../state";
 import Storage from "../storage";
 import useTriggerEffect from "../hooks/useTriggerEffect";
 import Invalid from "./states/Invalid";
+import SetLangFail from "./states/SetLangFail";
 import Disconnected from "./states/Disconnected";
 import Disbanded from "./states/Disbanded";
 import Welcome from "./states/Welcome";
@@ -43,13 +44,17 @@ export default (): JSX.Element | null => {
   const [lang, setLang] = useState<Lang>(defaultLang);
   const [t, setTrans] = useState<Translation | null>(null);
   useEffect(() => {
-    // TODO catch
-    import(`../translations/${lang}`).then(res => {
-      document.documentElement.lang = lang;
-      Storage.setLang(lang);
-      setTrans(res.default);
-    });
+    import(`../translations/${lang}`)
+      .then(res => {
+        document.documentElement.lang = lang;
+        Storage.setLang(lang);
+        setTrans(res.default);
+      })
+      .catch(e => d({ t: "GoSetLangFail", msg: String(e.message || e) }));
   }, [lang]);
+  if (s.t === "SetLangFail") {
+    return <SetLangFail msg={s.msg} />;
+  }
   if (t === null) {
     return null;
   }
