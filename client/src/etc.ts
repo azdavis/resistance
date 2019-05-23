@@ -1,14 +1,14 @@
 import { Dispatch } from "react";
 import { CID, GID, Client, Lobby, ToServer, ToClient } from "./shared";
 
-export type S = Dispatch<ToServer>;
-
 export type Lang = "en" | "ja";
 export const langs: Array<Lang> = ["en", "ja"];
 export const langNames: { [L in Lang]: string } = {
   en: "English",
   ja: "日本語",
 };
+
+export type S = Dispatch<ToServer>;
 
 type SelfAction =
   | { t: "Close" }
