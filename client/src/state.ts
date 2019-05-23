@@ -33,7 +33,6 @@ export const reducer: Reducer<State, Action> = (s, a) => {
     case "Close":
       return {
         t: "Disconnected",
-
         me: s.me,
         game: s.t === "GamePlaying" ? { gid: s.gid, clients: s.clients } : null,
       };
@@ -100,7 +99,6 @@ export const reducer: Reducer<State, Action> = (s, a) => {
       return s.t === "GamePlaying"
         ? {
             t: "GameEnded",
-
             me: s.me,
             resPts: a.ResPts,
             spyPts: a.SpyPts,
