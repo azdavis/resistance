@@ -67,6 +67,11 @@ export default {
     title: <h1>言語の設定</h1>,
     langNames: "日本語",
   },
+  LobbyChoosing: {
+    title: <h1>ロビー</h1>,
+    create: "新たなのを作成する",
+    existing: (n: number) => <h2>存在するロビー（{fullWidth(n)}）</h2>,
+  },
   LobbyWaiting: {
     title: (n: number) => <h1>ロビー（{fullWidth(n)}）</h1>,
     start: "始める",

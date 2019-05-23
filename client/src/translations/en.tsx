@@ -76,6 +76,11 @@ export default {
     title: <h1>Set language</h1>,
     langNames: "English",
   },
+  LobbyChoosing: {
+    title: <h1>Lobbies</h1>,
+    create: "Create new",
+    existing: (n: number) => <h2>Existing lobbies ({n})</h2>,
+  },
   LobbyWaiting: {
     title: (n: number) => <h1>Lobby ({n})</h1>,
     start: "Start",
