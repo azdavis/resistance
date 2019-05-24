@@ -23,7 +23,7 @@ const mkGamePlaying = (
 });
 
 export const reducer: Reducer<State, Action> = (s, a) => {
-  if (s.t === "Invalid" || s.t === "SetLangFail") {
+  if (s.t === "Invalid" || s.t === "LangChooseFail") {
     return s;
   }
   switch (a.t) {
@@ -33,8 +33,8 @@ export const reducer: Reducer<State, Action> = (s, a) => {
         me: s.me,
         game: s.t === "GamePlaying" ? { gid: s.gid, clients: s.clients } : null,
       };
-    case "GoSetLangFail":
-      return { t: "SetLangFail", msg: a.msg };
+    case "GoLangChooseFail":
+      return { t: "LangChooseFail", msg: a.msg };
     case "SetMe":
       return s.t === "Welcome" || s.t === "Disconnected"
         ? { t: "Welcome", me: a.Me }

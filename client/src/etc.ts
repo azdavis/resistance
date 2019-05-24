@@ -5,7 +5,7 @@ export type S = Dispatch<ToServer>;
 
 type SelfAction =
   | { t: "Close" }
-  | { t: "GoSetLangFail"; msg: string }
+  | { t: "GoLangChooseFail"; msg: string }
   | { t: "GoLobbies" }
   | { t: "GoWelcome" }
   | { t: "GoNameChoose" }
@@ -17,7 +17,7 @@ export type D = Dispatch<Action>;
 
 export type State =
   | { t: "Invalid"; s: State; a: Action }
-  | { t: "SetLangFail"; msg: string }
+  | { t: "LangChooseFail"; msg: string }
   | {
       t: "Disconnected";
       me: CID;
