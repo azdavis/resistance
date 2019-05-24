@@ -18,8 +18,8 @@ export default ({ t, d }: Props) => (
     <p>{t.noOccur}</p>
     <p>{t.tooManyNoOccur}</p>
     <p>{t.yesOccur}</p>
-    <p>{t.succeed}</p>
-    <p>{t.fail}</p>
+    <p>{t.succeedPt}</p>
+    <p>{t.failPt}</p>
     <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
   </div>
 );
