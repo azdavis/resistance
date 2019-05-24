@@ -24,8 +24,8 @@ const ja: Translation = {
   },
   GamePlaying: {
     viewAllegiance: "忠誠を見る",
-    captain: (x: string) => `主将：${x}`,
-    members: (n: number) => `使命員（${fullWidth(n)}）：`,
+    captain: x => `主将：${x}`,
+    members: n => `使命員（${fullWidth(n)}）：`,
     beingChosen: "（選択中）",
     succeedPrompt: "使命は成功するか？",
     succeed: "成功",
@@ -65,10 +65,10 @@ const ja: Translation = {
   LobbyChoosing: {
     title: "ロビー",
     create: "新たなのを作成する",
-    existing: (n: number) => `存在するロビー（${fullWidth(n)}）`,
+    existing: n => `存在するロビー（${fullWidth(n)}）`,
   },
   LobbyWaiting: {
-    title: (n: number) => `ロビー（${fullWidth(n)}）`,
+    title: n => `ロビー（${fullWidth(n)}）`,
     start: "始める",
   },
   NameChoosing: {

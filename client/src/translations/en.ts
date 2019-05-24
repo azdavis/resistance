@@ -22,8 +22,8 @@ const en: Translation = {
   },
   GamePlaying: {
     viewAllegiance: "View allegiance",
-    captain: (x: string) => `Captain: ${x}`,
-    members: (n: number) => `Members (${n}):`,
+    captain: x => `Captain: ${x}`,
+    members: n => `Members (${n}):`,
     beingChosen: "(being chosen)",
     succeedPrompt: "Should the mission succeed?",
     succeed: "Succeed",
@@ -69,10 +69,10 @@ const en: Translation = {
   LobbyChoosing: {
     title: "Lobbies",
     create: "Create new",
-    existing: (n: number) => `Existing lobbies (${n})`,
+    existing: n => `Existing lobbies (${n})`,
   },
   LobbyWaiting: {
-    title: (n: number) => `Lobby (${n})`,
+    title: n => `Lobby (${n})`,
     start: "Start",
   },
   NameChoosing: {
