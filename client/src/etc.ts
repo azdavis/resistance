@@ -58,11 +58,10 @@ export type State =
     };
 
 export type Lang = "en" | "ja";
-export const langs: Array<Lang> = ["en", "ja"];
-export const langNames: { [L in Lang]: string } = {
-  en: "English",
-  ja: "日本語",
-};
+export const langs: Array<[Lang, string]> = [
+  ["en", "English"],
+  ["ja", "日本語"],
+];
 
 export type Translation = {
   lang: Lang;

@@ -1,5 +1,5 @@
 import React from "react";
-import { D, Translation, Lang, langs, langNames } from "../../etc";
+import { D, Translation, Lang, langs } from "../../etc";
 import Button from "../basic/Button";
 import Toggle from "../basic/Toggle";
 
@@ -12,12 +12,12 @@ type Props = {
 export default ({ t, d, setLang }: Props) => (
   <div className="LangChoosing">
     <h1>{t.setLang}</h1>
-    {langs.map(x => (
+    {langs.map(([k, v]) => (
       <Toggle
-        key={x}
-        value={langNames[x]}
-        checked={t.lang === x}
-        onChange={() => setLang(x)}
+        key={k}
+        value={v}
+        checked={t.lang === k}
+        onChange={() => setLang(k)}
       />
     ))}
     <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
