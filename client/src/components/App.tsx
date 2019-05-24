@@ -41,7 +41,7 @@ export default (): JSX.Element | null => {
     ws.onclose = () => d({ t: "Close" });
     return ws.close.bind(ws);
   }, []);
-  const [lang, setLang] = useState<Lang>(defaultLang);
+  const [lang, setLang] = useState(defaultLang);
   const [t, setTrans] = useState<Translation | null>(null);
   useEffect(() => {
     import(`../translations/${lang}`)
