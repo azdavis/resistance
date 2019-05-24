@@ -9,19 +9,17 @@ type Props = {
   lobbies: Array<Lobby>;
 };
 
-export default ({ t, send, lobbies }: Props) => {
-  return (
-    <div className="LobbyChoosing">
-      <h1>{t.lobbies}</h1>
-      <Button value={t.createNew} onClick={() => send({ t: "LobbyCreate" })} />
-      <h2>{t.existingLobbies(lobbies.length)}</h2>
-      {lobbies.map(({ GID, Leader }) => (
-        <Button
-          key={GID}
-          value={Leader}
-          onClick={() => send({ t: "LobbyChoose", GID })}
-        />
-      ))}
-    </div>
-  );
-};
+export default ({ t, send, lobbies }: Props) => (
+  <div className="LobbyChoosing">
+    <h1>{t.lobbies}</h1>
+    <Button value={t.createNew} onClick={() => send({ t: "LobbyCreate" })} />
+    <h2>{t.existingLobbies(lobbies.length)}</h2>
+    {lobbies.map(({ GID, Leader }) => (
+      <Button
+        key={GID}
+        value={Leader}
+        onClick={() => send({ t: "LobbyChoose", GID })}
+      />
+    ))}
+  </div>
+);

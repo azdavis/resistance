@@ -9,21 +9,19 @@ type Props = {
   loading: boolean;
 };
 
-export default ({ t, d, loading }: Props) => {
-  return (
-    <div className="Welcome">
-      <h1>{t.resName}</h1>
-      <Button
-        value={t.play}
-        onClick={() => d({ t: "GoNameChoose" })}
-        disabled={loading}
-      />
-      <Button value={t.learnHow} onClick={() => d({ t: "GoHowTo" })} />
-      <Button value={t.setLang} onClick={() => d({ t: "GoLangChoose" })} />
-      <ButtonLink
-        value={t.viewCode}
-        href="https://github.com/azdavis/resistance"
-      />
-    </div>
-  );
-};
+export default ({ t, d, loading }: Props) => (
+  <div className="Welcome">
+    <h1>{t.resName}</h1>
+    <Button
+      value={t.play}
+      onClick={() => d({ t: "GoNameChoose" })}
+      disabled={loading}
+    />
+    <Button value={t.learnHow} onClick={() => d({ t: "GoHowTo" })} />
+    <Button value={t.setLang} onClick={() => d({ t: "GoLangChoose" })} />
+    <ButtonLink
+      value={t.viewCode}
+      href="https://github.com/azdavis/resistance"
+    />
+  </div>
+);

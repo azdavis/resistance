@@ -7,12 +7,10 @@ type Props = {
   d: D;
 };
 
-export default ({ t, d }: Props) => {
-  return (
-    <div className="Disbanded">
-      <h1>{t.disbanded}</h1>
-      <p>{t.disbandedGameOrLobby}</p>
-      <Button value={t.leave} onClick={() => d({ t: "GoLobbies" })} />
-    </div>
-  );
-};
+export default ({ t, d }: Props) => (
+  <div className="Disbanded">
+    <h1>{t.disbanded}</h1>
+    <p>{t.disbandedGameOrLobby}</p>
+    <Button value={t.leave} onClick={() => d({ t: "GoLobbies" })} />
+  </div>
+);

@@ -7,21 +7,19 @@ type Props = {
   d: D;
 };
 
-export default ({ t, d }: Props) => {
-  return (
-    <div className="HowTo">
-      <h1>{t.howToPlay}</h1>
-      <p>{t.groupSize}</p>
-      <p>{t.groupNames}</p>
-      <p>{t.decideWinner}</p>
-      <p>{t.captain}</p>
-      <p>{t.occurVote}</p>
-      <p>{t.noOccur}</p>
-      <p>{t.tooManyNoOccur}</p>
-      <p>{t.yesOccur}</p>
-      <p>{t.succeed}</p>
-      <p>{t.fail}</p>
-      <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
-    </div>
-  );
-};
+export default ({ t, d }: Props) => (
+  <div className="HowTo">
+    <h1>{t.howToPlay}</h1>
+    <p>{t.groupSize}</p>
+    <p>{t.groupNames}</p>
+    <p>{t.decideWinner}</p>
+    <p>{t.captain}</p>
+    <p>{t.occurVote}</p>
+    <p>{t.noOccur}</p>
+    <p>{t.tooManyNoOccur}</p>
+    <p>{t.yesOccur}</p>
+    <p>{t.succeed}</p>
+    <p>{t.fail}</p>
+    <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
+  </div>
+);
