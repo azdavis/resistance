@@ -50,7 +50,6 @@ func NewGame(
 	return Game{rxLobbyMap}
 }
 
-// TODO improve numbers for mission size / fails required to fail mission?
 func runGame(
 	gid GID,
 	clients *ClientMap,
@@ -103,7 +102,7 @@ func runGame(
 	// invariant: 0 := skip <= MaxSkip.
 	skip := 0
 
-	// nMission returns the number of clients on this mission.
+	// nMission returns the number of clients on this mission. TODO improve
 	nMission := func() int {
 		const m = 5
 		return len(cids) / m
