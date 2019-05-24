@@ -13,14 +13,16 @@ type Props = {
   clients: Array<Client>;
 };
 
+const mkName = ({ CID, Name }: Client) => (
+  <div className="Truncated" key={CID}>
+    {Name}
+  </div>
+);
+
 export default ({ t, d, send, me, leader, clients }: Props) => (
   <div className="LobbyWaiting">
     <h1>{t.lobbyWaiting(clients.length)}</h1>
-    {clients.map(({ CID, Name }) => (
-      <div className="Truncated" key={CID}>
-        {Name}
-      </div>
-    ))}
+    {clients.map(mkName)}
     <Button
       value={t.leave}
       onClick={() => {
