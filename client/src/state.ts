@@ -2,10 +2,7 @@ import { Reducer } from "react";
 import { CID, GID, Client, CurrentGame } from "./shared";
 import { State, Action } from "./etc";
 
-export const init: State = {
-  t: "Welcome",
-  me: 0,
-};
+export const init: State = { t: "Welcome", me: 0 };
 
 const mkGamePlaying = (
   me: CID,
