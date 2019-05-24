@@ -34,7 +34,7 @@ const ja: Translation = {
     "人、最高" +
     fullWidth(maxN) +
     "人のグループは遊べる。",
-  groupNames: "あるプレイヤーはスパイ。他のプレイヤーは抵抗勢力員。",
+  groupNames: "あるプレイヤーはスパイ。他のプレイヤーは抵抗勢力。",
   decideWinner:
     "スパイと抵抗勢力のどちらかが先に" +
     fullWidth(maxPts) +
