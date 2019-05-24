@@ -1,3 +1,5 @@
+// spellchecker: disable
+
 import { Translation } from "../etc";
 import { minN, maxN, maxPts } from "../shared";
 import fullWidth from "../fullWidth";
@@ -10,7 +12,6 @@ const ja: Translation = {
   leave: "去る",
   back: "戻る",
   disbanded: "解散",
-  // spellchecker: disable-next-line
   disbandedGameOrLobby: "あなたのいたゲームまたはロビーは解散された。",
   disconnected: "接続が切られた",
   reconnect: "再接続する",
