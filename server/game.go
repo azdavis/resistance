@@ -70,12 +70,6 @@ func runGame(
 	// len(cids)/s clients will be spies.
 	const s = 4
 
-	// number of clients on this mission.
-	nMission := func() int {
-		const m = 5
-		return len(cids) / m
-	}
-
 	// invariant: isSpy[cid] <=> the client with CID cid is a spy.
 	isSpy := make(map[CID]bool, len(cids))
 	for i := len(cids) / s; i > 0; /* intentionally empty */ {
@@ -108,6 +102,12 @@ func runGame(
 
 	// invariant: 0 := skip <= MaxSkip.
 	skip := 0
+
+	// number of clients on this mission.
+	nMission := func() int {
+		const m = 5
+		return len(cids) / m
+	}
 
 	newMemberChoosing := func() {
 		state = memberChoosing
