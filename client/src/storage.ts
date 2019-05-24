@@ -9,5 +9,7 @@ export default {
       ? (x as Lang)
       : null;
   },
-  setLang: (x: Lang) => localStorage.setItem(langKey, x),
+  setLang: (x: Lang) => {
+    localStorage.setItem(langKey, x);
+  },
 };
