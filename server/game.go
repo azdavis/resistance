@@ -9,6 +9,11 @@ type Game struct {
 	tx chan<- CIDClient // from runLobbyMap to this
 }
 
+type nMembers struct {
+	total  int
+	resWin int
+}
+
 type state uint
 
 const (
@@ -103,10 +108,13 @@ func runGame(
 	// invariant: 0 := skip <= MaxSkip.
 	skip := 0
 
-	// nMission returns the number of clients on this mission. TODO improve
-	nMission := func() int {
+	// getNMembers returns the number of clients on this mission, and the number
+	// of clients required to vote to pass the mission for this mission to pass.
+	// TODO improve
+	getNMembers := func() nMembers {
 		const m = 5
-		return len(cids) / m
+		ret := len(cids) / m
+		return nMembers{ret, (ret / 2) + 1}
 	}
 
 	// newMemberChoosing moves the state into memberChoosing and update the
@@ -129,7 +137,7 @@ func runGame(
 			ResPts:     resPts,
 			SpyPts:     spyPts,
 			Captain:    cids[captain],
-			NumMembers: nMission(),
+			NumMembers: getNMembers().total,
 			Members:    members,
 			Active:     state == missionVoting,
 		}
@@ -175,7 +183,7 @@ func runGame(
 			case MemberChoose:
 				if state != memberChoosing ||
 					cid != cids[captain] ||
-					len(ts.Members) != nMission() {
+					len(ts.Members) != getNMembers().total {
 					continue
 				}
 				state = memberVoting
@@ -219,10 +227,10 @@ func runGame(
 					continue
 				}
 				votes[cid] = ts.Vote
-				if len(votes) != nMission() {
+				if len(votes) != getNMembers().total {
 					continue
 				}
-				success := numTrue(votes) > nMission()/2
+				success := numTrue(votes) >= getNMembers().resWin
 				if success {
 					resPts++
 				} else {
