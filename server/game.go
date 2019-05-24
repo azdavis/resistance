@@ -60,7 +60,8 @@ func runGame(
 ) {
 	// whenever sending on tx, must also select on rx and q to prevent deadlock.
 
-	// all the cids, in a stable order.
+	// all the cids, in a stable order. even if a client disconnects/reconnects,
+	// this remains unchanged.
 	cids := make([]CID, 0, len(clients.M))
 	for cid := range clients.M {
 		cids = append(cids, cid)
