@@ -70,9 +70,11 @@ func runGame(
 	// len(cids)/s clients will be spies.
 	const s = 4
 
-	// len(cids)/m clients each round will be part of a mission.
-	const m = 5
-	nMission := len(cids) / m
+	// number of clients on this mission.
+	nMission := func() int {
+		const m = 5
+		return len(cids) / m
+	}
 
 	// invariant: isSpy[cid] <=> the client with CID cid is a spy.
 	isSpy := make(map[CID]bool, len(cids))
@@ -123,7 +125,7 @@ func runGame(
 			ResPts:     resPts,
 			SpyPts:     spyPts,
 			Captain:    cids[captain],
-			NumMembers: nMission,
+			NumMembers: nMission(),
 			Members:    members,
 			Active:     state == missionVoting,
 		}
@@ -166,7 +168,7 @@ func runGame(
 			case MemberChoose:
 				if state != memberChoosing ||
 					cid != cids[captain] ||
-					len(ts.Members) != nMission {
+					len(ts.Members) != nMission() {
 					continue
 				}
 				state = memberVoting
@@ -210,10 +212,10 @@ func runGame(
 					continue
 				}
 				votes[cid] = ts.Vote
-				if len(votes) != nMission {
+				if len(votes) != nMission() {
 					continue
 				}
-				success := numTrue(votes) > nMission/2
+				success := numTrue(votes) > nMission()/2
 				if success {
 					resPts++
 				} else {
