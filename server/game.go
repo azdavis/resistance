@@ -103,12 +103,14 @@ func runGame(
 	// invariant: 0 := skip <= MaxSkip.
 	skip := 0
 
-	// number of clients on this mission.
+	// nMission returns the number of clients on this mission.
 	nMission := func() int {
 		const m = 5
 		return len(cids) / m
 	}
 
+	// newMemberChoosing moves the state into memberChoosing and update the
+	// appropriate other bits of state.
 	newMemberChoosing := func() {
 		state = memberChoosing
 		members = nil
@@ -119,6 +121,8 @@ func runGame(
 		}
 	}
 
+	// getCurrentGame returns the current game state in a format readable by
+	// clients.
 	getCurrentGame := func(cid CID) CurrentGame {
 		return CurrentGame{
 			IsSpy:      isSpy[cid],
@@ -131,6 +135,8 @@ func runGame(
 		}
 	}
 
+	// reconnect tries to reconnect a CIDClient to this game. if it fails, it
+	// closes that CIDClient.
 	reconnect := func(cl CIDClient) {
 		_, ok := clients.M[cl.CID]
 		if ok || !hasCID(cids, cl.CID) {
@@ -141,6 +147,7 @@ func runGame(
 		}
 	}
 
+	// broadcast broadcasts the current game state to all clients.
 	broadcast := func() {
 		for cid, cl := range clients.M {
 			cl.tx <- getCurrentGame(cid)
