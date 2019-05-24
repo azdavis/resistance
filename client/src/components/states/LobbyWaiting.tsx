@@ -14,10 +14,9 @@ type Props = {
 };
 
 export default ({ t, d, send, me, leader, clients }: Props) => {
-  const LW = t.LobbyWaiting;
   return (
     <div className="LobbyWaiting">
-      <h1>{LW.title(clients.length)}</h1>
+      <h1>{t.lobbyWaiting(clients.length)}</h1>
       {clients.map(({ CID, Name }) => (
         <div className="Truncated" key={CID}>
           {Name}
@@ -31,7 +30,7 @@ export default ({ t, d, send, me, leader, clients }: Props) => {
         }}
       />
       <Button
-        value={LW.start}
+        value={t.start}
         onClick={() => send({ t: "GameStart" })}
         disabled={me !== leader || !okGameSize(clients.length)}
       />

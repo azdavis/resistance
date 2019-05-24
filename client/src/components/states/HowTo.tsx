@@ -8,20 +8,19 @@ type Props = {
 };
 
 export default ({ t, d }: Props) => {
-  const HT = t.HowTo;
   return (
     <div className="HowTo">
-      <h1>{HT.title}</h1>
-      <p>{HT.groupSize}</p>
-      <p>{HT.groupNames}</p>
-      <p>{HT.decideWinner}</p>
-      <p>{HT.captain}</p>
-      <p>{HT.occurVote}</p>
-      <p>{HT.noOccur}</p>
-      <p>{HT.tooManyNoOccur}</p>
-      <p>{HT.yesOccur}</p>
-      <p>{HT.succeed}</p>
-      <p>{HT.fail}</p>
+      <h1>{t.howToPlay}</h1>
+      <p>{t.groupSize}</p>
+      <p>{t.groupNames}</p>
+      <p>{t.decideWinner}</p>
+      <p>{t.captain}</p>
+      <p>{t.occurVote}</p>
+      <p>{t.noOccur}</p>
+      <p>{t.tooManyNoOccur}</p>
+      <p>{t.yesOccur}</p>
+      <p>{t.succeed}</p>
+      <p>{t.fail}</p>
       <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );

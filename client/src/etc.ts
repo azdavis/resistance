@@ -71,64 +71,42 @@ export type Translation = {
   submit: string;
   leave: string;
   back: string;
-  Disbanded: {
-    title: string;
-    body: string;
-  };
-  Disconnected: {
-    title: string;
-    reconnect: string;
-  };
-  Invalid: {
-    title: string;
-    body: string;
-  };
-  GamePlaying: {
-    viewAllegiance: string;
-    captain: (x: string) => string;
-    members: (n: number) => string;
-    beingChosen: string;
-    succeedPrompt: string;
-    succeed: string;
-    fail: string;
-    beingVotedOn: string;
-    occurPrompt: string;
-    occur: string;
-    notOccur: string;
-  };
-  HowTo: {
-    title: string;
-    groupSize: string;
-    groupNames: string;
-    decideWinner: string;
-    captain: string;
-    occurVote: string;
-    noOccur: string;
-    tooManyNoOccur: string;
-    yesOccur: string;
-    succeed: string;
-    fail: string;
-  };
-  LangChoosing: {
-    title: string;
-  };
-  LobbyChoosing: {
-    title: string;
-    create: string;
-    existing: (n: number) => string;
-  };
-  LobbyWaiting: {
-    title: (n: number) => string;
-    start: string;
-  };
-  NameChoosing: {
-    title: string;
-    invalid: string;
-  };
-  Welcome: {
-    play: string;
-    learnHow: string;
-    setLang: string;
-    viewCode: string;
-  };
+  disbanded: string;
+  disbandedGameOrLobby: string;
+  disconnected: string;
+  reconnect: string;
+  invalid: string;
+  invalidStateTransition: string;
+  viewAllegiance: string;
+  captain: (x: string) => string;
+  members: (n: number) => string;
+  beingChosen: string;
+  succeedPrompt: string;
+  succeed: string;
+  fail: string;
+  beingVotedOn: string;
+  occurPrompt: string;
+  occur: string;
+  notOccur: string;
+  howToPlay: string;
+  groupSize: string;
+  groupNames: string;
+  decideWinner: string;
+  rounds: string;
+  occurVote: string;
+  noOccur: string;
+  tooManyNoOccur: string;
+  yesOccur: string;
+  succeedPt: string;
+  failPt: string;
+  setLang: string;
+  lobbies: string;
+  createNew: string;
+  existingLobbies: (n: number) => string;
+  lobbyWaiting: (n: number) => string;
+  start: string;
+  playerName: string;
+  play: string;
+  learnHow: string;
+  viewCode: string;
 };

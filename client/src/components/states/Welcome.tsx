@@ -10,19 +10,18 @@ type Props = {
 };
 
 export default ({ t, d, loading }: Props) => {
-  const W = t.Welcome;
   return (
     <div className="Welcome">
       <h1>{t.resName}</h1>
       <Button
-        value={W.play}
+        value={t.play}
         onClick={() => d({ t: "GoNameChoose" })}
         disabled={loading}
       />
-      <Button value={W.learnHow} onClick={() => d({ t: "GoHowTo" })} />
-      <Button value={W.setLang} onClick={() => d({ t: "GoLangChoose" })} />
+      <Button value={t.learnHow} onClick={() => d({ t: "GoHowTo" })} />
+      <Button value={t.setLang} onClick={() => d({ t: "GoLangChoose" })} />
       <ButtonLink
-        value={W.viewCode}
+        value={t.viewCode}
         href="https://github.com/azdavis/resistance"
       />
     </div>

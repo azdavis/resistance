@@ -9,8 +9,8 @@ type Props = {
 
 export default ({ t, s, a }: Props) => (
   <div className="Invalid">
-    <h1>{t.Invalid.title}</h1>
-    <p>{t.Invalid.body}</p>
+    <h1>{t.invalid}</h1>
+    <p>{t.invalidStateTransition}</p>
     <pre>{JSON.stringify({ s, a }, null, 2)}</pre>
   </div>
 );

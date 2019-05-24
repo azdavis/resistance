@@ -11,7 +11,7 @@ type Props = {
 
 export default ({ t, d, setLang }: Props) => (
   <div className="LangChoosing">
-    <h1>{t.LangChoosing.title}</h1>
+    <h1>{t.setLang}</h1>
     {langs.map(x => (
       <Toggle
         key={x}

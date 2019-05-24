@@ -12,11 +12,10 @@ type Props = {
 
 export default ({ t, d, send, valid }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
-  const NC = t.NameChoosing;
   useEffect(() => nameRef.current!.focus(), []);
   return (
     <div className="NameChoosing">
-      <h1>{NC.title}</h1>
+      <h1>{t.playerName}</h1>
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -24,7 +23,7 @@ export default ({ t, d, send, valid }: Props) => {
         }}
       >
         <TextInput ref={nameRef} />
-        {valid ? null : NC.invalid}
+        {valid ? null : t.invalid}
         <Button type="submit" value={t.submit} />
       </form>
       <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />

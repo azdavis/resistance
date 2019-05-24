@@ -10,12 +10,11 @@ type Props = {
 };
 
 export default ({ t, send, lobbies }: Props) => {
-  const LC = t.LobbyChoosing;
   return (
     <div className="LobbyChoosing">
-      <h1>{LC.title}</h1>
-      <Button value={LC.create} onClick={() => send({ t: "LobbyCreate" })} />
-      <h2>{LC.existing(lobbies.length)}</h2>
+      <h1>{t.lobbies}</h1>
+      <Button value={t.createNew} onClick={() => send({ t: "LobbyCreate" })} />
+      <h2>{t.existingLobbies(lobbies.length)}</h2>
       {lobbies.map(({ GID, Leader }) => (
         <Button
           key={GID}

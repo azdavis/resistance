@@ -34,21 +34,20 @@ export default ({
   members,
   active,
 }: Props) => {
-  const GP = t.GamePlaying;
   return (
     <div className="GamePlaying">
       <Scoreboard {...{ t, resPts, spyPts }} />
       <ButtonSpoiler
-        view={GP.viewAllegiance}
+        view={t.viewAllegiance}
         spoil={isSpy ? t.spyName : t.resName}
       />
-      <div>{GP.captain(clients.find(({ CID }) => CID === captain)!.Name)}</div>
-      <div>{GP.members(isNum(members) ? members : members.length)}</div>
+      <div>{t.captain(clients.find(({ CID }) => CID === captain)!.Name)}</div>
+      <div>{t.members(isNum(members) ? members : members.length)}</div>
       {isNum(members) ? (
         me === captain ? (
           <MemberChooser {...{ t, send, me, clients, members }} />
         ) : (
-          GP.beingChosen
+          t.beingChosen
         )
       ) : (
         clients
@@ -64,19 +63,19 @@ export default ({
           <Voter
             // the `key`s must differ
             key="succeed"
-            prompt={GP.succeedPrompt}
-            options={[[GP.succeed, true], [GP.fail, false]]}
+            prompt={t.succeedPrompt}
+            options={[[t.succeed, true], [t.fail, false]]}
             onVote={Vote => send({ t: "MissionVote", Vote })}
           />
         ) : (
-          GP.beingVotedOn
+          t.beingVotedOn
         )
       ) : (
         <Voter
           // the `key`s must differ
           key="occur"
-          prompt={GP.occurPrompt}
-          options={[[GP.occur, true], [GP.notOccur, false]]}
+          prompt={t.occurPrompt}
+          options={[[t.occur, true], [t.notOccur, false]]}
           onVote={Vote => send({ t: "MemberVote", Vote })}
         />
       )}
