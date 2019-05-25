@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+// env is used in hub.go to determine which CheckOrigin to use for the
+// ws.Upgrader.
 var env string
 
 func getPort() string {
