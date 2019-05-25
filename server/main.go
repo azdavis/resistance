@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var env string
+
 func getPort() string {
 	port := os.Getenv("PORT")
 	if port == "" {
