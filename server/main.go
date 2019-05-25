@@ -16,10 +16,11 @@ func getPort() string {
 }
 
 func main() {
-	log.Println("start")
+	port := getPort()
+	log.Println("starting on port", port)
 	hs := &http.Server{
 		Handler:      NewHub(NewServer().C),
-		Addr:         ":" + getPort(),
+		Addr:         ":" + port,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
