@@ -3,9 +3,12 @@ package main
 import (
 	"log"
 	"net/http"
+	"net/url"
 
 	ws "github.com/gorilla/websocket"
 )
+
+const allowedHost = "azdavis.xyz"
 
 // Hub turns HTTP connections into Clients.
 type Hub struct {
@@ -21,6 +24,20 @@ func NewHub(tx chan<- SrvMsg) *Hub {
 // unsafeDebugCheckOrigin returns true.
 func unsafeDebugCheckOrigin(r *http.Request) bool {
 	return true
+}
+
+// checkOrigin returns whether r has an Origin header which contains a
+// valid URL with azdavis.xyz as its host.
+func checkOrigin(r *http.Request) bool {
+	origin := r.Header["Origin"]
+	if len(origin) == 0 {
+		return false
+	}
+	u, err := url.Parse(origin[0])
+	if err != nil {
+		return false
+	}
+	return u.Host == allowedHost
 }
 
 // ServeHTTP tries to upgrade the (w, r) pair into a websocket connection. If it
