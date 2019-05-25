@@ -16,13 +16,14 @@ import LobbyWaiting from "./states/LobbyWaiting";
 import GamePlaying from "./states/GamePlaying";
 import GameEnded from "./states/GameEnded";
 
+const wsURL = "ws://localhost:8080";
 const defaultLang = Storage.getLang() || "en";
 
 export default (): JSX.Element | null => {
   const [s, d] = useReducer(reducer, init);
   const [send, setSend] = useState<S | null>(null);
   const reconnect = useTriggerEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080");
+    const ws = new WebSocket(wsURL);
     const newSend: S = ({ t, ...P }) => {
       ws.send(JSON.stringify({ T: t, P }));
     };
