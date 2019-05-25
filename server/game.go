@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"math/rand"
 )
 
@@ -49,6 +50,7 @@ func NewGame(
 	tx chan<- SrvMsg,
 	q <-chan struct{},
 ) Game {
+	log.Println("NewGame", gid)
 	// see NewLobby.
 	rxLobbyMap := make(chan CIDClient)
 	go runGame(gid, clients, names, tx, rxLobbyMap, q)

@@ -19,6 +19,7 @@ var NullDest = Dest{0, make(chan<- CIDToServer)}
 
 // NewClient returns a new Client.
 func NewClient(conn *ws.Conn) Client {
+	log.Println("NewClient")
 	tx := make(chan ToClient, 3)
 	rx := make(chan ToServer, 3)
 	d := make(chan Dest)

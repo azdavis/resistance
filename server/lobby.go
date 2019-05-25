@@ -1,5 +1,9 @@
 package main
 
+import (
+	"log"
+)
+
 // NewLobby returns a new Lobby.
 func NewLobby(
 	gid GID,
@@ -7,6 +11,7 @@ func NewLobby(
 	tx chan<- SrvMsg,
 	q <-chan struct{},
 ) Lobby {
+	log.Println("NewLobby", gid)
 	// if this channel is to be buffered, it must be drained when exiting from
 	// runLobby, and such draining must only occur after we've sent a message to
 	// runLobbyMap that will ensure no further messages get sent on this channel.
