@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -22,5 +22,5 @@ func main() {
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
-	fmt.Println("err main:", hs.ListenAndServe())
+	log.Println("err main:", hs.ListenAndServe())
 }

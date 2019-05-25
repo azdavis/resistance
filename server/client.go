@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	ws "github.com/gorilla/websocket"
 )
@@ -72,7 +72,7 @@ func readFromConn(conn *ws.Conn, rx chan<- ToServer) {
 	for {
 		mt, bs, err := conn.ReadMessage()
 		if err != nil {
-			fmt.Println("err readFromConn:", err)
+			log.Println("err readFromConn:", err)
 			rx <- Close{}
 			conn.Close()
 			return
@@ -92,7 +92,7 @@ func writeToConn(conn *ws.Conn, tx <-chan ToClient) {
 	for m := range tx {
 		err := conn.WriteJSON(m)
 		if err != nil {
-			fmt.Println("err writeToConn:", err)
+			log.Println("err writeToConn:", err)
 		}
 	}
 	conn.Close()

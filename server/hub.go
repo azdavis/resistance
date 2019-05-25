@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
 	ws "github.com/gorilla/websocket"
@@ -33,7 +33,7 @@ func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	conn, err := h.up.Upgrade(w, r, nil)
 	if err != nil {
-		fmt.Println("err ServeHTTP:", err)
+		log.Println("err ServeHTTP:", err)
 		return
 	}
 	h.tx <- NewClient(conn)
