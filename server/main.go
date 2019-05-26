@@ -11,6 +11,9 @@ import (
 // ws.Upgrader.
 var env string
 
+// version is used to show the version.
+var version = "dev"
+
 func getPort() string {
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -21,7 +24,7 @@ func getPort() string {
 
 func main() {
 	port := getPort()
-	log.Println("starting on port", port)
+	log.Println("version", version, "on port", port)
 	hs := &http.Server{
 		Handler:      NewHub(NewServer().C),
 		Addr:         ":" + port,
