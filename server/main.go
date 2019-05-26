@@ -24,7 +24,7 @@ func getPort() string {
 
 func main() {
 	port := getPort()
-	log.Println("version", version, "on port", port)
+	log.Println("start version", version, "on port", port)
 	hs := &http.Server{
 		Handler:      NewHub(NewServer().C),
 		Addr:         ":" + port,
