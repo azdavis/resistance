@@ -45,13 +45,14 @@ export default (): JSX.Element | null => {
   const [lang, setLang] = useState(defaultLang);
   const [t, setTrans] = useState<Translation | null>(null);
   useEffect(() => {
-    import(`../translations/${lang}`)
-      .then(res => {
+    import(`../translations/${lang}`).then(
+      res => {
         document.documentElement.lang = lang;
         Storage.setLang(lang);
         setTrans(res.default);
-      })
-      .catch(e => d({ t: "GoLangChooseFail", msg: String(e.message || e) }));
+      },
+      e => d({ t: "GoLangChooseFail", msg: String(e.message || e) }),
+    );
   }, [lang]);
   if (s.t === "LangChooseFail") {
     return <LangChooseFail msg={s.msg} />;
