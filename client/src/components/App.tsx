@@ -39,7 +39,9 @@ export default (): JSX.Element | null => {
       const { T, P } = JSON.parse(e.data);
       d({ t: T, ...P });
     };
-    ws.onclose = () => d({ t: "Close" });
+    ws.onclose = () => {
+      d({ t: "Close" });
+    };
     return ws.close.bind(ws);
   }, []);
   const [lang, setLang] = useState(defaultLang);
@@ -51,7 +53,9 @@ export default (): JSX.Element | null => {
         Storage.setLang(lang);
         setTrans(res.default);
       },
-      e => d({ t: "GoLangChooseFail", msg: String(e.message || e) }),
+      e => {
+        d({ t: "GoLangChooseFail", msg: String(e.message || e) });
+      },
     );
   }, [lang]);
   if (s.t === "LangChooseFail") {
