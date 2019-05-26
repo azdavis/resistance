@@ -16,8 +16,8 @@ export type Action = SelfAction | ToClient;
 export type D = Dispatch<Action>;
 
 export type State =
-  | { t: "Invalid"; s: State; a: Action }
   | { t: "LangChooseFail"; msg: string }
+  | { t: "Invalid"; s: State; a: Action }
   | {
       t: "Disconnected";
       me: CID;
