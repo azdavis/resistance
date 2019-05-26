@@ -1,3 +1,4 @@
+/.elasticbeanstalk
 /client/build
 /client/node_modules
 /server/resistance
