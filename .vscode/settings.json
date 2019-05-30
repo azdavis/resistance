@@ -1,0 +1,8 @@
+{
+  "files.exclude": {
+    "client/build": true,
+    "client/node_modules": true,
+    "server/resistance": true
+  },
+  "go.formatTool": "goimports"
+}
