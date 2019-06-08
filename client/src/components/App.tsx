@@ -39,9 +39,7 @@ export default (): JSX.Element | null => {
       const { T, P } = JSON.parse(e.data);
       d({ t: T, ...P });
     };
-    ws.onclose = () => {
-      d({ t: "Close" });
-    };
+    ws.onclose = () => d({ t: "Close" });
     return ws.close.bind(ws);
   }, []);
   const [lang, setLang] = useState(defaultLang);
