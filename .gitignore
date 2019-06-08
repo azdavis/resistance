@@ -1,6 +1,6 @@
 /.elasticbeanstalk
 /client/build
 /client/node_modules
-/server/resistance
 /server/application.zip
+/server/resistance
 /thoughts.md
