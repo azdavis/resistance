@@ -9,6 +9,7 @@
   font: inherit;
   color: inherit;
   cursor: inherit;
+  background: none;
 }
 
 .Checkbox::before {
@@ -19,6 +20,10 @@
   width: 60%;
   height: 60%;
   border: 1px solid currentColor;
+}
+
+.Checkbox:checked {
+  background: none;
 }
 
 .Checkbox:checked::after {
