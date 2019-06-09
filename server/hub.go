@@ -32,8 +32,8 @@ func unsafeDebugCheckOrigin(r *http.Request) bool {
 	return true
 }
 
-// checkOrigin returns whether r has an Origin header which contains a
-// valid URL with allowedHost as its host.
+// checkOrigin returns whether r has an Origin header which contains a valid URL
+// with allowedHost as its host.
 func checkOrigin(r *http.Request) bool {
 	origin := r.Header["Origin"]
 	if len(origin) == 0 {
@@ -47,8 +47,7 @@ func checkOrigin(r *http.Request) bool {
 }
 
 // ServeHTTP tries to upgrade the (w, r) pair into a websocket connection. If it
-// is successful, it makes a new Client with a fresh CID and sends it along
-// tx.
+// is successful, it makes a new Client with a fresh CID and sends it along tx.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
