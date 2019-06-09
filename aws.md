@@ -1,0 +1,43 @@
+# things done with aws
+
+- create account (the root user)
+  - set up MFA
+  - do not create root user access key
+- create the application through the aws web interface
+- add an environment to the application
+  - use Go (not Docker Go)
+  - upload a zip containing only the `application` binary
+  - use advanced options
+  - start with low cost
+  - add a load balancer under capacity
+  - use application load balancer, not classic
+- create a separate user for programmatic access
+  - create an IAM group
+    - AWSElasticBeanstalkService
+  - create an IAM user
+    - give only access key
+    - do not give password
+  - add the user to that group
+- install eb cli
+- run `eb init` in root of repository
+  - give the access id/secret key of the user
+  - select the pre-existing project
+  - do not use CodeCommit
+  - verify `~/.aws` is created
+  - fix `.gitignore` modifications
+- add DNS record
+  - in azdavis.xyz
+  - CNAME: resistance-backend -> aws URL
+- request a certificate
+  - in aws certificate manager
+  - public
+  - for resistance-backend.azdavis.xyz
+  - add verification DNS record in azdavis.xyz
+  - wait for verified
+- add the cert to the load balancer
+  - eb configuration
+  - add listener
+  - protocol: https
+  - port: 443
+  - cert: the cert
+  - ssl policy: ELBSecurityPolicy-2016-08
