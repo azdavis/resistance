@@ -33,7 +33,7 @@ func unsafeDebugCheckOrigin(r *http.Request) bool {
 }
 
 // checkOrigin returns whether r has an Origin header which contains a
-// valid URL with azdavis.xyz as its host.
+// valid URL with allowedHost as its host.
 func checkOrigin(r *http.Request) bool {
 	origin := r.Header["Origin"]
 	if len(origin) == 0 {
