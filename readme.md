@@ -28,3 +28,9 @@ In another terminal:
 $ cd client
 $ npm run start
 ```
+
+## Deploy
+
+See [here][1].
+
+[1]: https://github.com/azdavis/azdavis.xyz/blob/master/deploy.sh
