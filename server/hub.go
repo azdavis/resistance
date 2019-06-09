@@ -19,10 +19,10 @@ type Hub struct {
 // NewHub returns a new Hub.
 func NewHub(tx chan<- SrvMsg) *Hub {
 	up := ws.Upgrader{}
-	if env == "prod" {
-		up.CheckOrigin = checkOrigin
-	} else {
+	if version == "dev" {
 		up.CheckOrigin = unsafeDebugCheckOrigin
+	} else {
+		up.CheckOrigin = checkOrigin
 	}
 	return &Hub{up, tx}
 }

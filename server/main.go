@@ -7,10 +7,6 @@ import (
 	"time"
 )
 
-// env is used in hub.go to determine which CheckOrigin to use for the
-// ws.Upgrader.
-var env string
-
 // version is used to show the version.
 var version = "dev"
 
