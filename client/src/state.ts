@@ -31,6 +31,7 @@ export const reducer: Reducer<State, Action> = (s, a) => {
       return {
         t: "Disconnected",
         me: s.me,
+        code: a.code,
         game: s.t === "GamePlaying" ? { gid: s.gid, clients: s.clients } : null,
       };
     case "GoLangChooseFail":

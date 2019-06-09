@@ -14,6 +14,7 @@ const ja: Translation = {
   disbanded: "解散",
   disbandedGameOrLobby: "あなたのいたゲームまたはロビーは解散された。",
   disconnected: "接続が切られた",
+  errorWithCode: code => `エラー${code}`,
   reconnect: "再接続する",
   invalid: "無効",
   invalidStateTransition: "無効な状態の推移が起きた。",

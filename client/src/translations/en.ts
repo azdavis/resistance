@@ -11,6 +11,7 @@ const en: Translation = {
   disbanded: "Disbanded",
   disbandedGameOrLobby: "The game or lobby you were in was disbanded.",
   disconnected: "Disconnected",
+  errorWithCode: code => `Error ${code}`,
   reconnect: "Reconnect",
   invalid: "Invalid",
   invalidStateTransition: "An invalid state transition occurred.",

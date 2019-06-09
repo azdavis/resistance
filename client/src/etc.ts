@@ -4,7 +4,7 @@ import { CID, GID, Client, Lobby, ToServer, ToClient } from "./shared";
 export type S = Dispatch<ToServer>;
 
 type SelfAction =
-  | { t: "Close" }
+  | { t: "Close"; code: number }
   | { t: "GoLangChooseFail"; msg: string }
   | { t: "GoLobbies" }
   | { t: "GoWelcome" }
@@ -21,6 +21,7 @@ export type State =
   | {
       t: "Disconnected";
       me: CID;
+      code: number;
       game: { gid: GID; clients: Array<Client> } | null;
     }
   | { t: "Disbanded"; me: CID; lobbies: Array<Lobby> }
@@ -73,6 +74,7 @@ export type Translation = {
   disbanded: string;
   disbandedGameOrLobby: string;
   disconnected: string;
+  errorWithCode: (code: number) => string;
   reconnect: string;
   invalid: string;
   invalidStateTransition: string;
