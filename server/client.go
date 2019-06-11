@@ -93,12 +93,12 @@ func writeToConn(conn *ws.Conn, tx <-chan ToClient) {
 	for {
 		m, ok := <-tx
 		if !ok {
-			break
+			conn.Close()
+			return
 		}
 		err := conn.WriteJSON(m)
 		if err != nil {
 			log.Println("err writeToConn:", err)
 		}
 	}
-	conn.Close()
 }
