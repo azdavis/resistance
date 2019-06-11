@@ -16,7 +16,9 @@ type Client struct {
 }
 
 // PingInterval is the interval at which pings are sent to the client to prevent
-// disconnects.
+// disconnects. This should be just under 60 seconds, since it seems that's the
+// timeout after which AWS judges a connection inactive and kills it. (Not
+// actually sure if it's AWS that's doing that, but whatever.)
 const PingInterval = 50 * time.Second
 
 // NullDest is a Dest which will never allow sending.
