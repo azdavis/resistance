@@ -90,7 +90,11 @@ func readFromConn(conn *ws.Conn, rx chan<- ToServer) {
 }
 
 func writeToConn(conn *ws.Conn, tx <-chan ToClient) {
-	for m := range tx {
+	for {
+		m, ok := <-tx
+		if !ok {
+			break
+		}
 		err := conn.WriteJSON(m)
 		if err != nil {
 			log.Println("err writeToConn:", err)
