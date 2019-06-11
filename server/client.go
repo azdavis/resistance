@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	ws "github.com/gorilla/websocket"
 )
@@ -13,6 +14,10 @@ type Client struct {
 	d  chan<- Dest     // what to update the ultimate destination of rx to
 	q  chan struct{}   // close on Close
 }
+
+// PingInterval is the interval at which pings are sent to the client to prevent
+// disconnects.
+const PingInterval = 50 * time.Second
 
 // NullDest is a Dest which will never allow sending.
 var NullDest = Dest{0, make(chan<- CIDToServer)}
@@ -91,14 +96,18 @@ func readFromConn(conn *ws.Conn, rx chan<- ToServer) {
 
 func writeToConn(conn *ws.Conn, tx <-chan ToClient) {
 	var err error
+	ticker := time.NewTicker(PingInterval)
 	for {
 		select {
 		case m, ok := <-tx:
 			if !ok {
 				conn.Close()
+				ticker.Stop()
 				return
 			}
 			err = conn.WriteJSON(m)
+		case <-ticker.C:
+			err = conn.WriteMessage(ws.PingMessage, []byte{})
 		}
 		if err != nil {
 			log.Println("err writeToConn:", err)
