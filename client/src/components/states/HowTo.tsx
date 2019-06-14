@@ -13,7 +13,7 @@ export default ({ t, d }: Props) => (
     <p>{t.groupSize}</p>
     <p>{t.groupNames}</p>
     <p>{t.decideWinner}</p>
-    <p>{t.captain}</p>
+    <p>{t.rounds}</p>
     <p>{t.occurVote}</p>
     <p>{t.noOccur}</p>
     <p>{t.tooManyNoOccur}</p>
