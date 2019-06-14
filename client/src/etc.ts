@@ -72,7 +72,6 @@ export type Translation = {
   leave: string;
   back: string;
   disbanded: string;
-  disbandedGameOrLobby: string;
   disconnected: string;
   errorWithCode: (code: number) => string;
   reconnect: string;

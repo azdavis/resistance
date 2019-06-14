@@ -9,7 +9,6 @@ const en: Translation = {
   leave: "Leave",
   back: "Back",
   disbanded: "Disbanded",
-  disbandedGameOrLobby: "The game or lobby you were in was disbanded.",
   disconnected: "Disconnected",
   errorWithCode: code => `Error ${code}`,
   reconnect: "Reconnect",
