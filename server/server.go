@@ -37,7 +37,6 @@ func runServer(rx chan SrvMsg, q <-chan struct{}) {
 		for _, lb := range lobbies {
 			ret = append(ret, lb)
 		}
-		// TODO bad perf
 		sort.Slice(ret, func(i, j int) bool { return ret[i].GID < ret[j].GID })
 		return ret
 	}
