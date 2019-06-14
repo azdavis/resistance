@@ -50,6 +50,7 @@ func checkOrigin(r *http.Request) bool {
 // is successful, it makes a new Client with a fresh CID and sends it along tx.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/" {
+		// just for aws health checks.
 		w.WriteHeader(http.StatusOK)
 		return
 	}
