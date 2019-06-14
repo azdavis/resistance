@@ -49,7 +49,7 @@ func checkOrigin(r *http.Request) bool {
 // ServeHTTP tries to upgrade the (w, r) pair into a websocket connection. If it
 // is successful, it makes a new Client with a fresh CID and sends it along tx.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
+	if r.URL.Path != "/ws" {
 		http.NotFound(w, r)
 		return
 	}
