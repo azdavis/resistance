@@ -10,6 +10,7 @@ type Props = {
 export default ({ t, d }: Props) => (
   <div className="HowTo">
     <h1>{t.howToPlay}</h1>
+    <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
     <p>{t.groupSize}</p>
     <p>{t.groupNames}</p>
     <p>{t.decideWinner}</p>
@@ -20,6 +21,5 @@ export default ({ t, d }: Props) => (
     <p>{t.yesOccur}</p>
     <p>{t.succeedPt}</p>
     <p>{t.failPt}</p>
-    <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
   </div>
 );

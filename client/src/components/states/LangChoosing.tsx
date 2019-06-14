@@ -12,6 +12,7 @@ type Props = {
 export default ({ t, d, setLang }: Props) => (
   <div className="LangChoosing">
     <h1>{t.setLang}</h1>
+    <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
     {langs.map(([k, v]) => (
       <Toggle
         key={k}
@@ -20,6 +21,5 @@ export default ({ t, d, setLang }: Props) => (
         onChange={() => setLang(k)}
       />
     ))}
-    <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
   </div>
 );
