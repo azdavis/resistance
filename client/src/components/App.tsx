@@ -16,7 +16,7 @@ import LobbyWaiting from "./states/LobbyWaiting";
 import GamePlaying from "./states/GamePlaying";
 import GameEnded from "./states/GameEnded";
 
-const wsURL = `${process.env.REACT_APP_BACKEND || "ws://localhost:8080"}/ws`;
+const wsURL = `${process.env.REACT_APP_SERVER || "ws://localhost:8080"}/ws`;
 const defaultLang = Storage.getLang() || "en";
 
 export default (): JSX.Element | null => {
