@@ -39,7 +39,7 @@ export default (): JSX.Element | null => {
       const { T, P } = JSON.parse(e.data);
       d({ t: T, ...P });
     };
-    ws.onclose = ({ code }) => d({ t: "Close", code });
+    ws.onclose = () => d({ t: "Close" });
     return ws.close.bind(ws);
   }, []);
   const [lang, setLang] = useState(defaultLang);
@@ -66,7 +66,7 @@ export default (): JSX.Element | null => {
     case "Invalid":
       return <Invalid t={t} s={s.s} a={s.a} />;
     case "Disconnected":
-      return <Disconnected t={t} code={s.code} reconnect={reconnect} />;
+      return <Disconnected t={t} reconnect={reconnect} />;
     case "Disbanded":
       return <Disbanded t={t} d={d} />;
     case "Welcome":

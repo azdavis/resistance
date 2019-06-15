@@ -10,7 +10,6 @@ const en: Translation = {
   back: "Back",
   disbanded: "Disbanded",
   disconnected: "Disconnected",
-  errorWithCode: code => `Error ${code}`,
   reconnect: "Reconnect",
   invalid: "Invalid",
   invalidStateTransition: "An invalid state transition occurred.",
