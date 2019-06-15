@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -51,7 +52,7 @@ func checkOrigin(r *http.Request) bool {
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/" {
 		// just for health checks.
-		w.WriteHeader(http.StatusNoContent)
+		fmt.Fprint(w, "hello")
 		return
 	}
 	if r.URL.Path != "/ws" {
