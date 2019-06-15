@@ -51,7 +51,7 @@ func checkOrigin(r *http.Request) bool {
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/" {
 		// just for aws health checks.
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusNoContent)
 		return
 	}
 	if r.URL.Path != "/ws" {
