@@ -89,16 +89,6 @@ export type Translation = {
   occur: string;
   notOccur: string;
   howToPlay: string;
-  groupSize: string;
-  groupNames: string;
-  decideWinner: string;
-  rounds: string;
-  occurVote: string;
-  noOccur: string;
-  tooManyNoOccur: string;
-  yesOccur: string;
-  succeedPt: string;
-  failPt: string;
   setLang: string;
   lobbies: string;
   createNew: string;
@@ -109,4 +99,5 @@ export type Translation = {
   play: string;
   learnHow: string;
   viewCode: string;
+  howTo: Array<string>;
 };

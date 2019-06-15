@@ -7,19 +7,13 @@ type Props = {
   d: D;
 };
 
+// ok to use index as the key, since the array is immutable.
+const mkP = (x: string, i: number) => <p key={i}>{x}</p>;
+
 export default ({ t, d }: Props) => (
   <div className="HowTo">
     <h1>{t.howToPlay}</h1>
     <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
-    <p>{t.groupSize}</p>
-    <p>{t.groupNames}</p>
-    <p>{t.decideWinner}</p>
-    <p>{t.rounds}</p>
-    <p>{t.occurVote}</p>
-    <p>{t.noOccur}</p>
-    <p>{t.tooManyNoOccur}</p>
-    <p>{t.yesOccur}</p>
-    <p>{t.succeedPt}</p>
-    <p>{t.failPt}</p>
+    {t.howTo.map(mkP)}
   </div>
 );
