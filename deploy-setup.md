@@ -1,9 +1,9 @@
-# things done with aws
+# things done to deploy
 
-- create account (the root user)
+- create AWS account (the root user)
   - set up MFA
   - do not create root user access key
-- create the application through the aws web interface
+- create the application through the web interface
 - add an environment to the application
   - use Go (not Docker Go)
   - upload a zip containing only the `application` binary
