@@ -37,15 +37,9 @@ const en: Translation = {
   learnHow: "Learn how to play",
   viewCode: "View source code",
   howTo: [
-    "Groups of at least " +
-      String(minN) +
-      " and at most " +
-      String(maxN) +
-      " players may play.",
+    `Groups of at least ${minN} and at most ${maxN} players may play.`,
     "Some players are spies. The rest are members of the resistance.",
-    "The first of the spies and resistance to get " +
-      String(maxPts) +
-      " points wins the game.",
+    `The first of the spies and resistance to get ${maxPts} wins the game.`,
     "The game is played in rounds. " +
       "In every round of the game, a captain is chosen. " +
       "The captain chooses the mission members for this round.",
