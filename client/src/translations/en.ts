@@ -12,7 +12,6 @@ const en: Translation = {
   disconnected: "Disconnected",
   reconnect: "Reconnect",
   invalid: "Invalid",
-  invalidStateTransition: "An invalid state transition occurred.",
   viewAllegiance: "View allegiance",
   captain: x => `Captain: ${x}`,
   members: n => `Members (${n}):`,

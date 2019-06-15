@@ -15,7 +15,6 @@ const ja: Translation = {
   disconnected: "接続が切られた",
   reconnect: "再接続する",
   invalid: "無効",
-  invalidStateTransition: "無効な状態の推移が起きた。",
   viewAllegiance: "忠誠を見る",
   captain: x => `主将：${x}`,
   members: n => `使命員（${fullWidth(n)}）：`,

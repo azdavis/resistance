@@ -74,7 +74,6 @@ export type Translation = {
   disconnected: string;
   reconnect: string;
   invalid: string;
-  invalidStateTransition: string;
   viewAllegiance: string;
   captain: (x: string) => string;
   members: (n: number) => string;
