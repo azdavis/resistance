@@ -26,8 +26,6 @@ const ja: Translation = {
   occurPrompt: "使命は起こるべきか？",
   occur: "起こる",
   notOccur: "起こらない",
-  howToPlay: "遊び方",
-  setLang: "言語の設定",
   lobbies: "ロビー",
   createNew: "新たなのを作成する",
   existingLobbies: n => `存在するロビー（${fullWidth(n)}）`,
@@ -36,7 +34,9 @@ const ja: Translation = {
   playerName: "プレイヤー名",
   play: "遊ぶ",
   learnHow: "遊び方を知る",
+  setLang: "言語の設定",
   viewCode: "コードを見る",
+  howToPlay: "遊び方",
   howTo: [
     `最低${fullWidth(minN)}人、最高${fullWidth(maxN)}人のグループは遊べる。`,
     "あるプレイヤーはスパイ。他のプレイヤーは抵抗勢力。" +

@@ -23,8 +23,6 @@ const en: Translation = {
   occurPrompt: "Should the mission occur?",
   occur: "Occur",
   notOccur: "Not occur",
-  howToPlay: "How to play",
-  setLang: "Set language",
   lobbies: "Lobbies",
   createNew: "Create new",
   existingLobbies: n => `Existing lobbies (${n})`,
@@ -33,7 +31,9 @@ const en: Translation = {
   playerName: "Player name",
   play: "Play",
   learnHow: "Learn how to play",
+  setLang: "Set language",
   viewCode: "View source code",
+  howToPlay: "How to play",
   howTo: [
     `Groups of at least ${minN} and at most ${maxN} players may play.`,
     "Some players are spies. The rest are members of the resistance. " +

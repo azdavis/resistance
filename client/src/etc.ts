@@ -85,8 +85,6 @@ export type Translation = {
   occurPrompt: string;
   occur: string;
   notOccur: string;
-  howToPlay: string;
-  setLang: string;
   lobbies: string;
   createNew: string;
   existingLobbies: (n: number) => string;
@@ -95,6 +93,8 @@ export type Translation = {
   playerName: string;
   play: string;
   learnHow: string;
+  setLang: string;
   viewCode: string;
+  howToPlay: string;
   howTo: Array<string>;
 };
