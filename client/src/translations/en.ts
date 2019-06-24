@@ -1,7 +1,7 @@
 import { Translation } from "../etc";
 import { minN, maxN, maxPts } from "../shared";
 
-const en: Translation = {
+const t: Translation = {
   lang: "en",
   resName: "Resistance",
   spyName: "Spies",
@@ -52,4 +52,4 @@ const en: Translation = {
   ],
 };
 
-export default en;
+export default t;

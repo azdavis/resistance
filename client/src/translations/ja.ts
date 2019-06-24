@@ -4,7 +4,7 @@ import { Translation } from "../etc";
 import { minN, maxN, maxPts } from "../shared";
 import fullWidth from "../fullWidth";
 
-const ja: Translation = {
+const t: Translation = {
   lang: "ja",
   resName: "抵抗勢力",
   spyName: "スパイ",
@@ -51,4 +51,4 @@ const ja: Translation = {
   ],
 };
 
-export default ja;
+export default t;
