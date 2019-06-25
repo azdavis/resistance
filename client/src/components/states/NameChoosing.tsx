@@ -16,7 +16,6 @@ export default ({ t, d, send, valid }: Props) => {
   return (
     <div className="NameChoosing">
       <h1>{t.playerName}</h1>
-      <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -27,6 +26,7 @@ export default ({ t, d, send, valid }: Props) => {
         {valid ? null : t.invalid}
         <Button type="submit" value={t.submit} />
       </form>
+      <Button value={t.back} onClick={() => d({ t: "GoWelcome" })} />
     </div>
   );
 };
