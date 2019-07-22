@@ -1,6 +1,6 @@
 # resistance
 
-A game
+A game of deceit
 
 ## Setup
 
