@@ -6,9 +6,9 @@ A game of deceit
 
 ```sh
 $ git clone https://github.com/azdavis/resistance.git
-$ cd resistance/server
+$ cd resistance/backend
 $ go get
-$ cd ../client
+$ cd ../frontend
 $ npm install
 ```
 
@@ -17,7 +17,7 @@ $ npm install
 In one terminal:
 
 ```sh
-$ cd server
+$ cd backend
 $ go build
 $ ./resistance
 ```
@@ -25,7 +25,7 @@ $ ./resistance
 In another terminal:
 
 ```sh
-$ cd client
+$ cd frontend
 $ npm run start
 ```
 
