@@ -48,7 +48,7 @@ func checkOrigin(r *http.Request) bool {
 }
 
 // ServeHTTP tries to upgrade the (w, r) pair into a websocket connection. If it
-// is successful, it makes a new Client with a fresh CID and sends it along tx.
+// is successful, it makes a new Client and sends it along tx.
 func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/" {
 		// just for health checks. AWS by default needs HTTP 200.
