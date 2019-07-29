@@ -28,10 +28,3 @@ In another terminal:
 $ cd frontend
 $ npm run start
 ```
-
-## Deploy
-
-See [the deploy script][1] and [some setup instructions][2].
-
-[1]: https://github.com/azdavis/azdavis.xyz/blob/master/deploy.sh
-[2]: ./deploy-setup.md
